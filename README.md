@@ -1,2 +1,2 @@
 # Spring
-Projeto de desenvolvimento web utilizando Java e Spring Frameworf
+Projeto de desenvolvimento web utilizando Java e Spring Framework
