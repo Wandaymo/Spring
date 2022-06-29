@@ -1380,7 +1380,9 @@
                                 "geo_points": {
                                     "type": "array",
                                     "description": "Polygon geo points",
-                                    "items": {}
+                                    "items": {
+                                        "$ref": "#/definitions/Geo Point Base"
+                                    }
                                 },
                                 "id": {
                                     "type": "number",
@@ -1507,7 +1509,10 @@
                                 },
                                 "geo_points": {
                                     "type": "array",
-                                    "description": "Polygon geo points"
+                                    "description": "Polygon geo points",
+                                    "items": {
+                                        "$ref": "#/definitions/Geo Point Base"
+                                    }
                                 }
                             },
                             "required": [
@@ -1632,7 +1637,9 @@
                                 "geo_points": {
                                     "type": "array",
                                     "description": "Polygon geo points",
-                                    "items": {}
+                                    "items": {
+                                        "$ref": "#/definitions/Geo Point Base"
+                                    }
                                 },
                                 "id": {
                                     "type": "number",
@@ -1759,7 +1766,10 @@
                                 },
                                 "geo_points": {
                                     "type": "array",
-                                    "description": "Polygon geo points"
+                                    "description": "Polygon geo points",
+                                    "items": {
+                                        "$ref": "#/definitions/Geo Point Base"
+                                    }
                                 }
                             },
                             "required": [
@@ -1920,7 +1930,9 @@
                                 "geo_points": {
                                     "type": "array",
                                     "description": "Polygon geo points",
-                                    "items": {}
+                                    "items": {
+                                        "$ref": "#/definitions/Geo Point Base"
+                                    }
                                 },
                                 "id": {
                                     "type": "number",
@@ -1969,7 +1981,10 @@
                                 },
                                 "geo_points": {
                                     "type": "array",
-                                    "description": "Polygon geo points"
+                                    "description": "Polygon geo points",
+                                    "items": {
+                                        "$ref": "#/definitions/Geo Point Base"
+                                    }
                                 }
                             },
                             "required": [
@@ -2036,7 +2051,9 @@
                                 "geo_points": {
                                     "type": "array",
                                     "description": "Polygon geo points",
-                                    "items": {}
+                                    "items": {
+                                        "$ref": "#/definitions/Geo Point Base"
+                                    }
                                 },
                                 "id": {
                                     "type": "number",
@@ -2107,7 +2124,9 @@
                                 "geo_points": {
                                     "type": "array",
                                     "description": "Polygon geo points",
-                                    "items": {}
+                                    "items": {
+                                        "$ref": "#/definitions/Geo Point Base"
+                                    }
                                 },
                                 "id": {
                                     "type": "number",
@@ -2156,7 +2175,10 @@
                                 },
                                 "geo_points": {
                                     "type": "array",
-                                    "description": "Polygon geo points"
+                                    "description": "Polygon geo points",
+                                    "items": {
+                                        "$ref": "#/definitions/Geo Point Base"
+                                    }
                                 }
                             },
                             "required": [
@@ -4212,7 +4234,9 @@
                                         "geo_points": {
                                             "type": "array",
                                             "description": "Polygon geo points",
-                                            "items": {}
+                                            "items": {
+                                                "$ref": "#/definitions/Geo Point Base"
+                                            }
                                         },
                                         "id": {
                                             "type": "number",
@@ -6035,7 +6059,9 @@
                                                 "geo_points": {
                                                     "type": "array",
                                                     "description": "Polygon geo points",
-                                                    "items": {}
+                                                    "items": {
+                                                        "$ref": "#/definitions/Geo Point Base"
+                                                    }
                                                 },
                                                 "id": {
                                                     "type": "number",
@@ -6130,7 +6156,9 @@
                                                         "geo_points": {
                                                             "type": "array",
                                                             "description": "Polygon geo points",
-                                                            "items": {}
+                                                            "items": {
+                                                                "$ref": "#/definitions/Geo Point Base"
+                                                            }
                                                         },
                                                         "id": {
                                                             "type": "number",
@@ -6728,8 +6756,10 @@
                 },
                 "geo_points": {
                     "type": "array",
-                    "items": {},
-                    "description": "Polygon geo points"
+                    "description": "Polygon geo points",
+                    "items": {
+                        "$ref": "#/definitions/Geo Point Base"
+                    }
                 }
             }
         },
@@ -6851,8 +6881,10 @@
                 },
                 "geo_points": {
                     "type": "array",
-                    "items": {},
-                    "description": "Polygon geo points"
+                    "description": "Polygon geo points",
+                    "items": {
+                        "$ref": "#/definitions/Geo Point Base"
+                    }
                 }
             }
         },
@@ -8300,8 +8332,10 @@
                                 },
                                 "geo_points": {
                                     "type": "array",
-                                    "items": {},
-                                    "description": "Polygon geo points"
+                                    "description": "Polygon geo points",
+                                    "items": {
+                                        "$ref": "#/definitions/Geo Point Base"
+                                    }
                                 }
                             }
                         }
