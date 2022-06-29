@@ -1,0 +1,2059 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "Exact Spotter V1 - API v3",
+        "version": "",
+        "description": "O objetivo deste documento é auxiliar os clientes da Exact Sales na execução de atividades\noferecidas no sistema do Exact Spotter.\n\nA API do Exact Spotter disponibiliza um serviço para acessar e manipular dados sob o protocolo HTTP no padrão **OData**. Este protocolo permite que você realize filtros e ordenações utilizando \"comandos\" como select, filter, top, count, etc. Para mais informações, recomendamos <a href=\"https://www.odata.org/getting-started/basic-tutorial/\" target=\"_blank\">**este tutorial**</a>.\n\n--------------------------------------------------------------------------\n\n#### Informações sobre as requisições\n\n+ URL para as requisições: https://api.exactsales.com.br/v3.\n\n+ Autenticação: em todas as chamadas deverá ser informado no header o parâmetro com token da empresa (token_exact = token). \nO token deverá ser gerado no sistema Exact Spotter, em CONFIGURAÇÕES > INTEGRAÇÕES. \nImportante: Não compartilhe o Token_Exact_API da sua empresa!\n\n+ Formato das datas: todos os campos data/hora estão no fuso horário UTC."
+    },
+    "host": "api.exactsales.com.br",
+    "basePath": "/v3/",
+    "schemes": [
+        "https"
+    ],
+    "paths": {
+        "/Leads": {
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "headers": {},
+                        "examples": {
+                            "application/json": {
+                                "@odata.context": "https://api.exactsales.com.br/v3/$metadata#Leads",
+                                "value": [
+                                    {
+                                        "lead": "Nome da empresa",
+                                        "registerDate": "2015-04-09T19:30:33.1151616Z",
+                                        "updateDate": "2015-05-16T18:16:21.528629Z",
+                                        "mktLink": "http://lead.mktdigital.com/3948",
+                                        "phone1": "Telefone da Empresa",
+                                        "phone2": "Telefone da Empresa",
+                                        "website": "Website da empresa",
+                                        "leadProduct": "Descrição do produto oferecido pelo lead",
+                                        "description": "Observações diversas acerca do lead",
+                                        "stage": "Nome da etapa atual",
+                                        "cnpj": "CNPJ",
+                                        "city": "Nome da Cidade",
+                                        "state": "Nome do Estado",
+                                        "country": "Nome do País",
+                                        "integrationId": "Id de integração com o CRM",
+                                        "id": 4187,
+                                        "industry": {
+                                            "id": 2,
+                                            "value": "Nome do Mercado"
+                                        },
+                                        "source": {
+                                            "id": 23,
+                                            "value": "Nome da Origem"
+                                        },
+                                        "subSource": {
+                                            "id": 12,
+                                            "value": "Nome da Sub-Origem"
+                                        },
+                                        "sdr": {
+                                            "id": 123,
+                                            "name": "Nome do pré-vendedor",
+                                            "lastName": "Sobrenome do pré-vendedor",
+                                            "email": "email@prevendedor.com"
+                                        },
+                                        "salesRep": {
+                                            "id": 123456,
+                                            "name": "Nome do Vendedor",
+                                            "lastName": "Sobrenome do Vendedor",
+                                            "email": "email@vendedor.com"
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                },
+                "summary": "Listar",
+                "operationId": "Listar",
+                "description": "",
+                "tags": [],
+                "parameters": [
+                    {
+                        "name": "token_exact",
+                        "in": "header",
+                        "description": "e.g. token",
+                        "required": false,
+                        "x-example": "token",
+                        "type": "string"
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ]
+            }
+        },
+        "/Leads/{id}": {
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "headers": {},
+                        "examples": {
+                            "application/json": {
+                                "@odata.context": "https://api.exactsales.com.br/v3/$metadata#Leads",
+                                "value": [
+                                    {
+                                        "lead": "Nome da empresa",
+                                        "registerDate": "2015-04-09T19:30:33.1151616Z",
+                                        "updateDate": "2015-05-16T18:16:21.528629Z",
+                                        "mktLink": "http://lead.mktdigital.com/3948",
+                                        "phone1": "Telefone da Empresa",
+                                        "phone2": "Telefone da Empresa",
+                                        "website": "http://site.empresa.com/",
+                                        "leadProduct": "Descrição do produto oferecido pelo lead",
+                                        "description": "Observações diversas acerca do lead",
+                                        "stage": "Nome da etapa atual",
+                                        "cnpj": "CNPJ",
+                                        "city": "Nome da Cidade",
+                                        "state": "Nome do Estado",
+                                        "country": "Nome do País",
+                                        "integrationId": "Id de integração com o CRM",
+                                        "id": 4187,
+                                        "industry": {
+                                            "id": 2,
+                                            "value": "Nome do Mercado"
+                                        },
+                                        "source": {
+                                            "id": 23,
+                                            "value": "Nome da Origem"
+                                        },
+                                        "subSource": {
+                                            "id": 12,
+                                            "value": "Nome da Sub-Origem"
+                                        },
+                                        "sdr": {
+                                            "id": 123,
+                                            "name": "Nome do pré-vendedor",
+                                            "lastName": "Sobrenome do pré-vendedor",
+                                            "email": "email@prevendedor.com"
+                                        },
+                                        "salesRep": {
+                                            "id": 123456,
+                                            "name": "Nome do Vendedor",
+                                            "lastName": "Sobrenome do Vendedor",
+                                            "email": "email@vendedor.com"
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                },
+                "summary": "Listar por LeadId",
+                "operationId": "Listar por LeadId",
+                "description": "",
+                "tags": [],
+                "parameters": [
+                    {
+                        "name": "token_exact",
+                        "in": "header",
+                        "description": "e.g. token",
+                        "required": false,
+                        "x-example": "token",
+                        "type": "string"
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ]
+            }
+        },
+        "/leadsAdd": {
+            "post": {
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "headers": {},
+                        "examples": {
+                            "application/json": {
+                                "success": "true",
+                                "id": 1592215
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "headers": {},
+                        "examples": {
+                            "application/json": {
+                                "error": {
+                                    "code": "",
+                                    "message": "City, State and / or Country not found or incorrect."
+                                }
+                            }
+                        }
+                    }
+                },
+                "summary": "Inserir Lead",
+                "operationId": "Inserir Lead",
+                "description": "",
+                "tags": [],
+                "parameters": [
+                    {
+                        "name": "token_exact",
+                        "in": "header",
+                        "description": "e.g. token",
+                        "required": false,
+                        "x-example": "token",
+                        "type": "string"
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ]
+            }
+        },
+        "/LeadsUpdate/{id}": {
+            "put": {
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "headers": {},
+                        "examples": {
+                            "application/json": {
+                                "@odata.context": "https://api.exactsales.com.br/api/v3/$metadata#Edm.Int32",
+                                "value": 1235454
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "headers": {},
+                        "examples": {
+                            "application/json": {
+                                "success": false,
+                                "error": "Lead já existe na base de dados.",
+                                "ids": [
+                                    1783661,
+                                    1783663,
+                                    1783664,
+                                    1783665,
+                                    1783666,
+                                    1783667
+                                ]
+                            }
+                        }
+                    }
+                },
+                "summary": "Editar lead",
+                "operationId": "Editar lead",
+                "description": "",
+                "tags": [],
+                "parameters": [
+                    {
+                        "name": "token_exact",
+                        "in": "header",
+                        "description": "e.g. token",
+                        "required": false,
+                        "x-example": "token",
+                        "type": "string"
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ]
+            }
+        },
+        "/leadsWon": {
+            "post": {
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "headers": {},
+                        "examples": {
+                            "application/json": {
+                                "leadId": 123456,
+                                "salesDate": "2019-01-28T14:59:39.000Z",
+                                "salesRepEmail": "vendedor@email.com",
+                                "ignoreSalesRep": false
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "headers": {},
+                        "examples": {
+                            "application/json": {
+                                "error": "justificativa do erro"
+                            }
+                        }
+                    }
+                },
+                "summary": "Vender Lead",
+                "operationId": "Vender Lead",
+                "description": "",
+                "tags": [],
+                "parameters": [
+                    {
+                        "name": "token_exact",
+                        "in": "header",
+                        "description": "e.g. token",
+                        "required": false,
+                        "x-example": "token",
+                        "type": "string"
+                    },
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "leadId": {
+                                    "type": "number"
+                                },
+                                "salesDate": {
+                                    "type": "string"
+                                },
+                                "salesRepEmail": {
+                                    "type": "string"
+                                },
+                                "ignoreSalesRep": {
+                                    "type": "boolean"
+                                }
+                            },
+                            "example": {
+                                "leadId": 123456,
+                                "salesDate": "2019-01-28T14:59:39.000Z",
+                                "salesRepEmail": "vendedor@email.com",
+                                "ignoreSalesRep": false
+                            }
+                        }
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ]
+            }
+        },
+        "/leadsLost": {
+            "post": {
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "headers": {},
+                        "examples": {
+                            "application/json": {
+                                "success": "true"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "headers": {},
+                        "examples": {
+                            "application/json": {
+                                "error": "justificativa do erro"
+                            }
+                        }
+                    }
+                },
+                "summary": "Descartar Lead",
+                "operationId": "Descartar Lead",
+                "description": "",
+                "tags": [],
+                "parameters": [
+                    {
+                        "name": "token_exact",
+                        "in": "header",
+                        "description": "e.g. token",
+                        "required": false,
+                        "x-example": "token",
+                        "type": "string"
+                    },
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "leadId": {
+                                    "type": "number"
+                                },
+                                "reason": {
+                                    "type": "string"
+                                },
+                                "userEmail": {
+                                    "type": "string"
+                                }
+                            },
+                            "example": {
+                                "leadId": 123456,
+                                "reason": "Não demonstrou interesse.",
+                                "userEmail": "gerenteOUpv@email.com"
+                            }
+                        }
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ]
+            }
+        },
+        "/LeadsRecover": {
+            "post": {
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "headers": {},
+                        "examples": {
+                            "application/json": {
+                                "@odata.context": "https://api.exactsales.com.br/api/v3/$metadata#Edm.Int32",
+                                "value": 125452
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "headers": {},
+                        "examples": {
+                            "application/json": {
+                                "error": "justificativa do erro"
+                            }
+                        }
+                    }
+                },
+                "summary": "Recuperar lead descartado",
+                "operationId": "Recuperar lead descartado",
+                "description": "",
+                "tags": [],
+                "parameters": [
+                    {
+                        "name": "token_exact",
+                        "in": "header",
+                        "description": "e.g. token",
+                        "required": false,
+                        "x-example": "token",
+                        "type": "string"
+                    },
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "leadId": {
+                                    "type": "number"
+                                },
+                                "userEmail": {
+                                    "type": "string"
+                                }
+                            },
+                            "example": {
+                                "leadId": 123456,
+                                "userEmail": "gerenteOUpv@email.com"
+                            }
+                        }
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ]
+            }
+        },
+        "/LeadsTransfer": {
+            "post": {
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "headers": {},
+                        "examples": {}
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "headers": {},
+                        "examples": {
+                            "application/json": {
+                                "error": "justificativa do erro"
+                            }
+                        }
+                    }
+                },
+                "summary": "Transferir lead",
+                "operationId": "Transferir lead",
+                "description": "",
+                "tags": [],
+                "parameters": [
+                    {
+                        "name": "token_exact",
+                        "in": "header",
+                        "description": "e.g. token",
+                        "required": false,
+                        "x-example": "token",
+                        "type": "string"
+                    },
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "ids": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "number"
+                                    }
+                                },
+                                "sdrEmail": {
+                                    "type": "string"
+                                }
+                            },
+                            "example": {
+                                "ids": [
+                                    1483477,
+                                    1148895
+                                ],
+                                "sdrEmail": "Email do pré-vendedor que vai ser responsável pelo(s) lead(s)"
+                            }
+                        }
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ]
+            }
+        },
+        "/leadsQualification": {
+            "post": {
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "headers": {},
+                        "examples": {
+                            "application/json": {
+                                "success": "true",
+                                "id": 1592215
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "headers": {},
+                        "examples": {
+                            "application/json": {
+                                "error": "justificativa do erro"
+                            }
+                        }
+                    }
+                },
+                "summary": "Aplicar Filtro",
+                "operationId": "Aplicar Filtro",
+                "description": "",
+                "tags": [],
+                "parameters": [
+                    {
+                        "name": "token_exact",
+                        "in": "header",
+                        "description": "e.g. token",
+                        "required": false,
+                        "x-example": "token",
+                        "type": "string"
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ]
+            }
+        },
+        "/Persons": {
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "headers": {},
+                        "examples": {
+                            "application/json": {
+                                "@odata.context": "https://spotterprdapiv3.exactsales.com.br/api/v3/$metadata#Persons",
+                                "value": [
+                                    {
+                                        "leadId": 4339467,
+                                        "email": "contato646766@novo.com",
+                                        "name": "Nome do contato 1",
+                                        "jobTitle": "Gerente",
+                                        "phone1": "4834224040",
+                                        "phone2": null,
+                                        "messagingPlatform": "Nenhum",
+                                        "idMessagingPlatform": null,
+                                        "mainContact": true,
+                                        "id": 6197995
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                },
+                "summary": "Listar",
+                "operationId": "Listar",
+                "description": "",
+                "tags": [],
+                "parameters": [
+                    {
+                        "name": "token_exact",
+                        "in": "header",
+                        "description": "e.g. token",
+                        "required": false,
+                        "x-example": "token",
+                        "type": "string"
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ]
+            }
+        },
+        "/Persons/{id}": {
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "headers": {},
+                        "examples": {
+                            "application/json": {
+                                "@odata.context": "https://spotterprdapiv3.exactsales.com.br/api/v3/$metadata#Persons",
+                                "value": [
+                                    {
+                                        "leadId": 4339467,
+                                        "email": "contato646766@novo.com",
+                                        "name": "nome do contato 1",
+                                        "jobTitle": "Analista de testes",
+                                        "phone1": "4834224040",
+                                        "phone2": null,
+                                        "messagingPlatform": "Nenhum",
+                                        "idMessagingPlatform": null,
+                                        "mainContact": true,
+                                        "id": 6197995
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                },
+                "summary": "Listar",
+                "operationId": "Listar",
+                "description": "",
+                "tags": [],
+                "parameters": [
+                    {
+                        "name": "token_exact",
+                        "in": "header",
+                        "description": "e.g. token",
+                        "required": false,
+                        "x-example": "token",
+                        "type": "string"
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ]
+            }
+        },
+        "/personsAdd": {
+            "post": {
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "headers": {},
+                        "examples": {
+                            "application/json": {
+                                "success": "true",
+                                "id": 1592215
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "headers": {},
+                        "examples": {
+                            "application/json": {
+                                "error": "justificativa do erro"
+                            }
+                        }
+                    }
+                },
+                "summary": "Inserir Contato",
+                "operationId": "Inserir Contato",
+                "description": "",
+                "tags": [],
+                "parameters": [
+                    {
+                        "name": "token_exact",
+                        "in": "header",
+                        "description": "e.g. token",
+                        "required": false,
+                        "x-example": "token",
+                        "type": "string"
+                    },
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "leadId": {
+                                    "type": "number"
+                                },
+                                "name": {
+                                    "type": "string"
+                                },
+                                "email": {
+                                    "type": "string"
+                                },
+                                "jobTitle": {
+                                    "type": "string"
+                                },
+                                "phone1": {
+                                    "type": "string"
+                                },
+                                "phone2": {
+                                    "type": "string"
+                                },
+                                "messagingPlatform": {
+                                    "type": "string"
+                                },
+                                "idMessagingPlatform": {
+                                    "type": "string"
+                                },
+                                "mainContact": {
+                                    "type": "boolean"
+                                }
+                            },
+                            "example": {
+                                "leadId": 123456,
+                                "name": "Nome do contato",
+                                "email": "contato@gmail.com",
+                                "jobTitle": "Cargo do Contato",
+                                "phone1": "(48) 3025-7750",
+                                "phone2": "(48) 3181-0180",
+                                "messagingPlatform": "Skype",
+                                "idMessagingPlatform": "contato_msg",
+                                "mainContact": false
+                            }
+                        }
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ]
+            }
+        },
+        "/Products/{id}": {
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "headers": {},
+                        "examples": {
+                            "application/json": {
+                                "@odata.context": "https://api.exactsales.com.br/v3/$metadata#Products",
+                                "value": [
+                                    {
+                                        "value": "Nome do produto",
+                                        "id": 1
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                },
+                "summary": "Listar",
+                "operationId": "Listar",
+                "description": "+ Campos obrigatórios\n    + id (number) - ID do lead.",
+                "tags": [],
+                "parameters": [
+                    {
+                        "name": "token_exact",
+                        "in": "header",
+                        "description": "e.g. token",
+                        "required": false,
+                        "x-example": "token",
+                        "type": "string"
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ]
+            }
+        },
+        "/PainPoints": {
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "headers": {},
+                        "examples": {}
+                    }
+                },
+                "summary": "Listar",
+                "operationId": "Listar",
+                "description": "",
+                "tags": [],
+                "parameters": [
+                    {
+                        "name": "token_exact",
+                        "in": "header",
+                        "description": "e.g. token",
+                        "required": false,
+                        "x-example": "token",
+                        "type": "string"
+                    }
+                ]
+            }
+        },
+        "/PainPoints/{id}": {
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "headers": {},
+                        "examples": {
+                            "application/json": {
+                                "@odata.context": "https://api.exactsales.com.br/v3/$metadata#PainPoints",
+                                "value": [
+                                    {
+                                        "value": "Descrição da dor",
+                                        "leadId": 12526548,
+                                        "id": 2233
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                },
+                "summary": "Listar",
+                "operationId": "Listar",
+                "description": "",
+                "tags": [],
+                "parameters": [
+                    {
+                        "name": "token_exact",
+                        "in": "header",
+                        "description": "e.g. token",
+                        "required": false,
+                        "x-example": "token",
+                        "type": "string"
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ]
+            }
+        },
+        "/fields": {
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "headers": {},
+                        "examples": {
+                            "application/json": {
+                                "@odata.context": "https://api.exactsales.com.br/v3/$metadata#fields",
+                                "value": [
+                                    {
+                                        "id": 1234,
+                                        "name": "Nome do campo personalizado do tipo escolha múltipla",
+                                        "type": "EscolhaMultipla",
+                                        "required": true,
+                                        "maxLength": null,
+                                        "uniqueValue": false,
+                                        "format": null,
+                                        "options": [
+                                            {
+                                                "id": 123,
+                                                "value": "Opção 1"
+                                            },
+                                            {
+                                                "id": 456,
+                                                "value": "Opção 2"
+                                            },
+                                            {
+                                                "id": 789,
+                                                "value": "Opção 3"
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "id": 12345,
+                                        "name": "Campo de texto",
+                                        "type": "Texto",
+                                        "required": false,
+                                        "maxLength": 100,
+                                        "uniqueValue": false,
+                                        "format": "999.999.999-99",
+                                        "options": []
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                },
+                "summary": "Listar campos personalizados",
+                "operationId": "Listar campos personalizados",
+                "description": "",
+                "tags": [],
+                "parameters": [
+                    {
+                        "name": "token_exact",
+                        "in": "header",
+                        "description": "e.g. token",
+                        "required": false,
+                        "x-example": "token",
+                        "type": "string"
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ]
+            }
+        },
+        "/CustomFields": {
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "headers": {},
+                        "examples": {}
+                    }
+                },
+                "summary": "Listar",
+                "operationId": "Listar",
+                "description": "",
+                "tags": [],
+                "parameters": [
+                    {
+                        "name": "token_exact",
+                        "in": "header",
+                        "description": "e.g. token",
+                        "required": false,
+                        "x-example": "token",
+                        "type": "string"
+                    }
+                ]
+            }
+        },
+        "/CustomFields/{LeadId}": {
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "headers": {},
+                        "examples": {}
+                    }
+                },
+                "summary": "Listar",
+                "operationId": "Listar",
+                "description": "",
+                "tags": [],
+                "parameters": [
+                    {
+                        "name": "token_exact",
+                        "in": "header",
+                        "description": "e.g. token",
+                        "required": false,
+                        "x-example": "token",
+                        "type": "string"
+                    }
+                ]
+            }
+        },
+        "/customFieldsAdd": {
+            "post": {
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "headers": {},
+                        "examples": {}
+                    }
+                },
+                "summary": "Inserir Campo Personalizado",
+                "operationId": "Inserir Campo Personalizado",
+                "description": "",
+                "tags": [],
+                "parameters": [
+                    {
+                        "name": "token_exact",
+                        "in": "header",
+                        "description": "e.g. token",
+                        "required": false,
+                        "x-example": "token",
+                        "type": "string"
+                    }
+                ]
+            }
+        },
+        "/leadsCustomFieldsAdd": {
+            "post": {
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "headers": {},
+                        "examples": {}
+                    }
+                },
+                "summary": "Inserir Campo Personalizado",
+                "operationId": "Inserir Campo Personalizado",
+                "description": "",
+                "tags": [],
+                "parameters": [
+                    {
+                        "name": "token_exact",
+                        "in": "header",
+                        "description": "e.g. token",
+                        "required": false,
+                        "x-example": "token",
+                        "type": "string"
+                    },
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "@odata.context": {
+                                    "type": "string"
+                                },
+                                "value": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "leadId": {
+                                                "type": "number"
+                                            },
+                                            "customFields": {
+                                                "type": "array",
+                                                "items": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "id": {
+                                                            "type": "number"
+                                                        },
+                                                        "value": {
+                                                            "type": "string"
+                                                        },
+                                                        "options": {
+                                                            "type": "array",
+                                                            "items": {
+                                                                "type": "string"
+                                                            }
+                                                        }
+                                                    },
+                                                    "required": [
+                                                        "id",
+                                                        "value",
+                                                        "options"
+                                                    ]
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            },
+                            "example": {
+                                "@odata.context": "https://api.exactsales.com.br/v3/$metadata#customFieldsAdd",
+                                "value": [
+                                    {
+                                        "leadId": 123456,
+                                        "customFields": [
+                                            {
+                                                "id": 12345,
+                                                "value": "",
+                                                "options": [
+                                                    "Filho 1",
+                                                    "Filho 2",
+                                                    "Filho 3"
+                                                ]
+                                            },
+                                            {
+                                                "id": 12345,
+                                                "value": "Um texto qualquer",
+                                                "options": []
+                                            },
+                                            {
+                                                "id": 12345,
+                                                "value": "",
+                                                "options": [
+                                                    "pequeno"
+                                                ]
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                ]
+            }
+        },
+        "/Answers": {
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "headers": {},
+                        "examples": {}
+                    }
+                },
+                "summary": "Listar",
+                "operationId": "Listar",
+                "description": "",
+                "tags": [],
+                "parameters": [
+                    {
+                        "name": "token_exact",
+                        "in": "header",
+                        "description": "e.g. token",
+                        "required": false,
+                        "x-example": "token",
+                        "type": "string"
+                    }
+                ]
+            }
+        },
+        "/QualificationHistories": {
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "headers": {},
+                        "examples": {
+                            "application/json": {
+                                "@odata.context": "https://api.exactsales.com.br/v3/$metadata#QualificationHistories",
+                                "value": [
+                                    {
+                                        "leadId": 123456,
+                                        "stage": "Nome da Etapa",
+                                        "score": "Qualificacao obtida da etapa",
+                                        "qualificationDate": "2018-09-24T09:35:48.2940961-03:00",
+                                        "id": 1377378,
+                                        "questionAnswers": [
+                                            {
+                                                "question": "Descrição da Pergunta",
+                                                "questionId": 2054,
+                                                "answers": [
+                                                    {
+                                                        "id": 1252,
+                                                        "text": "Descrição da Resposta"
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                },
+                "summary": "Listar",
+                "operationId": "Listar",
+                "description": "",
+                "tags": [],
+                "parameters": [
+                    {
+                        "name": "token_exact",
+                        "in": "header",
+                        "description": "e.g. token",
+                        "required": false,
+                        "x-example": "token",
+                        "type": "string"
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ]
+            }
+        },
+        "/QualificationHistories/{id}": {
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "headers": {},
+                        "examples": {}
+                    }
+                },
+                "summary": "Listar",
+                "operationId": "Listar",
+                "description": "",
+                "tags": [],
+                "parameters": [
+                    {
+                        "name": "token_exact",
+                        "in": "header",
+                        "description": "e.g. token",
+                        "required": false,
+                        "x-example": "token",
+                        "type": "string"
+                    }
+                ]
+            }
+        },
+        "/Losts": {
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "headers": {},
+                        "examples": {}
+                    }
+                },
+                "summary": "Listar",
+                "operationId": "Listar",
+                "description": "",
+                "tags": [],
+                "parameters": [
+                    {
+                        "name": "token_exact",
+                        "in": "header",
+                        "description": "e.g. token",
+                        "required": false,
+                        "x-example": "token",
+                        "type": "string"
+                    }
+                ]
+            }
+        },
+        "/Losts/{id}": {
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "headers": {},
+                        "examples": {}
+                    }
+                },
+                "summary": "Listar",
+                "operationId": "Listar",
+                "description": "",
+                "tags": [],
+                "parameters": [
+                    {
+                        "name": "token_exact",
+                        "in": "header",
+                        "description": "e.g. token",
+                        "required": false,
+                        "x-example": "token",
+                        "type": "string"
+                    }
+                ]
+            }
+        },
+        "/CallsAdd": {
+            "post": {
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "headers": {},
+                        "examples": {
+                            "application/json": {
+                                "leadId": 123456,
+                                "stage": "Nome da etapa, ex: Filtro 1",
+                                "userEmail": "Email do usuário que efeutou a ligação",
+                                "linkAudio": "Link do áudio da ligação, ex: https://exemplo.com.br/ligacao-a03j9j.mp3",
+                                "caller": "Telefone de origem, ex: (11) 8888-8888",
+                                "called": "Telefone de destino, ex: (11) 97777-7777",
+                                "startDate": "Data e hora de início da ligação, ex: 2020-09-30 18:11",
+                                "endDate": "Data e hora do fim da ligação, ex: 2020-09-30 18:12",
+                                "price": 2.5,
+                                "talkingDurationSeconds": 15,
+                                "resultId": 2008,
+                                "description": "Descrição sobre a ligação, ex: ligação não atendida",
+                                "manualSet": false
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "headers": {},
+                        "examples": {
+                            "application/json": {
+                                "success": "false",
+                                "error": "justificativa do erro"
+                            }
+                        }
+                    }
+                },
+                "summary": "Inserir ligação",
+                "operationId": "Inserir ligação",
+                "description": "",
+                "tags": [],
+                "parameters": [
+                    {
+                        "name": "token_exact",
+                        "in": "header",
+                        "description": "e.g. token",
+                        "required": false,
+                        "x-example": "token",
+                        "type": "string"
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ]
+            }
+        },
+        "/callsHistory": {
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "headers": {},
+                        "examples": {}
+                    }
+                },
+                "summary": "Listar",
+                "operationId": "Listar",
+                "description": "",
+                "tags": [],
+                "parameters": [
+                    {
+                        "name": "token_exact",
+                        "in": "header",
+                        "description": "e.g. token",
+                        "required": false,
+                        "x-example": "token",
+                        "type": "string"
+                    }
+                ]
+            }
+        },
+        "/callsHistory/{id}": {
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "headers": {},
+                        "examples": {}
+                    }
+                },
+                "summary": "Listar",
+                "operationId": "Listar",
+                "description": "+ Campos Obrigatórios:\n    + id (number) - ID do lead.",
+                "tags": [],
+                "parameters": [
+                    {
+                        "name": "token_exact",
+                        "in": "header",
+                        "description": "e.g. token",
+                        "required": false,
+                        "x-example": "token",
+                        "type": "string"
+                    }
+                ]
+            }
+        },
+        "/CallsResult": {
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "headers": {},
+                        "examples": {}
+                    }
+                },
+                "summary": "Listar",
+                "operationId": "Listar",
+                "description": "",
+                "tags": [],
+                "parameters": [
+                    {
+                        "name": "token_exact",
+                        "in": "header",
+                        "description": "e.g. token",
+                        "required": false,
+                        "x-example": "token",
+                        "type": "string"
+                    }
+                ]
+            }
+        },
+        "/Timelines/{id}": {
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "headers": {},
+                        "examples": {
+                            "application/json": {
+                                "@odata.context": "http://apiv2dev.azurewebsites.net/api/v3/$metadata#Timelines",
+                                "value": [
+                                    {
+                                        "leadId": 676046,
+                                        "userName": "Nome do usuário (ov ou gerente)",
+                                        "userEmail": "email@user.com",
+                                        "text": "Lead cadastrado",
+                                        "createdDate": "2015-04-17T19:55:21.7496563-03:00",
+                                        "sellerName": "Nome do Vendedor",
+                                        "sellerEmail": "email@vendedor.com"
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                },
+                "summary": "Listar",
+                "operationId": "Listar",
+                "description": "+ Campos obrigatórios:\n    + id (number) - ID do lead.",
+                "tags": [],
+                "parameters": [
+                    {
+                        "name": "token_exact",
+                        "in": "header",
+                        "description": "e.g. token",
+                        "required": false,
+                        "x-example": "token",
+                        "type": "string"
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ]
+            }
+        },
+        "/tasks": {
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "headers": {},
+                        "examples": {
+                            "application/json": {
+                                "id": 1234,
+                                "leadId": 1234,
+                                "title": "Descrição da atividade",
+                                "note": "Anotações",
+                                "due_date": "2019-08-07T15:10:00Z",
+                                "activityTypeId": 3,
+                                "activityType": {
+                                    "id": 3,
+                                    "name": "Nome do tipo de atividade"
+                                },
+                                "timeNotification": "0 (minutos para notificação)",
+                                "userEmail": "e-mail do usuario",
+                                "status": "status da atividade",
+                                "contacts": [
+                                    {
+                                        "name": "Nome do contato 1",
+                                        "email": "e-mail do primeiro contato"
+                                    },
+                                    {
+                                        "name": "Nome do contato 2",
+                                        "email": "e-mail do contato 2"
+                                    }
+                                ],
+                                "sdr": {
+                                    "id": 1111,
+                                    "name": "Nome do pré-vendedor",
+                                    "lastName": "Sobrenome do pré-vendedor",
+                                    "email": "email_pv@gmail.com"
+                                },
+                                "responsible": {
+                                    "id": 1111,
+                                    "name": "Nome do usuário responsável pela atividade",
+                                    "lastName": "Sobrenome do usuário",
+                                    "email": "email_gerente@gmail.com"
+                                }
+                            }
+                        }
+                    }
+                },
+                "summary": "Listar Atividade",
+                "operationId": "Listar Atividade",
+                "description": "",
+                "tags": [],
+                "parameters": [
+                    {
+                        "name": "token_exact",
+                        "in": "header",
+                        "description": "e.g. token",
+                        "required": false,
+                        "x-example": "token",
+                        "type": "string"
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ]
+            }
+        },
+        "/tasksAdd": {
+            "post": {
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "headers": {},
+                        "examples": {
+                            "application/json": {
+                                "@odata.context": "https://api.exactsales.com.br/api/v3/$metadata#Edm.Int32",
+                                "value": 749020
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "headers": {},
+                        "examples": {
+                            "application/json": {
+                                "error": {
+                                    "code": "",
+                                    "message": "Justificativa do erro."
+                                }
+                            }
+                        }
+                    }
+                },
+                "summary": "Inserir Atividade",
+                "operationId": "Inserir Atividade",
+                "description": "",
+                "tags": [],
+                "parameters": [
+                    {
+                        "name": "token_exact",
+                        "in": "header",
+                        "description": "e.g. token",
+                        "required": false,
+                        "x-example": "token",
+                        "type": "string"
+                    },
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "leadId": {
+                                    "type": "number"
+                                },
+                                "title": {
+                                    "type": "string"
+                                },
+                                "note": {
+                                    "type": "string"
+                                },
+                                "dueDate": {
+                                    "type": "string"
+                                },
+                                "userEmail": {
+                                    "type": "string"
+                                },
+                                "sdrEmail": {
+                                    "type": "string"
+                                },
+                                "contactEmail": {
+                                    "type": "string"
+                                },
+                                "timeNotification": {
+                                    "type": "number"
+                                },
+                                "activityTypeId": {
+                                    "type": "string"
+                                }
+                            },
+                            "example": {
+                                "leadId": 123456,
+                                "title": "Nome da atividade",
+                                "note": "Anotações da atividade",
+                                "dueDate": "Data e hora da atividade, ex: 2019-12-10T14:59:39.000Z",
+                                "userEmail": "E-mail do usuário responsável por criar a atividade",
+                                "sdrEmail": "E-mail do pré-vendedor",
+                                "contactEmail": "E-mail do contato do Lead",
+                                "timeNotification": 5,
+                                "activityTypeId": "Id do tipo de atividade"
+                            }
+                        }
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ]
+            }
+        },
+        "/tasksRemove/{Id}": {
+            "delete": {
+                "responses": {
+                    "204": {
+                        "description": "No Content",
+                        "headers": {},
+                        "examples": {}
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "headers": {},
+                        "examples": {
+                            "application/json": {
+                                "error": {
+                                    "code": "",
+                                    "message": "Activity not found."
+                                }
+                            }
+                        }
+                    }
+                },
+                "summary": "Excluir Atividade",
+                "operationId": "Excluir Atividade",
+                "description": "",
+                "tags": [],
+                "parameters": [
+                    {
+                        "name": "token_exact",
+                        "in": "header",
+                        "description": "e.g. token",
+                        "required": false,
+                        "x-example": "token",
+                        "type": "string"
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ]
+            }
+        },
+        "/ActivitiesDone/{Id}": {
+            "put": {
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "headers": {},
+                        "examples": {}
+                    }
+                },
+                "summary": "Concluir Atividade",
+                "operationId": "Concluir Atividade",
+                "description": "",
+                "tags": [],
+                "parameters": [
+                    {
+                        "name": "token_exact",
+                        "in": "header",
+                        "description": "e.g. token",
+                        "required": false,
+                        "x-example": "token",
+                        "type": "string"
+                    },
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "leadId": {
+                                    "type": "number"
+                                },
+                                "sdrEmail": {
+                                    "type": "string"
+                                },
+                                "userEmail": {
+                                    "type": "string"
+                                }
+                            },
+                            "example": {
+                                "leadId": 1436165,
+                                "sdrEmail": "prevendedor@exactsales.com.br",
+                                "userEmail": "usuario@exactsales.com.br"
+                            }
+                        }
+                    }
+                ]
+            }
+        },
+        "/tasksType": {
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "headers": {},
+                        "examples": {
+                            "application/json": {
+                                "@odata.context": "https://api.exactsales.com.br/v3/$metadata#TasksType",
+                                "value": [
+                                    {
+                                        "id": 12345678,
+                                        "value": "Nome do tipo de atividade",
+                                        "isCustom": true
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                },
+                "summary": "Listar tipos de atividades",
+                "operationId": "Listar tipos de atividades",
+                "description": "",
+                "tags": [],
+                "parameters": [
+                    {
+                        "name": "token_exact",
+                        "in": "header",
+                        "description": "e.g. token",
+                        "required": false,
+                        "x-example": "token",
+                        "type": "string"
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ]
+            }
+        },
+        "/LeadsQualification": {
+            "post": {
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "headers": {},
+                        "examples": {}
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "headers": {},
+                        "examples": {
+                            "application/json": {
+                                "error": "justificativa do erro"
+                            }
+                        }
+                    }
+                },
+                "summary": "Inserir feedback de reunião",
+                "operationId": "Inserir feedback de reunião",
+                "description": "",
+                "tags": [],
+                "parameters": [
+                    {
+                        "name": "token_exact",
+                        "in": "header",
+                        "description": "e.g. token",
+                        "required": false,
+                        "x-example": "token",
+                        "type": "string"
+                    },
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "leadId": {
+                                    "type": "string"
+                                },
+                                "answers": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "questionId": {
+                                                "type": "string"
+                                            },
+                                            "questionType": {
+                                                "type": "string"
+                                            },
+                                            "answerIds": {
+                                                "type": "array",
+                                                "items": {
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "text": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    }
+                                }
+                            },
+                            "example": {
+                                "leadId": "123456",
+                                "answers": [
+                                    {
+                                        "questionId": "23123",
+                                        "questionType": "1",
+                                        "answerIds": [
+                                            "5675"
+                                        ],
+                                        "text": "resposta da pergunta aberta"
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ]
+            }
+        },
+        "/Boxes": {
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "headers": {},
+                        "examples": {
+                            "application/json": {
+                                "@odata.context": "https://api.exactsales.com.br/v3/$metadata#Leads",
+                                "value": [
+                                    {
+                                        "id": 23432,
+                                        "start": "2020-09-21T08:00:00Z",
+                                        "end": "2020-09-21T08:20:00Z",
+                                        "salesRep": "Nome do Vendedor",
+                                        "salesRepEmail": "vendedor@gmail.com",
+                                        "status": "available",
+                                        "description": null,
+                                        "typeMeeting": "",
+                                        "address": null
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                },
+                "summary": "Listar Boxes",
+                "operationId": "Listar Boxes",
+                "description": "",
+                "tags": [],
+                "parameters": [
+                    {
+                        "name": "token_exact",
+                        "in": "header",
+                        "description": "e.g. token",
+                        "required": false,
+                        "x-example": "token",
+                        "type": "string"
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ]
+            }
+        },
+        "/Meetings": {
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "headers": {},
+                        "examples": {
+                            "application/json": {
+                                "@odata.context": "https://api.exactsales.com.br/v3/$metadata#Meetings",
+                                "value": [
+                                    {
+                                        "id": 1261189,
+                                        "type": "Agendamento",
+                                        "registerDate": "2020-04-30T20:02:02.9692128Z",
+                                        "meetingType": "Online",
+                                        "meetingDate": "2020-04-30T20:02:02.922341Z",
+                                        "startTime": "2020-05-01T08:00:00Z",
+                                        "finalTime": "2020-05-01T09:00:00Z",
+                                        "managerDescription": "Observações do gerente",
+                                        "sdrDescription": "Observações do pré-vendedor",
+                                        "reference": "Referências",
+                                        "lead": {
+                                            "id": 7943280,
+                                            "name": "Nome do Lead",
+                                            "site": "www.sitedolead.com",
+                                            "phone": "55999999999"
+                                        },
+                                        "salesRep": {
+                                            "id": 25382,
+                                            "name": "Nome do vendedor",
+                                            "lastName": "Sobrenome do vendedor",
+                                            "email": "vendedoremail@gmail.com"
+                                        },
+                                        "user": {
+                                            "id": 37672,
+                                            "name": "Nome do pré-vendedor",
+                                            "lastName": "Sobrenome do pré-vendedor",
+                                            "email": "emaildopv@exactsales.com.br"
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                },
+                "summary": "Meetings",
+                "operationId": "Meetings",
+                "description": "",
+                "tags": [],
+                "parameters": [
+                    {
+                        "name": "token_exact",
+                        "in": "header",
+                        "description": "e.g. token",
+                        "required": false,
+                        "x-example": "token",
+                        "type": "string"
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ]
+            }
+        },
+        "/WebhooksAdd": {
+            "post": {
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "headers": {},
+                        "examples": {
+                            "application/json": {
+                                "url": "https://meucrm.com.br/notificacoes/schedule",
+                                "event": "event.schedule"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "headers": {},
+                        "examples": {
+                            "application/json": {
+                                "error": "justificativa do erro"
+                            }
+                        }
+                    }
+                },
+                "summary": "Webhook",
+                "operationId": "Webhook",
+                "description": "+ Campos \n    + url (Required, string) - url para receber os dados do POST.\n    + event (Required, string) - nome do evento.",
+                "tags": [],
+                "parameters": [
+                    {
+                        "name": "token_exact",
+                        "in": "header",
+                        "description": "e.g. token",
+                        "required": false,
+                        "x-example": "token",
+                        "type": "string"
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ]
+            }
+        },
+        "/Webhooks": {
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "headers": {},
+                        "examples": {
+                            "application/json": {
+                                "@odata.context": "https://api.exactsales.com.br/v3/$metadata#Leads",
+                                "value": [
+                                    {
+                                        "id": 1234,
+                                        "url": "https://meucrm.com.br/notificacoes/schedule",
+                                        "event": "event.schedule"
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                },
+                "summary": "Webhooks - Listar",
+                "operationId": "Webhooks - Listar",
+                "description": "Lista todos os webhooks cadastrados.",
+                "tags": [],
+                "parameters": [
+                    {
+                        "name": "token_exact",
+                        "in": "header",
+                        "description": "e.g. token",
+                        "required": false,
+                        "x-example": "token",
+                        "type": "string"
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ]
+            }
+        },
+        "/": {
+            "post": {
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "headers": {},
+                        "examples": {
+                            "application/json": {
+                                "OrigemTel": "Telefone de origem",
+                                "DestinoTel": "Telefone de destino",
+                                "DtChamada": "2020-10-20T21:07:43.7328301",
+                                "DtFinalizada": "2020-10-20T21:07:38",
+                                "Custo": 0,
+                                "LeadId": 121333,
+                                "TempoConversacao": 0,
+                                "Lead": null,
+                                "NomeContato": null,
+                                "NomeUsuario": null,
+                                "SobrenomeUsuario": null,
+                                "EmailUsuario": null,
+                                "UrlGravacao": "Link da url do aúdio da ligação"
+                            }
+                        }
+                    }
+                },
+                "summary": "JSON",
+                "operationId": "JSON",
+                "description": "",
+                "tags": [],
+                "parameters": [],
+                "produces": [
+                    "application/json"
+                ]
+            }
+        }
+    },
+    "definitions": {
+        "Lead - Listagem": {},
+        "Lead - Listagem por Lead ID": {},
+        "Lead - Inserção": {},
+        "Lead - Atualização": {},
+        "Lead - Venda": {},
+        "Lead - Descarte": {},
+        "Lead - Recuperação": {},
+        "Lead - Transferência": {},
+        "Lead - Aplicar Filtro": {},
+        "Contatos - Listagem": {},
+        "Contatos - Listagem por LeadID": {},
+        "Contatos - Inserção": {},
+        "Produtos - Listagem": {},
+        "Dores - Listagem": {},
+        "Dores - Listagem por id": {},
+        "Campos personalizados - Listagem": {},
+        "Campos personalizados - Listagem por Empresa para campos que possuem valor vinculados ao Lead": {},
+        "Campos personalizados - Listagem por Lead": {},
+        "Campos Personalizados - Inserção": {},
+        "Campos Personalizados - Inserção em um Lead": {},
+        "Etapas - Listagem": {},
+        "Etapas Historico - Listagem": {},
+        "Etapas Historico - Listagem por Lead ID": {},
+        "Descartes - Listagem": {},
+        "Descartes - Listagem por id": {},
+        "Ligação - Inserção": {},
+        "Ligação - Listagem": {},
+        "Ligação - Listagem por id": {},
+        "Resultado de ligação - Listagem": {},
+        "Timeline - Listagem": {},
+        "Atividades - Listagem": {},
+        "Atividade - Inserção": {},
+        "Atividades - Exclusão": {},
+        "Atividades - Conclusão": {},
+        "Tipos de Atividades - Listagem": {},
+        "Feedback de reunião - Inserção": {},
+        "Boxes - Listagem": {},
+        "Agendamentos - Listagem": {},
+        "Webhook - Inscrever URL": {},
+        "Webhook - Listagem": {},
+        "Webhook - Descrição do POST modelo 1": {},
+        "Webhook - Descrição do POST modelo 2": {},
+        "Webhook - Descrição do POST modelo 3": {}
+    },
+    "securityDefinitions": {},
+    "tags": []
+}
