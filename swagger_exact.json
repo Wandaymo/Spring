@@ -2,7 +2,7 @@
   "swagger": "2.0",
   "info": {
     "title": "Exact Spotter V1 - API v3",
-    "version": "",
+    "version": "v3",
     "description": "O objetivo deste documento é auxiliar os clientes da Exact Sales na execução de atividades\noferecidas no sistema do Exact Spotter.\n\nA API do Exact Spotter disponibiliza um serviço para acessar e manipular dados sob o protocolo HTTP no padrão **OData**. Este protocolo permite que você realize filtros e ordenações utilizando \"comandos\" como select, filter, top, count, etc. Para mais informações, recomendamos <a href=\"https://www.odata.org/getting-started/basic-tutorial/\" target=\"_blank\">**este tutorial**</a>.\n\n--------------------------------------------------------------------------\n\n#### Informações sobre as requisições\n\n+ URL para as requisições: https://api.exactsales.com.br/v3.\n\n+ Autenticação: em todas as chamadas deverá ser informado no header o parâmetro com token da empresa (token_exact = token). \nO token deverá ser gerado no sistema Exact Spotter, em CONFIGURAÇÕES > INTEGRAÇÕES. \nImportante: Não compartilhe o Token_Exact_API da sua empresa!\n\n+ Formato das datas: todos os campos data/hora estão no fuso horário UTC."
   },
   "host": "api.exactsales.com.br",
@@ -207,36 +207,6 @@
             "required": false,
             "x-example": "token",
             "type": "string"
-          },
-          {
-            "name": "body",
-            "in": "body",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "id": {
-                  "type": "number",
-                  "description": "Lead identifier"
-                },
-                "DtVenda": {
-                  "type": "string",
-                  "description": "Sale date"
-                },
-                "Vendedor": {
-                  "type": "array",
-                  "description": "email",
-                  "items": {
-                    "$ref": "#/definitions/email"
-                  }
-                }
-              },
-              "required": [
-                "name"
-              ],
-              "example": {
-                "name": "Safra 2016"
-              }
-            }
           }
         ],
         "produces": [
@@ -279,9 +249,7 @@
         "summary": "Editar lead",
         "operationId": "Editar lead",
         "description": "",
-        "tags": [
-          "Leads"
-        ],
+        "tags": [],
         "parameters": [
           {
             "name": "token_exact",
@@ -325,9 +293,7 @@
         "summary": "Vender Lead",
         "operationId": "Vender Lead",
         "description": "",
-        "tags": [
-          "Leads"
-        ],
+        "tags": [],
         "parameters": [
           {
             "name": "token_exact",
@@ -395,9 +361,7 @@
         "summary": "Descartar Lead",
         "operationId": "Descartar Lead",
         "description": "",
-        "tags": [
-          "Leads"
-        ],
+        "tags": [],
         "parameters": [
           {
             "name": "token_exact",
@@ -462,9 +426,7 @@
         "summary": "Recuperar lead descartado",
         "operationId": "Recuperar lead descartado",
         "description": "",
-        "tags": [
-          "Leads"
-        ],
+        "tags": [],
         "parameters": [
           {
             "name": "token_exact",
@@ -520,9 +482,7 @@
         "summary": "Transferir lead",
         "operationId": "Transferir lead",
         "description": "",
-        "tags": [
-          "Leads"
-        ],
+        "tags": [],
         "parameters": [
           {
             "name": "token_exact",
@@ -563,7 +523,7 @@
         ]
       }
     },
-    "/leadsQualificationApplyFilter": {
+    "/leadsQualification": {
       "post": {
         "responses": {
           "201": {
@@ -589,9 +549,7 @@
         "summary": "Aplicar Filtro",
         "operationId": "Aplicar Filtro",
         "description": "",
-        "tags": [
-          "Leads"
-        ],
+        "tags": [],
         "parameters": [
           {
             "name": "token_exact",
@@ -637,9 +595,7 @@
         "summary": "Listar",
         "operationId": "Listar",
         "description": "",
-        "tags": [
-          "Persons"
-        ],
+        "tags": [],
         "parameters": [
           {
             "name": "token_exact",
@@ -685,9 +641,7 @@
         "summary": "Listar",
         "operationId": "Listar",
         "description": "",
-        "tags": [
-          "Persons"
-        ],
+        "tags": [],
         "parameters": [
           {
             "name": "token_exact",
@@ -729,9 +683,7 @@
         "summary": "Inserir Contato",
         "operationId": "Inserir Contato",
         "description": "",
-        "tags": [
-          "Persons"
-        ],
+        "tags": [],
         "parameters": [
           {
             "name": "token_exact",
@@ -816,9 +768,7 @@
         "summary": "Listar",
         "operationId": "Listar",
         "description": "+ Campos obrigatórios\n    + id (number) - ID do lead.",
-        "tags": [
-          "Products"
-        ],
+        "tags": [],
         "parameters": [
           {
             "name": "token_exact",
@@ -846,9 +796,7 @@
         "summary": "Listar",
         "operationId": "Listar",
         "description": "",
-        "tags": [
-          "PainPoints"
-        ],
+        "tags": [],
         "parameters": [
           {
             "name": "token_exact",
@@ -884,9 +832,7 @@
         "summary": "Listar",
         "operationId": "Listar",
         "description": "",
-        "tags": [
-          "PainPoints"
-        ],
+        "tags": [],
         "parameters": [
           {
             "name": "token_exact",
@@ -953,9 +899,7 @@
         "summary": "Listar campos personalizados",
         "operationId": "Listar campos personalizados",
         "description": "",
-        "tags": [
-          "Fields"
-        ],
+        "tags": [],
         "parameters": [
           {
             "name": "token_exact",
@@ -983,9 +927,7 @@
         "summary": "Listar",
         "operationId": "Listar",
         "description": "",
-        "tags": [
-          "CustomFields"
-        ],
+        "tags": [],
         "parameters": [
           {
             "name": "token_exact",
@@ -1010,9 +952,7 @@
         "summary": "Listar",
         "operationId": "Listar",
         "description": "",
-        "tags": [
-          "CustomFields"
-        ],
+        "tags": [],
         "parameters": [
           {
             "name": "token_exact",
@@ -1037,9 +977,7 @@
         "summary": "Inserir Campo Personalizado",
         "operationId": "Inserir Campo Personalizado",
         "description": "",
-        "tags": [
-          "CustomFields"
-        ],
+        "tags": [],
         "parameters": [
           {
             "name": "token_exact",
@@ -1064,9 +1002,7 @@
         "summary": "Inserir Campo Personalizado",
         "operationId": "Inserir Campo Personalizado",
         "description": "",
-        "tags": [
-          "Leads"
-        ],
+        "tags": [],
         "parameters": [
           {
             "name": "token_exact",
@@ -1170,9 +1106,7 @@
         "summary": "Listar",
         "operationId": "Listar",
         "description": "",
-        "tags": [
-          "Answers"
-        ],
+        "tags": [],
         "parameters": [
           {
             "name": "token_exact",
@@ -1222,9 +1156,7 @@
         "summary": "Listar",
         "operationId": "Listar",
         "description": "",
-        "tags": [
-          "QualificationHistories"
-        ],
+        "tags": [],
         "parameters": [
           {
             "name": "token_exact",
@@ -1252,9 +1184,7 @@
         "summary": "Listar",
         "operationId": "Listar",
         "description": "",
-        "tags": [
-          "QualificationHistories"
-        ],
+        "tags": [],
         "parameters": [
           {
             "name": "token_exact",
@@ -1279,9 +1209,7 @@
         "summary": "Listar",
         "operationId": "Listar",
         "description": "",
-        "tags": [
-          "Losts"
-        ],
+        "tags": [],
         "parameters": [
           {
             "name": "token_exact",
@@ -1306,9 +1234,7 @@
         "summary": "Listar",
         "operationId": "Listar",
         "description": "",
-        "tags": [
-          "Losts"
-        ],
+        "tags": [],
         "parameters": [
           {
             "name": "token_exact",
@@ -1359,9 +1285,7 @@
         "summary": "Inserir ligação",
         "operationId": "Inserir ligação",
         "description": "",
-        "tags": [
-          "Calls"
-        ],
+        "tags": [],
         "parameters": [
           {
             "name": "token_exact",
@@ -1389,9 +1313,7 @@
         "summary": "Listar",
         "operationId": "Listar",
         "description": "",
-        "tags": [
-          "Calls"
-        ],
+        "tags": [],
         "parameters": [
           {
             "name": "token_exact",
@@ -1416,9 +1338,7 @@
         "summary": "Listar",
         "operationId": "Listar",
         "description": "+ Campos Obrigatórios:\n    + id (number) - ID do lead.",
-        "tags": [
-          "Calls"
-        ],
+        "tags": [],
         "parameters": [
           {
             "name": "token_exact",
@@ -1443,9 +1363,7 @@
         "summary": "Listar",
         "operationId": "Listar",
         "description": "",
-        "tags": [
-          "Calls"
-        ],
+        "tags": [],
         "parameters": [
           {
             "name": "token_exact",
@@ -1485,9 +1403,7 @@
         "summary": "Listar",
         "operationId": "Listar",
         "description": "+ Campos obrigatórios:\n    + id (number) - ID do lead.",
-        "tags": [
-          "Timelines"
-        ],
+        "tags": [],
         "parameters": [
           {
             "name": "token_exact",
@@ -1553,9 +1469,7 @@
         "summary": "Listar Atividade",
         "operationId": "Listar Atividade",
         "description": "",
-        "tags": [
-          "Tasks"
-        ],
+        "tags": [],
         "parameters": [
           {
             "name": "token_exact",
@@ -1600,9 +1514,7 @@
         "summary": "Inserir Atividade",
         "operationId": "Inserir Atividade",
         "description": "",
-        "tags": [
-          "Tasks"
-        ],
+        "tags": [],
         "parameters": [
           {
             "name": "token_exact",
@@ -1689,9 +1601,7 @@
         "summary": "Excluir Atividade",
         "operationId": "Excluir Atividade",
         "description": "",
-        "tags": [
-          "Tasks"
-        ],
+        "tags": [],
         "parameters": [
           {
             "name": "token_exact",
@@ -1719,9 +1629,7 @@
         "summary": "Concluir Atividade",
         "operationId": "Concluir Atividade",
         "description": "",
-        "tags": [
-          "ActivitiesDone"
-        ],
+        "tags": [],
         "parameters": [
           {
             "name": "token_exact",
@@ -1780,9 +1688,7 @@
         "summary": "Listar tipos de atividades",
         "operationId": "Listar tipos de atividades",
         "description": "",
-        "tags": [
-          "Tasks"
-        ],
+        "tags": [],
         "parameters": [
           {
             "name": "token_exact",
@@ -1798,7 +1704,7 @@
         ]
       }
     },
-    "/LeadsQualificationFeedback": {
+    "/LeadsQualification": {
       "post": {
         "responses": {
           "201": {
@@ -1819,9 +1725,7 @@
         "summary": "Inserir feedback de reunião",
         "operationId": "Inserir feedback de reunião",
         "description": "",
-        "tags": [
-          "Leads"
-        ],
+        "tags": [],
         "parameters": [
           {
             "name": "token_exact",
@@ -1914,9 +1818,7 @@
         "summary": "Listar Boxes",
         "operationId": "Listar Boxes",
         "description": "",
-        "tags": [
-          "Boxes"
-        ],
+        "tags": [],
         "parameters": [
           {
             "name": "token_exact",
@@ -1980,9 +1882,7 @@
         "summary": "Meetings",
         "operationId": "Meetings",
         "description": "",
-        "tags": [
-          "Meetings"
-        ],
+        "tags": [],
         "parameters": [
           {
             "name": "token_exact",
@@ -2024,9 +1924,7 @@
         "summary": "Webhook",
         "operationId": "Webhook",
         "description": "+ Campos \n    + url (Required, string) - url para receber os dados do POST.\n    + event (Required, string) - nome do evento.",
-        "tags": [
-          "Webhooks"
-        ],
+        "tags": [],
         "parameters": [
           {
             "name": "token_exact",
@@ -2065,9 +1963,7 @@
         "summary": "Webhooks - Listar",
         "operationId": "Webhooks - Listar",
         "description": "Lista todos os webhooks cadastrados.",
-        "tags": [
-          "Webhooks"
-        ],
+        "tags": [],
         "parameters": [
           {
             "name": "token_exact",
@@ -2082,115 +1978,219 @@
           "application/json"
         ]
       }
+    },
+    "/": {
+      "post": {
+        "responses": {
+          "200": {
+            "description": "OK",
+            "headers": {},
+            "examples": {
+              "application/json": {
+                "OrigemTel": "Telefone de origem",
+                "DestinoTel": "Telefone de destino",
+                "DtChamada": "2020-10-20T21:07:43.7328301",
+                "DtFinalizada": "2020-10-20T21:07:38",
+                "Custo": 0,
+                "LeadId": 121333,
+                "TempoConversacao": 0,
+                "Lead": null,
+                "NomeContato": null,
+                "NomeUsuario": null,
+                "SobrenomeUsuario": null,
+                "EmailUsuario": null,
+                "UrlGravacao": "Link da url do aúdio da ligação"
+              }
+            }
+          }
+        },
+        "summary": "JSON",
+        "operationId": "JSON",
+        "description": "",
+        "tags": [],
+        "parameters": [],
+        "produces": [
+          "application/json"
+        ]
+      }
     }
   },
   "definitions": {
     "Lead - Listagem": {},
     "Lead - Listagem por Lead ID": {},
-    "Lead - Inserção": {},
-    "Lead - Atualização": {},
-    "Lead - Venda": {},
-    "Lead - Descarte": {},
-    "Lead - Recuperação": {},
-    "Lead - Transferência": {},
-    "Lead - Aplicar Filtro": {},
-    "Contatos - Listagem": {},
-    "Contatos - Listagem por LeadID": {},
-    "Contatos - Inserção": {},
-    "Produtos - Listagem": {},
-    "Dores - Listagem": {},
-    "Dores - Listagem por id": {},
-    "Campos personalizados - Listagem": {},
-    "Campos personalizados - Listagem por Empresa para campos que possuem valor vinculados ao Lead": {},
-    "Campos personalizados - Listagem por Lead": {},
-    "Campos Personalizados - Inserção": {},
-    "Campos Personalizados - Inserção em um Lead": {},
-    "Etapas - Listagem": {},
-    "Etapas Historico - Listagem": {},
-    "Etapas Historico - Listagem por Lead ID": {},
-    "Descartes - Listagem": {},
-    "Descartes - Listagem por id": {},
-    "Ligação - Inserção": {},
-    "Ligação - Listagem": {},
-    "Ligação - Listagem por id": {},
-    "Resultado de ligação - Listagem": {},
-    "Timeline - Listagem": {},
-    "Atividades - Listagem": {},
-    "Atividade - Inserção": {},
-    "Atividades - Exclusão": {},
-    "Atividades - Conclusão": {},
-    "Tipos de Atividades - Listagem": {},
-    "Feedback de reunião - Inserção": {},
-    "Boxes - Listagem": {},
-    "Agendamentos - Listagem": {},
-    "Webhook - Inscrever URL": {},
-    "Webhook - Listagem": {},
-    "Webhook - Descrição do POST modelo 1": {},
-    "Webhook - Descrição do POST modelo 2": {},
-    "Webhook - Descrição do POST modelo 3": {},
-    "email": {
-      "type": "object",
-      "required": [
-        "email"
-      ],
-      "properties": {
-        "email": {
-          "type": "string",
-          "example": "vendedor@email.com",
-          "description": "email"
-        }
+    "Lead - Inserção": {
+      "lead": {
+        "type": "object",
+        "required": [
+          "name"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Nome da empresa"
+          },
+          "industry": {
+            "type": "string",
+            "description": "Nome do Mercado"
+          },
+          "source": {
+            "type": "string",
+            "description": "Nome da Origem"
+          },
+          "subSource": {
+            "type": "string",
+            "description": "Nome da sub-origem"
+          },
+          "sdrEmail": {
+            "type": "string",
+            "description": "Email do pv que vai ser responsavel pelo lead"
+          },
+          "group": {
+            "type": "string",
+            "description": "Nome do grupo"
+          },
+          "mktLink": {
+            "type": "string",
+            "description": "URL do marketing da Empresa"
+          },
+          "phone": {
+            "type": "string",
+            "description": "Telefone da Empresa"
+          },
+          "phone2": {
+            "type": "string",
+            "description": "Telefone da Empresa"
+          },
+          "website": {
+            "type": "string",
+            "description": "Web site da Empresa"
+          },
+          "leadProduct": {
+            "type": "string",
+            "description": "Descrição do produto oferecido pelo lead"
+          },
+          "address": {
+            "type": "string",
+            "description": "Endereço da Empresa"
+          },
+          "addressComplement": {
+            "type": "string",
+            "description": "Complemento do endereço da Empresa"
+          },
+          "zipcode": {
+            "type": "string",
+            "description": "CEP ou Código da região"
+          },
+          "city": {
+            "type": "string",
+            "description": "Nome da Cidade"
+          },
+          "state": {
+            "type": "string",
+            "description": "Nome do Estado"
+          },
+          "country": {
+            "type": "string",
+            "description": "Nome do País"
+          },
+          "description": {
+            "type": "string",
+            "description": "Observações diversas acerca do lead"
+          }
+        },
+        "title": "CategoryCreate"
+      },
+      "Lead - Atualização": {},
+      "Lead - Venda": {},
+      "Lead - Descarte": {},
+      "Lead - Recuperação": {},
+      "Lead - Transferência": {},
+      "Lead - Aplicar Filtro": {},
+      "Contatos - Listagem": {},
+      "Contatos - Listagem por LeadID": {},
+      "Contatos - Inserção": {},
+      "Produtos - Listagem": {},
+      "Dores - Listagem": {},
+      "Dores - Listagem por id": {},
+      "Campos personalizados - Listagem": {},
+      "Campos personalizados - Listagem por Empresa para campos que possuem valor vinculados ao Lead": {},
+      "Campos personalizados - Listagem por Lead": {},
+      "Campos Personalizados - Inserção": {},
+      "Campos Personalizados - Inserção em um Lead": {},
+      "Etapas - Listagem": {},
+      "Etapas Historico - Listagem": {},
+      "Etapas Historico - Listagem por Lead ID": {},
+      "Descartes - Listagem": {},
+      "Descartes - Listagem por id": {},
+      "Ligação - Inserção": {},
+      "Ligação - Listagem": {},
+      "Ligação - Listagem por id": {},
+      "Resultado de ligação - Listagem": {},
+      "Timeline - Listagem": {},
+      "Atividades - Listagem": {},
+      "Atividade - Inserção": {},
+      "Atividades - Exclusão": {},
+      "Atividades - Conclusão": {},
+      "Tipos de Atividades - Listagem": {},
+      "Feedback de reunião - Inserção": {},
+      "Boxes - Listagem": {},
+      "Agendamentos - Listagem": {},
+      "Webhook - Inscrever URL": {},
+      "Webhook - Listagem": {},
+      "Webhook - Descrição do POST modelo 1": {},
+      "Webhook - Descrição do POST modelo 2": {},
+      "Webhook - Descrição do POST modelo 3": {}
+    },
+    "securityDefinitions": {},
+    "tags": [
+      {
+        "name": "Leads"
+      },
+      {
+        "name": "Persons"
+      },
+      {
+        "name": "Products"
+      },
+      {
+        "name": "PainPoints"
+      },
+      {
+        "name": "Fields"
+      },
+      {
+        "name": "CustomFields"
+      },
+      {
+        "name": "Answers"
+      },
+      {
+        "name": "QualificationHistories"
+      },
+      {
+        "name": "Losts"
+      },
+      {
+        "name": "Calls"
+      },
+      {
+        "name": "Timelines"
+      },
+      {
+        "name": "Tasks"
+      },
+      {
+        "name": "Boxes"
+      },
+      {
+        "name": "ActivitiesDone"
+      },
+      {
+        "name": "Meetings"
+      },
+      {
+        "name": "Webhooks"
       }
-    }
-  },
-  "securityDefinitions": {},
-  "tags": [
-    {
-      "name": "Leads"
-    },
-    {
-      "name": "Persons"
-    },
-    {
-      "name": "Products"
-    },
-    {
-      "name": "PainPoints"
-    },
-    {
-      "name": "Fields"
-    },
-    {
-      "name": "CustomFields"
-    },
-    {
-      "name": "Answers"
-    },
-    {
-      "name": "QualificationHistories"
-    },
-    {
-      "name": "Losts"
-    },
-    {
-      "name": "Calls"
-    },
-    {
-      "name": "Timelines"
-    },
-    {
-      "name": "Tasks"
-    },
-    {
-      "name": "Boxes"
-    },
-    {
-      "name": "ActivitiesDone"
-    },
-    {
-      "name": "Meetings"
-    },
-    {
-      "name": "Webhooks"
-    }
-  ]
+    ]
+  }
 }
