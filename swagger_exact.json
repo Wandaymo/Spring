@@ -2144,14 +2144,8 @@
         },
         "painPoints": {
           "type": "array",
-          "xml": {
-            "wrapped": true
-          },
           "items": {
-            "type": "string",
-            "xml": {
-              "name": "painPoints"
-            }
+            "type": "string"
           }
         }
       }
