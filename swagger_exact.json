@@ -249,7 +249,9 @@
         "summary": "Editar lead",
         "operationId": "Editar lead",
         "description": "",
-        "tags": [],
+        "tags": [
+          "Leads"
+        ],
         "parameters": [
           {
             "name": "token_exact",
@@ -293,7 +295,9 @@
         "summary": "Vender Lead",
         "operationId": "Vender Lead",
         "description": "",
-        "tags": [],
+        "tags": [
+          "Leads"
+        ],
         "parameters": [
           {
             "name": "token_exact",
@@ -361,7 +365,9 @@
         "summary": "Descartar Lead",
         "operationId": "Descartar Lead",
         "description": "",
-        "tags": [],
+        "tags": [
+          "Leads"
+        ],
         "parameters": [
           {
             "name": "token_exact",
@@ -426,7 +432,9 @@
         "summary": "Recuperar lead descartado",
         "operationId": "Recuperar lead descartado",
         "description": "",
-        "tags": [],
+        "tags": [
+          "Leads"
+        ],
         "parameters": [
           {
             "name": "token_exact",
@@ -482,7 +490,9 @@
         "summary": "Transferir lead",
         "operationId": "Transferir lead",
         "description": "",
-        "tags": [],
+        "tags": [
+          "Leads"
+        ],
         "parameters": [
           {
             "name": "token_exact",
@@ -549,7 +559,9 @@
         "summary": "Aplicar Filtro",
         "operationId": "Aplicar Filtro",
         "description": "",
-        "tags": [],
+        "tags": [
+          "Leads"
+        ],
         "parameters": [
           {
             "name": "token_exact",
@@ -595,7 +607,9 @@
         "summary": "Listar",
         "operationId": "Listar",
         "description": "",
-        "tags": [],
+        "tags": [
+          "Contatos"
+        ],
         "parameters": [
           {
             "name": "token_exact",
@@ -641,7 +655,9 @@
         "summary": "Listar",
         "operationId": "Listar",
         "description": "",
-        "tags": [],
+        "tags": [
+          "Contatos"
+        ],
         "parameters": [
           {
             "name": "token_exact",
@@ -683,7 +699,9 @@
         "summary": "Inserir Contato",
         "operationId": "Inserir Contato",
         "description": "",
-        "tags": [],
+        "tags": [
+          "Contatos"
+        ],
         "parameters": [
           {
             "name": "token_exact",
@@ -768,7 +786,9 @@
         "summary": "Listar",
         "operationId": "Listar",
         "description": "+ Campos obrigatórios\n    + id (number) - ID do lead.",
-        "tags": [],
+        "tags": [
+          "Produtos"
+        ],
         "parameters": [
           {
             "name": "token_exact",
@@ -796,7 +816,9 @@
         "summary": "Listar",
         "operationId": "Listar",
         "description": "",
-        "tags": [],
+        "tags": [
+          "Dores"
+        ],
         "parameters": [
           {
             "name": "token_exact",
@@ -832,7 +854,9 @@
         "summary": "Listar",
         "operationId": "Listar",
         "description": "",
-        "tags": [],
+        "tags": [
+          "Dores"
+        ],
         "parameters": [
           {
             "name": "token_exact",
@@ -899,7 +923,9 @@
         "summary": "Listar campos personalizados",
         "operationId": "Listar campos personalizados",
         "description": "",
-        "tags": [],
+        "tags": [
+          "Campos personalizados"
+        ],
         "parameters": [
           {
             "name": "token_exact",
@@ -927,7 +953,9 @@
         "summary": "Listar",
         "operationId": "Listar",
         "description": "",
-        "tags": [],
+        "tags": [
+          "Campos personalizados"
+        ],
         "parameters": [
           {
             "name": "token_exact",
@@ -952,7 +980,9 @@
         "summary": "Listar",
         "operationId": "Listar",
         "description": "",
-        "tags": [],
+        "tags": [
+          "Campos personalizados"
+        ],
         "parameters": [
           {
             "name": "token_exact",
@@ -977,7 +1007,9 @@
         "summary": "Inserir Campo Personalizado",
         "operationId": "Inserir Campo Personalizado",
         "description": "",
-        "tags": [],
+        "tags": [
+          "Campos personalizados"
+        ],
         "parameters": [
           {
             "name": "token_exact",
@@ -1002,7 +1034,9 @@
         "summary": "Inserir Campo Personalizado",
         "operationId": "Inserir Campo Personalizado",
         "description": "",
-        "tags": [],
+        "tags": [
+          "Campos personalizados"
+        ],
         "parameters": [
           {
             "name": "token_exact",
@@ -1106,7 +1140,9 @@
         "summary": "Listar",
         "operationId": "Listar",
         "description": "",
-        "tags": [],
+        "tags": [
+          "Etapas"
+        ],
         "parameters": [
           {
             "name": "token_exact",
@@ -1156,7 +1192,9 @@
         "summary": "Listar",
         "operationId": "Listar",
         "description": "",
-        "tags": [],
+        "tags": [
+          "Etapas Historico"
+        ],
         "parameters": [
           {
             "name": "token_exact",
@@ -1184,7 +1222,9 @@
         "summary": "Listar",
         "operationId": "Listar",
         "description": "",
-        "tags": [],
+        "tags": [
+          "Etapas Historico"
+        ],
         "parameters": [
           {
             "name": "token_exact",
@@ -1209,7 +1249,9 @@
         "summary": "Listar",
         "operationId": "Listar",
         "description": "",
-        "tags": [],
+        "tags": [
+          "Descartes"
+        ],
         "parameters": [
           {
             "name": "token_exact",
@@ -1234,7 +1276,9 @@
         "summary": "Listar",
         "operationId": "Listar",
         "description": "",
-        "tags": [],
+        "tags": [
+          "Descartes"
+        ],
         "parameters": [
           {
             "name": "token_exact",
@@ -1285,7 +1329,9 @@
         "summary": "Inserir ligação",
         "operationId": "Inserir ligação",
         "description": "",
-        "tags": [],
+        "tags": [
+          "Ligação"
+        ],
         "parameters": [
           {
             "name": "token_exact",
@@ -1313,7 +1359,9 @@
         "summary": "Listar",
         "operationId": "Listar",
         "description": "",
-        "tags": [],
+        "tags": [
+          "Ligação"
+        ],
         "parameters": [
           {
             "name": "token_exact",
@@ -1338,7 +1386,9 @@
         "summary": "Listar",
         "operationId": "Listar",
         "description": "+ Campos Obrigatórios:\n    + id (number) - ID do lead.",
-        "tags": [],
+        "tags": [
+          "Ligação"
+        ],
         "parameters": [
           {
             "name": "token_exact",
@@ -1363,7 +1413,9 @@
         "summary": "Listar",
         "operationId": "Listar",
         "description": "",
-        "tags": [],
+        "tags": [
+          "Resultado de ligação"
+        ],
         "parameters": [
           {
             "name": "token_exact",
@@ -1403,7 +1455,9 @@
         "summary": "Listar",
         "operationId": "Listar",
         "description": "+ Campos obrigatórios:\n    + id (number) - ID do lead.",
-        "tags": [],
+        "tags": [
+          "Timelines"
+        ],
         "parameters": [
           {
             "name": "token_exact",
@@ -1469,7 +1523,9 @@
         "summary": "Listar Atividade",
         "operationId": "Listar Atividade",
         "description": "",
-        "tags": [],
+        "tags": [
+          "Atividades"
+        ],
         "parameters": [
           {
             "name": "token_exact",
@@ -1514,7 +1570,9 @@
         "summary": "Inserir Atividade",
         "operationId": "Inserir Atividade",
         "description": "",
-        "tags": [],
+        "tags": [
+          "Atividades"
+        ],
         "parameters": [
           {
             "name": "token_exact",
@@ -1601,7 +1659,9 @@
         "summary": "Excluir Atividade",
         "operationId": "Excluir Atividade",
         "description": "",
-        "tags": [],
+        "tags": [
+          "Atividades"
+        ],
         "parameters": [
           {
             "name": "token_exact",
@@ -1629,7 +1689,9 @@
         "summary": "Concluir Atividade",
         "operationId": "Concluir Atividade",
         "description": "",
-        "tags": [],
+        "tags": [
+          "Atividades"
+        ],
         "parameters": [
           {
             "name": "token_exact",
@@ -1688,7 +1750,9 @@
         "summary": "Listar tipos de atividades",
         "operationId": "Listar tipos de atividades",
         "description": "",
-        "tags": [],
+        "tags": [
+          "Tipos de atividades"
+        ],
         "parameters": [
           {
             "name": "token_exact",
@@ -1725,7 +1789,9 @@
         "summary": "Inserir feedback de reunião",
         "operationId": "Inserir feedback de reunião",
         "description": "",
-        "tags": [],
+        "tags": [
+          "Feedback de reunião"
+        ],
         "parameters": [
           {
             "name": "token_exact",
@@ -1818,7 +1884,9 @@
         "summary": "Listar Boxes",
         "operationId": "Listar Boxes",
         "description": "",
-        "tags": [],
+        "tags": [
+          "Boxes"
+        ],
         "parameters": [
           {
             "name": "token_exact",
@@ -1882,7 +1950,9 @@
         "summary": "Meetings",
         "operationId": "Meetings",
         "description": "",
-        "tags": [],
+        "tags": [
+          "Agendamentos"
+        ],
         "parameters": [
           {
             "name": "token_exact",
@@ -1924,7 +1994,9 @@
         "summary": "Webhook",
         "operationId": "Webhook",
         "description": "+ Campos \n    + url (Required, string) - url para receber os dados do POST.\n    + event (Required, string) - nome do evento.",
-        "tags": [],
+        "tags": [
+          "Webhook"
+        ],
         "parameters": [
           {
             "name": "token_exact",
@@ -1963,7 +2035,9 @@
         "summary": "Webhooks - Listar",
         "operationId": "Webhooks - Listar",
         "description": "Lista todos os webhooks cadastrados.",
-        "tags": [],
+        "tags": [
+          "Webhook"
+        ],
         "parameters": [
           {
             "name": "token_exact",
@@ -2007,7 +2081,9 @@
         "summary": "JSON",
         "operationId": "JSON",
         "description": "",
-        "tags": [],
+        "tags": [
+          "Webhook"
+        ],
         "parameters": [],
         "produces": [
           "application/json"
@@ -2147,37 +2223,49 @@
         "name": "Leads"
       },
       {
-        "name": "Persons"
+        "name": "Contatos"
       },
       {
-        "name": "Products"
+        "name": "Produtos"
       },
       {
-        "name": "PainPoints"
+        "name": "Dores"
       },
       {
-        "name": "Fields"
+        "name": "Campos personalizados"
       },
       {
         "name": "CustomFields"
       },
       {
-        "name": "Answers"
+        "name": "Etapas"
+      },
+      {
+        "name": "Etapas Historico"
       },
       {
         "name": "QualificationHistories"
       },
       {
-        "name": "Losts"
+        "name": "Descartes"
       },
       {
-        "name": "Calls"
+        "name": "Ligação"
+      },
+      {
+        "name": "Resultado de ligação"
       },
       {
         "name": "Timelines"
       },
       {
-        "name": "Tasks"
+        "name": "Atividade"
+      },
+      {
+        "name": "Tipos de atividades"
+      },
+      {
+        "name": "Feedback de reunião"
       },
       {
         "name": "Boxes"
@@ -2186,7 +2274,7 @@
         "name": "ActivitiesDone"
       },
       {
-        "name": "Meetings"
+        "name": "Agendamentos"
       },
       {
         "name": "Webhooks"
