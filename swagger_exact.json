@@ -533,7 +533,7 @@
         ]
       }
     },
-    "/leadsQualification": {
+    "/leadsQualificationApplyFilter": {
       "post": {
         "responses": {
           "201": {
@@ -1768,7 +1768,7 @@
         ]
       }
     },
-    "/LeadsQualification": {
+    "/LeadsQualificationFeedback": {
       "post": {
         "responses": {
           "201": {
