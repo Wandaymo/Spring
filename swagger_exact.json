@@ -214,7 +214,7 @@
             "description": "Inserir lead",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/Lead - Inserção"
+              "$ref": "#/definitions/AddLead"
             }
           }
         ],
@@ -2016,7 +2016,7 @@
   "definitions": {
     "Lead - Listagem": {},
     "Lead - Listagem por Lead ID": {},
-    "Lead - Inserção": {
+    "AddLead": {
       "lead": {
         "type": "object",
         "required": [
