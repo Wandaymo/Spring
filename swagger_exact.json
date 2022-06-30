@@ -2018,7 +2018,7 @@
     "Lead - Listagem por Lead ID": {},
     "AddLead": {
       "type": "object",
-      "items": {
+      "properties": {
         "$ref": "#/definitions/AddLeadFilho"
       }
     },
