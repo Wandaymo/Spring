@@ -588,6 +588,15 @@
             "required": false,
             "x-example": "token",
             "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "dto",
+            "description": "aplicarFiltros",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/AplicarFiltro"
+            }
           }
         ],
         "produces": [
@@ -2123,7 +2132,30 @@
     "Lead - Descarte": {},
     "Lead - Recuperação": {},
     "Lead - Transferência": {},
-    "Lead - Aplicar Filtro": {},
+    "AplicarFiltro": {
+      "type": "object",
+      "required": [
+        "name",
+        "photoUrls"
+      ],
+      "properties": {
+        "leadId": {
+          "type": "string"
+        },
+        "painPoints": {
+          "type": "array",
+          "xml": {
+            "wrapped": true
+          },
+          "items": {
+            "type": "string",
+            "xml": {
+              "name": "painPoints"
+            }
+          }
+        }
+      }
+    },
     "Contatos - Listagem": {},
     "Contatos - Listagem por LeadID": {},
     "Contatos - Inserção": {},
