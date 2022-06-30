@@ -213,6 +213,7 @@
             "name": "Inserção",
             "description": "Inserir lead",
             "required": true,
+            "type": "array",
             "schema": {
               "$ref": "#/definitions/AddLead"
             }
