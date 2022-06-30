@@ -213,7 +213,6 @@
             "name": "Inserção",
             "description": "Inserir lead",
             "required": true,
-            "type": "array",
             "schema": {
               "$ref": "#/definitions/AddLead"
             }
@@ -2018,6 +2017,7 @@
     "Lead - Listagem": {},
     "Lead - Listagem por Lead ID": {},
     "AddLead": {
+      "type": "array",
       "lead": {
         "type": "object",
         "required": [
