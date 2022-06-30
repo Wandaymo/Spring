@@ -207,6 +207,15 @@
             "required": false,
             "x-example": "token",
             "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "Inserção",
+            "description": "Inserir lead",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Lead - Inserção"
+            }
           }
         ],
         "produces": [
