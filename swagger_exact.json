@@ -2017,9 +2017,8 @@
     "Lead - Listagem": {},
     "Lead - Listagem por Lead ID": {},
     "AddLead": {
-      "type": "array",
       "lead": {
-        "type": "object",
+        "type": "array",
         "required": [
           "name"
         ],
