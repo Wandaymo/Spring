@@ -213,8 +213,17 @@
             "name": "Inserção",
             "description": "Inserir lead",
             "required": true,
-            "type": "array",
             "schema": {
+              "Query Page": {
+                "type": "object",
+                "properties": {
+                  "page": {
+                    "type": "number",
+                    "example": 2,
+                    "description": "Page number"
+                  }
+                }
+              },
               "$ref": "#/definitions/AddLead"
             }
           }
