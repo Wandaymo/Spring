@@ -2107,9 +2107,6 @@
           "type": "string",
           "description": "Observações diversas acerca do lead"
         }
-      },
-      "xml": {
-        "name": "Lead"
       }
     },
     "Lead - Atualização": {},
