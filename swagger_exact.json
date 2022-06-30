@@ -214,16 +214,6 @@
             "description": "Inserir lead",
             "required": true,
             "schema": {
-              "Query Page": {
-                "type": "object",
-                "properties": {
-                  "page": {
-                    "type": "number",
-                    "example": 2,
-                    "description": "Page number"
-                  }
-                }
-              },
               "$ref": "#/definitions/AddLead"
             }
           }
@@ -2032,77 +2022,79 @@
         "name"
       ],
       "properties": {
-        "name": {
-          "type": "string",
-          "description": "Nome da empresa"
-        },
-        "industry": {
-          "type": "string",
-          "description": "Nome do Mercado"
-        },
-        "source": {
-          "type": "string",
-          "description": "Nome da Origem"
-        },
-        "subSource": {
-          "type": "string",
-          "description": "Nome da sub-origem"
-        },
-        "sdrEmail": {
-          "type": "string",
-          "description": "Email do pv que vai ser responsavel pelo lead"
-        },
-        "group": {
-          "type": "string",
-          "description": "Nome do grupo"
-        },
-        "mktLink": {
-          "type": "string",
-          "description": "URL do marketing da Empresa"
-        },
-        "phone": {
-          "type": "string",
-          "description": "Telefone da Empresa"
-        },
-        "phone2": {
-          "type": "string",
-          "description": "Telefone da Empresa"
-        },
-        "website": {
-          "type": "string",
-          "description": "Web site da Empresa"
-        },
-        "leadProduct": {
-          "type": "string",
-          "description": "Descrição do produto oferecido pelo lead"
-        },
-        "address": {
-          "type": "string",
-          "description": "Endereço da Empresa"
-        },
-        "addressComplement": {
-          "type": "string",
-          "description": "Complemento do endereço da Empresa"
-        },
-        "zipcode": {
-          "type": "string",
-          "description": "CEP ou Código da região"
-        },
-        "city": {
-          "type": "string",
-          "description": "Nome da Cidade"
-        },
-        "state": {
-          "type": "string",
-          "description": "Nome do Estado"
-        },
-        "country": {
-          "type": "string",
-          "description": "Nome do País"
-        },
-        "description": {
-          "type": "string",
-          "description": "Observações diversas acerca do lead"
+        "lead": {
+          "name": {
+            "type": "string",
+            "description": "Nome da empresa"
+          },
+          "industry": {
+            "type": "string",
+            "description": "Nome do Mercado"
+          },
+          "source": {
+            "type": "string",
+            "description": "Nome da Origem"
+          },
+          "subSource": {
+            "type": "string",
+            "description": "Nome da sub-origem"
+          },
+          "sdrEmail": {
+            "type": "string",
+            "description": "Email do pv que vai ser responsavel pelo lead"
+          },
+          "group": {
+            "type": "string",
+            "description": "Nome do grupo"
+          },
+          "mktLink": {
+            "type": "string",
+            "description": "URL do marketing da Empresa"
+          },
+          "phone": {
+            "type": "string",
+            "description": "Telefone da Empresa"
+          },
+          "phone2": {
+            "type": "string",
+            "description": "Telefone da Empresa"
+          },
+          "website": {
+            "type": "string",
+            "description": "Web site da Empresa"
+          },
+          "leadProduct": {
+            "type": "string",
+            "description": "Descrição do produto oferecido pelo lead"
+          },
+          "address": {
+            "type": "string",
+            "description": "Endereço da Empresa"
+          },
+          "addressComplement": {
+            "type": "string",
+            "description": "Complemento do endereço da Empresa"
+          },
+          "zipcode": {
+            "type": "string",
+            "description": "CEP ou Código da região"
+          },
+          "city": {
+            "type": "string",
+            "description": "Nome da Cidade"
+          },
+          "state": {
+            "type": "string",
+            "description": "Nome do Estado"
+          },
+          "country": {
+            "type": "string",
+            "description": "Nome do País"
+          },
+          "description": {
+            "type": "string",
+            "description": "Observações diversas acerca do lead"
+          }
         }
       },
       "title": "CategoryCreate"
