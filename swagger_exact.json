@@ -207,6 +207,36 @@
             "required": false,
             "x-example": "token",
             "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "number",
+                  "description": "Lead identifier"
+                },
+                "DtVenda": {
+                  "type": "string",
+                  "description": "Sale date"
+                },
+                "Vendedor": {
+                  "type": "array",
+                  "description": "email",
+                  "items": {
+                    "$ref": "#/definitions/email"
+                  }
+                }
+              },
+              "required": [
+                "name"
+              ],
+              "example": {
+                "name": "Safra 2016"
+              }
+            }
           }
         ],
         "produces": [
@@ -2097,7 +2127,20 @@
     "Webhook - Listagem": {},
     "Webhook - Descrição do POST modelo 1": {},
     "Webhook - Descrição do POST modelo 2": {},
-    "Webhook - Descrição do POST modelo 3": {}
+    "Webhook - Descrição do POST modelo 3": {},
+    "email": {
+      "type": "object",
+      "required": [
+        "email"
+      ],
+      "properties": {
+        "email": {
+          "type": "string",
+          "example": "vendedor@email.com",
+          "description": "email"
+        }
+      }
+    }
   },
   "securityDefinitions": {},
   "tags": [
