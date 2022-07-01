@@ -2168,7 +2168,10 @@
           "type": "string"
         },
         "answerIds": {
-          "type": "array"
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
         }
       }
     },
