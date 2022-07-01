@@ -1043,6 +1043,15 @@
             "required": false,
             "x-example": "token",
             "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "ContatosInsert",
+            "description": "ContatosInsert",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CustomFields"
+            }
           }
         ]
       }
@@ -1070,6 +1079,15 @@
             "required": false,
             "x-example": "token",
             "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "customFieldsAdd",
+            "description": "customFieldsAdd",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/customFieldsAddItems"
+            }
           }
         ]
       }
@@ -2428,6 +2446,60 @@
         },
         "leadId": {
           "type": "number"
+        }
+      }
+    },
+    "CustomFieldsAdd": {
+      "type": "object",
+      "properties": {
+        "@odata.context": {
+          "type": "string"
+        },
+        "values": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/customFieldsItems"
+          }
+        }
+      }
+    },
+    "customFieldsAddItems": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "type": {
+          "type": "number"
+        },
+        "required": {
+          "type": "boolean"
+        },
+        "onlyApi": {
+          "type": "boolean"
+        },
+        "maxLength": {
+          "type": "number"
+        },
+        "uniqueValue": {
+          "type": "boolean"
+        },
+        "format": {
+          "type": "string"
+        },
+        "options": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/customFieldsAddItemsOptions"
+          }
+        }
+      }
+    },
+    "customFieldsAddItemsOptions": {
+      "type": "object",
+      "properties": {
+        "value": {
+          "type": "string"
         }
       }
     },
