@@ -2061,6 +2061,15 @@
             "required": false,
             "x-example": "token",
             "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "Agendamentos",
+            "description": "Agendamentos",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Agendamentos"
+            }
           }
         ],
         "produces": [
@@ -3169,7 +3178,115 @@
         }
       }
     },
-    "Webhook - Inscrever URL": {},
+    "Agendamentos": {
+      "type": "object",
+      "properties": {
+        "@odata.context": {
+          "type": "string"
+        },
+        "value": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/AgendamentosItems"
+          }
+        }
+      }
+    },
+    "AgendamentosItems": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "number"
+        },
+        "type": {
+          "type": "string"
+        },
+        "registerDate": {
+          "type": "string"
+        },
+        "meetingType": {
+          "type": "string"
+        },
+        "meetingDate": {
+          "type": "string"
+        },
+        "startTime": {
+          "type": "string"
+        },
+        "finalTime": {
+          "type": "string"
+        },
+        "managerDescription": {
+          "type": "string"
+        },
+        "sdrDescription": {
+          "type": "string"
+        },
+        "reference": {
+          "type": "string"
+        },
+        "lead": {
+          "$ref": "#/definitions/leadItems"
+        },
+        "salesRep": {
+          "$ref": "#/definitions/salesRepItems"
+        },
+        "user": {
+          "$ref": "#/definitions/userItems"
+        }
+      }
+    },
+    "leadItems": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "number"
+        },
+        "name": {
+          "type": "string"
+        },
+        "site": {
+          "type": "string"
+        },
+        "phone": {
+          "type": "string"
+        }
+      }
+    },
+    "salesRepItems": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "number"
+        },
+        "name": {
+          "type": "string"
+        },
+        "lastName": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        }
+      }
+    },
+    "userItems": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "number"
+        },
+        "name": {
+          "type": "string"
+        },
+        "lastName": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        }
+      }
+    },
     "Webhook - Listagem": {},
     "Webhook - Descrição do POST modelo 1": {},
     "Webhook - Descrição do POST modelo 2": {},
