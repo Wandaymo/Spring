@@ -2146,6 +2146,29 @@
           "items": {
             "type": "string"
           }
+        },
+        "products": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "answear": {
+          "$ref": "#/definitions/AnswersItems"
+        }
+      }
+    },
+    "AnswersItems": {
+      "type": "object",
+      "properties": {
+        "questionId": {
+          "type": "string"
+        },
+        "questionType": {
+          "type": "string"
+        },
+        "answerIds": {
+          "type": "array"
         }
       }
     },
