@@ -645,6 +645,15 @@
             "required": false,
             "x-example": "token",
             "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "ContatosListagem",
+            "description": "ContatosListagem",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ContatosListagem"
+            }
           }
         ],
         "produces": [
@@ -2181,7 +2190,14 @@
         }
       }
     },
-    "Contatos - Listagem": {},
+    "ContatosListagem": {
+      "type": "object",
+      "properties": {
+        "@odata.context": {
+          "type": "string"
+        }
+      }
+    },
     "Contatos - Listagem por LeadID": {},
     "Contatos - Inserção": {},
     "Produtos - Listagem": {},
