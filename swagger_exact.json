@@ -2417,7 +2417,7 @@
         "options": {
           "type": "array",
           "items": {
-            "options": "string"
+            "type": "string"
           }
         },
         "id": {
