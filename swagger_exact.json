@@ -2195,6 +2195,47 @@
       "properties": {
         "@odata.context": {
           "type": "string"
+        },
+        "value": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ContatoItems"
+          }
+        }
+      }
+    },
+    "ContatoItems": {
+      "type": "object",
+      "properties": {
+        "leadId": {
+          "type": "number"
+        },
+        "email": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "jobTitle": {
+          "type": "string"
+        },
+        "phone1": {
+          "type": "string"
+        },
+        "phone2": {
+          "type": "string"
+        },
+        "messagingPlatform": {
+          "type": "string"
+        },
+        "idMessagingPlatform": {
+          "type": "string"
+        },
+        "mainContact": {
+          "type": "string"
+        },
+        "id": {
+          "type": "number"
         }
       }
     },
