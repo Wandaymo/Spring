@@ -2167,8 +2167,11 @@
         "questionType": {
           "type": "string"
         },
-        "answerIds": {
-          "$ref": "#/definitions/AnswerIds"
+        "wandaymoIds": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
         }
       }
     },
