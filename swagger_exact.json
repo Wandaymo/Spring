@@ -1396,8 +1396,8 @@
           },
           {
             "in": "body",
-            "name": "QualificationHistories",
-            "description": "QualificationHistories",
+            "name": "DescartesListagem",
+            "description": "DescartesListagem",
             "required": true,
             "schema": {
               "$ref": "#/definitions/DescartesListagem"
@@ -1455,6 +1455,15 @@
             "required": false,
             "x-example": "token",
             "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "CallsAdd",
+            "description": "CallsAdd",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CallsAdd"
+            }
           }
         ],
         "produces": [
@@ -2744,8 +2753,50 @@
         }
       }
     },
-    "Descartes - Listagem por id": {},
-    "Ligação - Inserção": {},
+    "CallsAdd": {
+      "type": "object",
+      "properties": {
+        "leadId": {
+          "type": "number"
+        },
+        "stage": {
+          "type": "string"
+        },
+        "userEmail": {
+          "type": "string"
+        },
+        "linkAudio": {
+          "type": "string"
+        },
+        "caller": {
+          "type": "string"
+        },
+        "called": {
+          "type": "string"
+        },
+        "startDate": {
+          "type": "string"
+        },
+        "endDate": {
+          "type": "string"
+        },
+        "price": {
+          "type": "number"
+        },
+        "talkingDurationSeconds": {
+          "type": "number"
+        },
+        "resultId": {
+          "type": "number"
+        },
+        "description": {
+          "type": "string"
+        },
+        "manualSet": {
+          "type": "boolean"
+        }
+      }
+    },
     "Ligação - Listagem": {},
     "Ligação - Listagem por id": {},
     "Resultado de ligação - Listagem": {},
