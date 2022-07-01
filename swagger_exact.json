@@ -1986,6 +1986,15 @@
             "required": false,
             "x-example": "token",
             "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "Boxes",
+            "description": "Boxes",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Boxes"
+            }
           }
         ],
         "produces": [
@@ -3114,11 +3123,52 @@
         }
       }
     },
-    "Atividades - Conclusão": {},
-    "Tipos de Atividades - Listagem": {},
-    "Feedback de reunião - Inserção": {},
-    "Boxes - Listagem": {},
-    "Agendamentos - Listagem": {},
+    "Boxes": {
+      "type": "object",
+      "properties": {
+        "@odata.context": {
+          "type": "string"
+        },
+        "value": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/BoxItems"
+          }
+        }
+      }
+    },
+    "BoxItems": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "number"
+        },
+        "start": {
+          "type": "string"
+        },
+        "end": {
+          "type": "string"
+        },
+        "salesRep": {
+          "type": "string"
+        },
+        "salesRepEmail": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "typeMeeting": {
+          "type": "string"
+        },
+        "address": {
+          "type": "string"
+        }
+      }
+    },
     "Webhook - Inscrever URL": {},
     "Webhook - Listagem": {},
     "Webhook - Descrição do POST modelo 1": {},
