@@ -1530,6 +1530,15 @@
             "required": false,
             "x-example": "token",
             "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "CallHistory",
+            "description": "CallHistory",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CallHistory"
+            }
           }
         ]
       }
