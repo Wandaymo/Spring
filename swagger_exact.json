@@ -1694,6 +1694,15 @@
             "required": false,
             "x-example": "token",
             "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "Tasks",
+            "description": "Tasks",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Tasks"
+            }
           }
         ],
         "produces": [
