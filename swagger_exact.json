@@ -2996,7 +2996,7 @@
           "type": "number"
         },
         "activityType": {
-          "$ref": "#/definitions/activityType"
+          "$ref": "#/definitions/activityTypeItems"
         },
         "timeNotification": {
           "type": "string"
@@ -3021,7 +3021,7 @@
         }
       }
     },
-    "activityType": {
+    "activityTypeItems": {
       "type": "object",
       "properties": {
         "id": {
