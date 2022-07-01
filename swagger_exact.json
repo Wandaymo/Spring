@@ -2173,7 +2173,7 @@
       }
     },
     "AnswerIds": {
-      "type": "array",
+      "type": "object",
       "properties": {
         "AnswerIds": {
           "type": "string"
