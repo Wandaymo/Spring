@@ -1647,7 +1647,17 @@
         "tags": [
           "Operations"
         ],
-        "parameters": []
+        "parameters": [
+          {
+            "in": "body",
+            "name": "Inserção",
+            "description": "Inserir lead",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CroppedVolumeInfo"
+            }
+          }
+        ]
       }
     }
   },
@@ -3736,7 +3746,20 @@
         }
       }
     },
-    "Cropped Volume": {},
+    "CroppedVolumeInfo": {
+      "type": "object",
+      "properties": {
+        "volume": {
+          "type": "number"
+        },
+        "id": {
+          "type": "number"
+        },
+        "updated_at": {
+          "type": "string"
+        }
+      }
+    },
     "Cropped Volume Base": {
       "type": "object",
       "required": [
