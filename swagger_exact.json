@@ -2176,7 +2176,10 @@
       "type": "object",
       "properties": {
         "AnswerIds": {
-          "$ref": "#/definitions/AnswerIdsTwo"
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
         }
       }
     },
