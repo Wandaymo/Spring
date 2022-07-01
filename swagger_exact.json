@@ -2164,6 +2164,15 @@
             "required": false,
             "x-example": "token",
             "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "Webhooks",
+            "description": "Webhooks",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Webhooks"
+            }
           }
         ],
         "produces": [
@@ -3307,7 +3316,34 @@
         }
       }
     },
-    "Webhook - Descrição do POST modelo 1": {},
+    "Webhooks": {
+      "type": "object",
+      "properties": {
+        "@odata.context": {
+          "type": "string"
+        },
+        "value": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/WebhooksItems"
+          }
+        }
+      }
+    },
+    "WebhooksItems": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "number"
+        },
+        "url": {
+          "type": "string"
+        },
+        "event": {
+          "type": "string"
+        }
+      }
+    },
     "Webhook - Descrição do POST modelo 2": {},
     "Webhook - Descrição do POST modelo 3": {}
   },
