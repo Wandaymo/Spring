@@ -2179,48 +2179,9 @@
           "application/json"
         ]
       }
-    },
-    "/": {
-      "post": {
-        "responses": {
-          "200": {
-            "description": "OK",
-            "headers": {},
-            "examples": {
-              "application/json": {
-                "OrigemTel": "Telefone de origem",
-                "DestinoTel": "Telefone de destino",
-                "DtChamada": "2020-10-20T21:07:43.7328301",
-                "DtFinalizada": "2020-10-20T21:07:38",
-                "Custo": 0,
-                "LeadId": 121333,
-                "TempoConversacao": 0,
-                "Lead": null,
-                "NomeContato": null,
-                "NomeUsuario": null,
-                "SobrenomeUsuario": null,
-                "EmailUsuario": null,
-                "UrlGravacao": "Link da url do aúdio da ligação"
-              }
-            }
-          }
-        },
-        "summary": "JSON",
-        "operationId": "JSON",
-        "description": "",
-        "tags": [
-          "Webhook"
-        ],
-        "parameters": [],
-        "produces": [
-          "application/json"
-        ]
-      }
     }
   },
   "definitions": {
-    "Lead - Listagem": {},
-    "Lead - Listagem por Lead ID": {},
     "AddUpdateLead": {
       "type": "object",
       "required": [
@@ -2314,11 +2275,6 @@
         }
       }
     },
-    "Lead - Atualização": {},
-    "Lead - Venda": {},
-    "Lead - Descarte": {},
-    "Lead - Recuperação": {},
-    "Lead - Transferência": {},
     "AplicarFiltro": {
       "type": "object",
       "required": [
@@ -3343,9 +3299,7 @@
           "type": "string"
         }
       }
-    },
-    "Webhook - Descrição do POST modelo 2": {},
-    "Webhook - Descrição do POST modelo 3": {}
+    }
   },
   "securityDefinitions": {},
   "tags": [
