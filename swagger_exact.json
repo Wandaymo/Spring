@@ -2168,10 +2168,15 @@
           "type": "string"
         },
         "answerIds": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
+          "$ref": "#/definitions/AnswerIds"
+        }
+      }
+    },
+    "AnswerIds": {
+      "type": "array",
+      "properties": {
+        "AnswerIds": {
+          "type": "string"
         }
       }
     },
