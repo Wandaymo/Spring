@@ -807,8 +807,8 @@
           },
           {
             "in": "body",
-            "name": "ContatosInsert",
-            "description": "ContatosInsert",
+            "name": "ProdutosListagem",
+            "description": "ProdutosListagem",
             "required": true,
             "schema": {
               "$ref": "#/definitions/ProdutosListagem"
@@ -846,8 +846,8 @@
           },
           {
             "in": "body",
-            "name": "ContatosInsert",
-            "description": "ContatosInsert",
+            "name": "DoresListagem",
+            "description": "DoresListagem",
             "required": true,
             "schema": {
               "$ref": "#/definitions/DoresListagem"
@@ -893,8 +893,8 @@
           },
           {
             "in": "body",
-            "name": "ContatosInsert",
-            "description": "ContatosInsert",
+            "name": "DoresListagem",
+            "description": "DoresListagem",
             "required": true,
             "schema": {
               "$ref": "#/definitions/DoresListagem"
@@ -971,8 +971,8 @@
           },
           {
             "in": "body",
-            "name": "ContatosInsert",
-            "description": "ContatosInsert",
+            "name": "CamposPersonalizadosListagem",
+            "description": "CamposPersonalizadosListagem",
             "required": true,
             "schema": {
               "$ref": "#/definitions/CamposPersonalizadosListagem"
@@ -1010,8 +1010,8 @@
           },
           {
             "in": "body",
-            "name": "ContatosInsert",
-            "description": "ContatosInsert",
+            "name": "CustomFields",
+            "description": "CustomFields",
             "required": true,
             "schema": {
               "$ref": "#/definitions/CustomFields"
@@ -1046,8 +1046,8 @@
           },
           {
             "in": "body",
-            "name": "ContatosInsert",
-            "description": "ContatosInsert",
+            "name": "CustomFields",
+            "description": "CustomFields",
             "required": true,
             "schema": {
               "$ref": "#/definitions/CustomFields"
@@ -1224,8 +1224,8 @@
           },
           {
             "in": "body",
-            "name": "customFieldsAdd",
-            "description": "customFieldsAdd",
+            "name": "Answear",
+            "description": "Answear",
             "required": true,
             "schema": {
               "$ref": "#/definitions/Answear"
@@ -1285,8 +1285,8 @@
           },
           {
             "in": "body",
-            "name": "customFieldsAdd",
-            "description": "customFieldsAdd",
+            "name": "QualificationHistories",
+            "description": "QualificationHistories",
             "required": true,
             "schema": {
               "$ref": "#/definitions/QualificationHistories"
@@ -1324,8 +1324,8 @@
           },
           {
             "in": "body",
-            "name": "customFieldsAdd",
-            "description": "customFieldsAdd",
+            "name": "QualificationHistories",
+            "description": "QualificationHistories",
             "required": true,
             "schema": {
               "$ref": "#/definitions/QualificationHistoriesId"
@@ -1357,6 +1357,15 @@
             "required": false,
             "x-example": "token",
             "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "QualificationHistories",
+            "description": "QualificationHistories",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/DescartesListagem"
+            }
           }
         ]
       }
@@ -2695,8 +2704,37 @@
         }
       }
     },
-    "Etapas Historico - Listagem por Lead ID": {},
-    "Descartes - Listagem": {},
+    "DescartesListagem": {
+      "type": "object",
+      "properties": {
+        "@odata.context": {
+          "type": "string"
+        },
+        "value": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/DescartesListagemItems"
+          }
+        }
+      }
+    },
+    "DescartesListagemItems": {
+      "type": "object",
+      "properties": {
+        "leadId": {
+          "type": "number"
+        },
+        "stage": {
+          "type": "string"
+        },
+        "reason": {
+          "type": "string"
+        },
+        "date": {
+          "type": "string"
+        }
+      }
+    },
     "Descartes - Listagem por id": {},
     "Ligação - Inserção": {},
     "Ligação - Listagem": {},
