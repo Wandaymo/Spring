@@ -2114,6 +2114,15 @@
             "required": false,
             "x-example": "token",
             "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "WebhooksAdd",
+            "description": "WebhooksAdd",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/WebhooksAdd"
+            }
           }
         ],
         "produces": [
@@ -3287,7 +3296,17 @@
         }
       }
     },
-    "Webhook - Listagem": {},
+    "WebhooksAdd": {
+      "type": "object",
+      "properties": {
+        "url": {
+          "type": "string"
+        },
+        "event": {
+          "type": "string"
+        }
+      }
+    },
     "Webhook - Descrição do POST modelo 1": {},
     "Webhook - Descrição do POST modelo 2": {},
     "Webhook - Descrição do POST modelo 3": {}
