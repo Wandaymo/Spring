@@ -1561,7 +1561,17 @@
         "tags": [
           "Operations"
         ],
-        "parameters": [],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "CroppedVolumeInfo",
+            "description": "CroppedVolumeInfo",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CroppedVolumeInfo"
+            }
+          }
+        ],
         "produces": [
           "application/json"
         ]
@@ -1647,17 +1657,7 @@
         "tags": [
           "Operations"
         ],
-        "parameters": [
-          {
-            "in": "body",
-            "name": "Inserção",
-            "description": "Inserir lead",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/CroppedVolumeInfo"
-            }
-          }
-        ]
+        "parameters": []
       }
     }
   },
