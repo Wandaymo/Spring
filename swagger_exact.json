@@ -975,7 +975,7 @@
             "description": "ContatosInsert",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/"
+              "$ref": "#/definitions/CamposPersonalizadosListagem"
             }
           }
         ],
