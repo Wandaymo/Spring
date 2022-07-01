@@ -1086,7 +1086,7 @@
             "description": "customFieldsAdd",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/customFieldsAddItems"
+              "$ref": "#/definitions/CustomFieldsAdd"
             }
           }
         ]
@@ -2458,7 +2458,7 @@
         "values": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/customFieldsItems"
+            "$ref": "#/definitions/customFieldsAddItems"
           }
         }
       }
