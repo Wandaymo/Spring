@@ -804,6 +804,15 @@
             "required": false,
             "x-example": "token",
             "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "ContatosInsert",
+            "description": "ContatosInsert",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ProdutosListagem"
+            }
           }
         ],
         "produces": [
@@ -2242,9 +2251,31 @@
         }
       }
     },
-    "Contatos - Listagem por LeadID": {},
-    "Contatos - Inserção": {},
-    "Produtos - Listagem": {},
+    "ProdutosListagem": {
+      "type": "object",
+      "properties": {
+        "@odata.context": {
+          "type": "string"
+        },
+        "value": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ProdutoItems"
+          }
+        }
+      }
+    },
+    "ProdutoItems": {
+      "type": "object",
+      "properties": {
+        "values": {
+          "type": "string"
+        },
+        "id": {
+          "type": "number"
+        }
+      }
+    },
     "Dores - Listagem": {},
     "Dores - Listagem por id": {},
     "Campos personalizados - Listagem": {},
