@@ -1321,6 +1321,15 @@
             "required": false,
             "x-example": "token",
             "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "customFieldsAdd",
+            "description": "customFieldsAdd",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/QualificationHistoriesId"
+            }
           }
         ]
       }
@@ -2645,6 +2654,43 @@
           "type": "array",
           "items": {
             "$ref": "#/definitions/AnswearItemsQuestionsAnswers"
+          }
+        }
+      }
+    },
+    "QualificationHistoriesId": {
+      "type": "object",
+      "properties": {
+        "@odata.context": {
+          "type": "string"
+        },
+        "value": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/QualificationHistoriesItemsId"
+          }
+        }
+      }
+    },
+    "QualificationHistoriesItemsId": {
+      "type": "object",
+      "properties": {
+        "leadId": {
+          "type": "number"
+        },
+        "stage": {
+          "type": "string"
+        },
+        "score": {
+          "type": "string"
+        },
+        "qualificationDate": {
+          "type": "string"
+        },
+        "questionAnswers": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/QualificationHistoriesItemsQuestions"
           }
         }
       }
