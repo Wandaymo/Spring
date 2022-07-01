@@ -2965,7 +2965,109 @@
         }
       }
     },
-    "Atividades - Listagem": {},
+    "Tasks": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "number"
+        },
+        "leadId": {
+          "type": "number"
+        },
+        "title": {
+          "type": "string"
+        },
+        "note": {
+          "type": "string"
+        },
+        "due_date": {
+          "type": "string"
+        },
+        "activityTypeId": {
+          "type": "number"
+        },
+        "activityType": {
+          "$ref": "#/definitions/activityType"
+        },
+        "timeNotification": {
+          "type": "string"
+        },
+        "userEmail": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        },
+        "contacts": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/contactsItems"
+          }
+        },
+        "sdr": {
+          "$ref": "#/definitions/sdrItems"
+        },
+        "responsible": {
+          "$ref": "#/definitions/responsibleItems"
+        }
+      }
+    },
+    "activityType": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "number"
+        },
+        "name": {
+          "type": "string"
+        }
+      }
+    },
+    "contactsItems": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        }
+      }
+    },
+    "sdrItems": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "number"
+        },
+        "name": {
+          "type": "string"
+        },
+        "lastName": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        }
+      }
+    },
+    "responsibleItems": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "number"
+        },
+        "name": {
+          "type": "string"
+        },
+        "lastName": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        }
+      }
+    },
     "Atividade - Inserção": {},
     "Atividades - Exclusão": {},
     "Atividades - Conclusão": {},
