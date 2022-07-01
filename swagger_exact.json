@@ -702,6 +702,15 @@
             "required": false,
             "x-example": "token",
             "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "ContatosListagem",
+            "description": "ContatosListagem",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ContatosListagem"
+            }
           }
         ],
         "produces": [
