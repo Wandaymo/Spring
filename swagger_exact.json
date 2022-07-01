@@ -1566,6 +1566,15 @@
             "required": false,
             "x-example": "token",
             "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "CallsResult",
+            "description": "CallsResult",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CallsResult"
+            }
           }
         ]
       }
@@ -1608,6 +1617,15 @@
             "required": false,
             "x-example": "token",
             "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "Timelines",
+            "description": "Timelines",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Timelines"
+            }
           }
         ],
         "produces": [
@@ -2882,9 +2900,71 @@
         }
       }
     },
-    "Ligação - Listagem por id": {},
-    "Resultado de ligação - Listagem": {},
-    "Timeline - Listagem": {},
+    "CallsResult": {
+      "type": "object",
+      "properties": {
+        "@odata.context": {
+          "type": "string"
+        },
+        "value": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/CallResultItems"
+          }
+        }
+      }
+    },
+    "CallResultItems": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "number"
+        },
+        "value": {
+          "type": "string"
+        }
+      }
+    },
+    "Timelines": {
+      "type": "object",
+      "properties": {
+        "@odata.context": {
+          "type": "string"
+        },
+        "value": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/TimeLineItems"
+          }
+        }
+      }
+    },
+    "TimeLineItems": {
+      "type": "object",
+      "properties": {
+        "leadId": {
+          "type": "number"
+        },
+        "userName": {
+          "type": "string"
+        },
+        "userEmail": {
+          "type": "string"
+        },
+        "text": {
+          "type": "string"
+        },
+        "createdDate": {
+          "type": "string"
+        },
+        "sellerName": {
+          "type": "string"
+        },
+        "sellerEmail": {
+          "type": "string"
+        }
+      }
+    },
     "Atividades - Listagem": {},
     "Atividade - Inserção": {},
     "Atividades - Exclusão": {},
