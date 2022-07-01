@@ -1113,7 +1113,7 @@
             }
           }
         },
-        "summary": "Monitoring Day Results List",
+        "summary": "Wanddaymo",
         "operationId": "Monitoring Day Results List",
         "description": "Lists the results from each day monitored to each plantation",
         "tags": [
