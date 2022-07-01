@@ -1282,6 +1282,15 @@
             "required": false,
             "x-example": "token",
             "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "customFieldsAdd",
+            "description": "customFieldsAdd",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/QualificationHistories"
+            }
           }
         ],
         "produces": [
@@ -2583,7 +2592,63 @@
         }
       }
     },
-    "Etapas Historico - Listagem": {},
+    "QualificationHistories": {
+      "type": "object",
+      "properties": {
+        "@odata.context": {
+          "type": "string"
+        },
+        "value": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/AnswearItems"
+          }
+        }
+      }
+    },
+    "QualificationHistoriesItems": {
+      "type": "object",
+      "properties": {
+        "leadId": {
+          "type": "number"
+        },
+        "stage": {
+          "type": "string"
+        },
+        "score": {
+          "type": "string"
+        },
+        "qualificationDate": {
+          "type": "string"
+        },
+        "id": {
+          "type": "number"
+        },
+        "questionAnswers": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/QualificationHistoriesItemsQuestions"
+          }
+        }
+      }
+    },
+    "QualificationHistoriesItemsQuestions": {
+      "type": "object",
+      "properties": {
+        "question": {
+          "type": "number"
+        },
+        "questionId": {
+          "type": "string"
+        },
+        "answers": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/AnswearItemsQuestionsAnswers"
+          }
+        }
+      }
+    },
     "Etapas Historico - Listagem por Lead ID": {},
     "Descartes - Listagem": {},
     "Descartes - Listagem por id": {},
