@@ -1221,6 +1221,15 @@
             "required": false,
             "x-example": "token",
             "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "customFieldsAdd",
+            "description": "customFieldsAdd",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Answear"
+            }
           }
         ]
       }
@@ -2421,7 +2430,7 @@
         "@odata.context": {
           "type": "string"
         },
-        "values": {
+        "value": {
           "type": "array",
           "items": {
             "$ref": "#/definitions/customFieldsItems"
@@ -2455,7 +2464,7 @@
         "@odata.context": {
           "type": "string"
         },
-        "values": {
+        "value": {
           "type": "array",
           "items": {
             "$ref": "#/definitions/customFieldsAddItems"
@@ -2503,10 +2512,77 @@
         }
       }
     },
-    "Campos personalizados - Listagem por Lead": {},
-    "Campos Personalizados - Inserção": {},
-    "Campos Personalizados - Inserção em um Lead": {},
-    "Etapas - Listagem": {},
+    "Answear": {
+      "type": "object",
+      "properties": {
+        "@odata.context": {
+          "type": "string"
+        },
+        "value": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/AnswearItems"
+          }
+        }
+      }
+    },
+    "AnswearItems": {
+      "type": "object",
+      "properties": {
+        "order": {
+          "type": "number"
+        },
+        "stage": {
+          "type": "string"
+        },
+        "questions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/AnswearItemsQuestions"
+          }
+        }
+      }
+    },
+    "AnswearItemsQuestions": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "number"
+        },
+        "text": {
+          "type": "string"
+        },
+        "tip": {
+          "type": "string"
+        },
+        "required": {
+          "type": "boolean"
+        },
+        "type": {
+          "type": "string"
+        },
+        "parentanswerid": {
+          "type": "string"
+        },
+        "answers": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/AnswearItemsQuestionsAnswers"
+          }
+        }
+      }
+    },
+    "AnswearItemsQuestionsAnswers": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "number"
+        },
+        "text": {
+          "type": "string"
+        }
+      }
+    },
     "Etapas Historico - Listagem": {},
     "Etapas Historico - Listagem por Lead ID": {},
     "Descartes - Listagem": {},
