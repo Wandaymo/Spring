@@ -1494,6 +1494,15 @@
             "required": false,
             "x-example": "token",
             "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "CallHistory",
+            "description": "CallHistory",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CallHistory"
+            }
           }
         ]
       }
@@ -2797,7 +2806,73 @@
         }
       }
     },
-    "Ligação - Listagem": {},
+    "CallHistory": {
+      "type": "object",
+      "properties": {
+        "@odata.context": {
+          "type": "string"
+        },
+        "value": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/CallHistoryItems"
+          }
+        }
+      }
+    },
+    "CallHistoryItems": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "number"
+        },
+        "leadId": {
+          "type": "number"
+        },
+        "leadName": {
+          "type": "number"
+        },
+        "stage": {
+          "type": "string"
+        },
+        "caller": {
+          "type": "string"
+        },
+        "called": {
+          "type": "string"
+        },
+        "startDate": {
+          "type": "string"
+        },
+        "endDate": {
+          "type": "string"
+        },
+        "price": {
+          "type": "number"
+        },
+        "talkingDurationSeconds": {
+          "type": "number"
+        },
+        "result": {
+          "type": "number"
+        },
+        "description": {
+          "type": "string"
+        },
+        "manualSet": {
+          "type": "boolean"
+        },
+        "callAnswered": {
+          "type": "boolean"
+        },
+        "audio": {
+          "type": "string"
+        },
+        "userEmail": {
+          "type": "string"
+        }
+      }
+    },
     "Ligação - Listagem por id": {},
     "Resultado de ligação - Listagem": {},
     "Timeline - Listagem": {},
