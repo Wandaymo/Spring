@@ -2153,15 +2153,9 @@
             "type": "string"
           }
         },
-        "wandaymo": {
+        "answers": {
           "type": "array",
-          "xml": {
-            "wrapped": true
-          },
           "items": {
-            "xml": {
-              "name": "tag"
-            },
             "$ref": "#/definitions/AnswersItems"
           }
         }
