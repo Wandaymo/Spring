@@ -1930,6 +1930,15 @@
             "required": false,
             "x-example": "token",
             "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "TasksType",
+            "description": "TasksType",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/TasksType"
+            }
           }
         ],
         "produces": [
@@ -3077,8 +3086,34 @@
         }
       }
     },
-    "Atividade - Inserção": {},
-    "Atividades - Exclusão": {},
+    "TasksType": {
+      "type": "object",
+      "properties": {
+        "@odata.context": {
+          "type": "string"
+        },
+        "value": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/TasksTypeItems"
+          }
+        }
+      }
+    },
+    "TasksTypeItems": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "number"
+        },
+        "value": {
+          "type": "string"
+        },
+        "isCustom": {
+          "type": "boolean"
+        }
+      }
+    },
     "Atividades - Conclusão": {},
     "Tipos de Atividades - Listagem": {},
     "Feedback de reunião - Inserção": {},
