@@ -1007,6 +1007,15 @@
             "required": false,
             "x-example": "token",
             "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "ContatosInsert",
+            "description": "ContatosInsert",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CustomFields"
+            }
           }
         ]
       }
@@ -2355,19 +2364,19 @@
           "type": "string"
         },
         "type": {
-          "type": "number"
+          "type": "string"
         },
         "required": {
-          "type": "number"
+          "type": "boolean"
         },
         "maxLength": {
-          "type": "number"
+          "type": "string"
         },
         "uniqueValue": {
-          "type": "number"
+          "type": "boolean"
         },
         "format": {
-          "type": "number"
+          "type": "string"
         },
         "options": {
           "type": "array",
@@ -2383,12 +2392,45 @@
         "id": {
           "type": "number"
         },
-        "string": {
+        "value": {
           "type": "string"
         }
       }
     },
-    "Campos personalizados - Listagem por Empresa para campos que possuem valor vinculados ao Lead": {},
+    "CustomFields": {
+      "type": "object",
+      "properties": {
+        "@odata.context": {
+          "type": "string"
+        },
+        "values": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/customFieldsItems"
+          }
+        }
+      }
+    },
+    "customFieldsItems": {
+      "type": "object",
+      "properties": {
+        "options": {
+          "type": "array",
+          "items": {
+            "options": "string"
+          }
+        },
+        "id": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string"
+        },
+        "leadId": {
+          "type": "number"
+        }
+      }
+    },
     "Campos personalizados - Listagem por Lead": {},
     "Campos Personalizados - Inserção": {},
     "Campos Personalizados - Inserção em um Lead": {},
