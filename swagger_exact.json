@@ -1393,6 +1393,15 @@
             "required": false,
             "x-example": "token",
             "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "QualificationHistories",
+            "description": "QualificationHistories",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/DescartesListagem"
+            }
           }
         ]
       }
