@@ -2167,33 +2167,14 @@
         "questionType": {
           "type": "string"
         },
-        "wandaymoIds": {
+        "answerIds": {
           "type": "array",
           "items": {
             "type": "string"
           }
-        }
-      }
-    },
-    "AnswerIds": {
-      "type": "object",
-      "properties": {
-        "AnswerIds": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    },
-    "AnswerIdsTwo": {
-      "type": "object",
-      "properties": {
-        "AnswerIdsArray": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
+        },
+        "text": {
+          "type": "string"
         }
       }
     },
