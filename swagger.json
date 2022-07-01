@@ -1413,7 +1413,17 @@
         "tags": [
           "Operations"
         ],
-        "parameters": [],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "Inserção",
+            "description": "Inserir lead",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/MonitoringDayResultsId"
+            }
+          }
+        ],
         "produces": [
           "application/json"
         ]
@@ -2940,6 +2950,47 @@
         },
         "longitude": {
           "type": "number"
+        }
+      }
+    },
+    "MonitoringDayResultsId": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "date": {
+          "type": "string"
+        },
+        "updated_at": {
+          "type": "string"
+        },
+        "phenological_stage": {
+          "$ref": "#/definitions/PhenologicalStageItem"
+        },
+        "plantation": {
+          "$ref": "#/definitions/PlantationItems"
+        },
+        "count_targets": {
+          "type": "number"
+        },
+        "targets": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/TargetsItems"
+          }
+        },
+        "monitors": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/MonitorsItems"
+          }
+        },
+        "monitoring_stops": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/MonitoringStopsItems"
+          }
         }
       }
     },
