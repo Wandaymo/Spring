@@ -968,6 +968,15 @@
             "required": false,
             "x-example": "token",
             "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "ContatosInsert",
+            "description": "ContatosInsert",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/"
+            }
           }
         ],
         "produces": [
@@ -2322,8 +2331,63 @@
         }
       }
     },
-    "Dores - Listagem por id": {},
-    "Campos personalizados - Listagem": {},
+    "CamposPersonalizadosListagem": {
+      "type": "object",
+      "properties": {
+        "@odata.context": {
+          "type": "string"
+        },
+        "value": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/CamposPersonalizadosListagemItems"
+          }
+        }
+      }
+    },
+    "CamposPersonalizadosListagemItems": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "number"
+        },
+        "name": {
+          "type": "string"
+        },
+        "type": {
+          "type": "number"
+        },
+        "required": {
+          "type": "number"
+        },
+        "maxLength": {
+          "type": "number"
+        },
+        "uniqueValue": {
+          "type": "number"
+        },
+        "format": {
+          "type": "number"
+        },
+        "options": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/CamposPersonalizadosOptionsItems"
+          }
+        }
+      }
+    },
+    "CamposPersonalizadosOptionsItems": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "number"
+        },
+        "string": {
+          "type": "string"
+        }
+      }
+    },
     "Campos personalizados - Listagem por Empresa para campos que possuem valor vinculados ao Lead": {},
     "Campos personalizados - Listagem por Lead": {},
     "Campos Personalizados - Inserção": {},
