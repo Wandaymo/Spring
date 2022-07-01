@@ -757,50 +757,12 @@
             "type": "string"
           },
           {
-            "name": "body",
             "in": "body",
+            "name": "ContatosInsert",
+            "description": "ContatosInsert",
+            "required": true,
             "schema": {
-              "type": "object",
-              "properties": {
-                "leadId": {
-                  "type": "number"
-                },
-                "name": {
-                  "type": "string"
-                },
-                "email": {
-                  "type": "string"
-                },
-                "jobTitle": {
-                  "type": "string"
-                },
-                "phone1": {
-                  "type": "string"
-                },
-                "phone2": {
-                  "type": "string"
-                },
-                "messagingPlatform": {
-                  "type": "string"
-                },
-                "idMessagingPlatform": {
-                  "type": "string"
-                },
-                "mainContact": {
-                  "type": "boolean"
-                }
-              },
-              "example": {
-                "leadId": 123456,
-                "name": "Nome do contato",
-                "email": "contato@gmail.com",
-                "jobTitle": "Cargo do Contato",
-                "phone1": "(48) 3025-7750",
-                "phone2": "(48) 3181-0180",
-                "messagingPlatform": "Skype",
-                "idMessagingPlatform": "contato_msg",
-                "mainContact": false
-              }
+              "$ref": "#/definitions/ContatoItemsInsert"
             }
           }
         ],
@@ -2245,6 +2207,38 @@
         },
         "id": {
           "type": "number"
+        }
+      }
+    },
+    "ContatoItemsInsert": {
+      "type": "object",
+      "properties": {
+        "leadId": {
+          "type": "number"
+        },
+        "name": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "jobTitle": {
+          "type": "string"
+        },
+        "phone1": {
+          "type": "string"
+        },
+        "phone2": {
+          "type": "string"
+        },
+        "messagingPlatform": {
+          "type": "string"
+        },
+        "idMessagingPlatform": {
+          "type": "string"
+        },
+        "mainContact": {
+          "type": "string"
         }
       }
     },
