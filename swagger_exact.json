@@ -843,6 +843,15 @@
             "required": false,
             "x-example": "token",
             "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "ContatosInsert",
+            "description": "ContatosInsert",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/DoresListagem"
+            }
           }
         ]
       }
@@ -2268,7 +2277,7 @@
     "ProdutoItems": {
       "type": "object",
       "properties": {
-        "values": {
+        "value": {
           "type": "string"
         },
         "id": {
@@ -2276,7 +2285,34 @@
         }
       }
     },
-    "Dores - Listagem": {},
+    "DoresListagem": {
+      "type": "object",
+      "properties": {
+        "@odata.context": {
+          "type": "string"
+        },
+        "value": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/DoresItems"
+          }
+        }
+      }
+    },
+    "DoresItems": {
+      "type": "object",
+      "properties": {
+        "value": {
+          "type": "string"
+        },
+        "leadId": {
+          "type": "string"
+        },
+        "id": {
+          "type": "number"
+        }
+      }
+    },
     "Dores - Listagem por id": {},
     "Campos personalizados - Listagem": {},
     "Campos personalizados - Listagem por Empresa para campos que possuem valor vinculados ao Lead": {},
