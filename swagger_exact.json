@@ -2176,6 +2176,14 @@
       "type": "object",
       "properties": {
         "AnswerIds": {
+          "$ref": "#/definitions/AnswerIdsTwo"
+        }
+      }
+    },
+    "AnswerIdsTwo": {
+      "type": "object",
+      "properties": {
+        "AnswerIdsArray": {
           "type": "array",
           "items": {
             "type": "string"
