@@ -584,49 +584,14 @@
     },
     "/farms": {
       "get": {
-        "responses": {
-          "200": {
-            "description": "OK",
-            "headers": {},
-            "examples": {
-              "application/json": {
-                "deleted_since": [],
-                "next_page_url": "http://host.com/api/v1/...",
-                "farms": [
-                  {
-                    "name": "Fazenda Exemplo",
-                    "cnpj_cpf": "01214556998",
-                    "ie": "123454566",
-                    "id": 42,
-                    "updated_at": "2015-05-05T12:30:00"
-                  }
-                ]
-              }
-            },
-            "schema": {
-              "type": "object",
-              "properties": {
-                "deleted_since": {
-                  "type": "array",
-                  "items": {}
-                },
-                "next_page_url": {
-                  "type": "string",
-                  "description": "URL for next page"
-                },
-                "farms": {
-                  "type": "array",
-                  "items": {}
-                }
-              }
-            }
-          }
-        },
         "summary": "Farm List",
         "operationId": "Farm List",
         "description": "Lists all farms",
         "tags": [
           "Structures"
+        ],
+        "produces": [
+          "application/json"
         ],
         "parameters": [
           {
@@ -646,9 +611,12 @@
             "format": "int64"
           }
         ],
-        "produces": [
-          "application/json"
-        ]
+        "responses": {
+          "200": {
+            "description": "OK",
+            "headers": {}
+          }
+        }
       },
       "post": {
         "responses": {
