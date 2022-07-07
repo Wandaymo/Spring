@@ -584,37 +584,53 @@
     },
     "/farms": {
       "get": {
-        "summary": "Farm List",
-        "operationId": "Farm List",
-        "description": "Lists all farms",
         "tags": [
-          "Structures"
+          "user"
         ],
+        "summary": "Farm info pet",
+        "description": "",
+        "operationId": "loginUser",
         "produces": [
-          "application/json"
+          "application/json",
+          "application/xml"
         ],
         "parameters": [
           {
-            "name": "page",
-            "in": "path",
-            "description": "Page number",
+            "name": "username",
+            "in": "query",
+            "description": "The user name for login",
             "required": true,
-            "type": "integer",
-            "format": "int64"
+            "type": "string"
           },
           {
-            "name": "updated_since",
-            "in": "path",
-            "description": "Timestamp since last update (milliseconds)",
+            "name": "password",
+            "in": "query",
+            "description": "The password for login in clear text",
             "required": true,
-            "type": "integer",
-            "format": "int64"
+            "type": "string"
           }
         ],
         "responses": {
           "200": {
-            "description": "OK",
-            "headers": {}
+            "description": "successful operation",
+            "headers": {
+              "X-Expires-After": {
+                "type": "string",
+                "format": "date-time",
+                "description": "date in UTC when token expires"
+              },
+              "X-Rate-Limit": {
+                "type": "integer",
+                "format": "int32",
+                "description": "calls per hour allowed by the user"
+              }
+            },
+            "schema": {
+              "type": "string"
+            }
+          },
+          "400": {
+            "description": "Invalid username/password supplied"
           }
         }
       },
@@ -706,7 +722,7 @@
         ]
       }
     },
-    "/farms/{page}/{updated_since}": {
+    "/farms/{id}": {
       "get": {
         "responses": {
           "200": {
@@ -736,7 +752,7 @@
                   "type": "string",
                   "description": "Farm state registration"
                 },
-                "idssss": {
+                "id": {
                   "type": "number",
                   "description": "Farm identifier"
                 },
