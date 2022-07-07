@@ -1021,62 +1021,6 @@
         ]
       }
     },
-    "/inventories": {
-      "post": {
-        "responses": {
-          "201": {
-            "description": "Created",
-            "headers": {},
-            "examples": {}
-          }
-        },
-        "summary": "Update balances",
-        "operationId": "Update balances",
-        "description": "Updates inputs storage balances",
-        "tags": [
-          "Inputs"
-        ],
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "input_id": {
-                  "type": "number",
-                  "description": "Input identifier"
-                },
-                "storages": {
-                  "type": "array",
-                  "description": "Balance group for each storage"
-                }
-              },
-              "required": [
-                "input_id",
-                "storages"
-              ],
-              "example": {
-                "input_id": 42,
-                "storages": [
-                  {
-                    "storage_id": 42,
-                    "quantity": 130.32,
-                    "unit": "l"
-                  }
-                ]
-              }
-            }
-          },
-          {
-            "name": "Accept",
-            "in": "header",
-            "required": true,
-            "type": "string"
-          }
-        ]
-      }
-    },
     "/monitoring_day_results/": {
       "get": {
         "responses": {
