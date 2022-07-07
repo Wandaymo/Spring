@@ -16,7 +16,7 @@
         "tags": [
           "Structures"
         ],
-        "summary": "Farm info 4",
+        "summary": "Farm info",
         "description": "Lists all farms",
         "operationId": "Farm List",
         "produces": [
@@ -132,6 +132,12 @@
                 "ie": "123454566"
               }
             }
+          },
+          {
+            "name": "Accept",
+            "in": "header",
+            "required": true,
+            "type": "string"
           }
         ],
         "produces": [
