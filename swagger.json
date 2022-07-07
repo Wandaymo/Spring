@@ -706,7 +706,7 @@
         ]
       }
     },
-    "/farms/{idsssss}": {
+    "/farms/{page}/{updated_since}": {
       "get": {
         "responses": {
           "200": {
