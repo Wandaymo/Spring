@@ -317,7 +317,14 @@
         "tags": [
           "Structures"
         ],
-        "parameters": []
+        "parameters": [
+          {
+            "name": "Accept",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ]
       }
     },
     "/plantations": {
@@ -395,6 +402,12 @@
             "schema": {
               "$ref": "#/definitions/Query Base"
             }
+          },
+          {
+            "name": "Accept",
+            "in": "header",
+            "required": true,
+            "type": "string"
           }
         ],
         "produces": [
@@ -647,6 +660,12 @@
                 ]
               }
             }
+          },
+          {
+            "name": "Accept",
+            "in": "header",
+            "required": true,
+            "type": "string"
           }
         ],
         "produces": [
@@ -899,6 +918,12 @@
                 ]
               }
             }
+          },
+          {
+            "name": "Accept",
+            "in": "header",
+            "required": true,
+            "type": "string"
           }
         ],
         "produces": [
@@ -919,7 +944,14 @@
         "tags": [
           "Structures"
         ],
-        "parameters": []
+        "parameters": [
+          {
+            "name": "Accept",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ]
       }
     },
     "/users": {
@@ -976,6 +1008,12 @@
             "schema": {
               "$ref": "#/definitions/Query Base"
             }
+          },
+          {
+            "name": "Accept",
+            "in": "header",
+            "required": true,
+            "type": "string"
           }
         ],
         "produces": [
@@ -1029,6 +1067,12 @@
                 ]
               }
             }
+          },
+          {
+            "name": "Accept",
+            "in": "header",
+            "required": true,
+            "type": "string"
           }
         ]
       }
@@ -1159,7 +1203,14 @@
         "tags": [
           "Operations"
         ],
-        "parameters": [],
+        "parameters": [
+          {
+            "name": "Accept",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
         "produces": [
           "application/json"
         ]
@@ -1441,7 +1492,14 @@
         "tags": [
           "Operations"
         ],
-        "parameters": [],
+        "parameters": [
+          {
+            "name": "Accept",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
         "produces": [
           "application/json"
         ]
