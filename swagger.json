@@ -16,7 +16,7 @@
         "tags": [
           "Structures"
         ],
-        "summary": "Farm info 3",
+        "summary": "Farm info 4",
         "description": "Lists all farms",
         "operationId": "Farm List",
         "produces": [
@@ -40,8 +40,7 @@
           {
             "name": "Accept",
             "in": "header",
-            "description": "The password for login in clear text",
-            "required": false,
+            "required": true,
             "type": "string"
           }
         ],
