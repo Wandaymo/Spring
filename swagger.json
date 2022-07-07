@@ -198,7 +198,14 @@
         "tags": [
           "Structures"
         ],
-        "parameters": [],
+        "parameters": [
+          {
+            "name": "Accept",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
         "produces": [
           "application/json"
         ]
