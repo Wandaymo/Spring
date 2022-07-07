@@ -587,7 +587,7 @@
         "tags": [
           "user"
         ],
-        "summary": "Farm info pet",
+        "summary": "Farm info",
         "description": "",
         "operationId": "loginUser",
         "produces": [
@@ -596,14 +596,14 @@
         ],
         "parameters": [
           {
-            "name": "username",
+            "name": "page",
             "in": "query",
             "description": "The user name for login",
             "required": true,
             "type": "string"
           },
           {
-            "name": "password",
+            "name": "updated_since",
             "in": "query",
             "description": "The password for login in clear text",
             "required": true,
