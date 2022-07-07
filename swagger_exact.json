@@ -645,15 +645,6 @@
             "required": false,
             "x-example": "token",
             "type": "string"
-          },
-          {
-            "in": "body",
-            "name": "ContatosListagem",
-            "description": "ContatosListagem",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/ContatosListagem"
-            }
           }
         ],
         "produces": [
@@ -795,15 +786,6 @@
             "required": false,
             "x-example": "token",
             "type": "string"
-          },
-          {
-            "in": "body",
-            "name": "ProdutosListagem",
-            "description": "ProdutosListagem",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/ProdutosListagem"
-            }
           }
         ],
         "produces": [
@@ -834,15 +816,6 @@
             "required": false,
             "x-example": "token",
             "type": "string"
-          },
-          {
-            "in": "body",
-            "name": "DoresListagem",
-            "description": "DoresListagem",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/DoresListagem"
-            }
           }
         ]
       }
@@ -881,15 +854,6 @@
             "required": false,
             "x-example": "token",
             "type": "string"
-          },
-          {
-            "in": "body",
-            "name": "DoresListagem",
-            "description": "DoresListagem",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/DoresListagem"
-            }
           }
         ],
         "produces": [
@@ -959,15 +923,6 @@
             "required": false,
             "x-example": "token",
             "type": "string"
-          },
-          {
-            "in": "body",
-            "name": "CamposPersonalizadosListagem",
-            "description": "CamposPersonalizadosListagem",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/CamposPersonalizadosListagem"
-            }
           }
         ],
         "produces": [
@@ -998,15 +953,6 @@
             "required": false,
             "x-example": "token",
             "type": "string"
-          },
-          {
-            "in": "body",
-            "name": "CustomFields",
-            "description": "CustomFields",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/CustomFields"
-            }
           }
         ]
       }
@@ -1034,15 +980,6 @@
             "required": false,
             "x-example": "token",
             "type": "string"
-          },
-          {
-            "in": "body",
-            "name": "CustomFields",
-            "description": "CustomFields",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/CustomFields"
-            }
           }
         ]
       }
@@ -1212,15 +1149,6 @@
             "required": false,
             "x-example": "token",
             "type": "string"
-          },
-          {
-            "in": "body",
-            "name": "Answear",
-            "description": "Answear",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/Answear"
-            }
           }
         ]
       }
@@ -1273,15 +1201,6 @@
             "required": false,
             "x-example": "token",
             "type": "string"
-          },
-          {
-            "in": "body",
-            "name": "QualificationHistories",
-            "description": "QualificationHistories",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/QualificationHistories"
-            }
           }
         ],
         "produces": [
@@ -1312,15 +1231,6 @@
             "required": false,
             "x-example": "token",
             "type": "string"
-          },
-          {
-            "in": "body",
-            "name": "QualificationHistories",
-            "description": "QualificationHistories",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/QualificationHistoriesId"
-            }
           }
         ]
       }
@@ -1348,15 +1258,6 @@
             "required": false,
             "x-example": "token",
             "type": "string"
-          },
-          {
-            "in": "body",
-            "name": "QualificationHistories",
-            "description": "QualificationHistories",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/DescartesListagem"
-            }
           }
         ]
       }
@@ -1384,15 +1285,6 @@
             "required": false,
             "x-example": "token",
             "type": "string"
-          },
-          {
-            "in": "body",
-            "name": "DescartesListagem",
-            "description": "DescartesListagem",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/DescartesListagem"
-            }
           }
         ]
       }
@@ -1485,15 +1377,6 @@
             "required": false,
             "x-example": "token",
             "type": "string"
-          },
-          {
-            "in": "body",
-            "name": "CallHistory",
-            "description": "CallHistory",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/CallHistory"
-            }
           }
         ]
       }
@@ -1521,15 +1404,6 @@
             "required": false,
             "x-example": "token",
             "type": "string"
-          },
-          {
-            "in": "body",
-            "name": "CallHistory",
-            "description": "CallHistory",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/CallHistory"
-            }
           }
         ]
       }
@@ -1557,15 +1431,6 @@
             "required": false,
             "x-example": "token",
             "type": "string"
-          },
-          {
-            "in": "body",
-            "name": "CallsResult",
-            "description": "CallsResult",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/CallsResult"
-            }
           }
         ]
       }
@@ -1608,15 +1473,6 @@
             "required": false,
             "x-example": "token",
             "type": "string"
-          },
-          {
-            "in": "body",
-            "name": "Timelines",
-            "description": "Timelines",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/Timelines"
-            }
           }
         ],
         "produces": [
@@ -1685,15 +1541,6 @@
             "required": false,
             "x-example": "token",
             "type": "string"
-          },
-          {
-            "in": "body",
-            "name": "Tasks",
-            "description": "Tasks",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/Tasks"
-            }
           }
         ],
         "produces": [
@@ -1921,15 +1768,6 @@
             "required": false,
             "x-example": "token",
             "type": "string"
-          },
-          {
-            "in": "body",
-            "name": "TasksType",
-            "description": "TasksType",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/TasksType"
-            }
           }
         ],
         "produces": [
@@ -1977,15 +1815,6 @@
             "required": false,
             "x-example": "token",
             "type": "string"
-          },
-          {
-            "in": "body",
-            "name": "Boxes",
-            "description": "Boxes",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/Boxes"
-            }
           }
         ],
         "produces": [
@@ -2052,15 +1881,6 @@
             "required": false,
             "x-example": "token",
             "type": "string"
-          },
-          {
-            "in": "body",
-            "name": "Agendamentos",
-            "description": "Agendamentos",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/Agendamentos"
-            }
           }
         ],
         "produces": [
@@ -2155,15 +1975,6 @@
             "required": false,
             "x-example": "token",
             "type": "string"
-          },
-          {
-            "in": "body",
-            "name": "Webhooks",
-            "description": "Webhooks",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/Webhooks"
-            }
           }
         ],
         "produces": [
@@ -2315,55 +2126,6 @@
         }
       }
     },
-    "ContatosListagem": {
-      "type": "object",
-      "properties": {
-        "@odata.context": {
-          "type": "string"
-        },
-        "value": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/ContatoItems"
-          }
-        }
-      }
-    },
-    "ContatoItems": {
-      "type": "object",
-      "properties": {
-        "leadId": {
-          "type": "number"
-        },
-        "email": {
-          "type": "string"
-        },
-        "name": {
-          "type": "string"
-        },
-        "jobTitle": {
-          "type": "string"
-        },
-        "phone1": {
-          "type": "string"
-        },
-        "phone2": {
-          "type": "string"
-        },
-        "messagingPlatform": {
-          "type": "string"
-        },
-        "idMessagingPlatform": {
-          "type": "string"
-        },
-        "mainContact": {
-          "type": "string"
-        },
-        "id": {
-          "type": "number"
-        }
-      }
-    },
     "ContatoItemsInsert": {
       "type": "object",
       "properties": {
@@ -2392,116 +2154,6 @@
           "type": "string"
         },
         "mainContact": {
-          "type": "string"
-        }
-      }
-    },
-    "ProdutosListagem": {
-      "type": "object",
-      "properties": {
-        "@odata.context": {
-          "type": "string"
-        },
-        "value": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/ProdutoItems"
-          }
-        }
-      }
-    },
-    "ProdutoItems": {
-      "type": "object",
-      "properties": {
-        "value": {
-          "type": "string"
-        },
-        "id": {
-          "type": "number"
-        }
-      }
-    },
-    "DoresListagem": {
-      "type": "object",
-      "properties": {
-        "@odata.context": {
-          "type": "string"
-        },
-        "value": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/DoresItems"
-          }
-        }
-      }
-    },
-    "DoresItems": {
-      "type": "object",
-      "properties": {
-        "value": {
-          "type": "string"
-        },
-        "leadId": {
-          "type": "string"
-        },
-        "id": {
-          "type": "number"
-        }
-      }
-    },
-    "CamposPersonalizadosListagem": {
-      "type": "object",
-      "properties": {
-        "@odata.context": {
-          "type": "string"
-        },
-        "value": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/CamposPersonalizadosListagemItems"
-          }
-        }
-      }
-    },
-    "CamposPersonalizadosListagemItems": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "type": "number"
-        },
-        "name": {
-          "type": "string"
-        },
-        "type": {
-          "type": "string"
-        },
-        "required": {
-          "type": "boolean"
-        },
-        "maxLength": {
-          "type": "string"
-        },
-        "uniqueValue": {
-          "type": "boolean"
-        },
-        "format": {
-          "type": "string"
-        },
-        "options": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/CamposPersonalizadosOptionsItems"
-          }
-        }
-      }
-    },
-    "CamposPersonalizadosOptionsItems": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "type": "number"
-        },
-        "value": {
           "type": "string"
         }
       }
@@ -2594,66 +2246,6 @@
         }
       }
     },
-    "Answear": {
-      "type": "object",
-      "properties": {
-        "@odata.context": {
-          "type": "string"
-        },
-        "value": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/AnswearItems"
-          }
-        }
-      }
-    },
-    "AnswearItems": {
-      "type": "object",
-      "properties": {
-        "order": {
-          "type": "number"
-        },
-        "stage": {
-          "type": "string"
-        },
-        "questions": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/AnswearItemsQuestions"
-          }
-        }
-      }
-    },
-    "AnswearItemsQuestions": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "type": "number"
-        },
-        "text": {
-          "type": "string"
-        },
-        "tip": {
-          "type": "string"
-        },
-        "required": {
-          "type": "boolean"
-        },
-        "type": {
-          "type": "string"
-        },
-        "parentanswerid": {
-          "type": "string"
-        },
-        "answers": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/AnswearItemsQuestionsAnswers"
-          }
-        }
-      }
-    },
     "AnswearItemsQuestionsAnswers": {
       "type": "object",
       "properties": {
@@ -2722,74 +2314,6 @@
         }
       }
     },
-    "QualificationHistoriesId": {
-      "type": "object",
-      "properties": {
-        "@odata.context": {
-          "type": "string"
-        },
-        "value": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/QualificationHistoriesItemsId"
-          }
-        }
-      }
-    },
-    "QualificationHistoriesItemsId": {
-      "type": "object",
-      "properties": {
-        "leadId": {
-          "type": "number"
-        },
-        "stage": {
-          "type": "string"
-        },
-        "score": {
-          "type": "string"
-        },
-        "qualificationDate": {
-          "type": "string"
-        },
-        "questionAnswers": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/QualificationHistoriesItemsQuestions"
-          }
-        }
-      }
-    },
-    "DescartesListagem": {
-      "type": "object",
-      "properties": {
-        "@odata.context": {
-          "type": "string"
-        },
-        "value": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/DescartesListagemItems"
-          }
-        }
-      }
-    },
-    "DescartesListagemItems": {
-      "type": "object",
-      "properties": {
-        "leadId": {
-          "type": "number"
-        },
-        "stage": {
-          "type": "string"
-        },
-        "reason": {
-          "type": "string"
-        },
-        "date": {
-          "type": "string"
-        }
-      }
-    },
     "CallsAdd": {
       "type": "object",
       "properties": {
@@ -2831,73 +2355,6 @@
         },
         "manualSet": {
           "type": "boolean"
-        }
-      }
-    },
-    "CallHistory": {
-      "type": "object",
-      "properties": {
-        "@odata.context": {
-          "type": "string"
-        },
-        "value": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/CallHistoryItems"
-          }
-        }
-      }
-    },
-    "CallHistoryItems": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "type": "number"
-        },
-        "leadId": {
-          "type": "number"
-        },
-        "leadName": {
-          "type": "number"
-        },
-        "stage": {
-          "type": "string"
-        },
-        "caller": {
-          "type": "string"
-        },
-        "called": {
-          "type": "string"
-        },
-        "startDate": {
-          "type": "string"
-        },
-        "endDate": {
-          "type": "string"
-        },
-        "price": {
-          "type": "number"
-        },
-        "talkingDurationSeconds": {
-          "type": "number"
-        },
-        "result": {
-          "type": "number"
-        },
-        "description": {
-          "type": "string"
-        },
-        "manualSet": {
-          "type": "boolean"
-        },
-        "callAnswered": {
-          "type": "boolean"
-        },
-        "audio": {
-          "type": "string"
-        },
-        "userEmail": {
-          "type": "string"
         }
       }
     },
@@ -2962,109 +2419,6 @@
           "type": "string"
         },
         "sellerEmail": {
-          "type": "string"
-        }
-      }
-    },
-    "Tasks": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "type": "number"
-        },
-        "leadId": {
-          "type": "number"
-        },
-        "title": {
-          "type": "string"
-        },
-        "note": {
-          "type": "string"
-        },
-        "due_date": {
-          "type": "string"
-        },
-        "activityTypeId": {
-          "type": "number"
-        },
-        "activityType": {
-          "$ref": "#/definitions/activityTypeItems"
-        },
-        "timeNotification": {
-          "type": "string"
-        },
-        "userEmail": {
-          "type": "string"
-        },
-        "status": {
-          "type": "string"
-        },
-        "contacts": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/contactsItems"
-          }
-        },
-        "sdr": {
-          "$ref": "#/definitions/sdrItems"
-        },
-        "responsible": {
-          "$ref": "#/definitions/responsibleItems"
-        }
-      }
-    },
-    "activityTypeItems": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "type": "number"
-        },
-        "name": {
-          "type": "string"
-        }
-      }
-    },
-    "contactsItems": {
-      "type": "object",
-      "properties": {
-        "name": {
-          "type": "string"
-        },
-        "email": {
-          "type": "string"
-        }
-      }
-    },
-    "sdrItems": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "type": "number"
-        },
-        "name": {
-          "type": "string"
-        },
-        "lastName": {
-          "type": "string"
-        },
-        "email": {
-          "type": "string"
-        }
-      }
-    },
-    "responsibleItems": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "type": "number"
-        },
-        "name": {
-          "type": "string"
-        },
-        "lastName": {
-          "type": "string"
-        },
-        "email": {
           "type": "string"
         }
       }
