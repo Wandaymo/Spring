@@ -607,6 +607,13 @@
             "description": "The password for login in clear text",
             "required": true,
             "type": "string"
+          },
+          {
+            "name": "Accept",
+            "in": "header",
+            "description": "The password for login in clear text",
+            "required": false,
+            "type": "string"
           }
         ],
         "responses": {
