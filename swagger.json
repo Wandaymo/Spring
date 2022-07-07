@@ -284,6 +284,12 @@
                 "ie": "123454566"
               }
             }
+          },
+          {
+            "name": "Accept",
+            "in": "header",
+            "required": true,
+            "type": "string"
           }
         ],
         "produces": [
