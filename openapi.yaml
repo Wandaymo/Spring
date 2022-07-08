@@ -1,0 +1,937 @@
+---
+openapi: 3.0.2
+info:
+  title: companies-integrationV1
+  version: 1.0.0
+  description: |
+    API de integração de empresas/filiais (Companies) V1
+
+    Compatível com a versão de negócio Administration V9
+  contact: {}
+servers:
+- url: https://{url}/api/{version}/integration
+  description: Integration Router Server
+  variables:
+    url:
+      default: app2.mastercrm.ws
+      description: URL de acesso ao Integration-Router
+    version:
+      default: v1
+      description: Versão do Integration-Router
+paths:
+  /record:
+    get:
+      tags:
+      - Companies
+      parameters:
+      - name: Integration-Filter
+        description: |
+          Filtro opcional para realizar a busca de um ou mais registros. Suporta o uso de
+          RestQuery.
+
+
+          Se o header for omitido, lista todos os registros
+
+          Se o header não contiver valores, lista todos os registros
+        schema:
+          type: string
+        in: header
+        required: false
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CompaniesIntegration_V1_GetResponse'
+          description: Returns a list of companies
+        401:
+          description: Unauthorized
+      summary: Listar Companies
+      description: Retorna uma lista de empresas/filiais cadastrados ou determinadas
+        empresas/filiais com base nos filtros no header Integration-Filter
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CompaniesIntegration_V1_BodyEmpty'
+      tags:
+      - Companies
+      parameters:
+      - name: Integration-Filter
+        description: |
+          Filtro do registro específico para a ação. Deve-se usar o identificador principal da
+          entidade (ID).
+        schema:
+          type: string
+        in: header
+        required: false
+      - name: Integration-Response
+        description: |
+          Nível de detalhe do retorno da API. São suportados atualmente:
+
+          **full** - Resposta completa, equivalente a um GET no recurso
+
+          **minimum** - Resposta mínima, equivalente ao ID, data de criação e atualização do
+          registro
+
+          Se o header não for informado, por padrão o retorno será equivalente ao nível
+          **minimum**
+        schema:
+          enum:
+          - full
+          - minimum
+          type: string
+        in: header
+        required: false
+      - name: Integration-Action
+        description: |
+          Ação a ser realizada na API de integração. Selecione uma das opções para carregar o
+          body da requisição.
+        schema:
+          anyOf:
+          - $ref: '#/components/schemas/CompaniesIntegration_V1_BodyCreate'
+          - $ref: '#/components/schemas/CompaniesIntegration_V1_BodyUpdate'
+          - $ref: '#/components/schemas/CompaniesIntegration_V1_BodyUpsert'
+          discriminator:
+            mapping:
+              create: '#/components/schemas/CompaniesIntegration_V1_BodyCreate'
+              update: '#/components/schemas/CompaniesIntegration_V1_BodyUpdate'
+              upsert: '#/components/schemas/CompaniesIntegration_V1_BodyUpsert'
+        in: header
+        required: true
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                oneOf:
+                - $ref: '#/components/schemas/CompaniesIntegration_V1_FullResponse'
+                - $ref: '#/components/schemas/CompaniesIntegration_V1_MinimumResponse'
+                discriminator:
+                  mapping:
+                    full: '#/components/schemas/CompaniesIntegration_V1_FullResponse'
+                    minimum: '#/components/schemas/CompaniesIntegration_V1_MinimumResponse'
+          description: Returns a company register
+        401:
+          description: Unauthorized
+      summary: Criar, atualizar e deletar companies
+      description: |
+        A ação a ser realizada no cadastro depende do valor preenchido no header
+        **Integration-Action**:
+
+
+        **create** - Realiza a operação de POST do cadastro enviado;
+
+
+        **update** - Realiza a operação de PATCH do cadastro enviado, baseado no ID do registro
+        preenchido no header **Integration-Filter**;
+
+
+        **upsert** - Realiza a operação de POST do cadastro enviado se não for enviado ID do registro
+        no header **Integration-Filter** **OU** realiza a operação de PUT do cadastro enviado se for
+        enviado o ID do registro no header **Integration-Filter**;
+    parameters:
+    - name: Integration-Service
+      description: 'Serviço responsável pela entidade. Exemplo: administration'
+      schema:
+        default: administration
+        type: string
+      in: header
+      required: true
+    - name: Integration-Resource
+      description: 'Recurso para requisição. Exemplo: companies-integration'
+      schema:
+        default: companies-integration
+        type: string
+      in: header
+      required: true
+    - name: Integration-Version
+      description: 'Versão da API de integração. Exemplo: v1'
+      schema:
+        default: v1
+        type: string
+      in: header
+      required: true
+components:
+  schemas:
+    CompaniesIntegration_V1_BodyEmpty:
+      description: No body
+      type: object
+    CompaniesIntegration_V1_MinimumResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        createdAt:
+          type: string
+        updatedAt:
+          type: string
+      example:
+        id: 19de1e5b-37c8-42c6-a62f-3d7bdd11e994
+        createAt: 2019-08-13T18:00:38.780Z
+        updatedAt: 2019-08-13T18:00:38.780Z
+    CompaniesIntegration_V1_BodyCreate:
+      required:
+      - active
+      - name
+      - tradingName
+      - redistributor
+      - headOffice
+      - externalId
+      type: object
+      properties:
+        active:
+          description: Define se o registro está ativo
+          type: boolean
+        name:
+          description: Nome da empresa/filial
+          type: string
+        externalId:
+          description: Código do sistema externo para identificação única do registro
+          type: string
+        tradingName:
+          description: Nome comercial da empresa/filial
+          type: string
+        country:
+          description: Nome do País
+          type: string
+        countryId:
+          description: Identificador do País
+          type: string
+        code:
+          description: Código da filial/empresa
+          type: string
+        state:
+          description: Descrição da unidade federativa
+          type: string
+        stateId:
+          description: Identificador da unidade federativa/estado
+          type: string
+        stateAcronym:
+          description: Sigla da unidade federativa
+          type: string
+        city:
+          description: Descrição da cidade
+          type: string
+        cityId:
+          description: Identificador da cidade
+          type: string
+        timeZoneDescription:
+          description: Descrição do fuso horário
+          type: string
+        timeZoneId:
+          description: Identificador do fuso horário
+          type: string
+        address:
+          description: Endereço da empresa/filial
+          type: string
+        complement:
+          description: Complemento de descrição da empresa
+          type: string
+        postalCode:
+          description: Código postal da empresa/filial
+          type: string
+        redistributor:
+          description: Indica se a empresa/filial é distribuidora
+          type: string
+        companyType:
+          description: Identificador de tipo da empresa
+          type: object
+          properties:
+            id:
+              type: string
+        headOffice:
+          description: Indica se a empresa é a mãe/matriz de todas as outras filiais
+          type: boolean
+        companyHeadOffice:
+          description: Identificador da empresa mãe
+          type: string
+          properties:
+            id:
+              type: string
+        slogan:
+          description: Texto de slogan da empresa
+          type: string
+        imageId:
+          description: Identificador da imagem da empresa/filial
+          type: string
+        companyEmails:
+          description: E-mails da empresa/filial
+          type: array
+          items:
+            properties:
+              email:
+                type: string
+              emailTypeId:
+                type: string
+              emailTypeIdField:
+                type: string
+        companyPhones:
+          description: Telefone(s) da empresa/filial
+          type: array
+          items:
+            properties:
+              phoneNumber:
+                type: string
+              phoneTypeId:
+                type: string
+              phoneTypeIdField:
+                type: string
+        companyIdentificationDocuments:
+          description: Documento(s) de identificação da empresa/filial
+          type: array
+          items:
+            properties:
+              identificationDocumentAcronym:
+                description: Sigla do tipo de documento
+                type: string
+              identificationDocumentId:
+                description: Identificador do tipo de documento
+                type: string
+              identificationDocumentDescription:
+                description: Nome do tipo de documento
+                type: string
+              documentNumber:
+                description: Número do documento
+                type: string
+              identificationDocumentMask:
+                description: Máscara do documento
+                type: string
+              externalId:
+                description: Código do sistema externo para identificação única do
+                  registro
+                type: string
+      example:
+        active: true
+        name: WSSIM Informática
+        tradingName: Wealth Systemas Informática LTDA
+        country: Brazil
+        countryId: 9a792485-bfb9-4e87-97d6-b797a994ca2b
+        state: Paraná
+        stateId: c242bcf5-c317-4bed-b395-f56a85b47c3f
+        stateAcronym: PR
+        externalId: WSSIM Informática
+        city: Cascavel
+        cityId: dabd4fce-27c1-4059-a9f8-a10be66583db
+        timeZoneDescription: Brasil - Brasília, São Paulo (-03:00)
+        timeZoneId: 9f596395-2f8f-43ec-b7ab-9345d173ca13
+        address: João Leite de Moura, 515
+        complement: Bairro Industrial
+        postalCode: 1810-295
+        redistributor: true
+        code: D MG 001
+        companyType:
+          id: 03159f36-42fc-4ff8-98b6-f419f58bc967
+        headOffice: false
+        companyHeadOffice:
+          id: cb610f22-f6ca-4088-9bef-35461b021705
+        slogan: Vem pra WS
+        imageId: 62610111-8e92-4019-9b51-9b74d5287bfd
+        companyEmails:
+        - email: felippesr@wssim.com.br
+          emailTypeId: 301f0e6e-4270-472b-aa96-45ab017bcbb1
+          emailTypeIdField: dpd_new_email_abe80850-2e08-4cae-8b48-4a82e859aa25
+        companyPhones:
+        - phoneNumber: 551533253689
+          phoneTypeId: d870427c-bbad-4eb8-9af5-5183b47f648f
+          phoneTypeIdField: dpd_new_phoneNumber_90917b87-2ed9-46d6-ac44-d96c0c180cc5
+        companyIdentificationDocuments:
+        - identificationDocumentAcronym: CPF
+          identificationDocumentId: 3735642b-b975-4402-ae11-144ce71e965a
+          identificationDocumentDescription: CPF
+          documentNumber: "827182827134"
+          externalId: 21015174e079f1d8d7355#827182827134
+    CompaniesIntegration_V1_BodyUpdate:
+      type: object
+      properties:
+        active:
+          type: boolean
+        name:
+          type: string
+        tradingName:
+          type: string
+        externalId:
+          type: string
+        country:
+          type: string
+        countryId:
+          type: string
+        code:
+          type: string
+        state:
+          type: string
+        stateId:
+          type: string
+        stateAcronym:
+          type: string
+        city:
+          type: string
+        cityId:
+          type: string
+        timeZoneDescription:
+          type: string
+        timeZoneId:
+          type: string
+        address:
+          type: string
+        complement:
+          type: string
+        postalCode:
+          type: string
+        redistributor:
+          type: string
+        companyType:
+          type: object
+          properties:
+            id:
+              type: string
+        headOffice:
+          type: boolean
+        companyHeadOffice:
+          type: string
+          properties:
+            id:
+              type: string
+        slogan:
+          type: string
+        imageId:
+          type: string
+        companyEmails:
+          type: array
+          items:
+            properties:
+              id:
+                type: string
+              email:
+                type: string
+              emailTypeId:
+                type: string
+              emailTypeIdField:
+                type: string
+        companyPhones:
+          type: array
+          items:
+            properties:
+              id:
+                type: string
+              phoneNumber:
+                type: string
+              phoneTypeId:
+                type: string
+              phoneTypeIdField:
+                type: string
+        companyIdentificationDocuments:
+          type: array
+          items:
+            properties:
+              id:
+                type: string
+              identificationDocumentAcronym:
+                type: string
+              identificationDocumentId:
+                type: string
+              identificationDocumentDescription:
+                type: string
+              documentNumber:
+                type: string
+              identificationDocumentMask:
+                type: string
+              externalId:
+                type: string
+      example:
+        active: true
+        name: WSSIM Informática
+        externalId: WSSIM Informática
+        tradingName: Wealth Systemas Informática LTDA
+        country: Brazil
+        countryId: 9a792485-bfb9-4e87-97d6-b797a994ca2b
+        state: Paraná
+        stateId: c242bcf5-c317-4bed-b395-f56a85b47c3f
+        stateAcronym: PR
+        city: Cascavel
+        cityId: dabd4fce-27c1-4059-a9f8-a10be66583db
+        timeZoneDescription: Brasil - Brasília, São Paulo (-03:00)
+        timeZoneId: 9f596395-2f8f-43ec-b7ab-9345d173ca13
+        address: João Leite de Moura, 515
+        complement: Bairro Industrial
+        postalCode: 1810-295
+        redistributor: true
+        code: D MG 001
+        companyType:
+          id: 03159f36-42fc-4ff8-98b6-f419f58bc967
+        headOffice: false
+        companyHeadOffice:
+          id: cb610f22-f6ca-4088-9bef-35461b021705
+        slogan: Vem pra WS
+        imageId: 62610111-8e92-4019-9b51-9b74d5287bfd
+        companyEmails:
+        - id: cabd4fce-27c1-4059-a9f8-a10be66583db
+          email: felippesr@wssim.com.br
+          emailTypeId: 301f0e6e-4270-472b-aa96-45ab017bcbb1
+          emailTypeIdField: dpd_new_email_abe80850-2e08-4cae-8b48-4a82e859aa25
+        companyPhones:
+        - id: eabd4fce-27c1-4059-a9f8-a10be66583db
+          phoneNumber: 551533253689
+          phoneTypeId: d870427c-bbad-4eb8-9af5-5183b47f648f
+          phoneTypeIdField: dpd_new_phoneNumber_90917b87-2ed9-46d6-ac44-d96c0c180cc5
+        companyIdentificationDocuments:
+        - id: fabd4fce-27c1-4059-a9f8-a10be66583db
+          identificationDocumentAcronym: CPF
+          identificationDocumentId: 3735642b-b975-4402-ae11-144ce71e965a
+          identificationDocumentDescription: CPF
+          documentNumber: "827182827134"
+          externalId: 21015174e079f1d8d7355#827182827134
+    CompaniesIntegration_V1_BodyUpsert:
+      type: object
+      properties:
+        active:
+          type: boolean
+        name:
+          type: string
+        externalId:
+          type: string
+        tradingName:
+          type: string
+        country:
+          type: string
+        countryId:
+          type: string
+        code:
+          type: string
+        state:
+          type: string
+        stateId:
+          type: string
+        stateAcronym:
+          type: string
+        city:
+          type: string
+        cityId:
+          type: string
+        timeZoneDescription:
+          type: string
+        timeZoneId:
+          type: string
+        address:
+          type: string
+        complement:
+          type: string
+        postalCode:
+          type: string
+        redistributor:
+          type: string
+        companyType:
+          type: object
+          properties:
+            id:
+              type: string
+        headOffice:
+          type: boolean
+        companyHeadOffice:
+          type: string
+          properties:
+            id:
+              type: string
+        slogan:
+          type: string
+        imageId:
+          type: string
+        companyEmails:
+          type: array
+          items:
+            properties:
+              email:
+                type: string
+              emailTypeId:
+                type: string
+              emailTypeIdField:
+                type: string
+        companyPhones:
+          type: array
+          items:
+            properties:
+              phoneNumber:
+                type: string
+              phoneTypeId:
+                type: string
+              phoneTypeIdField:
+                type: string
+        companyIdentificationDocuments:
+          type: array
+          items:
+            properties:
+              identificationDocumentAcronym:
+                description: Sigla do tipo de documento
+                type: string
+              identificationDocumentId:
+                description: Identificador do tipo de documento
+                type: string
+              identificationDocumentDescription:
+                description: Nome do tipo de documento
+                type: string
+              documentNumber:
+                description: Número do documento
+                type: string
+              identificationDocumentMask:
+                description: Máscara do documento
+                type: string
+              externalId:
+                description: Código do sistema externo para identificação única do
+                  registro
+                type: string
+      example:
+        active: true
+        name: WSSIM Informática
+        externalId: WSSIM Informática
+        tradingName: Wealth Systemas Informática LTDA
+        country: Brazil
+        countryId: 9a792485-bfb9-4e87-97d6-b797a994ca2b
+        state: Paraná
+        stateId: c242bcf5-c317-4bed-b395-f56a85b47c3f
+        stateAcronym: PR
+        city: Cascavel
+        cityId: dabd4fce-27c1-4059-a9f8-a10be66583db
+        timeZoneDescription: Brasil - Brasília, São Paulo (-03:00)
+        timeZoneId: 9f596395-2f8f-43ec-b7ab-9345d173ca13
+        address: João Leite de Moura, 515
+        complement: Bairro Industrial
+        postalCode: 1810-295
+        redistributor: true
+        code: D MG 001
+        companyType:
+          id: 03159f36-42fc-4ff8-98b6-f419f58bc967
+        headOffice: false
+        companyHeadOffice:
+          id: cb610f22-f6ca-4088-9bef-35461b021705
+        slogan: Vem pra WS
+        imageId: 62610111-8e92-4019-9b51-9b74d5287bfd
+        companyEmails:
+        - email: felippesr@wssim.com.br
+          emailTypeId: 301f0e6e-4270-472b-aa96-45ab017bcbb1
+          emailTypeIdField: dpd_new_email_abe80850-2e08-4cae-8b48-4a82e859aa25
+        companyPhones:
+        - phoneNumber: 551533253689
+          phoneTypeId: d870427c-bbad-4eb8-9af5-5183b47f648f
+          phoneTypeIdField: dpd_new_phoneNumber_90917b87-2ed9-46d6-ac44-d96c0c180cc5
+        companyIdentificationDocuments:
+        - identificationDocumentAcronym: CPF
+          identificationDocumentId: 3735642b-b975-4402-ae11-144ce71e965a
+          identificationDocumentDescription: CPF
+          documentNumber: "827182827134"
+          externalId: 21015174e079f1d8d7355#827182827134
+    CompaniesIntegration_V1_FullResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        createdAt:
+          type: string
+        updatedAt:
+          type: string
+        active:
+          type: boolean
+        name:
+          type: string
+        tradingName:
+          type: string
+        country:
+          type: string
+        countryId:
+          type: string
+        code:
+          type: string
+        state:
+          type: string
+        stateId:
+          type: string
+        stateAcronym:
+          type: string
+        city:
+          type: string
+        cityId:
+          type: string
+        timeZoneDescription:
+          type: string
+        timeZoneId:
+          type: string
+        address:
+          type: string
+        complement:
+          type: string
+        postalCode:
+          type: string
+        redistributor:
+          type: string
+        companyType:
+          type: object
+          properties:
+            id:
+              type: string
+        headOffice:
+          type: boolean
+        companyHeadOffice:
+          type: string
+          properties:
+            id:
+              type: string
+        slogan:
+          type: string
+        imageId:
+          type: string
+        companyEmails:
+          type: array
+          items:
+            properties:
+              id:
+                type: string
+              email:
+                type: string
+              emailTypeId:
+                type: string
+              emailTypeIdField:
+                type: string
+        companyPhones:
+          type: array
+          items:
+            properties:
+              id:
+                type: string
+              phoneNumber:
+                type: string
+              phoneTypeId:
+                type: string
+              phoneTypeIdField:
+                type: string
+        companyIdentificationDocuments:
+          type: array
+          items:
+            properties:
+              identificationDocumentAcronym:
+                description: Sigla do tipo de documento
+                type: string
+              identificationDocumentId:
+                description: Identificador do tipo de documento
+                type: string
+              identificationDocumentDescription:
+                description: Nome do tipo de documento
+                type: string
+              documentNumber:
+                description: Número do documento
+                type: string
+              identificationDocumentMask:
+                description: Máscara do documento
+                type: string
+              externalId:
+                description: Código do sistema externo para identificação única do
+                  registro
+                type: string
+      example:
+        id: 19de1e5b-37c8-42c6-a62f-3d7bdd11e994
+        active: true
+        name: WSSIM Informática
+        createAt: 2019-08-13T18:00:38.780Z
+        updatedAt: 2019-08-13T18:00:38.780Z
+        tradingName: Wealth Systemas Informática LTDA
+        country: Brazil
+        countryId: 9a792485-bfb9-4e87-97d6-b797a994ca2b
+        state: Paraná
+        stateId: c242bcf5-c317-4bed-b395-f56a85b47c3f
+        stateAcronym: PR
+        city: Cascavel
+        cityId: dabd4fce-27c1-4059-a9f8-a10be66583db
+        timeZoneDescription: Brasil - Brasília, São Paulo (-03:00)
+        timeZoneId: 9f596395-2f8f-43ec-b7ab-9345d173ca13
+        address: João Leite de Moura, 515
+        complement: Bairro Industrial
+        postalCode: 1810-295
+        redistributor: true
+        code: D MG 001
+        companyType:
+          id: 03159f36-42fc-4ff8-98b6-f419f58bc967
+          description: Privada
+          active: true
+        headOffice: false
+        companyHeadOffice:
+          id: cb610f22-f6ca-4088-9bef-35461b021705
+          active: true
+          name: WS
+        slogan: Vem pra WS
+        imageId: 62610111-8e92-4019-9b51-9b74d5287bfd
+        companyEmails:
+        - id: 901f0e6e-4270-472b-aa96-45ab017bcbb1
+          email: felippesr@wssim.com.br
+          emailTypeId: 301f0e6e-4270-472b-aa96-45ab017bcbb1
+          emailTypeIdField: dpd_new_email_abe80850-2e08-4cae-8b48-4a82e859aa25
+        companyPhones:
+        - id: 801f0e6e-4270-472b-aa96-45ab017bcbb1
+          phoneNumber: 551533253689
+          phoneTypeId: d870427c-bbad-4eb8-9af5-5183b47f648f
+          phoneTypeIdField: dpd_new_phoneNumber_90917b87-2ed9-46d6-ac44-d96c0c180cc5
+        companyIdentificationDocuments:
+        - id: 401f0e6e-4270-472b-aa96-45ab017bcbb1
+          identificationDocumentAcronym: CPF
+          identificationDocumentId: 3735642b-b975-4402-ae11-144ce71e965a
+          identificationDocumentDescription: CPF
+          documentNumber: "827182827134"
+          externalId: 21015174e079f1d8d7355#827182827134
+    CompaniesIntegration_V1_GetResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        createdAt:
+          type: string
+        updatedAt:
+          type: string
+        active:
+          type: boolean
+        name:
+          type: string
+        tradingName:
+          type: string
+        country:
+          type: string
+        countryId:
+          type: string
+        code:
+          type: string
+        state:
+          type: string
+        stateId:
+          type: string
+        stateAcronym:
+          type: string
+        city:
+          type: string
+        cityId:
+          type: string
+        timeZoneDescription:
+          type: string
+        timeZoneId:
+          type: string
+        address:
+          type: string
+        complement:
+          type: string
+        postalCode:
+          type: string
+        redistributor:
+          type: string
+        companyType:
+          type: object
+          properties:
+            id:
+              type: string
+        headOffice:
+          type: boolean
+        companyHeadOffice:
+          type: string
+          properties:
+            id:
+              type: string
+        slogan:
+          type: string
+        imageId:
+          type: string
+        companyEmails:
+          type: array
+          items:
+            properties:
+              id:
+                type: string
+              email:
+                type: string
+              emailTypeId:
+                type: string
+              emailTypeIdField:
+                type: string
+        companyPhones:
+          type: array
+          items:
+            properties:
+              id:
+                type: string
+              phoneNumber:
+                type: string
+              phoneTypeId:
+                type: string
+              phoneTypeIdField:
+                type: string
+        companyIdentificationDocuments:
+          type: array
+          items:
+            properties:
+              identificationDocumentAcronym:
+                description: Sigla do tipo de documento
+                type: string
+              identificationDocumentId:
+                description: Identificador do tipo de documento
+                type: string
+              identificationDocumentDescription:
+                description: Nome do tipo de documento
+                type: string
+              documentNumber:
+                description: Número do documento
+                type: string
+              identificationDocumentMask:
+                description: Máscara do documento
+                type: string
+              externalId:
+                description: Código do sistema externo para identificação única do
+                  registro
+                type: string
+      example:
+        id: 19de1e5b-37c8-42c6-a62f-3d7bdd11e994
+        active: true
+        name: WSSIM Informática
+        createAt: 2019-08-13T18:00:38.780Z
+        updatedAt: 2019-08-13T18:00:38.780Z
+        tradingName: Wealth Systemas Informática LTDA
+        country: Brazil
+        countryId: 9a792485-bfb9-4e87-97d6-b797a994ca2b
+        state: Paraná
+        stateId: c242bcf5-c317-4bed-b395-f56a85b47c3f
+        stateAcronym: PR
+        city: Cascavel
+        cityId: dabd4fce-27c1-4059-a9f8-a10be66583db
+        timeZoneDescription: Brasil - Brasília, São Paulo (-03:00)
+        timeZoneId: 9f596395-2f8f-43ec-b7ab-9345d173ca13
+        address: João Leite de Moura, 515
+        complement: Bairro Industrial
+        postalCode: 1810-295
+        redistributor: true
+        code: D MG 001
+        companyType:
+          id: 03159f36-42fc-4ff8-98b6-f419f58bc967
+          description: Privada
+          active: true
+        headOffice: false
+        companyHeadOffice:
+          id: cb610f22-f6ca-4088-9bef-35461b021705
+          active: true
+          name: WS
+        slogan: Vem pra WS
+        imageId: 62610111-8e92-4019-9b51-9b74d5287bfd
+        companyEmails:
+        - id: 901f0e6e-4270-472b-aa96-45ab017bcbb1
+          email: felippesr@wssim.com.br
+          emailTypeId: 301f0e6e-4270-472b-aa96-45ab017bcbb1
+          emailTypeIdField: dpd_new_email_abe80850-2e08-4cae-8b48-4a82e859aa25
+        companyPhones:
+        - id: 801f0e6e-4270-472b-aa96-45ab017bcbb1
+          phoneNumber: 551533253689
+          phoneTypeId: d870427c-bbad-4eb8-9af5-5183b47f648f
+          phoneTypeIdField: dpd_new_phoneNumber_90917b87-2ed9-46d6-ac44-d96c0c180cc5
+        companyIdentificationDocuments:
+        - id: 401f0e6e-4270-472b-aa96-45ab017bcbb1
+          identificationDocumentAcronym: CPF
+          identificationDocumentId: 3735642b-b975-4402-ae11-144ce71e965a
+          identificationDocumentDescription: CPF
+          documentNumber: "827182827134"
+          externalId: 21015174e079f1d8d7355#827182827134
+tags:
+- name: APP2
+  description: Ambiente APP2
+- name: integration
+  description: ""
