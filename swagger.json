@@ -84,7 +84,7 @@
             "description": "Unauthorized"
           }
         },
-        "summary": "Criar, atualizar e deletar grupos de serviço",
+        "summary": "Wandaymo, Criar, atualizar e deletar grupos de serviço",
         "description": "A ação a ser realizada no cadastro depende do valor preenchido no header\n**Integration-Action**:\n\n\n**create** - Realiza a operação de POST do cadastro enviado;\n\n\n**update** - Realiza a operação de PATCH do cadastro enviado, baseado no ID do registro\npreenchido no header **Integration-Filter**;\n\n\n**upsert** - Realiza a operação de POST do cadastro enviado se não for enviado ID do registro\nno header **Integration-Filter** **OU** realiza a operação de PUT do cadastro enviado se for\nenviado o ID do registro no header **Integration-Filter**;\n",
         "consumes": [
           "application/json"
