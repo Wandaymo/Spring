@@ -1,3755 +1,428 @@
-{
-  "swagger": "2.0",
-  "info": {
-    "title": "Farmbox",
-    "version": "",
-    "description": "This document describes the first version (V1) of Farmbox's API.\n\n## Sandbox\n\nAll requests during development can be done on the staging server (test.farmbox.cc), data changes made on this enviroment are not replicated to our production environment.\nBe warned that the Staging Database can be updated/reseted frequently without further notice.\n\n# Authentication\n\nWe support two authentication methods:\n\n## Client Token\n\nAuthentication is done using a specific Client Token generated for each individual Client. This method\nleverages a simple mechanism of authenticating on the behalf of the entire organization. This token is provided\nby us and you should add as a value to the `Authorization` header on each request.\n\n## Oauth 2 Authentication\n\nContact our technical support for information and credentials.\n\n____"
-  },
-  "host": "farmbox.cc",
-  "basePath": "/api/v1",
-  "schemes": [
-    "http"
-  ],
-  "paths": {
-    "/farms": {
-      "get": {
-        "tags": [
-          "Structures"
-        ],
-        "summary": "Farm info",
-        "description": "Lists all farms",
-        "operationId": "Farm List",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "page",
-            "in": "query",
-            "description": "The user name for login",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "updated_since",
-            "in": "query",
-            "description": "The password for login in clear text",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "Accept",
-            "in": "header",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "headers": {}
-          }
-        }
-      },
-      "post": {
-        "responses": {
-          "201": {
-            "description": "Created",
-            "headers": {},
-            "examples": {
-              "application/json": {
-                "name": "Fazenda Exemplo",
-                "cnpj_cpf": "01214556998",
-                "ie": "123454566",
-                "id": 42,
-                "updated_at": "2015-05-05T12:30:00"
-              }
-            },
-            "schema": {
-              "type": "object",
-              "properties": {
-                "name": {
-                  "type": "string",
-                  "description": "Farm name"
-                },
-                "cnpj_cpf": {
-                  "type": "string",
-                  "description": "Farm cpnj/cpf"
-                },
-                "ie": {
-                  "type": "string",
-                  "description": "Farm state registration"
-                },
-                "id": {
-                  "type": "number",
-                  "description": "Farm identifier"
-                },
-                "updated_at": {
-                  "type": "string",
-                  "description": "Date from last update"
-                }
-              },
-              "required": [
-                "name",
-                "id",
-                "updated_at"
-              ]
-            }
-          }
-        },
-        "summary": "Create Farm",
-        "operationId": "Create Farm",
-        "description": "Creates a new farm",
-        "tags": [
-          "Structures"
-        ],
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "name": {
-                  "type": "string",
-                  "description": "Farm name"
-                },
-                "cnpj_cpf": {
-                  "type": "string",
-                  "description": "Farm cpnj/cpf"
-                },
-                "ie": {
-                  "type": "string",
-                  "description": "Farm state registration"
-                }
-              },
-              "required": [
-                "name"
-              ],
-              "example": {
-                "name": "Fazenda Exemplo",
-                "cnpj_cpf": "01214556998",
-                "ie": "123454566"
-              }
-            }
-          },
-          {
-            "name": "Accept",
-            "in": "header",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "produces": [
-          "application/json"
-        ]
-      }
-    },
-    "/farms/{id}": {
-      "get": {
-        "responses": {
-          "200": {
-            "description": "OK",
-            "headers": {},
-            "examples": {
-              "application/json": {
-                "name": "Fazenda Exemplo",
-                "cnpj_cpf": "01214556998",
-                "ie": "123454566",
-                "id": 42,
-                "updated_at": "2015-05-05T12:30:00"
-              }
-            },
-            "schema": {
-              "type": "object",
-              "properties": {
-                "name": {
-                  "type": "string",
-                  "description": "Farm name"
-                },
-                "cnpj_cpf": {
-                  "type": "string",
-                  "description": "Farm cpnj/cpf"
-                },
-                "ie": {
-                  "type": "string",
-                  "description": "Farm state registration"
-                },
-                "id": {
-                  "type": "number",
-                  "description": "Farm identifier"
-                },
-                "updated_at": {
-                  "type": "string",
-                  "description": "Date from last update"
-                }
-              },
-              "required": [
-                "name",
-                "id",
-                "updated_at"
-              ]
-            }
-          }
-        },
-        "summary": "Farm Info",
-        "operationId": "Farm Info",
-        "description": "Info from a single farm",
-        "tags": [
-          "Structures"
-        ],
-        "parameters": [
-          {
-            "name": "Accept",
-            "in": "header",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "produces": [
-          "application/json"
-        ]
-      },
-      "put": {
-        "responses": {
-          "201": {
-            "description": "Created",
-            "headers": {},
-            "examples": {
-              "application/json": {
-                "name": "Fazenda Exemplo",
-                "cnpj_cpf": "01214556998",
-                "ie": "123454566",
-                "id": 42,
-                "updated_at": "2015-05-05T12:30:00"
-              }
-            },
-            "schema": {
-              "type": "object",
-              "properties": {
-                "name": {
-                  "type": "string",
-                  "description": "Farm name"
-                },
-                "cnpj_cpf": {
-                  "type": "string",
-                  "description": "Farm cpnj/cpf"
-                },
-                "ie": {
-                  "type": "string",
-                  "description": "Farm state registration"
-                },
-                "id": {
-                  "type": "number",
-                  "description": "Farm identifier"
-                },
-                "updated_at": {
-                  "type": "string",
-                  "description": "Date from last update"
-                }
-              },
-              "required": [
-                "name",
-                "id",
-                "updated_at"
-              ]
-            }
-          }
-        },
-        "summary": "Update Farm",
-        "operationId": "Update Farm",
-        "description": "Updates an existing farm",
-        "tags": [
-          "Structures"
-        ],
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "name": {
-                  "type": "string",
-                  "description": "Farm name"
-                },
-                "cnpj_cpf": {
-                  "type": "string",
-                  "description": "Farm cpnj/cpf"
-                },
-                "ie": {
-                  "type": "string",
-                  "description": "Farm state registration"
-                }
-              },
-              "required": [
-                "name"
-              ],
-              "example": {
-                "name": "Fazenda Exemplo",
-                "cnpj_cpf": "01214556998",
-                "ie": "123454566"
-              }
-            }
-          },
-          {
-            "name": "Accept",
-            "in": "header",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "produces": [
-          "application/json"
-        ]
-      },
-      "delete": {
-        "responses": {
-          "200": {
-            "description": "OK",
-            "headers": {},
-            "examples": {}
-          }
-        },
-        "summary": "Remove Farm",
-        "operationId": "Remove Farm",
-        "description": "Removes an existing farm",
-        "tags": [
-          "Structures"
-        ],
-        "parameters": [
-          {
-            "name": "Accept",
-            "in": "header",
-            "required": true,
-            "type": "string"
-          }
-        ]
-      }
-    },
-    "/plantations": {
-      "get": {
-        "responses": {
-          "200": {
-            "description": "OK",
-            "headers": {},
-            "examples": {
-              "application/json": {
-                "deleted_since": [],
-                "next_page_url": "http://host.com/api/v1/...",
-                "plantations": [
-                  {
-                    "farm_id": 23,
-                    "plot_id": 12,
-                    "harvest_id": 13,
-                    "variety_id": 14,
-                    "planned_variety_id": 14,
-                    "state": "'planned'",
-                    "date": "2015-05-05",
-                    "planned_date": "2015-05-05",
-                    "emergence_date": "2015-05-05",
-                    "area": 100,
-                    "geo_points": [
-                      {
-                        "latitude": 23233.23,
-                        "longitude": 5432323.23
-                      }
-                    ],
-                    "id": 42,
-                    "name": "Pivot 1",
-                    "farm_name": "Primavera",
-                    "variety_name": "TMB123",
-                    "planned_variety_name": "TMB123",
-                    "culture_name": "Algodão",
-                    "planned_culture_name": "Algodão",
-                    "harvest_name": "2016/2017",
-                    "phenological_stage": "R2",
-                    "phenological_stage_classification": "reproductive",
-                    "updated_at": "2015-05-05T12:30:00"
-                  }
-                ]
-              }
-            },
-            "schema": {
-              "type": "object",
-              "properties": {
-                "deleted_since": {
-                  "type": "array",
-                  "items": {}
-                },
-                "next_page_url": {
-                  "type": "string",
-                  "description": "URL for next page"
-                },
-                "plantations": {
-                  "type": "array",
-                  "items": {}
-                }
-              }
-            }
-          }
-        },
-        "summary": "Plantations List",
-        "operationId": "Plantations List",
-        "description": "Lists all active plantations (plots on harvests)",
-        "tags": [
-          "Structures"
-        ],
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "schema": {
-              "$ref": "#/definitions/Query Base"
-            }
-          },
-          {
-            "name": "Accept",
-            "in": "header",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "produces": [
-          "application/json"
-        ]
-      }
-    },
-    "/plantation": {
-      "post": {
-        "responses": {
-          "201": {
-            "description": "Created",
-            "headers": {},
-            "examples": {
-              "application/json": {
-                "farm_id": 23,
-                "plot_id": 12,
-                "harvest_id": 13,
-                "variety_id": 14,
-                "planned_variety_id": 14,
-                "state": "'planned'",
-                "date": "2015-05-05",
-                "planned_date": "2015-05-05",
-                "emergence_date": "2015-05-05",
-                "area": 100,
-                "geo_points": [
-                  {
-                    "latitude": 23233.23,
-                    "longitude": 5432323.23
-                  }
-                ],
-                "id": 42,
-                "name": "Pivot 1",
-                "farm_name": "Primavera",
-                "variety_name": "TMB123",
-                "planned_variety_name": "TMB123",
-                "culture_name": "Algodão",
-                "planned_culture_name": "Algodão",
-                "harvest_name": "2016/2017",
-                "phenological_stage": "R2",
-                "phenological_stage_classification": "reproductive",
-                "updated_at": "2015-05-05T12:30:00"
-              }
-            },
-            "schema": {
-              "type": "object",
-              "properties": {
-                "farm_id": {
-                  "type": "number",
-                  "description": "Farm identifier"
-                },
-                "plot_id": {
-                  "type": "number",
-                  "description": "Plot identifier"
-                },
-                "harvest_id": {
-                  "type": "number",
-                  "description": "Harvest identifier"
-                },
-                "variety_id": {
-                  "type": "number",
-                  "description": "Variety identifier"
-                },
-                "planned_variety_id": {
-                  "type": "number",
-                  "description": "Planned Variety identifier"
-                },
-                "state": {
-                  "type": "string",
-                  "description": "State, valid options: planned, active"
-                },
-                "date": {
-                  "type": "string",
-                  "description": "Date executed seeding"
-                },
-                "planned_date": {
-                  "type": "string",
-                  "description": "Date planned seeding"
-                },
-                "emergence_date": {
-                  "type": "string",
-                  "description": "Emergence Date"
-                },
-                "area": {
-                  "type": "number",
-                  "description": "Area in ha"
-                },
-                "geo_points": {
-                  "type": "array",
-                  "description": "Polygon geo points",
-                  "items": {}
-                },
-                "id": {
-                  "type": "number",
-                  "description": "Plantation identifier (Plot on harvest)"
-                },
-                "name": {
-                  "type": "string",
-                  "description": "Plot name"
-                },
-                "farm_name": {
-                  "type": "string",
-                  "description": "Farm name"
-                },
-                "variety_name": {
-                  "type": "string",
-                  "description": "Variety name"
-                },
-                "planned_variety_name": {
-                  "type": "string",
-                  "description": "Planned Variety name"
-                },
-                "culture_name": {
-                  "type": "string",
-                  "description": "Culture name"
-                },
-                "planned_culture_name": {
-                  "type": "string",
-                  "description": "Planned Culture name"
-                },
-                "harvest_name": {
-                  "type": "string",
-                  "description": "Harvest name"
-                },
-                "phenological_stage": {
-                  "type": "string",
-                  "description": "Actual phenological stage name PENDING"
-                },
-                "phenological_stage_classification": {
-                  "type": "string",
-                  "description": "Actual phenological stage classification PENDING"
-                },
-                "updated_at": {
-                  "type": "string",
-                  "description": "Date from last update"
-                }
-              },
-              "required": [
-                "farm_id",
-                "plot_id",
-                "harvest_id",
-                "variety_id",
-                "planned_variety_id",
-                "state",
-                "date",
-                "planned_date",
-                "emergence_date",
-                "area",
-                "geo_points",
-                "id",
-                "name",
-                "farm_name",
-                "variety_name",
-                "planned_variety_name",
-                "culture_name",
-                "planned_culture_name",
-                "harvest_name",
-                "updated_at"
-              ]
-            }
-          }
-        },
-        "summary": "Create Plantation",
-        "operationId": "Create Plantation",
-        "description": "Creates a new plantation",
-        "tags": [
-          "Structures"
-        ],
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "farm_id": {
-                  "type": "number",
-                  "description": "Farm identifier"
-                },
-                "plot_id": {
-                  "type": "number",
-                  "description": "Plot identifier"
-                },
-                "harvest_id": {
-                  "type": "number",
-                  "description": "Harvest identifier"
-                },
-                "variety_id": {
-                  "type": "number",
-                  "description": "Variety identifier"
-                },
-                "planned_variety_id": {
-                  "type": "number",
-                  "description": "Planned Variety identifier"
-                },
-                "state": {
-                  "type": "string",
-                  "description": "State, valid options: planned, active"
-                },
-                "date": {
-                  "type": "string",
-                  "description": "Date executed seeding"
-                },
-                "planned_date": {
-                  "type": "string",
-                  "description": "Date planned seeding"
-                },
-                "emergence_date": {
-                  "type": "string",
-                  "description": "Emergence Date"
-                },
-                "area": {
-                  "type": "number",
-                  "description": "Area in ha"
-                },
-                "geo_points": {
-                  "type": "array",
-                  "description": "Polygon geo points"
-                }
-              },
-              "required": [
-                "farm_id",
-                "plot_id",
-                "harvest_id",
-                "variety_id",
-                "planned_variety_id",
-                "state",
-                "date",
-                "planned_date",
-                "emergence_date",
-                "area",
-                "geo_points"
-              ],
-              "example": {
-                "farm_id": 23,
-                "plot_id": 12,
-                "harvest_id": 13,
-                "variety_id": 14,
-                "planned_variety_id": 14,
-                "state": "'planned'",
-                "date": "2015-05-05",
-                "planned_date": "2015-05-05",
-                "emergence_date": "2015-05-05",
-                "area": 100,
-                "geo_points": [
-                  {
-                    "latitude": 23233.23,
-                    "longitude": 5432323.23
-                  }
-                ]
-              }
-            }
-          },
-          {
-            "name": "Accept",
-            "in": "header",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "produces": [
-          "application/json"
-        ]
-      }
-    },
-    "/plantations/{id}": {
-      "put": {
-        "responses": {
-          "200": {
-            "description": "OK",
-            "headers": {},
-            "examples": {
-              "application/json": {
-                "farm_id": 23,
-                "plot_id": 12,
-                "harvest_id": 13,
-                "variety_id": 14,
-                "planned_variety_id": 14,
-                "state": "'planned'",
-                "date": "2015-05-05",
-                "planned_date": "2015-05-05",
-                "emergence_date": "2015-05-05",
-                "area": 100,
-                "geo_points": [
-                  {
-                    "latitude": 23233.23,
-                    "longitude": 5432323.23
-                  }
-                ],
-                "id": 42,
-                "name": "Pivot 1",
-                "farm_name": "Primavera",
-                "variety_name": "TMB123",
-                "planned_variety_name": "TMB123",
-                "culture_name": "Algodão",
-                "planned_culture_name": "Algodão",
-                "harvest_name": "2016/2017",
-                "phenological_stage": "R2",
-                "phenological_stage_classification": "reproductive",
-                "updated_at": "2015-05-05T12:30:00"
-              }
-            },
-            "schema": {
-              "type": "object",
-              "properties": {
-                "farm_id": {
-                  "type": "number",
-                  "description": "Farm identifier"
-                },
-                "plot_id": {
-                  "type": "number",
-                  "description": "Plot identifier"
-                },
-                "harvest_id": {
-                  "type": "number",
-                  "description": "Harvest identifier"
-                },
-                "variety_id": {
-                  "type": "number",
-                  "description": "Variety identifier"
-                },
-                "planned_variety_id": {
-                  "type": "number",
-                  "description": "Planned Variety identifier"
-                },
-                "state": {
-                  "type": "string",
-                  "description": "State, valid options: planned, active"
-                },
-                "date": {
-                  "type": "string",
-                  "description": "Date executed seeding"
-                },
-                "planned_date": {
-                  "type": "string",
-                  "description": "Date planned seeding"
-                },
-                "emergence_date": {
-                  "type": "string",
-                  "description": "Emergence Date"
-                },
-                "area": {
-                  "type": "number",
-                  "description": "Area in ha"
-                },
-                "geo_points": {
-                  "type": "array",
-                  "description": "Polygon geo points",
-                  "items": {}
-                },
-                "id": {
-                  "type": "number",
-                  "description": "Plantation identifier (Plot on harvest)"
-                },
-                "name": {
-                  "type": "string",
-                  "description": "Plot name"
-                },
-                "farm_name": {
-                  "type": "string",
-                  "description": "Farm name"
-                },
-                "variety_name": {
-                  "type": "string",
-                  "description": "Variety name"
-                },
-                "planned_variety_name": {
-                  "type": "string",
-                  "description": "Planned Variety name"
-                },
-                "culture_name": {
-                  "type": "string",
-                  "description": "Culture name"
-                },
-                "planned_culture_name": {
-                  "type": "string",
-                  "description": "Planned Culture name"
-                },
-                "harvest_name": {
-                  "type": "string",
-                  "description": "Harvest name"
-                },
-                "phenological_stage": {
-                  "type": "string",
-                  "description": "Actual phenological stage name PENDING"
-                },
-                "phenological_stage_classification": {
-                  "type": "string",
-                  "description": "Actual phenological stage classification PENDING"
-                },
-                "updated_at": {
-                  "type": "string",
-                  "description": "Date from last update"
-                }
-              },
-              "required": [
-                "farm_id",
-                "plot_id",
-                "harvest_id",
-                "variety_id",
-                "planned_variety_id",
-                "state",
-                "date",
-                "planned_date",
-                "emergence_date",
-                "area",
-                "geo_points",
-                "id",
-                "name",
-                "farm_name",
-                "variety_name",
-                "planned_variety_name",
-                "culture_name",
-                "planned_culture_name",
-                "harvest_name",
-                "updated_at"
-              ]
-            }
-          }
-        },
-        "summary": "Update Plantation",
-        "operationId": "Update Plantation",
-        "description": "Updates an existing plantation",
-        "tags": [
-          "Structures"
-        ],
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "farm_id": {
-                  "type": "number",
-                  "description": "Farm identifier"
-                },
-                "plot_id": {
-                  "type": "number",
-                  "description": "Plot identifier"
-                },
-                "harvest_id": {
-                  "type": "number",
-                  "description": "Harvest identifier"
-                },
-                "variety_id": {
-                  "type": "number",
-                  "description": "Variety identifier"
-                },
-                "planned_variety_id": {
-                  "type": "number",
-                  "description": "Planned Variety identifier"
-                },
-                "state": {
-                  "type": "string",
-                  "description": "State, valid options: planned, active"
-                },
-                "date": {
-                  "type": "string",
-                  "description": "Date executed seeding"
-                },
-                "planned_date": {
-                  "type": "string",
-                  "description": "Date planned seeding"
-                },
-                "emergence_date": {
-                  "type": "string",
-                  "description": "Emergence Date"
-                },
-                "area": {
-                  "type": "number",
-                  "description": "Area in ha"
-                },
-                "geo_points": {
-                  "type": "array",
-                  "description": "Polygon geo points"
-                }
-              },
-              "required": [
-                "farm_id",
-                "plot_id",
-                "harvest_id",
-                "variety_id",
-                "planned_variety_id",
-                "state",
-                "date",
-                "planned_date",
-                "emergence_date",
-                "area",
-                "geo_points"
-              ],
-              "example": {
-                "farm_id": 23,
-                "plot_id": 12,
-                "harvest_id": 13,
-                "variety_id": 14,
-                "planned_variety_id": 14,
-                "state": "'planned'",
-                "date": "2015-05-05",
-                "planned_date": "2015-05-05",
-                "emergence_date": "2015-05-05",
-                "area": 100,
-                "geo_points": [
-                  {
-                    "latitude": 23233.23,
-                    "longitude": 5432323.23
-                  }
-                ]
-              }
-            }
-          },
-          {
-            "name": "Accept",
-            "in": "header",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "produces": [
-          "application/json"
-        ]
-      },
-      "delete": {
-        "responses": {
-          "200": {
-            "description": "OK",
-            "headers": {},
-            "examples": {}
-          }
-        },
-        "summary": "Remove Plantation",
-        "operationId": "Remove Plantation",
-        "description": "Removes an existing plantation",
-        "tags": [
-          "Structures"
-        ],
-        "parameters": [
-          {
-            "name": "Accept",
-            "in": "header",
-            "required": true,
-            "type": "string"
-          }
-        ]
-      }
-    },
-    "/users": {
-      "get": {
-        "responses": {
-          "200": {
-            "description": "OK",
-            "headers": {},
-            "examples": {
-              "application/json": {
-                "deleted_since": [],
-                "next_page_url": "http://host.com/api/v1/...",
-                "users": [
-                  {
-                    "id": 42,
-                    "name": "João",
-                    "username": "joao",
-                    "email": "joao@company.com",
-                    "crea": "1234",
-                    "role_label": "Owner"
-                  }
-                ]
-              }
-            },
-            "schema": {
-              "type": "object",
-              "properties": {
-                "deleted_since": {
-                  "type": "array",
-                  "items": {}
-                },
-                "next_page_url": {
-                  "type": "string",
-                  "description": "URL for next page"
-                },
-                "users": {
-                  "type": "array",
-                  "items": {}
-                }
-              }
-            }
-          }
-        },
-        "summary": "Users List",
-        "operationId": "Users List",
-        "description": "Lists all users",
-        "tags": [
-          "Structures"
-        ],
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "schema": {
-              "$ref": "#/definitions/Query Base"
-            }
-          },
-          {
-            "name": "Accept",
-            "in": "header",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "produces": [
-          "application/json"
-        ]
-      }
-    },
-    "/monitoring_day_results/": {
-      "get": {
-        "responses": {
-          "200": {
-            "description": "OK",
-            "headers": {},
-            "examples": {
-              "application/json": {
-                "deleted_since": [],
-                "next_page_url": "http://host.com/api/v1/...",
-                "monitoring_day_results": [
-                  {
-                    "id": "09082017-1233",
-                    "date": "2015-05-05",
-                    "updated_at": "2015-05-05T12:30:00",
-                    "phenological_stage": {
-                      "name": "R2",
-                      "classification": "reproductive"
-                    },
-                    "plantation": {
-                      "farm_id": 23,
-                      "plot_id": 12,
-                      "harvest_id": 13,
-                      "variety_id": 14,
-                      "planned_variety_id": 14,
-                      "state": "'planned'",
-                      "date": "2015-05-05",
-                      "planned_date": "2015-05-05",
-                      "emergence_date": "2015-05-05",
-                      "area": 100,
-                      "geo_points": [
-                        {
-                          "latitude": 23233.23,
-                          "longitude": 5432323.23
-                        }
-                      ],
-                      "id": 42,
-                      "name": "Pivot 1",
-                      "farm_name": "Primavera",
-                      "variety_name": "TMB123",
-                      "planned_variety_name": "TMB123",
-                      "culture_name": "Algodão",
-                      "planned_culture_name": "Algodão",
-                      "harvest_name": "2016/2017",
-                      "phenological_stage": "R2",
-                      "phenological_stage_classification": "reproductive",
-                      "updated_at": "2015-05-05T12:30:00"
-                    },
-                    "count_targets": 1,
-                    "targets": [
-                      {
-                        "id": 23,
-                        "name": "Bicudo",
-                        "scientific_name": "Anthonomus grandis",
-                        "target_type": "Pragras",
-                        "target_parameters": [
-                          {
-                            "id": 23,
-                            "name": "Ovos Pequenos",
-                            "infestation": 12,
-                            "infestation_level": "damaged",
-                            "vegetative_action_level": 2,
-                            "vegetative_damage_level": 10,
-                            "use_vegetative_action_level": 1,
-                            "use_vegetative_damage_level": 1,
-                            "reproductive_action_level": 12,
-                            "reproductive_damage_level": 14,
-                            "use_reproductive_action_level": 1,
-                            "use_reproductive_damage_level": 1,
-                            "calculated": 1,
-                            "type_action_level": "average"
-                          }
-                        ]
-                      }
-                    ],
-                    "monitors": [
-                      {
-                        "id": 42,
-                        "name": "João",
-                        "username": "joao",
-                        "email": "joao@company.com"
-                      }
-                    ],
-                    "monitoring_stops": [
-                      {
-                        "id": 23,
-                        "latitude": 23233.23,
-                        "longitude": 5432323.23,
-                        "date": "2015-05-05T12:30:00",
-                        "user": {
-                          "id": 42,
-                          "name": "João",
-                          "username": "joao",
-                          "email": "joao@company.com"
-                        }
-                      }
-                    ]
-                  }
-                ]
-              }
-            },
-            "schema": {
-              "type": "object",
-              "properties": {
-                "deleted_since": {
-                  "type": "array",
-                  "items": {}
-                },
-                "next_page_url": {
-                  "type": "string",
-                  "description": "URL for next page"
-                },
-                "monitoring_day_results": {
-                  "type": "array",
-                  "items": {}
-                }
-              }
-            }
-          }
-        },
-        "summary": "Monitoring Day Results List",
-        "operationId": "Monitoring Day Results List",
-        "description": "Lists the results from each day monitored to each plantation",
-        "tags": [
-          "Operations"
-        ],
-        "parameters": [
-          {
-            "name": "Accept",
-            "in": "header",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "produces": [
-          "application/json"
-        ]
-      }
-    },
-    "/monitoring_day_results/{id}": {
-      "get": {
-        "responses": {
-          "200": {
-            "description": "OK",
-            "headers": {},
-            "examples": {
-              "application/json": {
-                "id": "09082017-1233",
-                "date": "2015-05-05",
-                "updated_at": "2015-05-05T12:30:00",
-                "phenological_stage": {
-                  "name": "R2",
-                  "classification": "reproductive"
-                },
-                "plantation": {
-                  "farm_id": 23,
-                  "plot_id": 12,
-                  "harvest_id": 13,
-                  "variety_id": 14,
-                  "planned_variety_id": 14,
-                  "state": "'planned'",
-                  "date": "2015-05-05",
-                  "planned_date": "2015-05-05",
-                  "emergence_date": "2015-05-05",
-                  "area": 100,
-                  "geo_points": [
-                    {
-                      "latitude": 23233.23,
-                      "longitude": 5432323.23
-                    }
-                  ],
-                  "id": 42,
-                  "name": "Pivot 1",
-                  "farm_name": "Primavera",
-                  "variety_name": "TMB123",
-                  "planned_variety_name": "TMB123",
-                  "culture_name": "Algodão",
-                  "planned_culture_name": "Algodão",
-                  "harvest_name": "2016/2017",
-                  "phenological_stage": "R2",
-                  "phenological_stage_classification": "reproductive",
-                  "updated_at": "2015-05-05T12:30:00"
-                },
-                "count_targets": 1,
-                "targets": [
-                  {
-                    "id": 23,
-                    "name": "Bicudo",
-                    "scientific_name": "Anthonomus grandis",
-                    "target_type": "Pragras",
-                    "target_parameters": [
-                      {
-                        "id": 23,
-                        "name": "Ovos Pequenos",
-                        "infestation": 12,
-                        "infestation_level": "damaged",
-                        "vegetative_action_level": 2,
-                        "vegetative_damage_level": 10,
-                        "use_vegetative_action_level": 1,
-                        "use_vegetative_damage_level": 1,
-                        "reproductive_action_level": 12,
-                        "reproductive_damage_level": 14,
-                        "use_reproductive_action_level": 1,
-                        "use_reproductive_damage_level": 1,
-                        "calculated": 1,
-                        "type_action_level": "average"
-                      }
-                    ]
-                  }
-                ],
-                "monitors": [
-                  {
-                    "id": 42,
-                    "name": "João",
-                    "username": "joao",
-                    "email": "joao@company.com"
-                  }
-                ],
-                "monitoring_stops": [
-                  {
-                    "id": 23,
-                    "latitude": 23233.23,
-                    "longitude": 5432323.23,
-                    "date": "2015-05-05T12:30:00",
-                    "user": {
-                      "id": 42,
-                      "name": "João",
-                      "username": "joao",
-                      "email": "joao@company.com"
-                    }
-                  }
-                ]
-              }
-            },
-            "schema": {
-              "type": "object",
-              "properties": {
-                "id": {
-                  "type": "string",
-                  "description": "Monitoring Day Result identifier"
-                },
-                "date": {
-                  "type": "string",
-                  "description": "Date"
-                },
-                "updated_at": {
-                  "type": "string",
-                  "description": "Date from last update"
-                },
-                "phenological_stage": {
-                  "type": "object",
-                  "properties": {
-                    "name": {
-                      "type": "string",
-                      "description": "Actual phenological stage name"
-                    },
-                    "classification": {
-                      "type": "string",
-                      "description": "Actual phenological stage classification"
-                    }
-                  },
-                  "description": "Phenological Stage"
-                },
-                "plantation": {
-                  "type": "object",
-                  "properties": {
-                    "farm_id": {
-                      "type": "number",
-                      "description": "Farm identifier"
-                    },
-                    "plot_id": {
-                      "type": "number",
-                      "description": "Plot identifier"
-                    },
-                    "harvest_id": {
-                      "type": "number",
-                      "description": "Harvest identifier"
-                    },
-                    "variety_id": {
-                      "type": "number",
-                      "description": "Variety identifier"
-                    },
-                    "planned_variety_id": {
-                      "type": "number",
-                      "description": "Planned Variety identifier"
-                    },
-                    "state": {
-                      "type": "string",
-                      "description": "State, valid options: planned, active"
-                    },
-                    "date": {
-                      "type": "string",
-                      "description": "Date executed seeding"
-                    },
-                    "planned_date": {
-                      "type": "string",
-                      "description": "Date planned seeding"
-                    },
-                    "emergence_date": {
-                      "type": "string",
-                      "description": "Emergence Date"
-                    },
-                    "area": {
-                      "type": "number",
-                      "description": "Area in ha"
-                    },
-                    "geo_points": {
-                      "type": "array",
-                      "description": "Polygon geo points",
-                      "items": {}
-                    },
-                    "id": {
-                      "type": "number",
-                      "description": "Plantation identifier (Plot on harvest)"
-                    },
-                    "name": {
-                      "type": "string",
-                      "description": "Plot name"
-                    },
-                    "farm_name": {
-                      "type": "string",
-                      "description": "Farm name"
-                    },
-                    "variety_name": {
-                      "type": "string",
-                      "description": "Variety name"
-                    },
-                    "planned_variety_name": {
-                      "type": "string",
-                      "description": "Planned Variety name"
-                    },
-                    "culture_name": {
-                      "type": "string",
-                      "description": "Culture name"
-                    },
-                    "planned_culture_name": {
-                      "type": "string",
-                      "description": "Planned Culture name"
-                    },
-                    "harvest_name": {
-                      "type": "string",
-                      "description": "Harvest name"
-                    },
-                    "phenological_stage": {
-                      "type": "string",
-                      "description": "Actual phenological stage name PENDING"
-                    },
-                    "phenological_stage_classification": {
-                      "type": "string",
-                      "description": "Actual phenological stage classification PENDING"
-                    },
-                    "updated_at": {
-                      "type": "string",
-                      "description": "Date from last update"
-                    }
-                  },
-                  "required": [
-                    "farm_id",
-                    "plot_id",
-                    "harvest_id",
-                    "variety_id",
-                    "planned_variety_id",
-                    "state",
-                    "date",
-                    "planned_date",
-                    "emergence_date",
-                    "area",
-                    "geo_points",
-                    "id",
-                    "name",
-                    "farm_name",
-                    "variety_name",
-                    "planned_variety_name",
-                    "culture_name",
-                    "planned_culture_name",
-                    "harvest_name",
-                    "updated_at"
-                  ],
-                  "description": "Plantation"
-                },
-                "count_targets": {
-                  "type": "number",
-                  "description": "Total of targets"
-                },
-                "targets": {
-                  "type": "array",
-                  "items": {}
-                },
-                "monitors": {
-                  "type": "array",
-                  "items": {}
-                },
-                "monitoring_stops": {
-                  "type": "array",
-                  "items": {}
-                }
-              },
-              "required": [
-                "id",
-                "date",
-                "updated_at",
-                "phenological_stage",
-                "plantation",
-                "count_targets",
-                "targets"
-              ]
-            }
-          }
-        },
-        "summary": "Monitoring Day Result Info",
-        "operationId": "Monitoring Day Result Info",
-        "description": "Info from a single monitoring day",
-        "tags": [
-          "Operations"
-        ],
-        "parameters": [
-          {
-            "name": "Accept",
-            "in": "header",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "produces": [
-          "application/json"
-        ]
-      }
-    }
-  },
-  "definitions": {
-    "Query Page": {
-      "type": "object",
-      "properties": {
-        "page": {
-          "type": "number",
-          "example": 2,
-          "description": "Page number"
-        }
-      }
-    },
-    "Query Base": {
-      "allOf": [
-        {
-          "$ref": "#/definitions/Query Page"
-        },
-        {
-          "type": "object",
-          "properties": {
-            "updated_since": {
-              "type": "number",
-              "example": 234567,
-              "description": "Timestamp since last update (milliseconds)"
-            }
-          }
-        }
-      ]
-    },
-    "Application Query Base": {
-      "allOf": [
-        {
-          "$ref": "#/definitions/Query Base"
-        },
-        {
-          "type": "object",
-          "properties": {
-            "updated_until": {
-              "type": "number",
-              "example": 234567,
-              "description": "Timestamp until last update (milliseconds)"
-            },
-            "status": {
-              "type": "string",
-              "example": "sought",
-              "description": "Application status, valid options: sought and finalized"
-            },
-            "finalized_since": {
-              "type": "number",
-              "example": 234567,
-              "description": "Timestamp since was finalized (milliseconds)"
-            }
-          }
-        }
-      ]
-    },
-    "Collection Response Base": {
-      "type": "object",
-      "properties": {
-        "deleted_since": {
-          "type": "array",
-          "items": {}
-        }
-      }
-    },
-    "Collection Response Paginated Base": {
-      "allOf": [
-        {
-          "$ref": "#/definitions/Collection Response Base"
-        },
-        {
-          "type": "object",
-          "properties": {
-            "next_page_url": {
-              "type": "string",
-              "example": "http://host.com/api/v1/...",
-              "description": "URL for next page"
-            }
-          }
-        }
-      ]
-    },
-    "Application List Response": {
-      "allOf": [
-        {
-          "$ref": "#/definitions/Collection Response Paginated Base"
-        },
-        {
-          "type": "object",
-          "properties": {
-            "applications": {
-              "type": "array",
-              "items": {}
-            }
-          }
-        }
-      ]
-    },
-    "Harvest List Response": {
-      "allOf": [
-        {
-          "$ref": "#/definitions/Collection Response Paginated Base"
-        },
-        {
-          "type": "object",
-          "properties": {
-            "harvests": {
-              "type": "array",
-              "items": {}
-            }
-          }
-        }
-      ]
-    },
-    "Farm List Response": {
-      "allOf": [
-        {
-          "$ref": "#/definitions/Collection Response Paginated Base"
-        },
-        {
-          "type": "object",
-          "properties": {
-            "farms": {
-              "type": "array",
-              "items": {}
-            }
-          }
-        }
-      ]
-    },
-    "Storage List Response": {
-      "allOf": [
-        {
-          "$ref": "#/definitions/Collection Response Paginated Base"
-        },
-        {
-          "type": "object",
-          "properties": {
-            "storages": {
-              "type": "array",
-              "items": {}
-            }
-          }
-        }
-      ]
-    },
-    "Plot List Response": {
-      "allOf": [
-        {
-          "$ref": "#/definitions/Collection Response Paginated Base"
-        },
-        {
-          "type": "object",
-          "properties": {
-            "plots": {
-              "type": "array",
-              "items": {}
-            }
-          }
-        }
-      ]
-    },
-    "Plantation List Response": {
-      "allOf": [
-        {
-          "$ref": "#/definitions/Collection Response Paginated Base"
-        },
-        {
-          "type": "object",
-          "properties": {
-            "plantations": {
-              "type": "array",
-              "items": {}
-            }
-          }
-        }
-      ]
-    },
-    "Variety List Response": {
-      "allOf": [
-        {
-          "$ref": "#/definitions/Collection Response Paginated Base"
-        },
-        {
-          "type": "object",
-          "properties": {
-            "varieties": {
-              "type": "array",
-              "items": {}
-            }
-          }
-        }
-      ]
-    },
-    "Changed Varieties List Response": {
-      "type": "object",
-      "properties": {
-        "varieties_changed": {
-          "type": "array",
-          "items": {}
-        }
-      }
-    },
-    "User List Response": {
-      "allOf": [
-        {
-          "$ref": "#/definitions/Collection Response Paginated Base"
-        },
-        {
-          "type": "object",
-          "properties": {
-            "users": {
-              "type": "array",
-              "items": {}
-            }
-          }
-        }
-      ]
-    },
-    "Equipment List Response": {
-      "allOf": [
-        {
-          "$ref": "#/definitions/Collection Response Paginated Base"
-        },
-        {
-          "type": "object",
-          "properties": {
-            "equipments": {
-              "type": "array",
-              "items": {}
-            }
-          }
-        }
-      ]
-    },
-    "Beak List Response": {
-      "allOf": [
-        {
-          "$ref": "#/definitions/Collection Response Paginated Base"
-        },
-        {
-          "type": "object",
-          "properties": {
-            "beaks": {
-              "type": "array",
-              "items": {}
-            }
-          }
-        }
-      ]
-    },
-    "Input Type List Response": {
-      "allOf": [
-        {
-          "$ref": "#/definitions/Collection Response Paginated Base"
-        },
-        {
-          "type": "object",
-          "properties": {
-            "input_types": {
-              "type": "array",
-              "items": {}
-            }
-          }
-        }
-      ]
-    },
-    "Input List Response": {
-      "allOf": [
-        {
-          "$ref": "#/definitions/Collection Response Paginated Base"
-        },
-        {
-          "type": "object",
-          "properties": {
-            "inputs": {
-              "type": "array",
-              "items": {}
-            }
-          }
-        }
-      ]
-    },
-    "Movimentation List Response": {
-      "allOf": [
-        {
-          "$ref": "#/definitions/Collection Response Paginated Base"
-        },
-        {
-          "type": "object",
-          "properties": {
-            "movimentations": {
-              "type": "array",
-              "items": {}
-            }
-          }
-        }
-      ]
-    },
-    "Pluviometer Monitoring List Response": {
-      "allOf": [
-        {
-          "$ref": "#/definitions/Collection Response Paginated Base"
-        },
-        {
-          "type": "object",
-          "properties": {
-            "pluviometer_monitorings": {
-              "type": "array",
-              "items": {}
-            }
-          }
-        }
-      ]
-    },
-    "Monitoring Day Results List Response": {
-      "allOf": [
-        {
-          "$ref": "#/definitions/Collection Response Paginated Base"
-        },
-        {
-          "type": "object",
-          "properties": {
-            "monitoring_day_results": {
-              "type": "array",
-              "items": {}
-            }
-          }
-        }
-      ]
-    },
-    "Phenological Stage List Response": {
-      "allOf": [
-        {
-          "$ref": "#/definitions/Collection Response Paginated Base"
-        },
-        {
-          "type": "object",
-          "properties": {
-            "phenological_stages": {
-              "type": "array",
-              "items": {}
-            }
-          }
-        }
-      ]
-    },
-    "Phenological Stage Sample List Response": {
-      "allOf": [
-        {
-          "$ref": "#/definitions/Collection Response Paginated Base"
-        },
-        {
-          "type": "object",
-          "properties": {
-            "phenological_stage_samples": {
-              "type": "array",
-              "items": {}
-            }
-          }
-        }
-      ]
-    },
-    "Note List Response": {
-      "allOf": [
-        {
-          "$ref": "#/definitions/Collection Response Paginated Base"
-        },
-        {
-          "type": "object",
-          "properties": {
-            "notes": {
-              "type": "array",
-              "items": {}
-            }
-          }
-        }
-      ]
-    },
-    "Attachment List": {
-      "type": "array",
-      "items": {}
-    },
-    "Attachment Base": {
-      "type": "object",
-      "required": [
-        "id",
-        "owner_id"
-      ],
-      "properties": {
-        "id": {
-          "type": "number",
-          "example": 42,
-          "description": "Attachment identifier"
-        },
-        "owner_id": {
-          "type": "number",
-          "example": 34,
-          "description": "Owner identifier"
-        }
-      }
-    },
-    "Farm Base": {
-      "type": "object",
-      "required": [
-        "name"
-      ],
-      "properties": {
-        "name": {
-          "type": "string",
-          "example": "Fazenda Exemplo",
-          "description": "Farm name"
-        },
-        "cnpj_cpf": {
-          "type": "string",
-          "example": "01214556998",
-          "description": "Farm cpnj/cpf"
-        },
-        "ie": {
-          "type": "string",
-          "example": "123454566",
-          "description": "Farm state registration"
-        }
-      }
-    },
-    "Farm": {},
-    "Storage Base": {
-      "type": "object",
-      "required": [
-        "farm_id",
-        "name"
-      ],
-      "properties": {
-        "farm_id": {
-          "type": "number",
-          "example": 32,
-          "description": "Farm identifier"
-        },
-        "name": {
-          "type": "string",
-          "example": "Almoxarifado Exemplo",
-          "description": "Storage name"
-        }
-      }
-    },
-    "Storage": {},
-    "Harvest Base": {
-      "type": "object",
-      "required": [
-        "name"
-      ],
-      "properties": {
-        "name": {
-          "type": "string",
-          "example": "Safra 2016",
-          "description": "Harvest name"
-        }
-      }
-    },
-    "Harvest": {},
-    "Plot Base": {
-      "type": "object",
-      "required": [
-        "name",
-        "farm_id",
-        "area",
-        "geo_points"
-      ],
-      "properties": {
-        "name": {
-          "type": "string",
-          "example": "A1",
-          "description": "Plot name"
-        },
-        "farm_id": {
-          "type": "number",
-          "example": 32,
-          "description": "Farm identifier"
-        },
-        "area": {
-          "type": "number",
-          "example": 100,
-          "description": "Area in ha"
-        },
-        "geo_points": {
-          "type": "array",
-          "items": {},
-          "description": "Polygon geo points"
-        }
-      }
-    },
-    "Plot": {},
-    "Culture Base": {
-      "type": "object",
-      "required": [
-        "name"
-      ],
-      "properties": {
-        "name": {
-          "type": "string",
-          "example": "Soja",
-          "description": "Culture name"
-        }
-      }
-    },
-    "Culture": {},
-    "Variety Base": {
-      "type": "object",
-      "required": [
-        "name",
-        "culture_id"
-      ],
-      "properties": {
-        "name": {
-          "type": "string",
-          "example": "Soja",
-          "description": "Variety name"
-        },
-        "culture_id": {
-          "type": "number",
-          "example": 12,
-          "description": "Culture identifier"
-        }
-      }
-    },
-    "Variety": {},
-    "Changed Variety": {
-      "type": "object",
-      "properties": {
-        "old_id": {
-          "type": "number",
-          "example": 12095,
-          "description": "Id of the old variety"
-        },
-        "new_id": {
-          "type": "number",
-          "example": 13811,
-          "description": "Id of the new global variety"
-        }
-      }
-    },
-    "Plantation Base": {
-      "type": "object",
-      "required": [
-        "farm_id",
-        "plot_id",
-        "harvest_id",
-        "variety_id",
-        "planned_variety_id",
-        "state",
-        "date",
-        "planned_date",
-        "emergence_date",
-        "area",
-        "geo_points"
-      ],
-      "properties": {
-        "farm_id": {
-          "type": "number",
-          "example": 23,
-          "description": "Farm identifier"
-        },
-        "plot_id": {
-          "type": "number",
-          "example": 12,
-          "description": "Plot identifier"
-        },
-        "harvest_id": {
-          "type": "number",
-          "example": 13,
-          "description": "Harvest identifier"
-        },
-        "variety_id": {
-          "type": "number",
-          "example": 14,
-          "description": "Variety identifier"
-        },
-        "planned_variety_id": {
-          "type": "number",
-          "example": 14,
-          "description": "Planned Variety identifier"
-        },
-        "state": {
-          "type": "string",
-          "example": "'planned'",
-          "description": "State, valid options: planned, active"
-        },
-        "date": {
-          "type": "string",
-          "example": "2015-05-05",
-          "description": "Date executed seeding"
-        },
-        "planned_date": {
-          "type": "string",
-          "example": "2015-05-05",
-          "description": "Date planned seeding"
-        },
-        "emergence_date": {
-          "type": "string",
-          "example": "2015-05-05",
-          "description": "Emergence Date"
-        },
-        "area": {
-          "type": "number",
-          "example": 100,
-          "description": "Area in ha"
-        },
-        "geo_points": {
-          "type": "array",
-          "items": {},
-          "description": "Polygon geo points"
-        }
-      }
-    },
-    "Plantation": {
-      "allOf": [
-        {
-          "$ref": "#/definitions/Plantation Base"
-        },
-        {
-          "type": "object",
-          "required": [
-            "id",
-            "name",
-            "farm_name",
-            "variety_name",
-            "planned_variety_name",
-            "culture_name",
-            "planned_culture_name",
-            "harvest_name",
-            "updated_at"
-          ],
-          "properties": {
-            "id": {
-              "type": "number",
-              "example": 42,
-              "description": "Plantation identifier (Plot on harvest)"
-            },
-            "name": {
-              "type": "string",
-              "example": "Pivot 1",
-              "description": "Plot name"
-            },
-            "farm_name": {
-              "type": "string",
-              "example": "Primavera",
-              "description": "Farm name"
-            },
-            "variety_name": {
-              "type": "string",
-              "example": "TMB123",
-              "description": "Variety name"
-            },
-            "planned_variety_name": {
-              "type": "string",
-              "example": "TMB123",
-              "description": "Planned Variety name"
-            },
-            "culture_name": {
-              "type": "string",
-              "example": "Algodão",
-              "description": "Culture name"
-            },
-            "planned_culture_name": {
-              "type": "string",
-              "example": "Algodão",
-              "description": "Planned Culture name"
-            },
-            "harvest_name": {
-              "type": "string",
-              "example": "2016/2017",
-              "description": "Harvest name"
-            },
-            "phenological_stage": {
-              "type": "string",
-              "example": "R2",
-              "description": "Actual phenological stage name PENDING"
-            },
-            "phenological_stage_classification": {
-              "type": "string",
-              "example": "reproductive",
-              "description": "Actual phenological stage classification PENDING"
-            },
-            "updated_at": {
-              "type": "string",
-              "example": "2015-05-05T12:30:00",
-              "description": "Date from last update"
-            }
-          }
-        }
-      ]
-    },
-    "Geo Point Base": {
-      "type": "object",
-      "required": [
-        "latitude",
-        "longitude"
-      ],
-      "properties": {
-        "latitude": {
-          "type": "number",
-          "example": 23233.23,
-          "description": "Latitude"
-        },
-        "longitude": {
-          "type": "number",
-          "example": 5432323.23,
-          "description": "Longitude"
-        }
-      }
-    },
-    "Input Type": {
-      "type": "object",
-      "required": [
-        "id",
-        "name"
-      ],
-      "properties": {
-        "id": {
-          "type": "number",
-          "example": 42,
-          "description": "Input Type identifier"
-        },
-        "name": {
-          "type": "string",
-          "example": "Fungicida",
-          "description": "Input Type name"
-        }
-      }
-    },
-    "Input Base": {
-      "type": "object",
-      "required": [
-        "name",
-        "dosage_unit",
-        "formulation"
-      ],
-      "properties": {
-        "name": {
-          "type": "string",
-          "example": "Abamex",
-          "description": "Input name"
-        },
-        "dosage_unit": {
-          "type": "string",
-          "example": "l_ha",
-          "description": "Input unit, valid options: g_ha, kg_ha, ml_ha, l_ha, un_ha"
-        },
-        "formulation": {
-          "type": "string",
-          "example": "liquid",
-          "description": "Formulationm, valid options: liquid, solid, unity"
-        },
-        "input_type": {
-          "type": "string",
-          "example": "herbicide",
-          "description": "Input type, valid options: insecticide, acaricide, fungicide, herbicide, adjuvant, regulator, fertilizer, inoculant, nutrition, seed, micronutrient, bactericide"
-        },
-        "input_type_id": {
-          "type": "number",
-          "example": 21,
-          "description": "Input type identifier ... use this or input_type"
-        }
-      }
-    },
-    "InputValue Base": {
-      "type": "object",
-      "required": [
-        "id",
-        "input_id",
-        "farm_id",
-        "harvest_id"
-      ],
-      "properties": {
-        "id": {
-          "type": "number",
-          "example": 42,
-          "description": "Input Value identifier"
-        },
-        "input_id": {
-          "type": "number",
-          "example": 21,
-          "description": "Input identifier"
-        },
-        "farm_id": {
-          "type": "number",
-          "example": 34,
-          "description": "Farm identifier"
-        },
-        "harvest_id": {
-          "type": "number",
-          "example": 34,
-          "description": "Harvest identifier"
-        },
-        "value": {
-          "type": "number",
-          "example": 34,
-          "description": "Value"
-        }
-      }
-    },
-    "InputValue Parameters": {
-      "type": "object",
-      "required": [
-        "input_id",
-        "farm_id",
-        "harvest_id"
-      ],
-      "properties": {
-        "input_id": {
-          "type": "number",
-          "example": 21,
-          "description": "Input identifier"
-        },
-        "farm_id": {
-          "type": "number",
-          "example": 34,
-          "description": "Farm identifier"
-        },
-        "harvest_id": {
-          "type": "number",
-          "example": 34,
-          "description": "Harvest identifier"
-        },
-        "value": {
-          "type": "number",
-          "example": 34,
-          "description": "Value"
-        }
-      }
-    },
-    "InputValue List Response": {
-      "allOf": [
-        {
-          "$ref": "#/definitions/Collection Response Paginated Base"
-        },
-        {
-          "type": "object",
-          "properties": {
-            "input_values": {
-              "type": "array",
-              "items": {}
-            }
-          }
-        }
-      ]
-    },
-    "Input": {
-      "allOf": [
-        {
-          "$ref": "#/definitions/Input Base"
-        },
-        {
-          "type": "object",
-          "required": [
-            "id",
-            "input_type_name",
-            "updated_at"
-          ],
-          "properties": {
-            "id": {
-              "type": "number",
-              "example": 42,
-              "description": "Input identifier"
-            },
-            "input_type_name": {
-              "type": "string",
-              "example": "Adjuvante",
-              "description": "Input type Name"
-            },
-            "updated_at": {
-              "type": "string",
-              "example": "2015-05-05T12:30:00",
-              "description": "Date from last update"
-            }
-          }
-        }
-      ]
-    },
-    "Storage Balance": {
-      "type": "object",
-      "required": [
-        "storage_id",
-        "quantity",
-        "unit"
-      ],
-      "properties": {
-        "storage_id": {
-          "type": "number",
-          "example": 42,
-          "description": "Storage Identifier"
-        },
-        "quantity": {
-          "type": "number",
-          "example": 130.32,
-          "description": "Quantity"
-        },
-        "unit": {
-          "type": "string",
-          "example": "l",
-          "description": "Quantity unit, valid options: ml, l, g, kg, un PENDING"
-        }
-      }
-    },
-    "Inventory": {},
-    "Movimentation Base": {
-      "type": "object",
-      "required": [
-        "input_id",
-        "storage_id",
-        "date",
-        "quantity",
-        "movimentation_type"
-      ],
-      "properties": {
-        "input_id": {
-          "type": "number",
-          "example": 12,
-          "description": "Input identifier"
-        },
-        "storage_id": {
-          "type": "number",
-          "example": 12,
-          "description": "Storage identifier"
-        },
-        "user_id": {
-          "type": "number",
-          "example": 12,
-          "description": "User identifier"
-        },
-        "date": {
-          "type": "string",
-          "example": "2015-05-05",
-          "description": "Date"
-        },
-        "invoice_number": {
-          "type": "number",
-          "example": 12233,
-          "description": "Invoice number"
-        },
-        "observation": {
-          "type": "string",
-          "example": "'observation'",
-          "description": "Observation"
-        },
-        "quantity": {
-          "type": "number",
-          "example": 125.12,
-          "description": "Quantity"
-        },
-        "movimentation_type": {
-          "type": "string",
-          "example": "in",
-          "description": "Movimentation type, valid options: in, out"
-        }
-      }
-    },
-    "Movimentation": {
-      "allOf": [
-        {
-          "$ref": "#/definitions/Movimentation Base"
-        },
-        {
-          "type": "object",
-          "required": [
-            "id",
-            "unit",
-            "updated_at"
-          ],
-          "properties": {
-            "id": {
-              "type": "number",
-              "example": 12,
-              "description": "Movimentation identifier"
-            },
-            "unit": {
-              "type": "string",
-              "example": "l",
-              "description": "Quantity unit (kg/l/un)"
-            },
-            "updated_at": {
-              "type": "string",
-              "example": "2015-05-05T12:30:00",
-              "description": "Date from last update"
-            },
-            "application_info": {
-              "$ref": "#/definitions/Movimentation Application Info",
-              "description": "Application Info"
-            }
-          }
-        }
-      ]
-    },
-    "Movimentation Application Info": {
-      "type": "object",
-      "required": [
-        "application_id",
-        "code"
-      ],
-      "properties": {
-        "application_id": {
-          "type": "number",
-          "example": 12,
-          "description": "Application identifier"
-        },
-        "code": {
-          "type": "string",
-          "example": "AP123",
-          "description": "Application code"
-        }
-      }
-    },
-    "Monitoring Day Result": {},
-    "Monitoring Day Result Phnelogical Stage": {
-      "type": "object",
-      "properties": {
-        "name": {
-          "type": "string",
-          "example": "R2",
-          "description": "Actual phenological stage name"
-        },
-        "classification": {
-          "type": "string",
-          "example": "reproductive",
-          "description": "Actual phenological stage classification"
-        }
-      }
-    },
-    "Monitoring Day Result Target": {
-      "type": "object",
-      "required": [
-        "id",
-        "name",
-        "scientific_name",
-        "target_type"
-      ],
-      "properties": {
-        "id": {
-          "type": "number",
-          "example": 23,
-          "description": "Target identifier"
-        },
-        "name": {
-          "type": "string",
-          "example": "Bicudo",
-          "description": "Target name"
-        },
-        "scientific_name": {
-          "type": "string",
-          "example": "Anthonomus grandis",
-          "description": "Target's scientific name"
-        },
-        "target_type": {
-          "type": "string",
-          "example": "Pragras",
-          "description": "Target's type"
-        },
-        "target_parameters": {
-          "type": "array",
-          "items": {},
-          "description": "Target parameters monitored"
-        }
-      }
-    },
-    "Monitoring Day Result Parameter": {
-      "type": "object",
-      "required": [
-        "id",
-        "name",
-        "infestation",
-        "infestation_level",
-        "calculated",
-        "type_action_level"
-      ],
-      "properties": {
-        "id": {
-          "type": "number",
-          "example": 23,
-          "description": "Parameter identifier"
-        },
-        "name": {
-          "type": "string",
-          "example": "Ovos Pequenos",
-          "description": "Parameter name"
-        },
-        "infestation": {
-          "type": "number",
-          "example": 12,
-          "description": "Infestation value"
-        },
-        "infestation_level": {
-          "type": "string",
-          "example": "damaged",
-          "description": "Infestation level"
-        },
-        "vegetative_action_level": {
-          "type": "number",
-          "example": 2,
-          "description": "Action threshold when plantation is on a vegetative phenological stage"
-        },
-        "vegetative_damage_level": {
-          "type": "number",
-          "example": 10,
-          "description": "Damage threshold when plantation is on a vegetative phenological stage"
-        },
-        "use_vegetative_action_level": {
-          "type": "number",
-          "example": 1,
-          "description": "1 (active) or 0 (inactive)"
-        },
-        "use_vegetative_damage_level": {
-          "type": "number",
-          "example": 1,
-          "description": "1 (active) or 0 (inactive)"
-        },
-        "reproductive_action_level": {
-          "type": "number",
-          "example": 12,
-          "description": "Action threshold when plantation is on a reproductive phenological stage"
-        },
-        "reproductive_damage_level": {
-          "type": "number",
-          "example": 14,
-          "description": "Damage threshold when plantation is on a reproductive phenological stage"
-        },
-        "use_reproductive_action_level": {
-          "type": "number",
-          "example": 1,
-          "description": "1 (active) or 0 (inactive)"
-        },
-        "use_reproductive_damage_level": {
-          "type": "number",
-          "example": 1,
-          "description": "1 (active) or 0 (inactive)"
-        },
-        "calculated": {
-          "type": "number",
-          "example": 1,
-          "description": "Calculated (1) or not (0)"
-        },
-        "type_action_level": {
-          "type": "string",
-          "example": "average",
-          "description": "\"average\" or \"percentage\""
-        }
-      }
-    },
-    "Monitoring Day Result User": {
-      "type": "object",
-      "required": [
-        "id",
-        "name",
-        "username",
-        "email"
-      ],
-      "properties": {
-        "id": {
-          "type": "number",
-          "example": 42,
-          "description": "User identifier"
-        },
-        "name": {
-          "type": "string",
-          "example": "João",
-          "description": "User name"
-        },
-        "username": {
-          "type": "string",
-          "example": "joao",
-          "description": "User username"
-        },
-        "email": {
-          "type": "string",
-          "example": "joao@company.com",
-          "description": "User e-mail"
-        }
-      }
-    },
-    "Monitoring Day Result Stop": {
-      "type": "object",
-      "required": [
-        "id",
-        "latitude",
-        "longitude",
-        "date"
-      ],
-      "properties": {
-        "id": {
-          "type": "number",
-          "example": 23,
-          "description": "Stop identifier"
-        },
-        "latitude": {
-          "type": "number",
-          "example": 23233.23,
-          "description": "Latitude"
-        },
-        "longitude": {
-          "type": "number",
-          "example": 5432323.23,
-          "description": "Longitude"
-        },
-        "date": {
-          "type": "string",
-          "example": "2015-05-05T12:30:00",
-          "description": "Stop date"
-        },
-        "user": {
-          "$ref": "#/definitions/Monitoring Day Result User",
-          "description": "Monitor"
-        }
-      }
-    },
-    "Application Base": {
-      "type": "object",
-      "required": [
-        "date",
-        "culture_id",
-        "harvest_id",
-        "farm_id",
-        "responsible_id",
-        "charge_id",
-        "plantations",
-        "inputs"
-      ],
-      "properties": {
-        "date": {
-          "type": "string",
-          "example": "2015-05-05",
-          "description": "Date to be applied"
-        },
-        "culture_id": {
-          "type": "number",
-          "example": 23,
-          "description": "Culture identifier"
-        },
-        "harvest_id": {
-          "type": "number",
-          "example": 33,
-          "description": "Harvest identifier"
-        },
-        "farm_id": {
-          "type": "number",
-          "example": 43,
-          "description": "Farm identifier"
-        },
-        "responsible_id": {
-          "type": "number",
-          "example": 43,
-          "description": "User identifier from the technical reponsible for the application"
-        },
-        "charge_id": {
-          "type": "number",
-          "example": 43,
-          "description": "User identifier from the charge of the application"
-        },
-        "beak_id": {
-          "type": "number",
-          "example": 53,
-          "description": "Beak identifer to be used"
-        },
-        "equipment_id": {
-          "type": "number",
-          "example": 63,
-          "description": "Equipment identifier to be used"
-        },
-        "pressure": {
-          "type": "number",
-          "example": 23.23,
-          "description": "Pressure to be applied"
-        },
-        "solution": {
-          "type": "number",
-          "example": 23.32,
-          "description": "Solution volume to be applied"
-        },
-        "velocity": {
-          "type": "number",
-          "example": 23.32,
-          "description": "Velocity to be used"
-        },
-        "observations": {
-          "type": "string",
-          "example": "'Some observation'",
-          "description": "Observation"
-        },
-        "plantations": {
-          "type": "array",
-          "items": {}
-        },
-        "inputs": {
-          "type": "array",
-          "items": {}
-        }
-      }
-    },
-    "Application": {
-      "type": "object",
-      "required": [
-        "id",
-        "code",
-        "date",
-        "status",
-        "plantations",
-        "inputs",
-        "equipment",
-        "updated_at"
-      ],
-      "properties": {
-        "id": {
-          "type": "number",
-          "example": 23,
-          "description": "Application identifier"
-        },
-        "code": {
-          "type": "string",
-          "example": "AP123",
-          "description": "Application code"
-        },
-        "date": {
-          "type": "string",
-          "example": "2015-05-05",
-          "description": "Date to be applied"
-        },
-        "status": {
-          "type": "string",
-          "example": "'closed'",
-          "description": "Application status, valid options: waiting, sought, finalized"
-        },
-        "closed_date": {
-          "type": "string",
-          "example": "2015-05-05",
-          "description": "When application was finalized"
-        },
-        "plantations": {
-          "type": "array",
-          "items": {}
-        },
-        "inputs": {
-          "type": "array",
-          "items": {}
-        },
-        "beak": {
-          "$ref": "#/definitions/Beak",
-          "description": "Beak to be applied"
-        },
-        "equipment": {
-          "$ref": "#/definitions/Equipment",
-          "description": "Equipment to be applied"
-        },
-        "pressure": {
-          "type": "number",
-          "example": 23.23,
-          "description": "Pressure to be applied"
-        },
-        "solution": {
-          "type": "number",
-          "example": 23.32,
-          "description": "Solution volume to be applie"
-        },
-        "observations": {
-          "type": "string",
-          "example": "'Some observation'",
-          "description": "Observation"
-        },
-        "progresses": {
-          "type": "array",
-          "items": {}
-        },
-        "input_movimentations": {
-          "type": "array",
-          "items": {}
-        },
-        "updated_at": {
-          "type": "string",
-          "example": "2015-05-05T12:30:00",
-          "description": "Date from last update"
-        }
-      }
-    },
-    "Application Plantation Base": {
-      "type": "object",
-      "required": [
-        "sought_area",
-        "plantation_id"
-      ],
-      "properties": {
-        "sought_area": {
-          "type": "number",
-          "example": 100,
-          "description": "Area to be applied"
-        },
-        "plantation_id": {
-          "type": "number",
-          "example": 23,
-          "description": "Plantation to be applied"
-        }
-      }
-    },
-    "Application Plantation": {
-      "type": "object",
-      "required": [
-        "sought_area",
-        "applied_area"
-      ],
-      "properties": {
-        "sought_area": {
-          "type": "number",
-          "example": 23,
-          "description": "Area to be applied"
-        },
-        "applied_area": {
-          "type": "number",
-          "example": 23,
-          "description": "Area actual applied"
-        },
-        "plantation": {
-          "$ref": "#/definitions/Plantation",
-          "description": "Plantation to be applied"
-        }
-      }
-    },
-    "Application Input Base": {
-      "type": "object",
-      "required": [
-        "dosage_value",
-        "dosage_unity: l_ha",
-        "input_id"
-      ],
-      "properties": {
-        "dosage_value": {
-          "type": "number",
-          "example": 2,
-          "description": "Dosage value to be applied"
-        },
-        "dosage_unity: l_ha": {
-          "type": "string",
-          "description": "Dosage value unit, valid options: ml_ha, l_ha, g_ha, kg_ha, un_ha"
-        },
-        "input_id": {
-          "type": "number",
-          "example": 23,
-          "description": "Input to be applied"
-        }
-      }
-    },
-    "Application Input": {
-      "type": "object",
-      "required": [
-        "sought_dosage_value",
-        "sought_dosage_unit",
-        "sought_quantity",
-        "sought_quantity_unit",
-        "applied",
-        "applied_unit",
-        "applied_dosage_unit",
-        "consumed"
-      ],
-      "properties": {
-        "sought_dosage_value": {
-          "type": "number",
-          "example": 23,
-          "description": "Dosage value to be applied"
-        },
-        "sought_dosage_unit": {
-          "type": "string",
-          "example": "l_ha",
-          "description": "Dosage value unit"
-        },
-        "sought_quantity": {
-          "type": "number",
-          "example": 23,
-          "description": "Total quantity to be applied"
-        },
-        "sought_quantity_unit": {
-          "type": "string",
-          "example": "l",
-          "description": "Total quantity unit"
-        },
-        "applied": {
-          "type": "number",
-          "example": 23,
-          "description": "Quantity applied"
-        },
-        "applied_unit": {
-          "type": "string",
-          "example": "l",
-          "description": "Applied quantity unit"
-        },
-        "applied_dosage_unit": {
-          "type": "string",
-          "example": "l_ha",
-          "description": "Applied dosage unit"
-        },
-        "consumed": {
-          "type": "number",
-          "example": 23,
-          "description": "Quantity applied and lost"
-        },
-        "cost_on_harvest": {
-          "type": "number",
-          "example": 34,
-          "description": "Input cost on harvest"
-        },
-        "input": {
-          "$ref": "#/definitions/Input",
-          "description": "Input to be applied"
-        },
-        "plantations_costs": {
-          "type": "array",
-          "items": {}
-        }
-      }
-    },
-    "Application Progress": {
-      "type": "object",
-      "required": [
-        "area",
-        "date",
-        "equipment",
-        "plantations"
-      ],
-      "properties": {
-        "area": {
-          "type": "number",
-          "example": 23,
-          "description": "Area applied"
-        },
-        "date": {
-          "type": "string",
-          "example": "2015-05-05T12:30:00",
-          "description": "Date from progress"
-        },
-        "wind_speed": {
-          "type": "number",
-          "example": 23,
-          "description": "Wind speed"
-        },
-        "humidity": {
-          "type": "number",
-          "example": 23,
-          "description": "Humidity"
-        },
-        "temperature": {
-          "type": "number",
-          "example": 23,
-          "description": "Temperature"
-        },
-        "wind_direction": {
-          "type": "string",
-          "example": "23",
-          "description": "Wind direction"
-        },
-        "beak": {
-          "$ref": "#/definitions/Beak"
-        },
-        "equipment": {
-          "$ref": "#/definitions/Equipment"
-        },
-        "pressure": {
-          "type": "number",
-          "example": 23.23,
-          "description": "Pressure"
-        },
-        "solution": {
-          "type": "number",
-          "example": 23.32,
-          "description": "Solution volume"
-        },
-        "plantations": {
-          "type": "array",
-          "items": {}
-        }
-      }
-    },
-    "Application Plantation Progress": {
-      "type": "object",
-      "required": [
-        "plantation_id",
-        "area"
-      ],
-      "properties": {
-        "plantation_id": {
-          "type": "number",
-          "example": 23,
-          "description": "Plantation identifier"
-        },
-        "area": {
-          "type": "number",
-          "example": 23,
-          "description": "Area applied"
-        }
-      }
-    },
-    "Application Movimentation": {
-      "type": "object",
-      "required": [
-        "input_id",
-        "storage_id",
-        "value",
-        "kind"
-      ],
-      "properties": {
-        "input_id": {
-          "type": "number",
-          "example": 23,
-          "description": "Input identifier"
-        },
-        "storage_id": {
-          "type": "number",
-          "example": 23,
-          "description": "Storage identifier"
-        },
-        "value": {
-          "type": "number",
-          "example": 20.23,
-          "description": "Value"
-        },
-        "kind": {
-          "type": "string",
-          "example": "removed",
-          "description": "Operation kind, valid options: lost, removed, returned"
-        }
-      }
-    },
-    "Application Plantation Cost": {
-      "type": "object",
-      "required": [
-        "plantation_id",
-        "cost"
-      ],
-      "properties": {
-        "plantation_id": {
-          "type": "number",
-          "example": 2,
-          "description": "Plantation identifier"
-        },
-        "cost": {
-          "type": "number",
-          "example": 34,
-          "description": "Cost for this plantation"
-        }
-      }
-    },
-    "Input Movimentation": {
-      "type": "object",
-      "required": [
-        "input_id",
-        "storage_id",
-        "unit",
-        "quantity"
-      ],
-      "properties": {
-        "input_id": {
-          "type": "number",
-          "example": 12,
-          "description": "Input identifier"
-        },
-        "storage_id": {
-          "type": "number",
-          "example": 12,
-          "description": "Storage identifier"
-        },
-        "unit": {
-          "type": "string",
-          "example": "l",
-          "description": "Quantity unit, valid options: ml, l, g, kg, un"
-        },
-        "quantity": {
-          "type": "number",
-          "example": 125.12,
-          "description": "Quantity"
-        }
-      }
-    },
-    "Beak": {
-      "type": "object",
-      "required": [
-        "id",
-        "name"
-      ],
-      "properties": {
-        "id": {
-          "type": "number",
-          "example": 23,
-          "description": "Beak identifier"
-        },
-        "name": {
-          "type": "string",
-          "example": "Bico X",
-          "description": "Beak name"
-        }
-      }
-    },
-    "Equipment Farm": {
-      "type": "object",
-      "required": [
-        "id",
-        "name"
-      ],
-      "properties": {
-        "id": {
-          "type": "number",
-          "example": 42,
-          "description": "Farm identifier"
-        },
-        "name": {
-          "type": "string",
-          "example": "Fazenda Exemplo",
-          "description": "Farm name"
-        }
-      }
-    },
-    "Equipment": {
-      "type": "object",
-      "required": [
-        "id",
-        "name",
-        "type",
-        "tank_volume",
-        "disabled",
-        "farms"
-      ],
-      "properties": {
-        "id": {
-          "type": "number",
-          "example": 23,
-          "description": "Equipment identifier"
-        },
-        "name": {
-          "type": "string",
-          "example": "Trator",
-          "description": "Equipment name"
-        },
-        "type": {
-          "type": "string",
-          "example": "air",
-          "description": "Equipment type, valid options: air, land"
-        },
-        "tank_volume": {
-          "type": "number",
-          "example": 23,
-          "description": "Equipment tank identifier"
-        },
-        "disabled": {
-          "type": "boolean",
-          "description": "Equipment status"
-        },
-        "farms": {
-          "type": "array",
-          "items": {},
-          "description": "Associated farms"
-        }
-      }
-    },
-    "Cropped Volume": {},
-    "Cropped Volume Base": {
-      "type": "object",
-      "required": [
-        "volume"
-      ],
-      "properties": {
-        "volume": {
-          "type": "number",
-          "example": 23,
-          "description": "Volume cropped in kg"
-        }
-      }
-    },
-    "Pluviometer": {
-      "type": "object",
-      "required": [
-        "id",
-        "name",
-        "latitude",
-        "longitude",
-        "start_date",
-        "farm_id",
-        "updated_at"
-      ],
-      "properties": {
-        "id": {
-          "type": "number",
-          "example": 42,
-          "description": "Pluviometer monitoring identifier"
-        },
-        "name": {
-          "type": "string",
-          "example": "Pluviometer 1",
-          "description": "Pluviometer name"
-        },
-        "latitude": {
-          "type": "number",
-          "example": 43.875423,
-          "description": "Latitude"
-        },
-        "longitude": {
-          "type": "number",
-          "example": 14.365423,
-          "description": "Longitude"
-        },
-        "start_date": {
-          "type": "string",
-          "example": "2015-05-05T12:30:00",
-          "description": "Activation date"
-        },
-        "farm_id": {
-          "type": "number",
-          "example": 32,
-          "description": "Farm identifier"
-        },
-        "updated_at": {
-          "type": "string",
-          "example": "2015-05-05T12:30:00",
-          "description": "Date from last update"
-        }
-      }
-    },
-    "Pluviometer Monitoring": {},
-    "Pluviometer Monitoring Base": {
-      "type": "object",
-      "required": [
-        "quantity",
-        "latitude",
-        "longitude",
-        "date"
-      ],
-      "properties": {
-        "quantity": {
-          "type": "number",
-          "example": 23,
-          "description": "Quantity in mm"
-        },
-        "latitude": {
-          "type": "number",
-          "example": 14.233542,
-          "description": "Latitude"
-        },
-        "longitude": {
-          "type": "number",
-          "example": 23.54784,
-          "description": "Longitude"
-        },
-        "date": {
-          "type": "string",
-          "example": "2015-05-05T12:30:00",
-          "description": "Date from monitoring"
-        }
-      }
-    },
-    "Phenological Stage": {
-      "type": "object",
-      "required": [
-        "id",
-        "name",
-        "updated_at"
-      ],
-      "properties": {
-        "id": {
-          "type": "number",
-          "example": 1,
-          "description": "Phenological stage identifier"
-        },
-        "name": {
-          "type": "string",
-          "example": "Phenological State 1",
-          "description": "Phenological Stage Name"
-        },
-        "position": {
-          "type": "number",
-          "example": 1,
-          "description": "Position"
-        },
-        "description": {
-          "type": "string",
-          "example": "Lorem ipsum",
-          "description": "Description"
-        },
-        "ignore_infestations": {
-          "type": "boolean",
-          "description": "Ignore infestations"
-        },
-        "updated_at": {
-          "type": "string",
-          "example": "2015-05-05T12:30:00",
-          "description": "Date from last update"
-        },
-        "classification": {
-          "type": "number",
-          "example": 2,
-          "description": "Classification identifier"
-        },
-        "classification_label": {
-          "type": "string",
-          "example": "Reprodutivo",
-          "description": "Classification name"
-        },
-        "culture": {
-          "$ref": "#/definitions/Culture",
-          "description": "Culture info"
-        }
-      }
-    },
-    "Phenological Stage Sample": {
-      "type": "object",
-      "required": [
-        "id",
-        "date",
-        "latitude",
-        "longitude",
-        "updated_at"
-      ],
-      "properties": {
-        "id": {
-          "type": "number",
-          "example": 1,
-          "description": "Phenological stage sample identifier"
-        },
-        "date": {
-          "type": "string",
-          "example": "2015-05-05",
-          "description": "Date"
-        },
-        "latitude": {
-          "type": "number",
-          "example": 23233.23,
-          "description": "Latitude"
-        },
-        "longitude": {
-          "type": "number",
-          "example": 5432323.23,
-          "description": "Longitude"
-        },
-        "updated_at": {
-          "type": "string",
-          "example": "2015-05-05T12:30:00",
-          "description": "Date from last update"
-        },
-        "phenological_stage": {
-          "$ref": "#/definitions/Phenological Stage",
-          "description": "Phenological Stage Info"
-        },
-        "plantation": {
-          "$ref": "#/definitions/Plantation",
-          "description": "Plantation Info"
-        }
-      }
-    },
-    "User": {
-      "type": "object",
-      "required": [
-        "id",
-        "name",
-        "username",
-        "email",
-        "crea",
-        "role_label"
-      ],
-      "properties": {
-        "id": {
-          "type": "number",
-          "example": 42,
-          "description": "User identifier"
-        },
-        "name": {
-          "type": "string",
-          "example": "João",
-          "description": "User name"
-        },
-        "username": {
-          "type": "string",
-          "example": "joao",
-          "description": "User username"
-        },
-        "email": {
-          "type": "string",
-          "example": "joao@company.com",
-          "description": "User e-mail"
-        },
-        "crea": {
-          "type": "string",
-          "example": "1234",
-          "description": "User CREA"
-        },
-        "role_label": {
-          "type": "string",
-          "example": "Owner",
-          "description": "User permission role"
-        }
-      }
-    },
-    "Trap": {
-      "type": "object",
-      "required": [
-        "id",
-        "name",
-        "plantation"
-      ],
-      "properties": {
-        "id": {
-          "type": "number",
-          "example": 500,
-          "description": "User identifier"
-        },
-        "name": {
-          "type": "string",
-          "example": "Trab A",
-          "description": "Trap Name"
-        },
-        "latitude": {
-          "type": "string",
-          "description": "17.059234619140625 (number, required) - Latitude"
-        },
-        "longitude": {
-          "type": "string",
-          "description": "54.23974609375 (number, required) - Longitude"
-        },
-        "qrcode": {
-          "type": "string",
-          "example": "null"
-        },
-        "installed_at": {
-          "type": "string",
-          "example": "2021-12-28T13:02:00.000-03:00",
-          "description": "Date"
-        },
-        "modified_at": {
-          "type": "string",
-          "example": "2021-12-28T14:37:19.000-03:00",
-          "description": "Date"
-        },
-        "plantation": {
-          "allOf": [
-            {
-              "$ref": "#/definitions/Plantation"
-            },
-            {
-              "type": "object",
-              "required": [
-                "farm",
-                "harvest",
-                "geo_points"
-              ],
-              "properties": {
-                "farm": {
-                  "$ref": "#/definitions/Farm",
-                  "description": "Farm"
-                },
-                "plot": {
-                  "$ref": "#/definitions/Plot",
-                  "description": "Plot"
-                },
-                "harvest": {
-                  "$ref": "#/definitions/Harvest",
-                  "description": "Harvest"
-                },
-                "geo_points": {
-                  "type": "array",
-                  "items": {},
-                  "description": "Polygon geo points"
-                }
-              }
-            }
-          ],
-          "description": "Plantation"
-        }
-      }
-    },
-    "Trap Monitoring": {
-      "type": "object",
-      "required": [
-        "id",
-        "user",
-        "trap"
-      ],
-      "properties": {
-        "id": {
-          "type": "number",
-          "example": 626,
-          "description": "Trap Monitoring identifier"
-        },
-        "change_pheromone": {
-          "type": "boolean",
-          "example": true,
-          "description": "Change Pheromone"
-        },
-        "date": {
-          "type": "string",
-          "example": "2021-12-28T13:02:00",
-          "description": "Date"
-        },
-        "modified_at": {
-          "type": "string",
-          "example": "2021-12-28T13:02:00.000-03:00",
-          "description": "Date"
-        },
-        "user": {
-          "$ref": "#/definitions/User",
-          "description": "User"
-        },
-        "trap": {
-          "$ref": "#/definitions/Trap",
-          "description": "Trap"
-        },
-        "monitored_targets": {
-          "type": "array",
-          "items": {}
-        }
-      }
-    },
-    "Monitored Target": {
-      "type": "object",
-      "required": [
-        "id",
-        "quantity",
-        "target_id"
-      ],
-      "properties": {
-        "id": {
-          "type": "number",
-          "example": 626,
-          "description": "Monitored Target identifier"
-        },
-        "quantity": {
-          "type": "number",
-          "example": 123,
-          "description": "Quantity"
-        },
-        "target_id": {
-          "type": "number",
-          "example": 1,
-          "description": "Target identifier"
-        }
-      }
-    },
-    "Note Base": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "type": "number",
-          "example": 626,
-          "description": "Note identifier"
-        },
-        "description": {
-          "type": "string",
-          "example": "Foram encontrados alguns problemas aqui na fazenda.",
-          "description": "Description"
-        },
-        "date": {
-          "type": "string",
-          "example": "2021-12-28T13:02:00",
-          "description": "Date"
-        },
-        "latitude": {
-          "type": "number",
-          "example": 23233.23,
-          "description": "Latitude"
-        },
-        "longitude": {
-          "type": "number",
-          "example": 5432323.23,
-          "description": "Longitude"
-        }
-      }
-    },
-    "Note": {
-      "allOf": [
-        {
-          "$ref": "#/definitions/Note Base"
-        },
-        {
-          "type": "object",
-          "properties": {
-            "user_name": {
-              "type": "string",
-              "example": "João Silva",
-              "description": "User's name"
-            },
-            "image_addresses": {
-              "type": "array",
-              "items": {},
-              "description": "Images addresses"
-            },
-            "attachments": {
-              "$ref": "#/definitions/Attachment List",
-              "description": "Attachments"
-            }
-          }
-        }
-      ]
-    },
-    "Video Attachment": {
-      "allOf": [
-        {
-          "$ref": "#/definitions/Attachment Base"
-        },
-        {
-          "type": "object",
-          "properties": {
-            "type": {
-              "type": "string",
-              "example": "video",
-              "description": "Type"
-            },
-            "thumb_url": {
-              "type": "string",
-              "example": "https://farmbox.s3.amazonaws.com/files/123/thumb/image.jpg",
-              "description": "Thumb url"
-            },
-            "original_url": {
-              "type": "string",
-              "example": "https://farmbox.s3.amazonaws.com/files/123/original/video.mp4",
-              "description": "Original video url"
-            }
-          }
-        }
-      ]
-    },
-    "Audio Attachment": {
-      "allOf": [
-        {
-          "$ref": "#/definitions/Attachment Base"
-        },
-        {
-          "type": "object",
-          "properties": {
-            "type": {
-              "type": "string",
-              "example": "audio",
-              "description": "Type"
-            },
-            "original_url": {
-              "type": "string",
-              "example": "https://farmbox.s3.amazonaws.com/files/123/original/audio.mp3",
-              "description": "Original audio url"
-            }
-          }
-        }
-      ]
-    },
-    "Image Attachment": {
-      "allOf": [
-        {
-          "$ref": "#/definitions/Attachment Base"
-        },
-        {
-          "type": "object",
-          "properties": {
-            "type": {
-              "type": "string",
-              "example": "image",
-              "description": "Type"
-            },
-            "thumb_url": {
-              "type": "string",
-              "example": "https://farmbox.s3.amazonaws.com/files/123/thumb/image.jpg",
-              "description": "Thumb resolution url"
-            },
-            "medium_url": {
-              "type": "string",
-              "example": "https://farmbox.s3.amazonaws.com/files/123/medium/image.jpg",
-              "description": "Medium resolution url"
-            },
-            "high_url": {
-              "type": "string",
-              "example": "https://farmbox.s3.amazonaws.com/files/123/high/image.jpg",
-              "description": "High resolution url"
-            }
-          }
-        }
-      ]
-    },
-    "Beaks": {},
-    "Equipments": {},
-    "Phenological Stages": {},
-    "Plantations": {},
-    "Pluviometers": {},
-    "Users": {},
-    "Input Types": {},
-    "Inputs": {},
-    "Input Values": {},
-    "Movimentations": {},
-    "Applications": {},
-    "Notes": {},
-    "Phenological Stage Samples": {},
-    "Trap Monitorings": {}
-  },
-  "securityDefinitions": {},
-  "tags": [
-    {
-      "name": "Structures"
-    },
-    {
-      "name": "Inputs"
-    },
-    {
-      "name": "Operations"
-    },
-    {
-      "name": "Resource Update Notification",
-      "description": "##  Rest Hooks\n\nContact our technical support for more information on how to subscribe to REST-like notifications on a \ngiven resource."
-    }
-  ]
-}
+---
+openapi: 3.0.2
+info:
+  title: bundle-products-integrationV1
+  version: 1.0.0
+  description: |
+    API de integração de produtos em pacotes (Bundle Products) V1
+
+    Compatível com a versão de negócio Product V7
+  contact: {}
+servers:
+  - url: https://homolog3.totvscrm.app/api/v1/integration
+    description: Integration Router Server
+    variables:
+      url:
+        default: app2.mastercrm.ws
+        description: URL de acesso ao Integration-Router
+      version:
+        default: v1
+        description: Versão do Integration-Router
+paths:
+  /record:
+    get:
+      tags:
+        - Bundle-Products
+      parameters:
+        - name: Integration-Filter
+          description: |
+            Filtro opcional para realizar a busca de um ou mais registros. Suporta o uso de
+            RestQuery.
+            
+            
+            Se o header for omitido, lista todos os registros
+            
+            Se o header não contiver valores, lista todos os registros
+          schema:
+            type: string
+          in: header
+          required: false
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Bundle-Products-Integration_V1_GetResponse'
+          description: Returns a list of bundle products
+        401:
+          description: Unauthorized
+      summary: Listar itens de produto no pacote
+      description: Retorna uma lista de itens de produto em pacotes cadastrados ou
+        determinados itens com base nos filtros do header Integration-Filter
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Bundle-Products-Integration_V1_BodyEmpty'
+      tags:
+        - Bundle-Products
+      parameters:
+        - name: Integration-Filter
+          description: |
+            Filtro do registro específico para a ação. Deve-se usar o identificador principal da
+            entidade (ID).
+          schema:
+            type: string
+          in: header
+          required: false
+        - name: Integration-Response
+          description: |
+            Nível de detalhe do retorno da API. São suportados atualmente:
+            
+            **full** - Resposta completa, equivalente a um GET no recurso
+            
+            **minimum** - Resposta mínima, equivalente ao ID, data de criação e atualização do
+            registro
+            
+            Se o header não for informado, por padrão o retorno será equivalente ao nível
+            **minimum**
+          schema:
+            enum:
+              - full
+              - minimum
+            type: string
+          in: header
+          required: false
+        - name: Integration-Action
+          description: |
+            Ação a ser realizada na API de integração. Selecione uma das opções para carregar o
+            body da requisição.
+          schema:
+            anyOf:
+              - $ref: '#/components/schemas/Bundle-Products-Integration_V1_BodyCreate'
+              - $ref: '#/components/schemas/Bundle-Products-Integration_V1_BodyUpdate'
+              - $ref: '#/components/schemas/Bundle-Products-Integration_V1_BodyUpsert'
+              - $ref: '#/components/schemas/Bundle-Products-Integration_V1_BodyDelete'
+            discriminator:
+              mapping:
+                create: '#/components/schemas/Bundle-Products-Integration_V1_BodyCreate'
+                update: '#/components/schemas/Bundle-Products-Integration_V1_BodyUpdate'
+                upsert: '#/components/schemas/Bundle-Products-Integration_V1_BodyUpsert'
+                delete: '#/components/schemas/Bundle-Products-Integration_V1_BodyDelete'
+          in: header
+          required: true
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/Bundle-Products-Integration_V1_FullResponse'
+                  - $ref: '#/components/schemas/Bundle-Products-Integration_V1_MinimumResponse'
+                discriminator:
+                  mapping:
+                    full: '#/components/schemas/Bundle-Products-Integration_V1_FullResponse'
+                    minimum: '#/components/schemas/Bundle-Products-Integration_V1_MinimumResponse'
+          description: Returns a bundle product register
+        401:
+          description: Unauthorized
+      summary: Criar, atualizar e deletar itens de produto em pacotes
+      description: |-
+        A ação a ser realizada no cadastro depende do valor preenchido no header
+        **Integration-Action**:
+
+
+        **create** - Realiza a operação de POST do cadastro enviado;
+
+
+        **update** - Realiza a operação de PATCH do cadastro enviado, baseado no ID do registro
+        preenchido no header **Integration-Filter**;
+
+
+        **upsert** - Realiza a operação de POST do cadastro enviado se não for enviado ID do registro
+        no header **Integration-Filter** **OU** realiza a operação de PUT do cadastro enviado se for
+        enviado o ID do registro no header **Integration-Filter**;
+
+        **delete** - Realiza a operação de DELETE do cadastro enviado, especificado no header **Integration-Filter**
+    get:
+      tags:
+        - Service-Groups
+      parameters:
+        - name: Integration-Filter
+          description: |
+            Filtro opcional para realizar a busca de um ou mais registros. Suporta o uso de
+            RestQuery.
+            
+            
+            Se o header for omitido, lista todos os registros
+            
+            Se o header não contiver valores, lista todos os registros
+          schema:
+            type: string
+          in: header
+          required: false
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Service-Groups-Integration_V1_GetResponse'
+          description: Returns a list of service groups
+        401:
+          description: Unauthorized
+      summary: Listar grupo de serviços
+      description: Retorna uma lista de grupos de serviço cadastrados ou determinados
+        grupos com base nos filtros do header Integration-Filter
+      post:
+        requestBody:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Service-Groups-Integration_V1_BodyEmpty'
+        tags:
+          - Service-groups
+        parameters:
+          - name: Integration-Filter
+            description: |
+              Filtro do registro específico para a ação. Deve-se usar o identificador principal da
+              entidade (ID).
+            schema:
+              type: string
+            in: header
+            required: false
+          - name: Integration-Response
+            description: |
+              Nível de detalhe do retorno da API. São suportados atualmente:
+
+              **full** - Resposta completa, equivalente a um GET no recurso
+
+              **minimum** - Resposta mínima, equivalente ao ID, data de criação e atualização do
+              registro
+
+              Se o header não for informado, por padrão o retorno será equivalente ao nível
+              **minimum**
+            schema:
+              enum:
+                - full
+                - minimum
+              type: string
+            in: header
+            required: false
+          - name: Integration-Action
+            description: |
+              Ação a ser realizada na API de integração. Selecione uma das opções para carregar o
+              body da requisição.
+            schema:
+              anyOf:
+                - $ref: '#/components/schemas/Service-Groups-Integration_V1_BodyCreate'
+                - $ref: '#/components/schemas/Service-Groups-Integration_V1_BodyUpdate'
+                - $ref: '#/components/schemas/Service-Groups-Integration_V1_BodyUpsert'
+              discriminator:
+                mapping:
+                  create: '#/components/schemas/Service-Groups-Integration_V1_BodyCreate'
+                  update: '#/components/schemas/Service-Groups-Integration_V1_BodyUpdate'
+                  upsert: '#/components/schemas/Service-Groups-Integration_V1_BodyUpsert'
+            in: header
+            required: true
+        responses:
+          200:
+            content:
+              application/json:
+                schema:
+                  oneOf:
+                    - $ref: '#/components/schemas/Service-Groups-Integration_V1_FullResponse'
+                    - $ref: '#/components/schemas/Service-Groups-Integration_V1_MinimumResponse'
+                  discriminator:
+                    mapping:
+                      full: '#/components/schemas/Service-Groups-Integration_V1_FullResponse'
+                      minimum: '#/components/schemas/Service-Groups-Integration_V1_MinimumResponse'
+            description: Returns a service group register
+          401:
+            description: Unauthorized
+        summary: Criar, atualizar e deletar grupos de serviço
+        description: |
+          A ação a ser realizada no cadastro depende do valor preenchido no header
+          **Integration-Action**:
+          
+          
+          **create** - Realiza a operação de POST do cadastro enviado;
+          
+          
+          **update** - Realiza a operação de PATCH do cadastro enviado, baseado no ID do registro
+          preenchido no header **Integration-Filter**;
+          
+          
+          **upsert** - Realiza a operação de POST do cadastro enviado se não for enviado ID do registro
+          no header **Integration-Filter** **OU** realiza a operação de PUT do cadastro enviado se for
+          enviado o ID do registro no header **Integration-Filter**;    
+    parameters:
+      - name: Integration-Service
+        description: 'Serviço responsável pela entidade. Exemplo: product'
+        schema:
+          default: product
+          type: string
+        in: header
+        required: true
+      - name: Integration-Resource
+        description: |
+          Recurso para requisição. Trocar o **bundleId** pelo identificador do pacote no CRM.
+          
+          Exemplo: bundles-integration/d59870ca-c8d5-47a0-9fd3-cfba97a12003/products-integration
+        schema:
+          default: bundles-integration/<bundleId>/products-integration
+          type: string
+        in: header
+        required: true
+      - name: Integration-Version
+        description: 'Versão da API de integração. Exemplo: v1'
+        schema:
+          default: v1
+          type: string
+        in: header
+        required: true
+components:
+  schemas:
+    Bundle-Products-Integration_V1_BodyEmpty:
+      description: No body
+      type: object
+    Bundle-Products-Integration_V1_MinimumResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        createdAt:
+          type: string
+        updatedAt:
+          type: string
+      example:
+        id: 19de1e5b-37c8-42c6-a62f-3d7bdd11e994
+        createdAt: 2019-08-13T18:00:38.780Z
+        updatedAt: 2019-08-13T18:00:38.780Z
+    Bundle-Products-Integration_V1_BodyDelete:
+      description: No body
+      type: object
+    Bundle-Products-Integration_V1_BodyCreate:
+      required:
+        - bundleId
+        - productId
+        - quantity
+        - price
+        - externalId
+      type: object
+      properties:
+        quantity:
+          description: Quantidade de produtos no pacote
+          type: number
+          example: 10
+        price:
+          description: Preço do produto
+          type: number
+          example: 12
+        productId:
+          format: UUID
+          description: Identificador do produto no CRM
+          type: string
+          example: de30e854g-d911-40f8-bad0-6c461f4655cc
+        externalId:
+          description: Código do sistema externo para identificação única do registro
+          type: string
+          example: PACOTE#1#PROD#1
+        bundleId:
+          format: UUID
+          description: Identificador do pacote no CRM
+          type: string
+          example: 3f80899f-6654-419f-8c16-018e29eb632f
+    Bundle-Products-Integration_V1_BodyUpdate:
+      type: object
+      properties:
+        quantity:
+          type: number
+          example: 10
+        price:
+          type: number
+          example: 12
+        productId:
+          format: UUID
+          type: string
+          example: de30e854g-d911-40f8-bad0-6c461f4655cc
+        externalId:
+          type: string
+          example: PACOTE#1#PROD#1
+        bundleId:
+          format: UUID
+          type: string
+          example: 3f80899f-6654-419f-8c16-018e29eb632f
+    Bundle-Products-Integration_V1_BodyUpsert:
+      type: object
+      properties:
+        quantity:
+          type: number
+          example: 10
+        price:
+          type: number
+          example: 12
+        productId:
+          format: UUID
+          type: string
+          example: de30e854g-d911-40f8-bad0-6c461f4655cc
+        externalId:
+          type: string
+          example: PACOTE#1#PROD#1
+        bundleId:
+          format: UUID
+          type: string
+          example: 3f80899f-6654-419f-8c16-018e29eb632f
+    Bundle-Products-Integration_V1_FullResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          example: 00705bdb-19d9-4000-9ff3-9a43d887efdc
+        createdAt:
+          type: string
+          example: 2020-02-21T11:52:18.779Z
+        updatedAt:
+          type: string
+          example: 2020-02-21T11:52:18.779Z
+        quantity:
+          type: number
+          example: 10
+        price:
+          type: number
+          example: 12
+        productId:
+          format: UUID
+          type: string
+          example: de30e854g-d911-40f8-bad0-6c461f4655cc
+        externalId:
+          type: string
+          example: PACOTE#1#PROD#1
+        bundleId:
+          format: UUID
+          type: string
+          example: 3f80899f-6654-419f-8c16-018e29eb632f
+    Bundle-Products-Integration_V1_GetResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          example: 00705bdb-19d9-4000-9ff3-9a43d887efdc
+        createdAt:
+          type: string
+          example: 2020-02-21T11:52:18.779Z
+        updatedAt:
+          type: string
+          example: 2020-02-21T11:52:18.779Z
+        quantity:
+          type: number
+          example: 10
+        price:
+          type: number
+          example: 12
+        productId:
+          format: UUID
+          type: string
+          example: de30e854g-d911-40f8-bad0-6c461f4655cc
+        externalId:
+          type: string
+          example: PACOTE#1#PROD#1
+        bundleId:
+          format: UUID
+          type: string
+          example: 3f80899f-6654-419f-8c16-018e29eb632f
+tags:
+  - name: APP2
+    description: Ambiente APP2
+  - name: integration
+    description: ""
