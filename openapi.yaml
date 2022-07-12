@@ -1,124 +1,123 @@
 ---
 openapi: 3.0.2
 info:
-  title: bundle-products-integrationV1
+  title: service-groups-integrationV1
   version: 1.0.0
   description: |
-    API de integração de produtos em pacotes (Bundle Products) V1
+    API de integração de grupos de produto (Service Groups) V1
 
     Compatível com a versão de negócio Product V7
   contact: {}
 servers:
-  - url: https://homolog3.totvscrm.app/api/v1/integration
-    description: Integration Router Server
-    variables:
-      url:
-        default: app2.mastercrm.ws
-        description: URL de acesso ao Integration-Router
-      version:
-        default: v1
-        description: Versão do Integration-Router
+- url: https://{url}/api/{version}/integration
+  description: Integration Router Server
+  variables:
+    url:
+      default: app2.mastercrm.ws
+      description: URL de acesso ao Integration-Router
+    version:
+      default: v1
+      description: Versão do Integration-Router
 paths:
   /record:
+    summary: API de integração groups
     get:
       tags:
-        - Bundle-Products
+      - Service-Groups
       parameters:
-        - name: Integration-Filter
-          description: |
-            Filtro opcional para realizar a busca de um ou mais registros. Suporta o uso de
-            RestQuery.
-            
-            
-            Se o header for omitido, lista todos os registros
-            
-            Se o header não contiver valores, lista todos os registros
-          schema:
-            type: string
-          in: header
-          required: false
+      - name: Integration-Filter
+        description: |
+          Filtro opcional para realizar a busca de um ou mais registros. Suporta o uso de
+          RestQuery.
+
+
+          Se o header for omitido, lista todos os registros
+
+          Se o header não contiver valores, lista todos os registros
+        schema:
+          type: string
+        in: header
+        required: false
       responses:
         200:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Bundle-Products-Integration_V1_GetResponse'
-          description: Returns a list of bundle products
+                $ref: '#/components/schemas/Service-Groups-Integration_V1_GetResponse'
+          description: Returns a list of service groups
         401:
           description: Unauthorized
-      summary: Listar itens de produto no pacote
-      description: Retorna uma lista de itens de produto em pacotes cadastrados ou
-        determinados itens com base nos filtros do header Integration-Filter
+      summary: Listar grupo de serviços
+      description: Retorna uma lista de grupos de serviço cadastrados ou determinados
+        grupos com base nos filtros do header Integration-Filter
     post:
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Bundle-Products-Integration_V1_BodyEmpty'
+              $ref: '#/components/schemas/Service-Groups-Integration_V1_BodyEmpty'
       tags:
-        - Bundle-Products
+      - Service-groups
       parameters:
-        - name: Integration-Filter
-          description: |
-            Filtro do registro específico para a ação. Deve-se usar o identificador principal da
-            entidade (ID).
-          schema:
-            type: string
-          in: header
-          required: false
-        - name: Integration-Response
-          description: |
-            Nível de detalhe do retorno da API. São suportados atualmente:
-            
-            **full** - Resposta completa, equivalente a um GET no recurso
-            
-            **minimum** - Resposta mínima, equivalente ao ID, data de criação e atualização do
-            registro
-            
-            Se o header não for informado, por padrão o retorno será equivalente ao nível
-            **minimum**
-          schema:
-            enum:
-              - full
-              - minimum
-            type: string
-          in: header
-          required: false
-        - name: Integration-Action
-          description: |
-            Ação a ser realizada na API de integração. Selecione uma das opções para carregar o
-            body da requisição.
-          schema:
-            anyOf:
-              - $ref: '#/components/schemas/Bundle-Products-Integration_V1_BodyCreate'
-              - $ref: '#/components/schemas/Bundle-Products-Integration_V1_BodyUpdate'
-              - $ref: '#/components/schemas/Bundle-Products-Integration_V1_BodyUpsert'
-              - $ref: '#/components/schemas/Bundle-Products-Integration_V1_BodyDelete'
-            discriminator:
-              mapping:
-                create: '#/components/schemas/Bundle-Products-Integration_V1_BodyCreate'
-                update: '#/components/schemas/Bundle-Products-Integration_V1_BodyUpdate'
-                upsert: '#/components/schemas/Bundle-Products-Integration_V1_BodyUpsert'
-                delete: '#/components/schemas/Bundle-Products-Integration_V1_BodyDelete'
-          in: header
-          required: true
+      - name: Integration-Filter
+        description: |
+          Filtro do registro específico para a ação. Deve-se usar o identificador principal da
+          entidade (ID).
+        schema:
+          type: string
+        in: header
+        required: false
+      - name: Integration-Response
+        description: |
+          Nível de detalhe do retorno da API. São suportados atualmente:
+
+          **full** - Resposta completa, equivalente a um GET no recurso
+
+          **minimum** - Resposta mínima, equivalente ao ID, data de criação e atualização do
+          registro
+
+          Se o header não for informado, por padrão o retorno será equivalente ao nível
+          **minimum**
+        schema:
+          enum:
+          - full
+          - minimum
+          type: string
+        in: header
+        required: false
+      - name: Integration-Action
+        description: |
+          Ação a ser realizada na API de integração. Selecione uma das opções para carregar o
+          body da requisição.
+        schema:
+          anyOf:
+          - $ref: '#/components/schemas/Service-Groups-Integration_V1_BodyCreate'
+          - $ref: '#/components/schemas/Service-Groups-Integration_V1_BodyUpdate'
+          - $ref: '#/components/schemas/Service-Groups-Integration_V1_BodyUpsert'
+          discriminator:
+            mapping:
+              create: '#/components/schemas/Service-Groups-Integration_V1_BodyCreate'
+              update: '#/components/schemas/Service-Groups-Integration_V1_BodyUpdate'
+              upsert: '#/components/schemas/Service-Groups-Integration_V1_BodyUpsert'
+        in: header
+        required: true
       responses:
         200:
           content:
             application/json:
               schema:
                 oneOf:
-                  - $ref: '#/components/schemas/Bundle-Products-Integration_V1_FullResponse'
-                  - $ref: '#/components/schemas/Bundle-Products-Integration_V1_MinimumResponse'
+                - $ref: '#/components/schemas/Service-Groups-Integration_V1_FullResponse'
+                - $ref: '#/components/schemas/Service-Groups-Integration_V1_MinimumResponse'
                 discriminator:
                   mapping:
-                    full: '#/components/schemas/Bundle-Products-Integration_V1_FullResponse'
-                    minimum: '#/components/schemas/Bundle-Products-Integration_V1_MinimumResponse'
-          description: Returns a bundle product register
+                    full: '#/components/schemas/Service-Groups-Integration_V1_FullResponse'
+                    minimum: '#/components/schemas/Service-Groups-Integration_V1_MinimumResponse'
+          description: Returns a service group register
         401:
           description: Unauthorized
-      summary: Criar, atualizar e deletar itens de produto em pacotes
-      description: |-
+      summary: Criar, atualizar e deletar grupos de serviço
+      description: |
         A ação a ser realizada no cadastro depende do valor preenchido no header
         **Integration-Action**:
 
@@ -133,39 +132,34 @@ paths:
         **upsert** - Realiza a operação de POST do cadastro enviado se não for enviado ID do registro
         no header **Integration-Filter** **OU** realiza a operação de PUT do cadastro enviado se for
         enviado o ID do registro no header **Integration-Filter**;
-
-        **delete** - Realiza a operação de DELETE do cadastro enviado, especificado no header **Integration-Filter**
     parameters:
-      - name: Integration-Service
-        description: 'Serviço responsável pela entidade. Exemplo: product'
-        schema:
-          default: product
-          type: string
-        in: header
-        required: true
-      - name: Integration-Resource
-        description: |
-          Recurso para requisição. Trocar o **bundleId** pelo identificador do pacote no CRM.
-          
-          Exemplo: bundles-integration/d59870ca-c8d5-47a0-9fd3-cfba97a12003/products-integration
-        schema:
-          default: bundles-integration/<bundleId>/products-integration
-          type: string
-        in: header
-        required: true
-      - name: Integration-Version
-        description: 'Versão da API de integração. Exemplo: v1'
-        schema:
-          default: v1
-          type: string
-        in: header
-        required: true
+    - name: Integration-Service
+      description: 'Serviço responsável pela entidade. Exemplo: product'
+      schema:
+        default: product
+        type: string
+      in: header
+      required: true
+    - name: Integration-Resource
+      description: 'Recurso para requisição. Exemplo: service-groups-integration'
+      schema:
+        default: service-groups-integration
+        type: string
+      in: header
+      required: true
+    - name: Integration-Version
+      description: 'Versão da API de integração. Exemplo: v1'
+      schema:
+        default: v1
+        type: string
+      in: header
+      required: true
 components:
   schemas:
-    Bundle-Products-Integration_V1_BodyEmpty:
+    Service-Groups-Integration_V1_BodyEmpty:
       description: No body
       type: object
-    Bundle-Products-Integration_V1_MinimumResponse:
+    Service-Groups-Integration_V1_MinimumResponse:
       type: object
       properties:
         id:
@@ -176,142 +170,123 @@ components:
           type: string
       example:
         id: 19de1e5b-37c8-42c6-a62f-3d7bdd11e994
-        createdAt: 2019-08-13T18:00:38.780Z
+        createAt: 2019-08-13T18:00:38.780Z
         updatedAt: 2019-08-13T18:00:38.780Z
-    Bundle-Products-Integration_V1_BodyDelete:
-      description: No body
-      type: object
-    Bundle-Products-Integration_V1_BodyCreate:
+    Service-Groups-Integration_V1_BodyCreate:
       required:
-        - bundleId
-        - productId
-        - quantity
-        - price
-        - externalId
+      - active
+      - description
+      - externalId
+      - code
       type: object
       properties:
-        quantity:
-          description: Quantidade de produtos no pacote
-          type: number
-          example: 10
-        price:
-          description: Preço do produto
-          type: number
-          example: 12
-        productId:
-          format: UUID
-          description: Identificador do produto no CRM
+        active:
+          description: Define se o registro está ativo
+          type: boolean
+          example: true
+        code:
+          description: Código do grupo de produto
           type: string
-          example: de30e854g-d911-40f8-bad0-6c461f4655cc
+          example: CONS
+        description:
+          description: Descrição do grupo de produto
+          type: string
+          example: Consultoria
         externalId:
           description: Código do sistema externo para identificação única do registro
           type: string
-          example: PACOTE#1#PROD#1
-        bundleId:
-          format: UUID
-          description: Identificador do pacote no CRM
+          example: Cons
+        serviceGroupUpperId:
+          description: Grupo de produto superior
           type: string
-          example: 3f80899f-6654-419f-8c16-018e29eb632f
-    Bundle-Products-Integration_V1_BodyUpdate:
+    Service-Groups-Integration_V1_BodyUpdate:
       type: object
       properties:
-        quantity:
-          type: number
-          example: 10
-        price:
-          type: number
-          example: 12
-        productId:
-          format: UUID
+        active:
+          type: boolean
+          example: true
+        code:
           type: string
-          example: de30e854g-d911-40f8-bad0-6c461f4655cc
+          example: CONS
+        description:
+          type: string
+          example: Consultoria
         externalId:
           type: string
-          example: PACOTE#1#PROD#1
-        bundleId:
-          format: UUID
+          example: Cons
+        serviceGroupUpperId:
           type: string
-          example: 3f80899f-6654-419f-8c16-018e29eb632f
-    Bundle-Products-Integration_V1_BodyUpsert:
+    Service-Groups-Integration_V1_BodyUpsert:
       type: object
       properties:
-        quantity:
-          type: number
-          example: 10
-        price:
-          type: number
-          example: 12
-        productId:
-          format: UUID
+        active:
+          type: boolean
+          example: true
+        code:
           type: string
-          example: de30e854g-d911-40f8-bad0-6c461f4655cc
+          example: CONS
+        description:
+          type: string
+          example: Consultoria
         externalId:
           type: string
-          example: PACOTE#1#PROD#1
-        bundleId:
-          format: UUID
+          example: Cons
+        serviceGroupUpperId:
           type: string
-          example: 3f80899f-6654-419f-8c16-018e29eb632f
-    Bundle-Products-Integration_V1_FullResponse:
+    Service-Groups-Integration_V1_FullResponse:
       type: object
       properties:
         id:
           type: string
-          example: 00705bdb-19d9-4000-9ff3-9a43d887efdc
+          example: 02285a7b-de5e-460b-a19f-29ae81e1e3cb
         createdAt:
           type: string
-          example: 2020-02-21T11:52:18.779Z
+          example: 2020-05-22T12:13:21.571Z
         updatedAt:
           type: string
-          example: 2020-02-21T11:52:18.779Z
-        quantity:
-          type: number
-          example: 10
-        price:
-          type: number
-          example: 12
-        productId:
-          format: UUID
+          example: 2020-05-22T12:13:21.571Z
+        active:
+          type: boolean
+          example: true
+        code:
           type: string
-          example: de30e854g-d911-40f8-bad0-6c461f4655cc
+          example: CONS
+        description:
+          type: string
+          example: Consultoria
         externalId:
           type: string
-          example: PACOTE#1#PROD#1
-        bundleId:
-          format: UUID
+          example: Cons
+        serviceGroupUpperId:
           type: string
-          example: 3f80899f-6654-419f-8c16-018e29eb632f
-    Bundle-Products-Integration_V1_GetResponse:
+    Service-Groups-Integration_V1_GetResponse:
       type: object
       properties:
         id:
           type: string
-          example: 00705bdb-19d9-4000-9ff3-9a43d887efdc
+          example: 02285a7b-de5e-460b-a19f-29ae81e1e3cb
         createdAt:
           type: string
-          example: 2020-02-21T11:52:18.779Z
+          example: 2020-05-22T12:13:21.571Z
         updatedAt:
           type: string
-          example: 2020-02-21T11:52:18.779Z
-        quantity:
-          type: number
-          example: 10
-        price:
-          type: number
-          example: 12
-        productId:
-          format: UUID
+          example: 2020-05-22T12:13:21.571Z
+        active:
+          type: boolean
+          example: true
+        code:
           type: string
-          example: de30e854g-d911-40f8-bad0-6c461f4655cc
+          example: CONS
+        description:
+          type: string
+          example: Consultoria
         externalId:
           type: string
-          example: PACOTE#1#PROD#1
-        bundleId:
-          format: UUID
+          example: Cons
+        serviceGroupUpperId:
           type: string
-          example: 3f80899f-6654-419f-8c16-018e29eb632f
 tags:
-  - name: APP2
-    description: Ambiente APP2
-  - name: integration
-    description: ""
+- name: APP2
+  description: Ambiente APP2
+- name: integration
+  description: ""
