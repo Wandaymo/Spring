@@ -71,7 +71,7 @@
             "name": "body",
             "in": "body",
             "schema": {
-              "$ref": "#/definitions/Service-Groups-Integration_V1_BodyEmpty"
+              "$ref": "#/definitions/Service-Groups-Integration_V1_BodyCreate"
             }
           }
         ],
