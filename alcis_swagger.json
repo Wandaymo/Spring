@@ -1,0 +1,5233 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Integrações WEB API - WMS FULL",
+    "description": "O escopo deste documento é apresentar de maneira detalhada todas as APIs para integração do WMS Full. Todos os métodos deverão enviar no HEADER os seguintes itens: content-type: application/json, alias: Parametro fornecido pela Alcis Software para Logística e Authorization que sera retornado via API de autenticação. As APis estão no modelo REST trafegando JSON. <br/> <br/><strong>Importante:</strong> Antes de definir quais as integrações serão utilizadas para a operação é necessário verificar como foi ou será realizada a configuração do SITE no WMS. Se será habilitado o módulo AG (Fiscal para Armazém Geral) ou a operação será diretamente com o WMS (sem o Módulo AG – habilitado). Pois dependendo desta configuração algumas integrações não estão disponíveis. Qualquer dúvida favor entrar em contato com Alcis Software Para Logistica.<br/> <br/><div><strong>Integrações disponiveis</strong><br/> <div><strong>Dados cadastrais:</strong><br/> <a href=\"docs#tag/Produtos\">Produto</a><br/><a href=\"docs#tag/Clientes\">Cliente</a><br/><a href=\"docs#tag/Fornecedores\">Fornecedor</a><br/><a href=\"docs#tag/Transportadoras\">Transportadora</a><br/><br/><strong>Operacionais Inbound:</strong><br/> <a href=\"docs#tag/RecebimentoNotaFiscal\">Recebimento Nota Fiscal</a><br/><a href=\"docs#tag/ConfRecNotaFiscal\">Confirmação de Recebimento Nota Fiscal</a><br/><a href=\"docs#tag/RecebimentoAgrupado\">Recebimento Agrupado</a><br/><a href=\"docs#tag/ConfRecAgrupado\">Confirmação de Recebimento Agrupado</a><br/><a href=\"docs#tag/CancelamentoDeRecebimento\">Cancelamento de Recebimento</a><br/><br/><strong>Operacionais Outbound:</strong><br/> <a href=\"docs#tag/Pedidos\">Pedido</a><br/><a href=\"docs#tag/ConfirmacaoPedido\">Confirmação de Pedido</a><br/><a href=\"docs#tag/ExpedicaoPedido\">Expedição Pedido</a><br/><a href=\"docs#tag/FaturamentoPedido\">Faturamento de Pedido</a><br/><a href=\"docs#tag/SolicitacaoCancelamentoPedido\">Solicitação de Cancelamento de Pedido</a><br/><a href=\"docs#tag/CancelamentoDePedido\">Cancelamento de Pedido</a><br/><a href=\"docs#tag/StatusPedido\">Status Do Pedido</a><br/><br/><strong>Fiscal:</strong><br/> <a href=\"docs#tag/Book\">Book - Livro Fiscal</a><br/><br/><strong>Operacionais gestão de estoque:</strong><br/> <a href=\"docs#tag/AjusteInventario\">Ajuste de inventário</a><br/><a href=\"docs#tag/BloqueioDesbloqueio\">Bloqueio e desbloqueio de estoque</a><br/><a href=\"docs#tag/Estoque\">Consulta de estoque</a><br/><br/><strong>Operacionais Billing:</strong><br/><a href=\"docs#tag/FaturamentoServico\">Faturamento de serviços</a><br/><br/><div><strong>Manual de Uso Postman para Testes:</strong><br/> <a href=\"manuais/Testes-APIs-WMS.htm\">Manual</a>",
+    "contact": {
+      "name": "Alcis | Softwares para Logística",
+      "url": "https://www.alcis.com.br/"
+    },
+    "version": "v1",
+    "x-logo": {
+      "url": "alcis-logotipo-header.png",
+      "altText": "ALCIS Ltda."
+    }
+  },
+  "paths": {
+    "/api/v1/AjusteInventario": {
+      "get": {
+        "tags": [
+          "AjusteInventario"
+        ],
+        "summary": "Novo Ajuste de Inventário",
+        "description": "<strong>WMS/AG > ERP</strong>\r\n<br />\r\n<br />\r\n            API responsável por retornar os valores do ajuste de inventário realizado no WMS Alcis.\r\n            Todos os atributos devem seguir as regras descritas no documento.\r\n            O campo Tipo de Ajuste retornará \"P\" de ajuste positivo e \"N\" de ajuste negativo. O campo Indicador faz \r\n            referência ao estoque: \"00\" - Livre | \"90\" - Bloqueado.",
+        "parameters": [
+          {
+            "name": "site",
+            "in": "query",
+            "description": "Codigo do site notificado (Required)",
+            "schema": {
+              "type": "string"
+            },
+            "example": "STI"
+          },
+          {
+            "name": "numeroDaTransacao",
+            "in": "query",
+            "description": "Numero da Transação notificada (Required)",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "example": 123456789
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/AjusteInventarioRetornoExampleDTO"
+                },
+                "example": {"site":"ABC","codigoDepositante":"ABC","codigoProduto":"ABC","quantidadeAjustada":1.0,"lote":"ABC","tipoDeAjuste":"P (ajuste positivo) | N (ajuste negativo)","indicador":"00 (Livre) | 90 (Bloqueado)","motivoBloqueio":"ABC","serial":"ABC"}
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AjusteInventarioRetornoExampleDTO"
+                },
+                "example": {"site":"ABC","codigoDepositante":"ABC","codigoProduto":"ABC","quantidadeAjustada":1.0,"lote":"ABC","tipoDeAjuste":"P (ajuste positivo) | N (ajuste negativo)","indicador":"00 (Livre) | 90 (Bloqueado)","motivoBloqueio":"ABC","serial":"ABC"}
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AjusteInventarioRetornoExampleDTO"
+                },
+                "example": {"site":"ABC","codigoDepositante":"ABC","codigoProduto":"ABC","quantidadeAjustada":1.0,"lote":"ABC","tipoDeAjuste":"P (ajuste positivo) | N (ajuste negativo)","indicador":"00 (Livre) | 90 (Bloqueado)","motivoBloqueio":"ABC","serial":"ABC"}
+              }
+            }
+          },
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "description": "BadRequest"
+          },
+          "422": {
+            "description": "UnprocessableEntity"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "oauth2": [ ]
+          }
+        ]
+      },
+      "put": {
+        "tags": [
+          "AjusteInventario"
+        ],
+        "summary": "Notificação de novo ajuste de Inventário",
+        "description": "<strong>WMS/AG > ERP</strong>\r\n<br />\r\n<br />\r\n            API responsável por notificar sistemas externos que houve um ajuste de inventário no WMS Alcis.\r\n            Todos os atributos devem seguir as regras descritas no documento\r\n            <b><br /><br />IMPORTANTE: O adquirente deve fornecer uma API que receba o JSON no formato a seguir para \r\n            que o WMS Alcis notifique. </b>",
+        "requestBody": {
+          "description": "Configuração dos atributos do JSON",
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/AjusteInventarioDTO"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AjusteInventarioDTO"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AjusteInventarioDTO"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/AjusteInventarioDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "oauth2": [ ]
+          }
+        ]
+      }
+    },
+    "/api/v1/BloqueioDesbloqueio": {
+      "get": {
+        "tags": [
+          "BloqueioDesbloqueio"
+        ],
+        "summary": "Novo bloqueio/desbloqueio estoque",
+        "description": "<strong>WMS/AG > ERP</strong>\r\n<br />\r\n<br />\r\n            API responsável por retornar os valores do bloqueio ou desbloqueio de estoque realizado no WMS Alcis. \r\n            Todos os atributos devem seguir as regras descritas no documento.",
+        "parameters": [
+          {
+            "name": "site",
+            "in": "query",
+            "description": "Codigo do site notificado (Required)",
+            "schema": {
+              "type": "string"
+            },
+            "example": "STI"
+          },
+          {
+            "name": "numeroDaTransacao",
+            "in": "query",
+            "description": "Numero da Transação notificada (Required)",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "example": 123456789
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/BloqueioDesbloqueioRetornoExampleDTO"
+                },
+                "example": {"site":"ABC","codigoDepositante":"ABC","codigoProduto":"ABC","quantidadeBloqueioDesbloqueio":1.0,"lote":null,"serial":null,"indicador":"90 (Bloqueado) | 00 (Livre)","motivoBloqueioDesbloqueioOrigem":"ABC","codigoMotivoOrigem":"ABERTO","motivoBloqueioDesbloqueioDestino":"ABC","codigoMotivoDestino":"RASGADO","ordemRecebimento":null,"idIntegracao":null}
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BloqueioDesbloqueioRetornoExampleDTO"
+                },
+                "example": {"site":"ABC","codigoDepositante":"ABC","codigoProduto":"ABC","quantidadeBloqueioDesbloqueio":1.0,"lote":null,"serial":null,"indicador":"90 (Bloqueado) | 00 (Livre)","motivoBloqueioDesbloqueioOrigem":"ABC","codigoMotivoOrigem":"ABERTO","motivoBloqueioDesbloqueioDestino":"ABC","codigoMotivoDestino":"RASGADO","ordemRecebimento":null,"idIntegracao":null}
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BloqueioDesbloqueioRetornoExampleDTO"
+                },
+                "example": {"site":"ABC","codigoDepositante":"ABC","codigoProduto":"ABC","quantidadeBloqueioDesbloqueio":1.0,"lote":null,"serial":null,"indicador":"90 (Bloqueado) | 00 (Livre)","motivoBloqueioDesbloqueioOrigem":"ABC","codigoMotivoOrigem":"ABERTO","motivoBloqueioDesbloqueioDestino":"ABC","codigoMotivoDestino":"RASGADO","ordemRecebimento":null,"idIntegracao":null}
+              }
+            }
+          },
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "description": "BadRequest"
+          },
+          "422": {
+            "description": "UnprocessableEntity"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "oauth2": [ ]
+          }
+        ]
+      },
+      "put": {
+        "tags": [
+          "BloqueioDesbloqueio"
+        ],
+        "summary": "Notificação de novo bloqueio/desbloqueio estoque",
+        "description": "<strong>WMS/AG > ERP</strong>\r\n<br />\r\n<br />\r\n            IMPORTANTE: O adquirente deve fornecer uma API que receba o JSON no formato a seguir para que o WMS Alcis notifique.\r\n            Todos os atributos devem seguir as regras descritas no documento\r\n            <b><br /><br />IMPORTANTE: O adquirente deve fornecer uma API que receba o JSON no formato a seguir para que o WMS Alcis notifique. </b>",
+        "requestBody": {
+          "description": "Configuração dos atributos do JSON",
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/BloqueioDesbloqueioDTO"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BloqueioDesbloqueioDTO"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BloqueioDesbloqueioDTO"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/BloqueioDesbloqueioDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "oauth2": [ ]
+          }
+        ]
+      }
+    },
+    "/api/v1/Book": {
+      "get": {
+        "tags": [
+          "Book"
+        ],
+        "summary": "Livro Fiscal",
+        "description": "<strong>AG > ERP</strong>\r\n<br />\r\n<br />\r\n            API responsável por retornar a exportação das notas fiscais de entrada e saída \r\n            para compor o livro fiscal no WMS Alcis. \r\n            Todos os atributos devem seguir as regras descritas no documento.",
+        "parameters": [
+          {
+            "name": "site",
+            "in": "query",
+            "description": "Codigo do site notificado (Required)",
+            "schema": {
+              "type": "string"
+            },
+            "example": "STI"
+          },
+          {
+            "name": "TipoProcesso",
+            "in": "query",
+            "description": "Tipo da Transação notificada (Required)",
+            "schema": {
+              "type": "string"
+            },
+            "example": "FAT01"
+          },
+          {
+            "name": "IdProcesso",
+            "in": "query",
+            "description": "Numero da Transação notificada (Required)",
+            "schema": {
+              "type": "string"
+            },
+            "example": "123456789"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/BookRetornoExampleDTO"
+                },
+                "example": {"indicador":"H","indicadorDeOrigemDaNota":"E","dataDeEmissao":"2022-07-15T12:26:26.0637895-03:00","serie":"4","numeroDoDocumento":"1234","numeroDoFormulario":"1","indicadorDeCancelamento":"C","inscricaoEstadualSubstTrib":"1","nomeDoDestinatario":"XPTO DO BRASIL","cnpjDoDestinatario":"99999999999999","inscEstadualDoDestinatario":"999999999999","enderecoDoDestinatario":"RUA CURUPACE 260","bairroDoDestinatario":"MOOCA","cepDoDestinatario":"3120010","ufDoDestinatario":"SP","municipioDoDestinatario":"3518800","telefoneDoDestinatario":"123012312","nomeDoEmitente":"ALCIS LTDA","cnpjDoEmitente":"99999999999999","inscEstadualDoEmitente":"999999999999","enderecoDoEmitente":"RUA CURUPACE","bairroDoEmitente":"MOOCA","municipioDoEmitente":"3518800","ufDoEmitente":"SP","cepDoEmitente":"3120010","baseDeCalculoDoIcms":0.0,"totalDoIcms":0.0,"baseDeCalculoDoIcmsSubstTrib":0.0,"totalIcmsSubstTrib":0.0,"totalDasMercadorias":1.0,"totalDoFrete":0.0,"totalDoSeguro":0.0,"totalDeDespesasAcessorias":0.0,"ufDaTransportadora":"SP","totalDoIpi":0.0,"totalDoDocumento":1.0,"nomeDaTransportadora":"ALCIS LTDA","tipoDeFrete":"F","placaDoVeiculo":"ABC0001","cnpjDaTransportadora":"99999999999999","enderecoDaTransportadora":"RUA CURUPACE 260","municipioDaTransportadora":"3518800","inscEstadualDaTransportadora":"999999999999","quantidadeDeVolumes":1440.0,"especieDeVolumes":"CX","marcaDosVolumes":"CX","numeracaoDoVolume":"1","pesoBruto":0.0,"pesoLiquido":0.0,"observacoes1":"Obs1","observacoes2":"Obs2","ufDoVeiculo":"SP","dataDoLancamentoNoLivroFiscal":"2022-07-15T12:26:26.0637899-03:00","dadosAdcionais":"Mercadoria saira do porto de Santos sendo remetida diretamente para o ARMAZEM GERAL - DI - 20/0668507-3 DE 23/04/2020 - REFERENTE N/NF","cnpjDoProprietarioDeEstoque":"99999999999999","ieDoProprietarioDeEstoque":"999999999999","totalOperacaoIsentaIcms":1.0,"totalOperacaoOutrosIcms":0.0,"operacao":"5013","tipoDoDocumento":"NFe","modelo":"55","filial":"99999999999999","chaveDaNfe":"9999999999999999999999999999999999","motivoCancelamento":"97|OPERACAO=206|DATA=20200603|HISTORICO=Nota Fiscal Cancelada","chaveNfeContaEOrdem":"9999999999999999999999999999999999","itens":[{"produto":"XPTO","descricao":"PRODUTO XPTO","classificacaoFiscal":"27122000","cfop":"1905","origemDaMercadoria":"0","situacaoTributaria":"41","unidadeDeMedida":"KG","quantidade":1000.0,"precoUnitario":1.0,"percentualDeDesconto":0.0,"totalDoItem":1.0,"percentualDeIcms":0.0,"percentualDeIpi":0.0,"valorDoIcms":0.0,"valorDoIpi":0.0,"incidenciaDeIcms":0.0,"incidenciaDeIpi":0.0,"numeroDoLote":"LOTE2","observacao":"","valorIsentasIcms":1.0,"valorOutrasIcms":0.0,"cancelamento":0.0,"descontos":0.0,"sequenciaDoItem":1,"baseDeCalculoIcms":0.0,"baseDeCalculoIpi":0.0}]}
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BookRetornoExampleDTO"
+                },
+                "example": {"indicador":"H","indicadorDeOrigemDaNota":"E","dataDeEmissao":"2022-07-15T12:26:26.0637895-03:00","serie":"4","numeroDoDocumento":"1234","numeroDoFormulario":"1","indicadorDeCancelamento":"C","inscricaoEstadualSubstTrib":"1","nomeDoDestinatario":"XPTO DO BRASIL","cnpjDoDestinatario":"99999999999999","inscEstadualDoDestinatario":"999999999999","enderecoDoDestinatario":"RUA CURUPACE 260","bairroDoDestinatario":"MOOCA","cepDoDestinatario":"3120010","ufDoDestinatario":"SP","municipioDoDestinatario":"3518800","telefoneDoDestinatario":"123012312","nomeDoEmitente":"ALCIS LTDA","cnpjDoEmitente":"99999999999999","inscEstadualDoEmitente":"999999999999","enderecoDoEmitente":"RUA CURUPACE","bairroDoEmitente":"MOOCA","municipioDoEmitente":"3518800","ufDoEmitente":"SP","cepDoEmitente":"3120010","baseDeCalculoDoIcms":0.0,"totalDoIcms":0.0,"baseDeCalculoDoIcmsSubstTrib":0.0,"totalIcmsSubstTrib":0.0,"totalDasMercadorias":1.0,"totalDoFrete":0.0,"totalDoSeguro":0.0,"totalDeDespesasAcessorias":0.0,"ufDaTransportadora":"SP","totalDoIpi":0.0,"totalDoDocumento":1.0,"nomeDaTransportadora":"ALCIS LTDA","tipoDeFrete":"F","placaDoVeiculo":"ABC0001","cnpjDaTransportadora":"99999999999999","enderecoDaTransportadora":"RUA CURUPACE 260","municipioDaTransportadora":"3518800","inscEstadualDaTransportadora":"999999999999","quantidadeDeVolumes":1440.0,"especieDeVolumes":"CX","marcaDosVolumes":"CX","numeracaoDoVolume":"1","pesoBruto":0.0,"pesoLiquido":0.0,"observacoes1":"Obs1","observacoes2":"Obs2","ufDoVeiculo":"SP","dataDoLancamentoNoLivroFiscal":"2022-07-15T12:26:26.0637899-03:00","dadosAdcionais":"Mercadoria saira do porto de Santos sendo remetida diretamente para o ARMAZEM GERAL - DI - 20/0668507-3 DE 23/04/2020 - REFERENTE N/NF","cnpjDoProprietarioDeEstoque":"99999999999999","ieDoProprietarioDeEstoque":"999999999999","totalOperacaoIsentaIcms":1.0,"totalOperacaoOutrosIcms":0.0,"operacao":"5013","tipoDoDocumento":"NFe","modelo":"55","filial":"99999999999999","chaveDaNfe":"9999999999999999999999999999999999","motivoCancelamento":"97|OPERACAO=206|DATA=20200603|HISTORICO=Nota Fiscal Cancelada","chaveNfeContaEOrdem":"9999999999999999999999999999999999","itens":[{"produto":"XPTO","descricao":"PRODUTO XPTO","classificacaoFiscal":"27122000","cfop":"1905","origemDaMercadoria":"0","situacaoTributaria":"41","unidadeDeMedida":"KG","quantidade":1000.0,"precoUnitario":1.0,"percentualDeDesconto":0.0,"totalDoItem":1.0,"percentualDeIcms":0.0,"percentualDeIpi":0.0,"valorDoIcms":0.0,"valorDoIpi":0.0,"incidenciaDeIcms":0.0,"incidenciaDeIpi":0.0,"numeroDoLote":"LOTE2","observacao":"","valorIsentasIcms":1.0,"valorOutrasIcms":0.0,"cancelamento":0.0,"descontos":0.0,"sequenciaDoItem":1,"baseDeCalculoIcms":0.0,"baseDeCalculoIpi":0.0}]}
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BookRetornoExampleDTO"
+                },
+                "example": {"indicador":"H","indicadorDeOrigemDaNota":"E","dataDeEmissao":"2022-07-15T12:26:26.0637895-03:00","serie":"4","numeroDoDocumento":"1234","numeroDoFormulario":"1","indicadorDeCancelamento":"C","inscricaoEstadualSubstTrib":"1","nomeDoDestinatario":"XPTO DO BRASIL","cnpjDoDestinatario":"99999999999999","inscEstadualDoDestinatario":"999999999999","enderecoDoDestinatario":"RUA CURUPACE 260","bairroDoDestinatario":"MOOCA","cepDoDestinatario":"3120010","ufDoDestinatario":"SP","municipioDoDestinatario":"3518800","telefoneDoDestinatario":"123012312","nomeDoEmitente":"ALCIS LTDA","cnpjDoEmitente":"99999999999999","inscEstadualDoEmitente":"999999999999","enderecoDoEmitente":"RUA CURUPACE","bairroDoEmitente":"MOOCA","municipioDoEmitente":"3518800","ufDoEmitente":"SP","cepDoEmitente":"3120010","baseDeCalculoDoIcms":0.0,"totalDoIcms":0.0,"baseDeCalculoDoIcmsSubstTrib":0.0,"totalIcmsSubstTrib":0.0,"totalDasMercadorias":1.0,"totalDoFrete":0.0,"totalDoSeguro":0.0,"totalDeDespesasAcessorias":0.0,"ufDaTransportadora":"SP","totalDoIpi":0.0,"totalDoDocumento":1.0,"nomeDaTransportadora":"ALCIS LTDA","tipoDeFrete":"F","placaDoVeiculo":"ABC0001","cnpjDaTransportadora":"99999999999999","enderecoDaTransportadora":"RUA CURUPACE 260","municipioDaTransportadora":"3518800","inscEstadualDaTransportadora":"999999999999","quantidadeDeVolumes":1440.0,"especieDeVolumes":"CX","marcaDosVolumes":"CX","numeracaoDoVolume":"1","pesoBruto":0.0,"pesoLiquido":0.0,"observacoes1":"Obs1","observacoes2":"Obs2","ufDoVeiculo":"SP","dataDoLancamentoNoLivroFiscal":"2022-07-15T12:26:26.0637899-03:00","dadosAdcionais":"Mercadoria saira do porto de Santos sendo remetida diretamente para o ARMAZEM GERAL - DI - 20/0668507-3 DE 23/04/2020 - REFERENTE N/NF","cnpjDoProprietarioDeEstoque":"99999999999999","ieDoProprietarioDeEstoque":"999999999999","totalOperacaoIsentaIcms":1.0,"totalOperacaoOutrosIcms":0.0,"operacao":"5013","tipoDoDocumento":"NFe","modelo":"55","filial":"99999999999999","chaveDaNfe":"9999999999999999999999999999999999","motivoCancelamento":"97|OPERACAO=206|DATA=20200603|HISTORICO=Nota Fiscal Cancelada","chaveNfeContaEOrdem":"9999999999999999999999999999999999","itens":[{"produto":"XPTO","descricao":"PRODUTO XPTO","classificacaoFiscal":"27122000","cfop":"1905","origemDaMercadoria":"0","situacaoTributaria":"41","unidadeDeMedida":"KG","quantidade":1000.0,"precoUnitario":1.0,"percentualDeDesconto":0.0,"totalDoItem":1.0,"percentualDeIcms":0.0,"percentualDeIpi":0.0,"valorDoIcms":0.0,"valorDoIpi":0.0,"incidenciaDeIcms":0.0,"incidenciaDeIpi":0.0,"numeroDoLote":"LOTE2","observacao":"","valorIsentasIcms":1.0,"valorOutrasIcms":0.0,"cancelamento":0.0,"descontos":0.0,"sequenciaDoItem":1,"baseDeCalculoIcms":0.0,"baseDeCalculoIpi":0.0}]}
+              }
+            }
+          },
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "description": "BadRequest"
+          },
+          "422": {
+            "description": "UnprocessableEntity"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "oauth2": [ ]
+          }
+        ]
+      },
+      "put": {
+        "tags": [
+          "Book"
+        ],
+        "summary": "Notificação de livro fiscal",
+        "description": "<strong>WMS/AG > ERP</strong>\r\n<br />\r\n<br />\r\n            API responsável por notificar sistemas externos que houve ajuste de inventário no WMS Alcis.\r\n            Todos os atributos devem seguir as regras descritas no documento\r\n            <b><br /><br />IMPORTANTE: O adquirente deve fornecer uma api que receba o JSON no formato a seguir\r\n            para que o WMS Alcis notifique </b>",
+        "requestBody": {
+          "description": "Configuração dos atributos do JSON",
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/BookDTO"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BookDTO"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BookDTO"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/BookDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "oauth2": [ ]
+          }
+        ]
+      }
+    },
+    "/api/v1/CancelamentoDePedido": {
+      "get": {
+        "tags": [
+          "CancelamentoDePedido"
+        ],
+        "summary": "Cancelamento de pedido",
+        "description": "<strong>WMS/AG > ERP</strong>\r\n<br />\r\n<br />\r\n            API responsável por retornar os valores de um cancelamento de pedido realizado no WMS Alcis. \r\n            Todos os atributos devem seguir as regras descritas no documento.",
+        "parameters": [
+          {
+            "name": "site",
+            "in": "query",
+            "description": "Codigo do site notificado (Required)",
+            "schema": {
+              "type": "string"
+            },
+            "example": "STI"
+          },
+          {
+            "name": "codigoDepositante",
+            "in": "query",
+            "description": "Codigo do depositante notificado (Required)",
+            "schema": {
+              "type": "string"
+            },
+            "example": "123456789"
+          },
+          {
+            "name": "numeroPedido",
+            "in": "query",
+            "description": "numero do pedido notificado (Required)",
+            "schema": {
+              "type": "string"
+            },
+            "example": "123456789"
+          },
+          {
+            "name": "subPedido",
+            "in": "query",
+            "description": "Sub pedido notificado (Required)",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "example": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/CancelamentoDePedidoRetornoExampleDTO"
+                },
+                "example": {"site":"ABC","codigoDepositante":"ABC","numeroPedido":"123","subPedido":1,"numeroCarga":"123","codigoCliente":"ABC"}
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CancelamentoDePedidoRetornoExampleDTO"
+                },
+                "example": {"site":"ABC","codigoDepositante":"ABC","numeroPedido":"123","subPedido":1,"numeroCarga":"123","codigoCliente":"ABC"}
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CancelamentoDePedidoRetornoExampleDTO"
+                },
+                "example": {"site":"ABC","codigoDepositante":"ABC","numeroPedido":"123","subPedido":1,"numeroCarga":"123","codigoCliente":"ABC"}
+              }
+            }
+          },
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "description": "BadRequest"
+          },
+          "422": {
+            "description": "UnprocessableEntity"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "oauth2": [ ]
+          }
+        ]
+      },
+      "put": {
+        "tags": [
+          "CancelamentoDePedido"
+        ],
+        "summary": "Notificação de cancelamento de pedido",
+        "description": "<strong>WMS/AG > ERP</strong>\r\n<br />\r\n<br />\r\n            API responsável por notificar sistemas parceiros de que houve um cancelamento de pedido no WMS Alcis. \r\n            Todos os atributos devem seguir as regras descritas no documento.\r\n            <b><br /><br />IMPORTANTE: O adquirente deve fornecer uma API que receba o JSON no \r\n            formato a seguir para que o WMS Alcis notifique. </b>",
+        "requestBody": {
+          "description": "Configuração dos atributos do JSON",
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CancelamentoDePedidoDTO"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CancelamentoDePedidoDTO"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CancelamentoDePedidoDTO"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CancelamentoDePedidoDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "oauth2": [ ]
+          }
+        ]
+      }
+    },
+    "/api/v1/CancelamentoDeRecebimento": {
+      "put": {
+        "tags": [
+          "CancelamentoDeRecebimento"
+        ],
+        "summary": "Notificação de cancelamento de recebimento",
+        "description": "<strong>WMS/AG > ERP</strong>\r\n<br />\r\n<br />\r\n            API responsável por notificar sistemas parceiros de que houve um cancelamento de um recebimento no WMS Alcis. \r\n            Todos os atributos devem seguir as regras descritas no documento.\r\n            <b><br /><br />IMPORTANTE: O adquirente deve fornecer uma API que receba o JSON no \r\n            formato a seguir para que o WMS Alcis notifique. </b>",
+        "requestBody": {
+          "description": "Configuração dos atributos do JSON",
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CancelamentoDeRecebimentoDTO"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CancelamentoDeRecebimentoDTO"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CancelamentoDeRecebimentoDTO"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CancelamentoDeRecebimentoDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "oauth2": [ ]
+          }
+        ]
+      }
+    },
+    "/api/v1/Clientes": {
+      "get": {
+        "tags": [
+          "Clientes"
+        ],
+        "summary": "Retorna Cliente",
+        "description": "<strong>WMS/AG</strong>\r\n<br />\r\n<br />\r\n            API responsável por retornar os valores de um cliente cadastrado no WMS Alcis. \r\n            Todos os atributos devem seguir as regras descritas no documento.",
+        "parameters": [
+          {
+            "name": "site",
+            "in": "query",
+            "description": "Codigo do site (Required)",
+            "schema": {
+              "type": "string"
+            },
+            "example": "STI"
+          },
+          {
+            "name": "codigoDepositante",
+            "in": "query",
+            "description": "Codigo do depositante (Required)",
+            "schema": {
+              "type": "string"
+            },
+            "example": "123456789"
+          },
+          {
+            "name": "codigoCliente",
+            "in": "query",
+            "description": "Codigo do cliente (Required)",
+            "schema": {
+              "type": "string"
+            },
+            "example": "123456789"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ClientesRetornoExampleDTO"
+                },
+                "example": {"site":"ABC","codigoDepositante":"9876","codigoCliente":"12345","cnpjCpf":"01361310000102","razaoSocial":"Cliente exemplo","nomeFantasia":"Cliente exemplo","tipoDePessoa":"1","inscricaoEstadual":"745755424374","enderecos":[{"tipoDeEndereco":"1","cep":"03120010","numeroDoLogradouro":"260","complementoDoEndereco":"Primeiro andar","rota":"Zona Leste","pais":"BRA","estado":"SP","cidade":"Sao Paulo","bairro":"Mooca","logradouro":"Rua Curupace"}],"contatos":[{"tipoDeContato":"1","contato":"Fulano de tal","telefonePrimario":"00000000000","telefoneSecundario":"00000000000","email":"email@email.com"}]}
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ClientesRetornoExampleDTO"
+                },
+                "example": {"site":"ABC","codigoDepositante":"9876","codigoCliente":"12345","cnpjCpf":"01361310000102","razaoSocial":"Cliente exemplo","nomeFantasia":"Cliente exemplo","tipoDePessoa":"1","inscricaoEstadual":"745755424374","enderecos":[{"tipoDeEndereco":"1","cep":"03120010","numeroDoLogradouro":"260","complementoDoEndereco":"Primeiro andar","rota":"Zona Leste","pais":"BRA","estado":"SP","cidade":"Sao Paulo","bairro":"Mooca","logradouro":"Rua Curupace"}],"contatos":[{"tipoDeContato":"1","contato":"Fulano de tal","telefonePrimario":"00000000000","telefoneSecundario":"00000000000","email":"email@email.com"}]}
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ClientesRetornoExampleDTO"
+                },
+                "example": {"site":"ABC","codigoDepositante":"9876","codigoCliente":"12345","cnpjCpf":"01361310000102","razaoSocial":"Cliente exemplo","nomeFantasia":"Cliente exemplo","tipoDePessoa":"1","inscricaoEstadual":"745755424374","enderecos":[{"tipoDeEndereco":"1","cep":"03120010","numeroDoLogradouro":"260","complementoDoEndereco":"Primeiro andar","rota":"Zona Leste","pais":"BRA","estado":"SP","cidade":"Sao Paulo","bairro":"Mooca","logradouro":"Rua Curupace"}],"contatos":[{"tipoDeContato":"1","contato":"Fulano de tal","telefonePrimario":"00000000000","telefoneSecundario":"00000000000","email":"email@email.com"}]}
+              }
+            }
+          },
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "description": "BadRequest"
+          },
+          "422": {
+            "description": "UnprocessableEntity"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "oauth2": [ ]
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "Clientes"
+        ],
+        "summary": "Novo Cliente",
+        "description": "<strong>ERP > WMS/AG</strong>\r\n<br />\r\n<br />\r\n            API responsável por cadastrar um novo cliente no WMS Alcis. \r\n            Todos os atributos devem seguir as regras descritas no documento.\r\n            <b><br /><br />IMPORTANTE: Para atributos não utilizados, deve ser enviado null. Ex.: \"NomeAtributo\": null.</b>",
+        "requestBody": {
+          "description": "Configuração dos atributos do JSON",
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ClientesDTO"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ClientesDTO"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ClientesDTO"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ClientesDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Client Error",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "oauth2": [ ]
+          }
+        ]
+      },
+      "put": {
+        "tags": [
+          "Clientes"
+        ],
+        "summary": "Atualiza Cliente",
+        "description": "<strong>ERP > WMS/AG</strong>\r\n<br />\r\n<br />\r\n            API responsável por atualizar os dados de um cliente no WMS Alcis\r\n            Todos os atributos devem seguir as regras descritas no documento\r\n            <b><br /><br />IMPORTANTE: Os seguintes atributos não podem sofrer atualizações:\r\n            CodigoDepositante e CodigoCliente.<br />\r\n            Para atributos não utilizados, deve ser enviado null. Ex.: \"NomeAtributo\": null</b>",
+        "requestBody": {
+          "description": "Configuração dos atributos do JSON",
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ClientesDTO"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ClientesDTO"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ClientesDTO"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ClientesDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Client Error",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "oauth2": [ ]
+          }
+        ]
+      }
+    },
+    "/api/v1/ConfirmacaoPedido": {
+      "get": {
+        "tags": [
+          "ConfirmacaoPedido"
+        ],
+        "summary": "Nova confirmação de pedido",
+        "description": "<strong>WMS/AG > ERP</strong>\r\n<br />\r\n<br />\r\n            API responsável por retornar os valores de uma confirmação de pedido realizado no WMS Alcis. \r\n            Todos os atributos devem seguir as regras descritas no documento.",
+        "parameters": [
+          {
+            "name": "site",
+            "in": "query",
+            "description": "Codigo do site notificado (Required)",
+            "schema": {
+              "type": "string"
+            },
+            "example": "STI"
+          },
+          {
+            "name": "codigoDepositante",
+            "in": "query",
+            "description": "Codigo do depositante notificado (Required)",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "numeroPedido",
+            "in": "query",
+            "description": "numero do pedido notificado (Required)",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "subPedido",
+            "in": "query",
+            "description": "Sub pedido notificado (Required)",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConfirmacaoPedidoRetornoExampleDTO"
+                },
+                "example": {"site":"ABC","codigoDepositante":"ABC","numeroPedido":"123","subPedido":1,"numeroCarga":"123","codigoTransportadora":"ABC","codigoCliente":"ABC","tipoDePedido":"NORM","dataHoraReal":"2022-07-15T12:26:26.1039622-03:00","placaVeiculo":"ABC-1234","quantidadeVolumes":"1","pesoTotal":1.0,"itens":[{"numeroItem":"1","codigoProduto":"ABC","quantidade":1.0,"unidade":"UN","peso":1.0,"lote":"ABC","loteSerial":"ABC","serial":null,"dataDeProducao":"2022-07-15T12:26:26.1039617-03:00","dataDeValidade":"2022-07-15T12:26:26.103962-03:00"}]}
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConfirmacaoPedidoRetornoExampleDTO"
+                },
+                "example": {"site":"ABC","codigoDepositante":"ABC","numeroPedido":"123","subPedido":1,"numeroCarga":"123","codigoTransportadora":"ABC","codigoCliente":"ABC","tipoDePedido":"NORM","dataHoraReal":"2022-07-15T12:26:26.1039622-03:00","placaVeiculo":"ABC-1234","quantidadeVolumes":"1","pesoTotal":1.0,"itens":[{"numeroItem":"1","codigoProduto":"ABC","quantidade":1.0,"unidade":"UN","peso":1.0,"lote":"ABC","loteSerial":"ABC","serial":null,"dataDeProducao":"2022-07-15T12:26:26.1039617-03:00","dataDeValidade":"2022-07-15T12:26:26.103962-03:00"}]}
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConfirmacaoPedidoRetornoExampleDTO"
+                },
+                "example": {"site":"ABC","codigoDepositante":"ABC","numeroPedido":"123","subPedido":1,"numeroCarga":"123","codigoTransportadora":"ABC","codigoCliente":"ABC","tipoDePedido":"NORM","dataHoraReal":"2022-07-15T12:26:26.1039622-03:00","placaVeiculo":"ABC-1234","quantidadeVolumes":"1","pesoTotal":1.0,"itens":[{"numeroItem":"1","codigoProduto":"ABC","quantidade":1.0,"unidade":"UN","peso":1.0,"lote":"ABC","loteSerial":"ABC","serial":null,"dataDeProducao":"2022-07-15T12:26:26.1039617-03:00","dataDeValidade":"2022-07-15T12:26:26.103962-03:00"}]}
+              }
+            }
+          },
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "description": "BadRequest"
+          },
+          "422": {
+            "description": "UnprocessableEntity"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "oauth2": [ ]
+          }
+        ]
+      },
+      "put": {
+        "tags": [
+          "ConfirmacaoPedido"
+        ],
+        "summary": "Notificação de nova confirmação de pedido",
+        "description": "<strong>WMS/AG > ERP</strong>\r\n<br />\r\n<br />\r\n            API responsável por notificar sistemas parceiros que um pedido foi conferido.\r\n            Todos os atributos devem seguir as regras descritas no documento\r\n            <b><br /><br />IMPORTANTE: O adquirente deve fornecer uma API que receba o JSON \r\n            no formato a seguir para que o WMS Alcis notifique. </b>",
+        "requestBody": {
+          "description": "Configuração dos atributos do JSON",
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ConfirmacaoPedidoDTO"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ConfirmacaoPedidoDTO"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ConfirmacaoPedidoDTO"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ConfirmacaoPedidoDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "oauth2": [ ]
+          }
+        ]
+      }
+    },
+    "/api/v1/ConfRecAgrupado": {
+      "get": {
+        "tags": [
+          "ConfRecAgrupado"
+        ],
+        "summary": "Nova confirmação de Recebimento agrupado",
+        "description": "<strong>WMS/AG > ERP</strong>\r\n<br />\r\n<br />\r\n            API responsável por retornar os valores da confirmação de recebimento agrupado realizado no WMS Alcis.\r\n            Todos os atributos devem seguir as regras descritas no documento",
+        "parameters": [
+          {
+            "name": "site",
+            "in": "query",
+            "description": "Codigo do site notificado (Required)",
+            "schema": {
+              "type": "string"
+            },
+            "example": "STI"
+          },
+          {
+            "name": "numeroDaEntrada",
+            "in": "query",
+            "description": "Numero do recebimento notificado (Required)",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConfRecAgrupadoRetornoExampleDTO"
+                },
+                "example": {"site":"ABC","codigoTransportadora":"ABC","dataDaEntrada":"2022-07-15T12:26:26.1821375-03:00","agrupadorRecebimento":"123","tipoDeRecebimento":null,"placaDoVeiculo":null,"dadosRecebimentos":[{"codigoDepositante":"ABC","numeroNotaFiscal":"12345","serieNotaFiscal":"1","dataNotaFiscal":"2022-07-15T12:26:26.1821373-03:00","codigoFornecedor":"ABC","itens":[{"codigoProduto":"ABC","quantidade":1.0,"lote":"ABC","loteSerial":"ABC","serial":null,"dataDeProducao":"2022-07-15T12:26:26.1821368-03:00","dataDeValidade":"2022-07-15T12:26:26.1821371-03:00","quantidadeBloqueada":null}]}]}
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConfRecAgrupadoRetornoExampleDTO"
+                },
+                "example": {"site":"ABC","codigoTransportadora":"ABC","dataDaEntrada":"2022-07-15T12:26:26.1821375-03:00","agrupadorRecebimento":"123","tipoDeRecebimento":null,"placaDoVeiculo":null,"dadosRecebimentos":[{"codigoDepositante":"ABC","numeroNotaFiscal":"12345","serieNotaFiscal":"1","dataNotaFiscal":"2022-07-15T12:26:26.1821373-03:00","codigoFornecedor":"ABC","itens":[{"codigoProduto":"ABC","quantidade":1.0,"lote":"ABC","loteSerial":"ABC","serial":null,"dataDeProducao":"2022-07-15T12:26:26.1821368-03:00","dataDeValidade":"2022-07-15T12:26:26.1821371-03:00","quantidadeBloqueada":null}]}]}
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConfRecAgrupadoRetornoExampleDTO"
+                },
+                "example": {"site":"ABC","codigoTransportadora":"ABC","dataDaEntrada":"2022-07-15T12:26:26.1821375-03:00","agrupadorRecebimento":"123","tipoDeRecebimento":null,"placaDoVeiculo":null,"dadosRecebimentos":[{"codigoDepositante":"ABC","numeroNotaFiscal":"12345","serieNotaFiscal":"1","dataNotaFiscal":"2022-07-15T12:26:26.1821373-03:00","codigoFornecedor":"ABC","itens":[{"codigoProduto":"ABC","quantidade":1.0,"lote":"ABC","loteSerial":"ABC","serial":null,"dataDeProducao":"2022-07-15T12:26:26.1821368-03:00","dataDeValidade":"2022-07-15T12:26:26.1821371-03:00","quantidadeBloqueada":null}]}]}
+              }
+            }
+          },
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "description": "BadRequest"
+          },
+          "422": {
+            "description": "UnprocessableEntity"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "oauth2": [ ]
+          }
+        ]
+      },
+      "put": {
+        "tags": [
+          "ConfRecAgrupado"
+        ],
+        "summary": "Notificação de nova confirmação de Recebimento agrupado",
+        "description": "<strong>WMS/AG > ERP</strong>\r\n<br />\r\n<br />\r\n            API responsável por notificar sistemas parceiros que um recebimento foi finalizado.\r\n            Todos os atributos devem seguir as regras descritas no documento.\r\n            <b><br /><br />IMPORTANTE: O adquirente deve fornecer uma API que receba o JSON \r\n            no formato a seguir para que o WMS Alcis notifique. </b>",
+        "requestBody": {
+          "description": "Configuração dos atributos do JSON",
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ConfRecAgrupadoDTO"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ConfRecAgrupadoDTO"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ConfRecAgrupadoDTO"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ConfRecAgrupadoDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "oauth2": [ ]
+          }
+        ]
+      }
+    },
+    "/api/v1/ConfRecNotaFiscal": {
+      "get": {
+        "tags": [
+          "ConfRecNotaFiscal"
+        ],
+        "summary": "Nova confirmação de Recebimento nota fiscal",
+        "description": "<strong>WMS/AG > ERP</strong>\r\n<br />\r\n<br />\r\n            API responsável por retornar os valores da confirmação de recebimento nota fiscal realizado no WMS Alcis.\r\n            Todos os atributos devem seguir as regras descritas no documento",
+        "parameters": [
+          {
+            "name": "site",
+            "in": "query",
+            "description": "Codigo do site notificado (Required)",
+            "schema": {
+              "type": "string"
+            },
+            "example": "STI"
+          },
+          {
+            "name": "numeroDoRecebimento",
+            "in": "query",
+            "description": "Numero do recebimento notificado (Required)",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConfRecNotaFiscalRetornoExampleDTO"
+                },
+                "example": {"site":"ABC","codigoDepositante":"ABC","codigoFornecedor":"ABC","numeroNotaFiscal":"ABC","serieNotaFiscal":"ABC","agrupadorRecebimento":"123","tipoRecebimento":"123","temBloqueio":false,"itens":[{"codigoProduto":"ABC","quantidade":1.0,"lote":"ABC","loteSerial":"ABC","serial":"ABC","dataDeProducao":"2022-07-15T12:26:26.1872154-03:00","dataDeValidade":"2022-07-15T12:26:26.1872156-03:00","quantidadeBloqueada":0.0}],"bloqueios":[{"codigoProduto":"ABC","quantidadeBloqueada":1.0,"lote":"ABC","serial":"ABC","dataDeProducao":null,"dataDeValidade":null,"motivoBloqueio":"ABC","codigoMotivo":"ABERTO"}]}
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConfRecNotaFiscalRetornoExampleDTO"
+                },
+                "example": {"site":"ABC","codigoDepositante":"ABC","codigoFornecedor":"ABC","numeroNotaFiscal":"ABC","serieNotaFiscal":"ABC","agrupadorRecebimento":"123","tipoRecebimento":"123","temBloqueio":false,"itens":[{"codigoProduto":"ABC","quantidade":1.0,"lote":"ABC","loteSerial":"ABC","serial":"ABC","dataDeProducao":"2022-07-15T12:26:26.1872154-03:00","dataDeValidade":"2022-07-15T12:26:26.1872156-03:00","quantidadeBloqueada":0.0}],"bloqueios":[{"codigoProduto":"ABC","quantidadeBloqueada":1.0,"lote":"ABC","serial":"ABC","dataDeProducao":null,"dataDeValidade":null,"motivoBloqueio":"ABC","codigoMotivo":"ABERTO"}]}
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConfRecNotaFiscalRetornoExampleDTO"
+                },
+                "example": {"site":"ABC","codigoDepositante":"ABC","codigoFornecedor":"ABC","numeroNotaFiscal":"ABC","serieNotaFiscal":"ABC","agrupadorRecebimento":"123","tipoRecebimento":"123","temBloqueio":false,"itens":[{"codigoProduto":"ABC","quantidade":1.0,"lote":"ABC","loteSerial":"ABC","serial":"ABC","dataDeProducao":"2022-07-15T12:26:26.1872154-03:00","dataDeValidade":"2022-07-15T12:26:26.1872156-03:00","quantidadeBloqueada":0.0}],"bloqueios":[{"codigoProduto":"ABC","quantidadeBloqueada":1.0,"lote":"ABC","serial":"ABC","dataDeProducao":null,"dataDeValidade":null,"motivoBloqueio":"ABC","codigoMotivo":"ABERTO"}]}
+              }
+            }
+          },
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "description": "BadRequest"
+          },
+          "422": {
+            "description": "UnprocessableEntity"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "oauth2": [ ]
+          }
+        ]
+      },
+      "put": {
+        "tags": [
+          "ConfRecNotaFiscal"
+        ],
+        "summary": "Notificação de nova confirmação de Recebimento nota fiscal",
+        "description": "<strong>WMS/AG > ERP</strong>\r\n<br />\r\n<br />\r\n            API responsável por notificar sistemas parceiros que um recebimento foi finalizado.\r\n            Todos os atributos devem seguir as regras descritas no documento\r\n            <b><br /><br />IMPORTANTE: O adquirente deve fornecer uma API que receba o JSON \r\n            no formato a seguir para que o WMS Alcis notifique.</b>",
+        "requestBody": {
+          "description": "Configuração dos atributos do JSON",
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ConfRecNotaFiscalDTO"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ConfRecNotaFiscalDTO"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ConfRecNotaFiscalDTO"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ConfRecNotaFiscalDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "oauth2": [ ]
+          }
+        ]
+      }
+    },
+    "/api/v1/Estoque": {
+      "post": {
+        "tags": [
+          "Estoque"
+        ],
+        "summary": "Estoque Fisico",
+        "description": "<strong>WMS/AG > ERP</strong>\r\n<br />\r\n<br />\r\n            API responsável por retornar estoque fisico do WMS Alcis.\r\n            Todos os atributos devem seguir as regras descritas no documento",
+        "requestBody": {
+          "description": "Configuração dos atributos do JSON para realizar o GET",
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/EstoqueSelectDTO"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EstoqueSelectDTO"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EstoqueSelectDTO"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/EstoqueSelectDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/EstoqueRetornoExampleDTO"
+                },
+                "example": {"site":"ABC","codigoDepositante":"ABC","descricaoDepositante":null,"codigoProduto":"ABC","descricaoProduto":"ABC","descricaoComplementarProduto":"ABC","quantidadeDisponivel":1.0,"quantidadeBloqueada":1.0,"quantidadeReservada":1.0,"unidadeMinimaDoProduto":"UN","statusDoEstoque":"00","motivoDoBloqueioDeQualidade":"ABERTO","lote":"ABC","dataDeValidade":"2022-07-15T15:26:26.195227Z","serial":null}
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EstoqueRetornoExampleDTO"
+                },
+                "example": {"site":"ABC","codigoDepositante":"ABC","descricaoDepositante":null,"codigoProduto":"ABC","descricaoProduto":"ABC","descricaoComplementarProduto":"ABC","quantidadeDisponivel":1.0,"quantidadeBloqueada":1.0,"quantidadeReservada":1.0,"unidadeMinimaDoProduto":"UN","statusDoEstoque":"00","motivoDoBloqueioDeQualidade":"ABERTO","lote":"ABC","dataDeValidade":"2022-07-15T15:26:26.195227Z","serial":null}
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EstoqueRetornoExampleDTO"
+                },
+                "example": {"site":"ABC","codigoDepositante":"ABC","descricaoDepositante":null,"codigoProduto":"ABC","descricaoProduto":"ABC","descricaoComplementarProduto":"ABC","quantidadeDisponivel":1.0,"quantidadeBloqueada":1.0,"quantidadeReservada":1.0,"unidadeMinimaDoProduto":"UN","statusDoEstoque":"00","motivoDoBloqueioDeQualidade":"ABERTO","lote":"ABC","dataDeValidade":"2022-07-15T15:26:26.195227Z","serial":null}
+              }
+            }
+          },
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "description": "BadRequest"
+          },
+          "422": {
+            "description": "UnprocessableEntity"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "oauth2": [ ]
+          }
+        ]
+      }
+    },
+    "/api/v1/ExpedicaoPedido": {
+      "get": {
+        "tags": [
+          "ExpedicaoPedido"
+        ],
+        "summary": "Retorna os dados de uma expedição de pedidos",
+        "description": "<strong>WMS/AG > ERP</strong>\r\n<br />\r\n<br />\r\n            API responsável por retornar os valores da data e hora da nota fiscal de venda atrelada ao pedido.",
+        "parameters": [
+          {
+            "name": "site",
+            "in": "query",
+            "description": "Codigo do site notificado (Required)",
+            "schema": {
+              "type": "string"
+            },
+            "example": "STI"
+          },
+          {
+            "name": "numeroPedido",
+            "in": "query",
+            "description": "Numero do pedido (Required)",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "subPedido",
+            "in": "query",
+            "description": "Sub Pedido (Required)",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "example": 1234
+          },
+          {
+            "name": "codigoDepositante",
+            "in": "query",
+            "description": "Código do depositante (Required)",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExpedicaoPedidoExampleDTO"
+                },
+                "example": {"site":"ABC","codigoDepositante":"ABC","numeroPedido":"123","subPedido":1,"codigoCliente":"ABC","numeroCarga":"123","notaFiscalVenda":"123","dataHoraExpedicao":"2022-07-15T12:26:26.2753541-03:00"}
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExpedicaoPedidoExampleDTO"
+                },
+                "example": {"site":"ABC","codigoDepositante":"ABC","numeroPedido":"123","subPedido":1,"codigoCliente":"ABC","numeroCarga":"123","notaFiscalVenda":"123","dataHoraExpedicao":"2022-07-15T12:26:26.2753541-03:00"}
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExpedicaoPedidoExampleDTO"
+                },
+                "example": {"site":"ABC","codigoDepositante":"ABC","numeroPedido":"123","subPedido":1,"codigoCliente":"ABC","numeroCarga":"123","notaFiscalVenda":"123","dataHoraExpedicao":"2022-07-15T12:26:26.2753541-03:00"}
+              }
+            }
+          },
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "description": "BadRequest"
+          },
+          "422": {
+            "description": "UnprocessableEntity"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "oauth2": [ ]
+          }
+        ]
+      },
+      "put": {
+        "tags": [
+          "ExpedicaoPedido"
+        ],
+        "summary": "Notificação de expedição de pedido",
+        "description": "<strong>WMS/AG > ERP</strong>\r\n<br />\r\n<br />\r\n            API responsável por notificar sistemas parceiros que houve a expedição do pedido. \r\n            Todos os atributos devem seguir as regras descritas no documento.\r\n            <b><br /><br />IMPORTANTE: O adquirente deve fornecer uma api que receba o JSON no formato a seguir\r\n            para que o WMS Alcis notifique. </b>",
+        "requestBody": {
+          "description": "Configuração dos atributos do JSON",
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExpedicaoPedidoNotificacaoDTO"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExpedicaoPedidoNotificacaoDTO"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExpedicaoPedidoNotificacaoDTO"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExpedicaoPedidoNotificacaoDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "oauth2": [ ]
+          }
+        ]
+      }
+    },
+    "/api/v1/FaturamentoPedido": {
+      "put": {
+        "tags": [
+          "FaturamentoPedido"
+        ],
+        "summary": "Faturamento de pedido (Nota Fiscal)",
+        "description": "<strong>ERP > WMS/AG</strong>\r\n<br />\r\n<br />\r\n            API responsável por atualizar os dados da nota fiscal do pedido. \r\n            Todos os atributos devem seguir as regras descritas no documento.\r\n            <b><br /><br />IMPORTANTE: Integração disponivel apenas para filial no modulo AG ou somente WMS.\r\n            Para atributos não utilizados, deve ser enviado \r\n            null. Ex.: \"NomeAtributo\": null</b>",
+        "requestBody": {
+          "description": "Configuração dos atributos do JSON",
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/FaturamentoPedidoDTO"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FaturamentoPedidoDTO"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FaturamentoPedidoDTO"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/FaturamentoPedidoDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Client Error",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "oauth2": [ ]
+          }
+        ]
+      }
+    },
+    "/api/v1/FaturamentoServico": {
+      "get": {
+        "tags": [
+          "FaturamentoServico"
+        ],
+        "summary": "Novo faturamento de serviço",
+        "description": "<strong>WMS/AG</strong>\r\n<br />\r\n<br />\r\n            API responsável por retornar os valores de um faturamento de serviço no \r\n            módulo Billing do WMS Alcis. \r\n            Todos os atributos devem seguir as regras descritas no documento.",
+        "parameters": [
+          {
+            "name": "site",
+            "in": "query",
+            "description": "Codigo do site (Required)",
+            "schema": {
+              "type": "string"
+            },
+            "example": "STI"
+          },
+          {
+            "name": "codigoDepositante",
+            "in": "query",
+            "description": "Codigo do depositante (Required)",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "idFaturamento",
+            "in": "query",
+            "description": "Codigo do faturamento (Required)",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/FaturamentoServicoRetornoExampleDTO"
+                },
+                "example": {"site":"ABC","codigoDepositante":"ABC","idFaturamento":1234,"dataFaturamento":"2022-07-15T12:26:26.2878876-03:00","periodoInicialFaturamento":"2022-07-15T12:26:26.2878881-03:00","periodoFinalFaturamento":"2022-07-15T12:26:26.2878879-03:00","numeroNotaFiscal":"1234578","serieNotaFiscal":"1","dataEmissaoNotaFiscal":"2022-07-15T12:26:26.2878873-03:00","dataVencimentoNotaFiscal":"2022-07-15T12:26:26.2878878-03:00","faturadoPara":null,"status":null,"itensFaturamentoServico":[{"itemFaturado":"EPCXSD","descricaoFaturamento":"Entrada por caixa sem divisao","codigoServicoERP":"SV015","quantidade":1.0,"preco":1.0,"moeda":"R$"}]}
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FaturamentoServicoRetornoExampleDTO"
+                },
+                "example": {"site":"ABC","codigoDepositante":"ABC","idFaturamento":1234,"dataFaturamento":"2022-07-15T12:26:26.2878876-03:00","periodoInicialFaturamento":"2022-07-15T12:26:26.2878881-03:00","periodoFinalFaturamento":"2022-07-15T12:26:26.2878879-03:00","numeroNotaFiscal":"1234578","serieNotaFiscal":"1","dataEmissaoNotaFiscal":"2022-07-15T12:26:26.2878873-03:00","dataVencimentoNotaFiscal":"2022-07-15T12:26:26.2878878-03:00","faturadoPara":null,"status":null,"itensFaturamentoServico":[{"itemFaturado":"EPCXSD","descricaoFaturamento":"Entrada por caixa sem divisao","codigoServicoERP":"SV015","quantidade":1.0,"preco":1.0,"moeda":"R$"}]}
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FaturamentoServicoRetornoExampleDTO"
+                },
+                "example": {"site":"ABC","codigoDepositante":"ABC","idFaturamento":1234,"dataFaturamento":"2022-07-15T12:26:26.2878876-03:00","periodoInicialFaturamento":"2022-07-15T12:26:26.2878881-03:00","periodoFinalFaturamento":"2022-07-15T12:26:26.2878879-03:00","numeroNotaFiscal":"1234578","serieNotaFiscal":"1","dataEmissaoNotaFiscal":"2022-07-15T12:26:26.2878873-03:00","dataVencimentoNotaFiscal":"2022-07-15T12:26:26.2878878-03:00","faturadoPara":null,"status":null,"itensFaturamentoServico":[{"itemFaturado":"EPCXSD","descricaoFaturamento":"Entrada por caixa sem divisao","codigoServicoERP":"SV015","quantidade":1.0,"preco":1.0,"moeda":"R$"}]}
+              }
+            }
+          },
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "description": "BadRequest"
+          },
+          "422": {
+            "description": "UnprocessableEntity"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "oauth2": [ ]
+          }
+        ]
+      },
+      "put": {
+        "tags": [
+          "FaturamentoServico"
+        ],
+        "summary": "Faturamento de serviço",
+        "description": "<strong>ERP > WMS/AG</strong>\r\n<br />\r\n<br />\r\n            API responsável por atualizar os dados da nota fiscal no faturamento de serviço no módulo Billing. \r\n            Todos os atributos devem seguir as regras descritas no documento.\r\n            <b><br /><br />IMPORTANTE: Integração disponivel apenas para filial no modulo AG.\r\n            Para atributos não utilizados, deve ser enviado \r\n            null. Ex.: \"NomeAtributo\": null</b>",
+        "requestBody": {
+          "description": "Configuração dos atributos do JSON",
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/FaturamentoServicoDTO"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FaturamentoServicoDTO"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FaturamentoServicoDTO"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/FaturamentoServicoDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Client Error",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "oauth2": [ ]
+          }
+        ]
+      }
+    },
+    "/api/v1/FaturamentoServico/ ": {
+      "put": {
+        "tags": [
+          "FaturamentoServico"
+        ],
+        "summary": "Notificação de novo faturamento de serviço",
+        "description": "<strong>WMS/AG > ERP</strong>\r\n<br />\r\n<br />\r\n            API responsável por notificar sistemas externos que houve \r\n            um faturamento de serviço no módulo Billing no WMS Alcis. \r\n            Todos os atributos devem seguir as regras descritas no documento.\r\n            <b><br /><br />IMPORTANTE: O adquirente deve fornecer uma API que receba o JSON \r\n            no formato a seguir para que o WMS Alcis notifique. </b>",
+        "requestBody": {
+          "description": "Configuração dos atributos do JSON",
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/FaturamentoServicoNotificacaoDTO"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FaturamentoServicoNotificacaoDTO"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FaturamentoServicoNotificacaoDTO"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/FaturamentoServicoNotificacaoDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "oauth2": [ ]
+          }
+        ]
+      }
+    },
+    "/api/v1/Fornecedores": {
+      "get": {
+        "tags": [
+          "Fornecedores"
+        ],
+        "summary": "Retorna Fornecedor",
+        "description": "<strong>WMS/AG</strong>\r\n<br />\r\n<br />\r\n            API responsável por retornar os valores de um Fornecedor cadastrado no WMS Alcis. \r\n            Todos os atributos devem seguir as regras descritas no documento.",
+        "parameters": [
+          {
+            "name": "site",
+            "in": "query",
+            "description": "Codigo do site (Required)",
+            "schema": {
+              "type": "string"
+            },
+            "example": "STI"
+          },
+          {
+            "name": "codigoDepositante",
+            "in": "query",
+            "description": "Codigo do depositante (Required)",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "codigoFornecedor",
+            "in": "query",
+            "description": "Codigo do fornecedor (Required)",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/FornecedoresRetornoExampleDTO"
+                },
+                "example": {"site":"ABC","codigoDepositante":"9876","codigoFornecedor":"12345","cnpjCpf":"01361310000102","razaoSocial":"Fornecedor exemplo","nomeFantasia":"Fornecedor exemplo","tipoDePessoa":"1","inscricaoEstadual":"745755424374","enderecos":[{"tipoDeEndereco":"1","cep":"03120010","numeroDoLogradouro":"260","complementoDoEndereco":"Primeiro andar","rota":"Zona Leste","pais":"BRA","estado":"SP","cidade":"Sao Paulo","bairro":"Mooca","logradouro":"Rua Curupace"}],"contatos":[{"tipoDeContato":"1","contato":"Fulano de tal","telefonePrimario":"00000000000","telefoneSecundario":"00000000000","email":"email@email.com"}]}
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FornecedoresRetornoExampleDTO"
+                },
+                "example": {"site":"ABC","codigoDepositante":"9876","codigoFornecedor":"12345","cnpjCpf":"01361310000102","razaoSocial":"Fornecedor exemplo","nomeFantasia":"Fornecedor exemplo","tipoDePessoa":"1","inscricaoEstadual":"745755424374","enderecos":[{"tipoDeEndereco":"1","cep":"03120010","numeroDoLogradouro":"260","complementoDoEndereco":"Primeiro andar","rota":"Zona Leste","pais":"BRA","estado":"SP","cidade":"Sao Paulo","bairro":"Mooca","logradouro":"Rua Curupace"}],"contatos":[{"tipoDeContato":"1","contato":"Fulano de tal","telefonePrimario":"00000000000","telefoneSecundario":"00000000000","email":"email@email.com"}]}
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FornecedoresRetornoExampleDTO"
+                },
+                "example": {"site":"ABC","codigoDepositante":"9876","codigoFornecedor":"12345","cnpjCpf":"01361310000102","razaoSocial":"Fornecedor exemplo","nomeFantasia":"Fornecedor exemplo","tipoDePessoa":"1","inscricaoEstadual":"745755424374","enderecos":[{"tipoDeEndereco":"1","cep":"03120010","numeroDoLogradouro":"260","complementoDoEndereco":"Primeiro andar","rota":"Zona Leste","pais":"BRA","estado":"SP","cidade":"Sao Paulo","bairro":"Mooca","logradouro":"Rua Curupace"}],"contatos":[{"tipoDeContato":"1","contato":"Fulano de tal","telefonePrimario":"00000000000","telefoneSecundario":"00000000000","email":"email@email.com"}]}
+              }
+            }
+          },
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "description": "BadRequest"
+          },
+          "422": {
+            "description": "UnprocessableEntity"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "oauth2": [ ]
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "Fornecedores"
+        ],
+        "summary": "Novo Fornecedor",
+        "description": "<strong>ERP > WMS/AG</strong>\r\n<br />\r\n<br />\r\n            API responsável por cadastrar um novo fornecedor no WMS Alcis. \r\n            Todos os atributos devem seguir as regras descritas no documento.\r\n            <b><br /><br />IMPORTANTE: Para atributos não utilizados, deve ser enviado\r\n            null. Ex.: \"NomeAtributo\": null.</b>",
+        "requestBody": {
+          "description": "Configuração dos atributos do JSON",
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/FornecedoresDTO"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FornecedoresDTO"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FornecedoresDTO"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/FornecedoresDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Client Error",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "oauth2": [ ]
+          }
+        ]
+      },
+      "put": {
+        "tags": [
+          "Fornecedores"
+        ],
+        "summary": "Atualiza Fornecedor",
+        "description": "<strong>ERP > WMS/AG</strong>\r\n<br />\r\n<br />\r\n            API responsável por atualizar os dados de um fornecedor no WMS Alcis. \r\n            Todos os atributos devem seguir as regras descritas no documento.\r\n            <b><br /><br />IMPORTANTE: Os seguintes atributos não podem sofrer\r\n            atualizações: CodigoDepositante e CodigoFornecedor.<br />\r\n            Para atributos não utilizados, deve ser enviado null. Ex.: \"NomeAtributo\": null</b>",
+        "requestBody": {
+          "description": "Configuração dos atributos do JSON",
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/FornecedoresDTO"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FornecedoresDTO"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FornecedoresDTO"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/FornecedoresDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Client Error",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "oauth2": [ ]
+          }
+        ]
+      }
+    },
+    "/api/v1/Pedidos": {
+      "post": {
+        "tags": [
+          "Pedidos"
+        ],
+        "summary": "Novo Pedido",
+        "description": "<strong>ERP > WMS/AG</strong>\r\n<br />\r\n<br />\r\n            API responsável por cadastrar um novo pedido no WMS Alcis. \r\n            Todos os atributos devem seguir as regras descritas no documento.\r\n            <b><br /><br />IMPORTANTE: Para atributos não utilizados, deve ser enviado\r\n            null. Ex.: \"NomeAtributo\": null.</b>",
+        "requestBody": {
+          "description": "Configuração dos atributos do JSON",
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/PedidoInsertDTO"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PedidoInsertDTO"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PedidoInsertDTO"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/PedidoInsertDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Client Error",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "oauth2": [ ]
+          }
+        ]
+      }
+    },
+    "/api/v1/Produtos": {
+      "get": {
+        "tags": [
+          "Produtos"
+        ],
+        "summary": "Retorna Produto",
+        "description": "<strong>WMS/AG</strong>\r\n<br />\r\n<br />\r\n            API responsável por retornar os valores de um produto cadastrado no WMS Alcis. \r\n            Todos os atributos devem seguir as regras descritas no documento",
+        "parameters": [
+          {
+            "name": "site",
+            "in": "query",
+            "description": "Codigo do site (Required)",
+            "schema": {
+              "type": "string"
+            },
+            "example": "STI"
+          },
+          {
+            "name": "codigoDepositante",
+            "in": "query",
+            "description": "Codigo do depositante (Required)",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "codigoProduto",
+            "in": "query",
+            "description": "Codigo do produto (Required)",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProdutosRetornoExampleDTO"
+                },
+                "example": {"site":"ABC","codigoDepositante":"9876","codigoProduto":"1243","descricaoProduto":"ABC","descricaoComplementarProduto":"DEF","unidadeDeMedida":"UN","codigoNcm":"1J53","codigoBarras":"1424ABC","familia":"ABC","grupo":"ABC","subGrupo":"ABC","ativaControleDeDataDeValidade":true,"ativaControleDeLote":false,"ativaSeparacaoUnitizadorCompleto":true,"ativaSeparacaoDePickingDinamico":false,"ativaConferenciaDoProduto":true,"importaRastro":true,"shelfLifeEstoque":60,"shelfLifeRecebimento":60,"classeABC":"A","lastro":1,"camada":3,"tipoDePeso":"0","status":"00","tipoDeProduto":"SECO","unidadePadraoDeEstoque":"UN","quantidadePadraoDeEstoque":1.0,"condicionamentos":[{"unidade":"CX","quantidade":1.0,"codigoBarras":"12131212HF","altura":1.0,"largura":1.0,"comprimento":1.0,"unidadeComprimento":"M","peso":1.0,"unidadePeso":"KG","volume":1.0,"unidadeVolume":"L"}]}
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProdutosRetornoExampleDTO"
+                },
+                "example": {"site":"ABC","codigoDepositante":"9876","codigoProduto":"1243","descricaoProduto":"ABC","descricaoComplementarProduto":"DEF","unidadeDeMedida":"UN","codigoNcm":"1J53","codigoBarras":"1424ABC","familia":"ABC","grupo":"ABC","subGrupo":"ABC","ativaControleDeDataDeValidade":true,"ativaControleDeLote":false,"ativaSeparacaoUnitizadorCompleto":true,"ativaSeparacaoDePickingDinamico":false,"ativaConferenciaDoProduto":true,"importaRastro":true,"shelfLifeEstoque":60,"shelfLifeRecebimento":60,"classeABC":"A","lastro":1,"camada":3,"tipoDePeso":"0","status":"00","tipoDeProduto":"SECO","unidadePadraoDeEstoque":"UN","quantidadePadraoDeEstoque":1.0,"condicionamentos":[{"unidade":"CX","quantidade":1.0,"codigoBarras":"12131212HF","altura":1.0,"largura":1.0,"comprimento":1.0,"unidadeComprimento":"M","peso":1.0,"unidadePeso":"KG","volume":1.0,"unidadeVolume":"L"}]}
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProdutosRetornoExampleDTO"
+                },
+                "example": {"site":"ABC","codigoDepositante":"9876","codigoProduto":"1243","descricaoProduto":"ABC","descricaoComplementarProduto":"DEF","unidadeDeMedida":"UN","codigoNcm":"1J53","codigoBarras":"1424ABC","familia":"ABC","grupo":"ABC","subGrupo":"ABC","ativaControleDeDataDeValidade":true,"ativaControleDeLote":false,"ativaSeparacaoUnitizadorCompleto":true,"ativaSeparacaoDePickingDinamico":false,"ativaConferenciaDoProduto":true,"importaRastro":true,"shelfLifeEstoque":60,"shelfLifeRecebimento":60,"classeABC":"A","lastro":1,"camada":3,"tipoDePeso":"0","status":"00","tipoDeProduto":"SECO","unidadePadraoDeEstoque":"UN","quantidadePadraoDeEstoque":1.0,"condicionamentos":[{"unidade":"CX","quantidade":1.0,"codigoBarras":"12131212HF","altura":1.0,"largura":1.0,"comprimento":1.0,"unidadeComprimento":"M","peso":1.0,"unidadePeso":"KG","volume":1.0,"unidadeVolume":"L"}]}
+              }
+            }
+          },
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "description": "BadRequest"
+          },
+          "422": {
+            "description": "UnprocessableEntity"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "oauth2": [ ]
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "Produtos"
+        ],
+        "summary": "Novo Produto",
+        "description": "<strong>ERP > WMS/AG</strong>\r\n<br />\r\n<br />\r\n            API responsável por cadastrar um novo produto no WMS Alcis. \r\n            Todos os atributos devem seguir as regras descritas no documento.\r\n            <b><br /><br />IMPORTANTE: Para atributos não utilizados, deve ser enviado\r\n            null. Ex.: \"NomeAtributo\": null.</b>",
+        "requestBody": {
+          "description": "Configuração dos atributos do JSON",
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProdutosDTO"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProdutosDTO"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProdutosDTO"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProdutosDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Client Error",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "oauth2": [ ]
+          }
+        ]
+      },
+      "put": {
+        "tags": [
+          "Produtos"
+        ],
+        "summary": "Atualiza Produto",
+        "description": "<strong>ERP > WMS/AG</strong>\r\n<br />\r\n<br />\r\n            API responsável por atualizar um produto no WMS Alcis. \r\n            Todos os atributos devem seguir as regras descritas no documento.\r\n            <b><br /><br />IMPORTANTE: Os seguintes atributos não podem sofrer\r\n            atualizações: site, CodigoDepositante e CodigoProduto.<br />\r\n            Para atributos não utilizados, deve ser enviado null. Ex.: \"NomeAtributo\": null</b>",
+        "requestBody": {
+          "description": "Configuração dos atributos do JSON",
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProdutosDTO"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProdutosDTO"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProdutosDTO"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProdutosDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Client Error",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "oauth2": [ ]
+          }
+        ]
+      }
+    },
+    "/api/v1/RecebimentoAgrupado": {
+      "post": {
+        "tags": [
+          "RecebimentoAgrupado"
+        ],
+        "summary": "Novo Recebimento agrupado",
+        "description": "<strong>ERP > WMS</strong>\r\n<br />\r\n<br />\r\n            API responsável por cadastrar um novo recebimento agrupado no WMS Alcis. \r\n            Todos os atributos devem seguir as regras descritas no documento.\r\n            <b><br /><br />IMPORTANTE: Para atributos não utilizados, deve ser enviado\r\n            null. Ex.: \"NomeAtributo\": null.</b>",
+        "requestBody": {
+          "description": "Configuração dos atributos do JSON",
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/RecebimentoAgrupadoInsertDTO"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RecebimentoAgrupadoInsertDTO"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RecebimentoAgrupadoInsertDTO"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/RecebimentoAgrupadoInsertDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Client Error",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "oauth2": [ ]
+          }
+        ]
+      }
+    },
+    "/api/v1/RecebimentoNotaFiscal": {
+      "post": {
+        "tags": [
+          "RecebimentoNotaFiscal"
+        ],
+        "summary": "Novo recebimento nota fiscal",
+        "description": "<strong>ERP > WMS</strong>\r\n<br />\r\n<br />\r\n            API responsável por cadastrar um novo recebimento nota fiscal no WMS Alcis. \r\n            Todos os atributos devem seguir as regras descritas no documento.\r\n            <b><br /><br />IMPORTANTE: Para atributos não utilizados, deve ser enviado\r\n            null. Ex.: \"NomeAtributo\": null.</b>",
+        "requestBody": {
+          "description": "Configuração dos atributos do JSON",
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/RecebimentoNotaFiscalInsertDTO"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RecebimentoNotaFiscalInsertDTO"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RecebimentoNotaFiscalInsertDTO"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/RecebimentoNotaFiscalInsertDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Client Error",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "oauth2": [ ]
+          }
+        ]
+      }
+    },
+    "/api/v1/SolicitacaoCancelamentoPedido": {
+      "post": {
+        "tags": [
+          "SolicitacaoCancelamentoPedido"
+        ],
+        "summary": "Solicitação de cancelamento de pedido",
+        "description": "<strong>ERP > WMS/AG</strong>\r\n<br />\r\n<br />\r\n            API responsável por registrar a solicitação de cancelamento de pedido. O retorno Ok (200) significa que a solicitação foi aceita \r\n            e não que o pedido foi cancelado. A confirmação será enviada para o ERP via PUT (CancelamentoDePedido) quando o cancelamento \r\n            for concluído no WMS.\r\n            Todos os atributos devem seguir as regras descritas no documento.\r\n            <b><br /><br />IMPORTANTE: Integração disponivel apenas para filial no modulo AG.\r\n            Para atributos não utilizados, deve ser enviado \r\n            null. Ex.: \"NomeAtributo\": null</b>",
+        "requestBody": {
+          "description": "Configuração dos atributos do JSON",
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/SolicitacaoCancelamentoDePedidoDTO"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SolicitacaoCancelamentoDePedidoDTO"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SolicitacaoCancelamentoDePedidoDTO"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/SolicitacaoCancelamentoDePedidoDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Client Error",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "oauth2": [ ]
+          }
+        ]
+      }
+    },
+    "/api/v1/StatusPedido": {
+      "put": {
+        "tags": [
+          "StatusPedido"
+        ],
+        "summary": "Notificação do status do pedido",
+        "description": "<strong>WMS/AG > ERP</strong>\r\n<br />\r\n<br />\r\n            API responsável por notificar sistemas parceiros da mudança de status do Pedido no WMS Alcis. \r\n            Todos os atributos devem seguir as regras descritas no documento.\r\n            <b><br /><br />IMPORTANTE: O adquirente deve fornecer uma API que receba o JSON no \r\n            formato a seguir para que o WMS Alcis notifique. </b>",
+        "requestBody": {
+          "description": "Configuração dos atributos do JSON",
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/StatusPedidoDTO"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StatusPedidoDTO"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StatusPedidoDTO"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/StatusPedidoDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "oauth2": [ ]
+          }
+        ]
+      }
+    },
+    "/api/v1/Token": {
+      "post": {
+        "tags": [
+          "Token"
+        ],
+        "summary": "Token de acesso",
+        "description": "API responsável por gerar token de acesso a integração.\r\n            Os parâmetros citados abaixo, serão fornecidos pelo Alcis Software\r\n            para logística no momento que o Software WMS Alcis é adquirido.\r\n            <b><br /><br />IMPORTANTE: O token tem validade de apenas 1 minuto,\r\n            caso a transação de integração leve mais tempo que isso sera necessario\r\n            uma nova requisição para gerar um novo</b>",
+        "parameters": [
+          {
+            "name": "Alias",
+            "in": "header",
+            "description": "Informação disponibilizada pela Alcis Software",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Username",
+            "in": "header",
+            "description": "Usuário de Integração",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Password",
+            "in": "header",
+            "description": "Senha de Integração",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Client Error",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/Transportadoras": {
+      "get": {
+        "tags": [
+          "Transportadoras"
+        ],
+        "summary": "Retorna Transportadora",
+        "description": "<strong>WMS/AG</strong>\r\n<br />\r\n<br />\r\n            API responsável por retornar os valores de uma transportadora cadastrada no WMS Alcis.\r\n            Todos os atributos devem seguir as regras descritas no documento",
+        "parameters": [
+          {
+            "name": "site",
+            "in": "query",
+            "description": "Codigo do site (Required)",
+            "schema": {
+              "type": "string"
+            },
+            "example": "STI"
+          },
+          {
+            "name": "codigoTransportadora",
+            "in": "query",
+            "description": "Codigo da transportadora (Required)",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/TransportadorasRetornoExampleDTO"
+                },
+                "example": {"site":"ABC","codigoTransportadora":"12345","cnpjCpf":"01361310000102","razaoSocial":"Transportadora exemplo","nomeFantasia":"Transportadora exemplo","tipoDePessoa":"1","inscricaoEstadual":"745755424374","enderecos":[{"tipoDeEndereco":"1","cep":"03120010","numeroDoLogradouro":"260","complementoDoEndereco":"Primeiro andar","rota":"Zona Leste","pais":"BRA","estado":"SP","cidade":"Sao Paulo","bairro":"Mooca","logradouro":"Rua Curupace"}],"contatos":[{"tipoDeContato":"1","contato":"Fulano de tal","telefonePrimario":"00000000000","telefoneSecundario":"00000000000","email":"email@email.com"}]}
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TransportadorasRetornoExampleDTO"
+                },
+                "example": {"site":"ABC","codigoTransportadora":"12345","cnpjCpf":"01361310000102","razaoSocial":"Transportadora exemplo","nomeFantasia":"Transportadora exemplo","tipoDePessoa":"1","inscricaoEstadual":"745755424374","enderecos":[{"tipoDeEndereco":"1","cep":"03120010","numeroDoLogradouro":"260","complementoDoEndereco":"Primeiro andar","rota":"Zona Leste","pais":"BRA","estado":"SP","cidade":"Sao Paulo","bairro":"Mooca","logradouro":"Rua Curupace"}],"contatos":[{"tipoDeContato":"1","contato":"Fulano de tal","telefonePrimario":"00000000000","telefoneSecundario":"00000000000","email":"email@email.com"}]}
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TransportadorasRetornoExampleDTO"
+                },
+                "example": {"site":"ABC","codigoTransportadora":"12345","cnpjCpf":"01361310000102","razaoSocial":"Transportadora exemplo","nomeFantasia":"Transportadora exemplo","tipoDePessoa":"1","inscricaoEstadual":"745755424374","enderecos":[{"tipoDeEndereco":"1","cep":"03120010","numeroDoLogradouro":"260","complementoDoEndereco":"Primeiro andar","rota":"Zona Leste","pais":"BRA","estado":"SP","cidade":"Sao Paulo","bairro":"Mooca","logradouro":"Rua Curupace"}],"contatos":[{"tipoDeContato":"1","contato":"Fulano de tal","telefonePrimario":"00000000000","telefoneSecundario":"00000000000","email":"email@email.com"}]}
+              }
+            }
+          },
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "description": "BadRequest"
+          },
+          "422": {
+            "description": "UnprocessableEntity"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "oauth2": [ ]
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "Transportadoras"
+        ],
+        "summary": "Nova Transportadora",
+        "description": "<strong>ERP > WMS/AG</strong>\r\n<br />\r\n<br />\r\n            API responsável por cadastrar uma nova transportadora no WMS Alcis\r\n            Todos os atributos devem seguir as regras descritas no documento\r\n            <b><br /><br />IMPORTANTE: Para atributos não utilizados, deve ser enviado\r\n            null. Ex.: \"NomeAtributo\": null.</b>",
+        "requestBody": {
+          "description": "Configuração dos atributos do JSON",
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/TransportadorasDTO"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TransportadorasDTO"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TransportadorasDTO"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/TransportadorasDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Client Error",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "oauth2": [ ]
+          }
+        ]
+      },
+      "put": {
+        "tags": [
+          "Transportadoras"
+        ],
+        "summary": "Atualiza Transportadora",
+        "description": "<strong>ERP > WMS/AG</strong>\r\n<br />\r\n<br />\r\n            API responsável por atualizar os dados de uma transportadora no WMS Alcis\r\n            Todos os atributos devem seguir as regras descritas no documento\r\n            <b><br /><br />IMPORTANTE: Os seguintes atributos não podem sofrer\r\n            atualizações: site e CodigoTransportadora.<br />\r\n            Para atributos não utilizados, deve ser enviado null. Ex.: \"NomeAtributo\": null</b>",
+        "requestBody": {
+          "description": "Configuração dos atributos do JSON",
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/TransportadorasDTO"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TransportadorasDTO"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TransportadorasDTO"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/TransportadorasDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Client Error",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "oauth2": [ ]
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "AjusteInventarioDTO": {
+        "required": [
+          "controller",
+          "numeroDaTransacao",
+          "site"
+        ],
+        "type": "object",
+        "properties": {
+          "site": {
+            "maxLength": 3,
+            "minLength": 0,
+            "type": "string",
+            "description": "Site | Example: site=STI"
+          },
+          "numeroDaTransacao": {
+            "type": "integer",
+            "description": "Número da transação | Example: numeroDaTransacao=123456789",
+            "format": "int32"
+          },
+          "controller": {
+            "maxLength": 100,
+            "minLength": 0,
+            "type": "string",
+            "description": "Controller que retorna as informações"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Ajuste de inventario"
+      },
+      "AjusteInventarioRetornoExampleDTO": {
+        "type": "object",
+        "additionalProperties": false
+      },
+      "BloqueioDesbloqueioDTO": {
+        "required": [
+          "controller",
+          "numeroDaTransacao",
+          "site"
+        ],
+        "type": "object",
+        "properties": {
+          "site": {
+            "maxLength": 3,
+            "minLength": 0,
+            "type": "string",
+            "description": "Site | Example: site=STI"
+          },
+          "numeroDaTransacao": {
+            "type": "integer",
+            "description": "Número da transação | Example: numeroDaTransacao=123456789",
+            "format": "int32"
+          },
+          "idIntegracao": {
+            "maxLength": 50,
+            "minLength": 0,
+            "type": "string",
+            "description": "Id Único de Integração",
+            "nullable": true
+          },
+          "controller": {
+            "maxLength": 100,
+            "minLength": 0,
+            "type": "string",
+            "description": "Controller que retorna as informações"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Bloqueio ou desbloqueio de estoque"
+      },
+      "BloqueioDesbloqueioRetornoExampleDTO": {
+        "type": "object",
+        "additionalProperties": false
+      },
+      "BookDTO": {
+        "required": [
+          "controller",
+          "idProcesso",
+          "site",
+          "tipoProcesso"
+        ],
+        "type": "object",
+        "properties": {
+          "site": {
+            "maxLength": 3,
+            "minLength": 0,
+            "type": "string",
+            "description": "Site | Example: site=STI"
+          },
+          "tipoProcesso": {
+            "type": "string",
+            "description": "tipo do processo enviado na notificação"
+          },
+          "idProcesso": {
+            "type": "string",
+            "description": "identificação do processo enviada na notificação"
+          },
+          "controller": {
+            "maxLength": 100,
+            "minLength": 0,
+            "type": "string",
+            "description": "Controller que retorna as informações"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Ajuste de inventario"
+      },
+      "BookRetornoExampleDTO": {
+        "type": "object",
+        "additionalProperties": false
+      },
+      "CancelamentoDePedidoDTO": {
+        "required": [
+          "codigoDepositante",
+          "controller",
+          "numeroPedido",
+          "site",
+          "subPedido"
+        ],
+        "type": "object",
+        "properties": {
+          "site": {
+            "maxLength": 3,
+            "minLength": 0,
+            "type": "string",
+            "description": "Site | Example: site=STI"
+          },
+          "codigoDepositante": {
+            "maxLength": 12,
+            "minLength": 0,
+            "type": "string",
+            "description": "Código do depositante"
+          },
+          "numeroPedido": {
+            "maxLength": 12,
+            "minLength": 0,
+            "type": "string",
+            "description": "Número do pedido"
+          },
+          "subPedido": {
+            "maximum": 9999,
+            "minimum": 0,
+            "type": "integer",
+            "description": "Sub pedido",
+            "format": "int32"
+          },
+          "idIntegracao": {
+            "maxLength": 50,
+            "minLength": 0,
+            "type": "string",
+            "description": "Id Único de Integração",
+            "nullable": true
+          },
+          "controller": {
+            "maxLength": 100,
+            "minLength": 0,
+            "type": "string",
+            "description": "Controller que retorna as informações"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Cancelamento de pedido"
+      },
+      "CancelamentoDePedidoRetornoExampleDTO": {
+        "type": "object",
+        "additionalProperties": false
+      },
+      "CancelamentoDeRecebimentoDTO": {
+        "required": [
+          "codigoDepositante",
+          "controller",
+          "numeroNotaFiscal",
+          "serieNotaFiscal",
+          "site"
+        ],
+        "type": "object",
+        "properties": {
+          "site": {
+            "maxLength": 3,
+            "minLength": 0,
+            "type": "string",
+            "description": "Site | Example: site=STI"
+          },
+          "codigoDepositante": {
+            "maxLength": 12,
+            "minLength": 0,
+            "type": "string",
+            "description": "Código do depositante"
+          },
+          "numeroNotaFiscal": {
+            "type": "integer",
+            "description": "Número da nota fiscal",
+            "format": "int32"
+          },
+          "serieNotaFiscal": {
+            "type": "string",
+            "description": "Número da nota fiscal"
+          },
+          "idIntegracao": {
+            "maxLength": 50,
+            "minLength": 0,
+            "type": "string",
+            "description": "Id Único de Integração",
+            "nullable": true
+          },
+          "controller": {
+            "maxLength": 100,
+            "minLength": 0,
+            "type": "string",
+            "description": "Controller que retorna as informações"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Cancelamento de recebimento nota fiscal"
+      },
+      "ClientesDTO": {
+        "required": [
+          "codigoCliente",
+          "codigoDepositante",
+          "site",
+          "tipoDePessoa"
+        ],
+        "type": "object",
+        "properties": {
+          "site": {
+            "maxLength": 3,
+            "minLength": 0,
+            "type": "string",
+            "description": "Site | Example: site=STI"
+          },
+          "codigoDepositante": {
+            "maxLength": 12,
+            "minLength": 0,
+            "type": "string",
+            "description": "Código do depositante"
+          },
+          "codigoCliente": {
+            "maxLength": 12,
+            "minLength": 0,
+            "type": "string",
+            "description": "Código do cliente"
+          },
+          "cnpjCpf": {
+            "maxLength": 16,
+            "minLength": 0,
+            "type": "string",
+            "description": "CNPJ ou CPF. Informar sem mascara. Para sites com modulo AG habilitado, este campo é validado",
+            "nullable": true
+          },
+          "razaoSocial": {
+            "maxLength": 40,
+            "minLength": 0,
+            "type": "string",
+            "description": "Razão social",
+            "nullable": true
+          },
+          "nomeFantasia": {
+            "maxLength": 40,
+            "minLength": 0,
+            "type": "string",
+            "description": "Nome fantasia",
+            "nullable": true
+          },
+          "tipoDePessoa": {
+            "maxLength": 1,
+            "minLength": 0,
+            "type": "string",
+            "description": "Tipo de pessoa. 1 = Jurídica 2 = Física"
+          },
+          "inscricaoEstadual": {
+            "maxLength": 16,
+            "minLength": 0,
+            "type": "string",
+            "description": "Inscrição estadual. Informar sem mascara. Para sites com modulo AG habilitado, este campo é validado",
+            "nullable": true
+          },
+          "enderecos": {
+            "$ref": "#/components/schemas/EnderecosDTO"
+          },
+          "contatos": {
+            "$ref": "#/components/schemas/ContatosDTO"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Clientes"
+      },
+      "ClientesRetornoExampleDTO": {
+        "type": "object",
+        "additionalProperties": false
+      },
+      "CondicionamentosInsertDTO": {
+        "required": [
+          "quantidade",
+          "unidade"
+        ],
+        "type": "object",
+        "properties": {
+          "unidade": {
+            "maxLength": 6,
+            "minLength": 0,
+            "type": "string",
+            "description": "Unidade. Ex.:PP, CX, PC e etc"
+          },
+          "quantidade": {
+            "type": "number",
+            "description": "Quantidade",
+            "format": "double"
+          },
+          "codigoBarras": {
+            "maxLength": 30,
+            "minLength": 0,
+            "type": "string",
+            "description": "Código de barras",
+            "nullable": true
+          },
+          "altura": {
+            "type": "number",
+            "description": "Altura",
+            "format": "double",
+            "nullable": true
+          },
+          "largura": {
+            "type": "number",
+            "description": "Largura",
+            "format": "double",
+            "nullable": true
+          },
+          "comprimento": {
+            "type": "number",
+            "description": "Comprimento",
+            "format": "double",
+            "nullable": true
+          },
+          "unidadeComprimento": {
+            "maxLength": 6,
+            "minLength": 0,
+            "type": "string",
+            "description": "Unidade do comprimento",
+            "nullable": true
+          },
+          "peso": {
+            "type": "number",
+            "description": "Peso",
+            "format": "double",
+            "nullable": true
+          },
+          "unidadePeso": {
+            "maxLength": 6,
+            "minLength": 0,
+            "type": "string",
+            "description": "Unidade do peso. Ex.:GR, KG e etc",
+            "nullable": true
+          },
+          "volume": {
+            "type": "number",
+            "description": "Volume",
+            "format": "double",
+            "nullable": true
+          },
+          "unidadeVolume": {
+            "maxLength": 6,
+            "minLength": 0,
+            "type": "string",
+            "description": "Unidade do volume. Ex.:CM3, M3, L e etc",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ConfirmacaoPedidoDTO": {
+        "required": [
+          "codigoDepositante",
+          "controller",
+          "numeroPedido",
+          "site",
+          "subPedido"
+        ],
+        "type": "object",
+        "properties": {
+          "site": {
+            "maxLength": 3,
+            "minLength": 0,
+            "type": "string",
+            "description": "Site | Example: site=STI"
+          },
+          "codigoDepositante": {
+            "maxLength": 12,
+            "minLength": 0,
+            "type": "string",
+            "description": "Código do depositante"
+          },
+          "numeroPedido": {
+            "maxLength": 12,
+            "minLength": 0,
+            "type": "string",
+            "description": "Número do pedido"
+          },
+          "subPedido": {
+            "maximum": 9999,
+            "minimum": 0,
+            "type": "integer",
+            "description": "Sub pedido",
+            "format": "int32"
+          },
+          "idIntegracao": {
+            "maxLength": 50,
+            "minLength": 0,
+            "type": "string",
+            "description": "Id Único de Integração",
+            "nullable": true
+          },
+          "controller": {
+            "maxLength": 100,
+            "minLength": 0,
+            "type": "string",
+            "description": "Controller que retorna as informações"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Confirmação de pedido"
+      },
+      "ConfirmacaoPedidoRetornoExampleDTO": {
+        "type": "object",
+        "additionalProperties": false
+      },
+      "ConfRecAgrupadoDTO": {
+        "required": [
+          "controller",
+          "numeroDaEntrada",
+          "site"
+        ],
+        "type": "object",
+        "properties": {
+          "site": {
+            "maxLength": 3,
+            "minLength": 0,
+            "type": "string",
+            "description": "Site | Example: site=STI"
+          },
+          "numeroDaEntrada": {
+            "maximum": 9999999,
+            "minimum": 0,
+            "type": "integer",
+            "description": "Número da entrada",
+            "format": "int32"
+          },
+          "controller": {
+            "maxLength": 100,
+            "minLength": 0,
+            "type": "string",
+            "description": "Controller que retorna as informações"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Confirmacao recebimento agrupado"
+      },
+      "ConfRecAgrupadoRetornoExampleDTO": {
+        "type": "object",
+        "additionalProperties": false
+      },
+      "ConfRecNotaFiscalDTO": {
+        "required": [
+          "controller",
+          "numeroDoRecebimento",
+          "site"
+        ],
+        "type": "object",
+        "properties": {
+          "site": {
+            "maxLength": 3,
+            "minLength": 0,
+            "type": "string",
+            "description": "Site | Example: site=STI"
+          },
+          "numeroDoRecebimento": {
+            "maximum": 9999999,
+            "minimum": 0,
+            "type": "integer",
+            "description": "Número do recebimento",
+            "format": "int32"
+          },
+          "idIntegracao": {
+            "maxLength": 50,
+            "minLength": 0,
+            "type": "string",
+            "description": "Id Único de Integração",
+            "nullable": true
+          },
+          "controller": {
+            "maxLength": 100,
+            "minLength": 0,
+            "type": "string",
+            "description": "Controller que retorna as informações"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Confirmacao recebimento nota fiscal"
+      },
+      "ConfRecNotaFiscalRetornoExampleDTO": {
+        "type": "object",
+        "additionalProperties": false
+      },
+      "ContatosDTO": {
+        "type": "object",
+        "properties": {
+          "tipoDeContato": {
+            "maxLength": 1,
+            "minLength": 0,
+            "type": "string",
+            "description": "Tipo de contato. 1 = Pessoa Jurídica 2 = Pessoa Física. Para sites com modulo AG habilitado, este campo é obrigatório",
+            "nullable": true
+          },
+          "contato": {
+            "maxLength": 80,
+            "minLength": 0,
+            "type": "string",
+            "description": "Contato. Para sites com modulo AG habilitado, este campo é obrigatório",
+            "nullable": true
+          },
+          "telefonePrimario": {
+            "maxLength": 15,
+            "minLength": 0,
+            "type": "string",
+            "description": "Telefone primario. Para sites com modulo AG habilitado, este campo é obrigatório",
+            "nullable": true
+          },
+          "telefoneSecundario": {
+            "maxLength": 15,
+            "minLength": 0,
+            "type": "string",
+            "description": "Telefone secundario",
+            "nullable": true
+          },
+          "email": {
+            "maxLength": 60,
+            "minLength": 0,
+            "type": "string",
+            "description": "Email",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Contato. Para sites com modulo AG habilitado, este campo é obrigatório"
+      },
+      "DadosRecebimentoInsertDTO": {
+        "required": [
+          "codigoDepositante",
+          "codigoFornecedor",
+          "dataNotaFiscal",
+          "itens",
+          "numeroNotaFiscal",
+          "serieNotaFiscal"
+        ],
+        "type": "object",
+        "properties": {
+          "codigoDepositante": {
+            "maxLength": 12,
+            "minLength": 0,
+            "type": "string",
+            "description": "Código do depositante"
+          },
+          "numeroNotaFiscal": {
+            "maxLength": 12,
+            "minLength": 0,
+            "type": "string",
+            "description": "Número nota fiscal"
+          },
+          "serieNotaFiscal": {
+            "maxLength": 3,
+            "minLength": 0,
+            "type": "string",
+            "description": "Série nota fiscal"
+          },
+          "dataNotaFiscal": {
+            "type": "string",
+            "description": "Data nota fiscal",
+            "format": "date-time"
+          },
+          "codigoFornecedor": {
+            "maxLength": 12,
+            "minLength": 0,
+            "type": "string",
+            "description": "Código do fornecedor"
+          },
+          "tipoDocumento": {
+            "maxLength": 20,
+            "minLength": 0,
+            "type": "string",
+            "description": "Tipo Documento (Rastreabilidade RDC 319): chaveNfe, PO",
+            "nullable": true
+          },
+          "codigoDocumento": {
+            "maxLength": 50,
+            "minLength": 0,
+            "type": "string",
+            "description": "Numero/Código do documento (Rastreabilidade RDC 319)",
+            "nullable": true
+          },
+          "itens": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ItensRecebimentoInsertDTO"
+            },
+            "description": "Itens"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Dados Recebimento"
+      },
+      "EnderecosDTO": {
+        "type": "object",
+        "properties": {
+          "tipoDeEndereco": {
+            "maxLength": 1,
+            "minLength": 0,
+            "type": "string",
+            "description": "Tipo de endereço. 1 = Comercial 2 = Cobrança 3 = Correspondência 4 = Outros. Para sites com modulo AG habilitado, este campo é obrigatório",
+            "nullable": true
+          },
+          "cep": {
+            "maxLength": 9,
+            "minLength": 0,
+            "type": "string",
+            "description": "CEP. Informar sem mascara. Para sites com modulo AG habilitado, este campo é obrigatório",
+            "nullable": true
+          },
+          "numeroDoLogradouro": {
+            "maxLength": 10,
+            "minLength": 0,
+            "type": "string",
+            "description": "Número. Para sites com modulo AG habilitado, este campo é obrigatório",
+            "nullable": true
+          },
+          "complementoDoEndereco": {
+            "maxLength": 40,
+            "minLength": 0,
+            "type": "string",
+            "description": "Complemento",
+            "nullable": true
+          },
+          "rota": {
+            "maxLength": 40,
+            "minLength": 0,
+            "type": "string",
+            "description": "Rota de entrega",
+            "nullable": true
+          },
+          "pais": {
+            "maxLength": 3,
+            "minLength": 0,
+            "type": "string",
+            "description": "Código do País EX.:BRA, USA. Para sites com modulo AG habilitado, este campo é obrigatório",
+            "nullable": true
+          },
+          "estado": {
+            "maxLength": 2,
+            "minLength": 0,
+            "type": "string",
+            "description": "Estado. UF (EX para exterior). Para sites com modulo AG habilitado, este campo é obrigatório",
+            "nullable": true
+          },
+          "cidade": {
+            "maxLength": 80,
+            "minLength": 0,
+            "type": "string",
+            "description": "Cidade. Para sites com modulo AG habilitado, este campo é obrigatório",
+            "nullable": true
+          },
+          "bairro": {
+            "maxLength": 50,
+            "minLength": 0,
+            "type": "string",
+            "description": "Bairro. Para sites com modulo AG habilitado, este campo é obrigatório",
+            "nullable": true
+          },
+          "logradouro": {
+            "maxLength": 70,
+            "minLength": 0,
+            "type": "string",
+            "description": "Logradouro. Para sites com modulo AG habilitado, este campo é obrigatório",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Endereço. Para sites com modulo AG habilitado, este campo é obrigatório"
+      },
+      "EstoqueRetornoExampleDTO": {
+        "type": "object",
+        "additionalProperties": false
+      },
+      "EstoqueSelectDTO": {
+        "required": [
+          "codigoDepositante",
+          "site",
+          "usuario"
+        ],
+        "type": "object",
+        "properties": {
+          "site": {
+            "maxLength": 3,
+            "minLength": 0,
+            "type": "string",
+            "description": "Site | Example: site=STI"
+          },
+          "usuario": {
+            "maxLength": 8,
+            "minLength": 0,
+            "type": "string",
+            "description": "Usuario WMS. Será verificado se o usuário possui acesso ao depositante em questão. \r\nCaso tenha o acesso os dados serão retornados."
+          },
+          "codigoDepositante": {
+            "maxLength": 12,
+            "minLength": 0,
+            "type": "string",
+            "description": "Código do depositante"
+          },
+          "codigoProduto": {
+            "maxLength": 40,
+            "minLength": 0,
+            "type": "string",
+            "description": "Código do produto",
+            "nullable": true
+          },
+          "statusDoEstoque": {
+            "maxLength": 2,
+            "minLength": 0,
+            "type": "string",
+            "description": "Status do estoque. 00 = Livre 90 = Bloqueado",
+            "nullable": true
+          },
+          "motivoDoBloqueioDeQualidade": {
+            "maxLength": 6,
+            "minLength": 0,
+            "type": "string",
+            "description": "Motivo do bloqueio de qualidade",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Estoque"
+      },
+      "ExpedicaoPedidoExampleDTO": {
+        "type": "object",
+        "additionalProperties": false
+      },
+      "ExpedicaoPedidoNotificacaoDTO": {
+        "required": [
+          "codigoDepositante",
+          "controller",
+          "numeroCarga",
+          "numeroPedido",
+          "site",
+          "subPedido"
+        ],
+        "type": "object",
+        "properties": {
+          "site": {
+            "maxLength": 3,
+            "minLength": 0,
+            "type": "string",
+            "description": "Site | Example: site=STI"
+          },
+          "codigoDepositante": {
+            "maxLength": 12,
+            "minLength": 0,
+            "type": "string",
+            "description": "Código do depositante"
+          },
+          "numeroPedido": {
+            "maxLength": 12,
+            "minLength": 0,
+            "type": "string",
+            "description": "Número do pedido"
+          },
+          "subPedido": {
+            "maximum": 9999,
+            "minimum": 0,
+            "type": "integer",
+            "description": "Sub pedido",
+            "format": "int32"
+          },
+          "numeroCarga": {
+            "type": "string",
+            "description": "Carga"
+          },
+          "idIntegracao": {
+            "maxLength": 50,
+            "minLength": 0,
+            "type": "string",
+            "description": "Id Único de Integração",
+            "nullable": true
+          },
+          "controller": {
+            "maxLength": 100,
+            "minLength": 0,
+            "type": "string",
+            "description": "Controller que retorna as informações"
+          }
+        },
+        "additionalProperties": false
+      },
+      "FaturamentoPedidoDTO": {
+        "required": [
+          "codigoDepositante",
+          "numeroNotaFiscal",
+          "numeroPedido",
+          "site",
+          "subPedido"
+        ],
+        "type": "object",
+        "properties": {
+          "site": {
+            "maxLength": 3,
+            "minLength": 0,
+            "type": "string",
+            "description": "Site | Example: site=STI"
+          },
+          "codigoDepositante": {
+            "maxLength": 12,
+            "minLength": 0,
+            "type": "string",
+            "description": "Código do depositante"
+          },
+          "numeroPedido": {
+            "maxLength": 12,
+            "minLength": 0,
+            "type": "string",
+            "description": "Número do pedido"
+          },
+          "subPedido": {
+            "maximum": 9999,
+            "minimum": 0,
+            "type": "integer",
+            "description": "Sub pedido",
+            "format": "int32"
+          },
+          "numeroNotaFiscal": {
+            "maxLength": 12,
+            "minLength": 0,
+            "type": "string",
+            "description": "Número nota fiscal"
+          },
+          "dataNotaFiscal": {
+            "type": "string",
+            "description": "Data nota fiscal",
+            "format": "date-time",
+            "nullable": true
+          },
+          "valorTotal": {
+            "type": "number",
+            "description": "Valor total.",
+            "format": "double",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Faturamento de Pedido"
+      },
+      "FaturamentoServicoDTO": {
+        "required": [
+          "codigoDepositante",
+          "idFaturamento",
+          "numeroNotaFiscal",
+          "serieNotaFiscal",
+          "site"
+        ],
+        "type": "object",
+        "properties": {
+          "site": {
+            "maxLength": 3,
+            "minLength": 0,
+            "type": "string",
+            "description": "Site | Example: site=STI"
+          },
+          "codigoDepositante": {
+            "maxLength": 12,
+            "minLength": 0,
+            "type": "string",
+            "description": "Código do depositante"
+          },
+          "idFaturamento": {
+            "maximum": 9999999999,
+            "minimum": 0,
+            "type": "integer",
+            "description": "Número do faturamento",
+            "format": "int32"
+          },
+          "numeroNotaFiscal": {
+            "maxLength": 20,
+            "minLength": 0,
+            "type": "string",
+            "description": "Número nota fiscal"
+          },
+          "serieNotaFiscal": {
+            "maxLength": 5,
+            "minLength": 0,
+            "type": "string",
+            "description": "Número nota fiscal"
+          },
+          "dataEmissaoNotaFiscal": {
+            "type": "string",
+            "description": "Data da emissão da nota fiscal",
+            "format": "date-time",
+            "nullable": true
+          },
+          "dataVencimentoNotaFiscal": {
+            "type": "string",
+            "description": "Data vencimento da nota fiscal",
+            "format": "date-time",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Faturamento de Serviço"
+      },
+      "FaturamentoServicoNotificacaoDTO": {
+        "required": [
+          "codigoDepositante",
+          "controller",
+          "idFaturamento",
+          "site"
+        ],
+        "type": "object",
+        "properties": {
+          "site": {
+            "maxLength": 3,
+            "minLength": 0,
+            "type": "string",
+            "description": "Site | Example: site=STI"
+          },
+          "codigoDepositante": {
+            "maxLength": 12,
+            "minLength": 0,
+            "type": "string",
+            "description": "Código do depositante"
+          },
+          "idFaturamento": {
+            "type": "integer",
+            "description": "Id do faturamento",
+            "format": "int32"
+          },
+          "controller": {
+            "maxLength": 100,
+            "minLength": 0,
+            "type": "string",
+            "description": "Controller que retorna as informações"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Faturamento de Serviço"
+      },
+      "FaturamentoServicoRetornoExampleDTO": {
+        "type": "object",
+        "additionalProperties": false
+      },
+      "FornecedoresDTO": {
+        "required": [
+          "codigoDepositante",
+          "codigoFornecedor",
+          "site",
+          "tipoDePessoa"
+        ],
+        "type": "object",
+        "properties": {
+          "site": {
+            "maxLength": 3,
+            "minLength": 0,
+            "type": "string",
+            "description": "Site | Example: site=STI"
+          },
+          "codigoDepositante": {
+            "maxLength": 12,
+            "minLength": 0,
+            "type": "string",
+            "description": "Código do depositante"
+          },
+          "codigoFornecedor": {
+            "maxLength": 12,
+            "minLength": 0,
+            "type": "string",
+            "description": "Código do fornecedor"
+          },
+          "cnpjCpf": {
+            "maxLength": 16,
+            "minLength": 0,
+            "type": "string",
+            "description": "CNPJ ou CPF. Informar sem mascara. Para sites com modulo AG habilitado, este campo é validado",
+            "nullable": true
+          },
+          "razaoSocial": {
+            "maxLength": 40,
+            "minLength": 0,
+            "type": "string",
+            "description": "Razão social",
+            "nullable": true
+          },
+          "nomeFantasia": {
+            "maxLength": 40,
+            "minLength": 0,
+            "type": "string",
+            "description": "Nome fantasia",
+            "nullable": true
+          },
+          "tipoDePessoa": {
+            "maxLength": 1,
+            "minLength": 0,
+            "type": "string",
+            "description": "Tipo de pessoa. 1 = Jurídica 2 = Física"
+          },
+          "inscricaoEstadual": {
+            "maxLength": 16,
+            "minLength": 0,
+            "type": "string",
+            "description": "Inscrição estadual. Informar sem mascara. Para sites com modulo AG habilitado, este campo é validado",
+            "nullable": true
+          },
+          "enderecos": {
+            "$ref": "#/components/schemas/EnderecosDTO"
+          },
+          "contatos": {
+            "$ref": "#/components/schemas/ContatosDTO"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Fornecedores"
+      },
+      "FornecedoresRetornoExampleDTO": {
+        "type": "object",
+        "additionalProperties": false
+      },
+      "ItensPedidosInsertDTO": {
+        "required": [
+          "codigoProduto",
+          "numeroItem",
+          "quantidade",
+          "statusDoEstoque",
+          "unidade"
+        ],
+        "type": "object",
+        "properties": {
+          "numeroItem": {
+            "maximum": 9999,
+            "minimum": 1,
+            "type": "integer",
+            "description": "Número do Item. Sequencial EX.: 1, 2, 3 ....",
+            "format": "int32"
+          },
+          "codigoProduto": {
+            "maxLength": 40,
+            "minLength": 0,
+            "type": "string",
+            "description": "Código do produto"
+          },
+          "quantidade": {
+            "type": "number",
+            "description": "Quantidade",
+            "format": "double"
+          },
+          "valorUnitario": {
+            "type": "number",
+            "description": "Valor unitário",
+            "format": "double",
+            "nullable": true
+          },
+          "moeda": {
+            "maxLength": 6,
+            "minLength": 0,
+            "type": "string",
+            "description": "Moeda. Ex.:R$",
+            "nullable": true
+          },
+          "unidade": {
+            "maxLength": 6,
+            "minLength": 0,
+            "type": "string",
+            "description": "Unidade. Ex.:PP, CX, PC e etc. Deve respeitar o cadastro do produto"
+          },
+          "lote": {
+            "maxLength": 20,
+            "minLength": 0,
+            "type": "string",
+            "description": "Lote",
+            "nullable": true
+          },
+          "loteSerial": {
+            "maxLength": 20,
+            "minLength": 0,
+            "type": "string",
+            "description": "Lote Serial",
+            "nullable": true
+          },
+          "dataDeProducao": {
+            "type": "string",
+            "description": "Data de produção",
+            "format": "date-time",
+            "nullable": true
+          },
+          "dataDeValidade": {
+            "type": "string",
+            "description": "Data de validade",
+            "format": "date-time",
+            "nullable": true
+          },
+          "statusDoEstoque": {
+            "maxLength": 2,
+            "minLength": 0,
+            "type": "string",
+            "description": "Status do estoque. 00 = Livre 90 = Bloqueado"
+          },
+          "motivoDoBloqueioDeQualidade": {
+            "maxLength": 6,
+            "minLength": 0,
+            "type": "string",
+            "description": "Motivo do bloqueio de qualidade",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Itens Pedido"
+      },
+      "ItensRecebimentoInsertDTO": {
+        "required": [
+          "codigoProduto",
+          "numeroItem",
+          "quantidade",
+          "unidade"
+        ],
+        "type": "object",
+        "properties": {
+          "numeroItem": {
+            "type": "integer",
+            "description": "Número do Item. Sequencial EX.: 1, 2, 3 ....",
+            "format": "int32"
+          },
+          "codigoProduto": {
+            "maxLength": 40,
+            "minLength": 0,
+            "type": "string",
+            "description": "Código do produto"
+          },
+          "quantidade": {
+            "type": "number",
+            "description": "Quantidade",
+            "format": "double"
+          },
+          "unidade": {
+            "maxLength": 6,
+            "minLength": 0,
+            "type": "string",
+            "description": "Unidade. Ex.:PP, CX, PC e etc. Deve respeitar o cadastro do produto"
+          },
+          "lote": {
+            "maxLength": 20,
+            "minLength": 0,
+            "type": "string",
+            "description": "Lote",
+            "nullable": true
+          },
+          "loteSerial": {
+            "maxLength": 20,
+            "minLength": 0,
+            "type": "string",
+            "description": "Lote Serial",
+            "nullable": true
+          },
+          "dataDeProducao": {
+            "type": "string",
+            "description": "Data de produção",
+            "format": "date-time",
+            "nullable": true
+          },
+          "dataDeValidade": {
+            "type": "string",
+            "description": "Data de validade",
+            "format": "date-time",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Itens de recebimento"
+      },
+      "PedidoInsertDTO": {
+        "required": [
+          "codigoCliente",
+          "codigoDepositante",
+          "codigoTransportadora",
+          "dataDoPedidoPrevisto",
+          "itens",
+          "numeroPedido",
+          "site",
+          "subPedido",
+          "tipoDePedido"
+        ],
+        "type": "object",
+        "properties": {
+          "site": {
+            "maxLength": 3,
+            "minLength": 0,
+            "type": "string",
+            "description": "Site | Example: site=STI"
+          },
+          "codigoDepositante": {
+            "maxLength": 12,
+            "minLength": 0,
+            "type": "string",
+            "description": "Código do depositante"
+          },
+          "numeroPedido": {
+            "maxLength": 12,
+            "minLength": 0,
+            "type": "string",
+            "description": "Número do pedido"
+          },
+          "subPedido": {
+            "maximum": 9999,
+            "minimum": 0,
+            "type": "integer",
+            "description": "Sub pedido",
+            "format": "int32"
+          },
+          "idIntegracao": {
+            "maxLength": 50,
+            "minLength": 0,
+            "type": "string",
+            "description": "Id Único de Integração",
+            "nullable": true
+          },
+          "numeroCarga": {
+            "maxLength": 12,
+            "minLength": 0,
+            "type": "string",
+            "description": "Número da Carga",
+            "nullable": true
+          },
+          "codigoTransportadora": {
+            "maxLength": 12,
+            "minLength": 0,
+            "type": "string",
+            "description": "Código da transportadora"
+          },
+          "dataDoPedidoPrevisto": {
+            "type": "string",
+            "description": "Data do pedido previsto",
+            "format": "date-time"
+          },
+          "codigoCliente": {
+            "maxLength": 12,
+            "minLength": 0,
+            "type": "string",
+            "description": "Código do cliente"
+          },
+          "deposito": {
+            "maxLength": 3,
+            "minLength": 0,
+            "type": "string",
+            "description": "Deposito de Expedição",
+            "nullable": true
+          },
+          "area": {
+            "maxLength": 2,
+            "minLength": 0,
+            "type": "string",
+            "description": "Area de Expedição",
+            "nullable": true
+          },
+          "endereco": {
+            "maxLength": 40,
+            "minLength": 0,
+            "type": "string",
+            "description": "Endereço de Expedição",
+            "nullable": true
+          },
+          "sequenciaDeEntrega": {
+            "maximum": 9999,
+            "minimum": 0,
+            "type": "integer",
+            "description": "Sequência de entrega",
+            "format": "int32",
+            "nullable": true
+          },
+          "tipoDePedido": {
+            "maxLength": 4,
+            "minLength": 0,
+            "type": "string",
+            "description": "Tipo de pedido:  <b>CD</b> = Crossdocking | <b>MKIT</b> = Montagem de Kit | <b>NORM</b> = Normal |\r\n<b>UKIT</b> = Desmontagem de Kit | <b>WEB</b> = Pedido WEB. Caso nao tenha aplicação usar valor default NORM"
+          },
+          "prioridade": {
+            "maximum": 99,
+            "minimum": 0,
+            "type": "integer",
+            "description": "Prioridade",
+            "format": "int32",
+            "nullable": true
+          },
+          "valorTotal": {
+            "type": "number",
+            "description": "Valor total. Calculo do valor total de todos itens",
+            "format": "double",
+            "nullable": true
+          },
+          "moeda": {
+            "maxLength": 6,
+            "minLength": 0,
+            "type": "string",
+            "description": "Moeda. Ex.:R$",
+            "nullable": true
+          },
+          "rota": {
+            "maxLength": 40,
+            "minLength": 0,
+            "type": "string",
+            "description": "Rota atribuída ao pedido",
+            "nullable": true
+          },
+          "itens": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ItensPedidosInsertDTO"
+            },
+            "description": "Itens"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Pedido"
+      },
+      "ProblemDetails": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "nullable": true
+          },
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "status": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "detail": {
+            "type": "string",
+            "nullable": true
+          },
+          "instance": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": { }
+      },
+      "ProdutosDTO": {
+        "required": [
+          "ativaConferenciaDoProduto",
+          "ativaControleDeDataDeValidade",
+          "ativaControleDeLote",
+          "ativaSeparacaoDePickingDinamico",
+          "ativaSeparacaoUnitizadorCompleto",
+          "codigoBarras",
+          "codigoDepositante",
+          "codigoProduto",
+          "descricaoProduto",
+          "importaRastro",
+          "quantidadePadraoDeEstoque",
+          "site",
+          "status",
+          "tipoDePeso",
+          "unidadeDeMedida",
+          "unidadePadraoDeEstoque"
+        ],
+        "type": "object",
+        "properties": {
+          "site": {
+            "maxLength": 3,
+            "minLength": 0,
+            "type": "string",
+            "description": "Site | Example: site=STI"
+          },
+          "codigoDepositante": {
+            "maxLength": 12,
+            "minLength": 0,
+            "type": "string",
+            "description": "Código do depositante"
+          },
+          "codigoProduto": {
+            "maxLength": 40,
+            "minLength": 0,
+            "type": "string",
+            "description": "Código do produto"
+          },
+          "descricaoProduto": {
+            "maxLength": 40,
+            "minLength": 0,
+            "type": "string",
+            "description": "Descrição"
+          },
+          "descricaoComplementarProduto": {
+            "maxLength": 40,
+            "minLength": 0,
+            "type": "string",
+            "description": "Descrição complementar",
+            "nullable": true
+          },
+          "unidadeDeMedida": {
+            "maxLength": 6,
+            "minLength": 0,
+            "type": "string",
+            "description": "Menor unidade do produto. Ex.:UM, PC, KG e etc"
+          },
+          "codigoNcm": {
+            "maxLength": 10,
+            "minLength": 0,
+            "type": "string",
+            "description": "Codigo NCM.",
+            "nullable": true
+          },
+          "codigoBarras": {
+            "maxLength": 30,
+            "minLength": 0,
+            "type": "string",
+            "description": "Código de barras"
+          },
+          "familia": {
+            "maxLength": 30,
+            "minLength": 0,
+            "type": "string",
+            "description": "Família",
+            "nullable": true
+          },
+          "grupo": {
+            "maxLength": 30,
+            "minLength": 0,
+            "type": "string",
+            "description": "Grupo",
+            "nullable": true
+          },
+          "subGrupo": {
+            "maxLength": 30,
+            "minLength": 0,
+            "type": "string",
+            "description": "Sub grupo",
+            "nullable": true
+          },
+          "ativaControleDeDataDeValidade": {
+            "type": "boolean",
+            "description": "Ativa controle de  data de validade"
+          },
+          "ativaControleDeLote": {
+            "type": "boolean",
+            "description": "Ativa controle de lote"
+          },
+          "ativaSeparacaoUnitizadorCompleto": {
+            "type": "boolean",
+            "description": "Ativa separação Unitizador completo"
+          },
+          "ativaSeparacaoDePickingDinamico": {
+            "type": "boolean",
+            "description": "Ativa separação de picking dinâmico"
+          },
+          "ativaConferenciaDoProduto": {
+            "type": "boolean",
+            "description": "Ativa conferência do produto"
+          },
+          "importaRastro": {
+            "type": "boolean",
+            "description": "Ativa Importação do rastro"
+          },
+          "shelfLifeEstoque": {
+            "type": "integer",
+            "description": "Shelf life de estoque",
+            "format": "int32",
+            "nullable": true
+          },
+          "shelfLifeRecebimento": {
+            "type": "integer",
+            "description": "Shelf life de recebimento",
+            "format": "int32",
+            "nullable": true
+          },
+          "classeABC": {
+            "maxLength": 1,
+            "minLength": 0,
+            "type": "string",
+            "description": "Curva ABC",
+            "nullable": true
+          },
+          "lastro": {
+            "maximum": 99999,
+            "minimum": 0,
+            "type": "integer",
+            "description": "Lastro",
+            "format": "int32",
+            "nullable": true
+          },
+          "camada": {
+            "maximum": 99999,
+            "minimum": 0,
+            "type": "integer",
+            "description": "Camada",
+            "format": "int32",
+            "nullable": true
+          },
+          "tipoDePeso": {
+            "maxLength": 1,
+            "minLength": 0,
+            "type": "string",
+            "description": "Tipo de peso: <b>0</b> = PP-Peso Padrão | <b>1</b> = PV-Peso Variável | <b>2</b> = PF-Peso por Faixa"
+          },
+          "status": {
+            "maxLength": 6,
+            "minLength": 0,
+            "type": "string",
+            "description": "Bloqueado: <b>00</b> = Ativo <b>40</b> = Aguardando Liberação <b>90</b> = Bloqueado"
+          },
+          "tipoDeProduto": {
+            "maxLength": 30,
+            "minLength": 0,
+            "type": "string",
+            "description": "Tipo de produto. Ex.:SECO, CONGELADO e Etc",
+            "nullable": true
+          },
+          "unidadePadraoDeEstoque": {
+            "maxLength": 6,
+            "minLength": 0,
+            "type": "string",
+            "description": "Unidade padrao de estoque. Deve ser uma das unidades de condicionamento do produto Ex.:PP, CX, PC e etc"
+          },
+          "quantidadePadraoDeEstoque": {
+            "type": "number",
+            "description": "Quantidade padrao de estoque",
+            "format": "double"
+          },
+          "ativaControleRastreabilidadeMedicamento": {
+            "type": "boolean",
+            "description": "Ativa Controle de Rastreabilidade Medicamento (Rastreabilidade RDC 319)"
+          },
+          "condicionamentos": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CondicionamentosInsertDTO"
+            },
+            "description": "Condicionamentos",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Produto"
+      },
+      "ProdutosRetornoExampleDTO": {
+        "type": "object",
+        "additionalProperties": false
+      },
+      "RecebimentoAgrupadoInsertDTO": {
+        "required": [
+          "codigoTransportadora",
+          "dadosRecebimentos",
+          "site",
+          "tipoDeRecebimento"
+        ],
+        "type": "object",
+        "properties": {
+          "site": {
+            "maxLength": 3,
+            "minLength": 0,
+            "type": "string",
+            "description": "Site | Example: site=STI"
+          },
+          "codigoTransportadora": {
+            "maxLength": 12,
+            "minLength": 0,
+            "type": "string",
+            "description": "Código da transportadora"
+          },
+          "dataDaEntrada": {
+            "type": "string",
+            "description": "Data da Entrada",
+            "format": "date-time",
+            "nullable": true
+          },
+          "agrupadorRecebimento": {
+            "maxLength": 12,
+            "minLength": 0,
+            "type": "string",
+            "description": "Agrupador do Recebimento",
+            "nullable": true
+          },
+          "deposito": {
+            "maxLength": 3,
+            "minLength": 0,
+            "type": "string",
+            "description": "Deposito de Recebimento",
+            "nullable": true
+          },
+          "area": {
+            "maxLength": 2,
+            "minLength": 0,
+            "type": "string",
+            "description": "Area de Recebimento",
+            "nullable": true
+          },
+          "endereco": {
+            "maxLength": 40,
+            "minLength": 0,
+            "type": "string",
+            "description": "Endereço de Recebimento",
+            "nullable": true
+          },
+          "tipoDeRecebimento": {
+            "maxLength": 2,
+            "minLength": 0,
+            "type": "string",
+            "description": "Tipo do recebimento. <b>LI</b>=Entrada de fornecedor | <b>KR</b>= Entrada de devolução |\r\n<b>PR</b> = Entrada de produção | <b>TR</b> = Entrada de outro deposito | <b>CD</b> = Entrada de Cross Docking"
+          },
+          "placaDoVeiculo": {
+            "maxLength": 15,
+            "minLength": 0,
+            "type": "string",
+            "description": "Placa do veículo. Não utilizar para recebimento do tipo PR",
+            "nullable": true
+          },
+          "dadosRecebimentos": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DadosRecebimentoInsertDTO"
+            },
+            "description": "DadosRecebimentos"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Recebimento Agrupado"
+      },
+      "RecebimentoNotaFiscalInsertDTO": {
+        "required": [
+          "codigoDepositante",
+          "codigoFornecedor",
+          "codigoTransportadora",
+          "dataNotaFiscal",
+          "itens",
+          "numeroNotaFiscal",
+          "serieNotaFiscal",
+          "site",
+          "tipoDeRecebimento"
+        ],
+        "type": "object",
+        "properties": {
+          "site": {
+            "maxLength": 3,
+            "minLength": 0,
+            "type": "string",
+            "description": "Site | Example: site=STI"
+          },
+          "codigoDepositante": {
+            "maxLength": 12,
+            "minLength": 0,
+            "type": "string",
+            "description": "Código do depositante"
+          },
+          "numeroNotaFiscal": {
+            "maxLength": 12,
+            "minLength": 0,
+            "type": "string",
+            "description": "Número nota fiscal"
+          },
+          "serieNotaFiscal": {
+            "maxLength": 3,
+            "minLength": 0,
+            "type": "string",
+            "description": "Série nota fiscal"
+          },
+          "dataNotaFiscal": {
+            "type": "string",
+            "description": "Data nota fiscal",
+            "format": "date-time"
+          },
+          "codigoFornecedor": {
+            "maxLength": 12,
+            "minLength": 0,
+            "type": "string",
+            "description": "Código do fornecedor"
+          },
+          "tipoDocumento": {
+            "maxLength": 20,
+            "minLength": 0,
+            "type": "string",
+            "description": "Tipo Documento (Rastreabilidade RDC 319): chaveNfe, PO",
+            "nullable": true
+          },
+          "codigoDocumento": {
+            "maxLength": 50,
+            "minLength": 0,
+            "type": "string",
+            "description": "Numero/Código do documento (Rastreabilidade RDC 319)",
+            "nullable": true
+          },
+          "codigoTransportadora": {
+            "maxLength": 12,
+            "minLength": 0,
+            "type": "string",
+            "description": "Código da transportadora"
+          },
+          "idIntegracao": {
+            "maxLength": 50,
+            "minLength": 0,
+            "type": "string",
+            "description": "Id Único de Integração",
+            "nullable": true
+          },
+          "agrupadorRecebimento": {
+            "maxLength": 12,
+            "minLength": 0,
+            "type": "string",
+            "description": "Agrupador do Recebimento",
+            "nullable": true
+          },
+          "deposito": {
+            "maxLength": 3,
+            "minLength": 0,
+            "type": "string",
+            "description": "Deposito de Recebimento",
+            "nullable": true
+          },
+          "area": {
+            "maxLength": 2,
+            "minLength": 0,
+            "type": "string",
+            "description": "Area de Recebimento",
+            "nullable": true
+          },
+          "endereco": {
+            "maxLength": 40,
+            "minLength": 0,
+            "type": "string",
+            "description": "Endereço de Recebimento",
+            "nullable": true
+          },
+          "tipoDeRecebimento": {
+            "maxLength": 2,
+            "minLength": 0,
+            "type": "string",
+            "description": "Tipo do recebimento. <b>LI</b>=Entrada de fornecedor | <b>KR</b>= Entrada de devolução |\r\n<b>PR</b> = Entrada de produção | <b>TR</b> = Entrada de outro deposito | <b>CD</b> = Entrada de Cross Docking"
+          },
+          "placaDoVeiculo": {
+            "maxLength": 15,
+            "minLength": 0,
+            "type": "string",
+            "description": "Placa do veículo. Não utilizar para recebimento do tipo PR",
+            "nullable": true
+          },
+          "itens": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ItensRecebimentoInsertDTO"
+            },
+            "description": "Itens"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Recebimento Nota fiscal"
+      },
+      "SolicitacaoCancelamentoDePedidoDTO": {
+        "required": [
+          "codigoDepositante",
+          "numeroPedido",
+          "site",
+          "subPedido"
+        ],
+        "type": "object",
+        "properties": {
+          "site": {
+            "maxLength": 3,
+            "minLength": 0,
+            "type": "string",
+            "description": "Site | Example: site=STI"
+          },
+          "codigoDepositante": {
+            "maxLength": 12,
+            "minLength": 0,
+            "type": "string",
+            "description": "Código do depositante"
+          },
+          "numeroPedido": {
+            "maxLength": 12,
+            "minLength": 0,
+            "type": "string",
+            "description": "Número do pedido"
+          },
+          "subPedido": {
+            "maximum": 9999,
+            "minimum": 0,
+            "type": "integer",
+            "description": "Sub pedido",
+            "format": "int32"
+          },
+          "motivoCancelamento": {
+            "maxLength": 500,
+            "minLength": 0,
+            "type": "string",
+            "description": "Controller que retorna as informações",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Solicitação de Cancelamento de Pedido"
+      },
+      "StatusPedidoDTO": {
+        "required": [
+          "codigoDepositante",
+          "controller",
+          "descricaoStatusAnterior",
+          "descricaoStatusAtual",
+          "numeroPedido",
+          "site",
+          "statusAnterior",
+          "statusAtual",
+          "subPedido"
+        ],
+        "type": "object",
+        "properties": {
+          "site": {
+            "maxLength": 3,
+            "minLength": 0,
+            "type": "string",
+            "description": "Site | Example: site=STI"
+          },
+          "codigoDepositante": {
+            "maxLength": 12,
+            "minLength": 0,
+            "type": "string",
+            "description": "Código do depositante"
+          },
+          "numeroPedido": {
+            "maxLength": 12,
+            "minLength": 0,
+            "type": "string",
+            "description": "Número do pedido"
+          },
+          "subPedido": {
+            "type": "integer",
+            "description": "Sub pedido",
+            "format": "int32"
+          },
+          "idIntegracao": {
+            "maxLength": 50,
+            "minLength": 0,
+            "type": "string",
+            "description": "Id Único de Integração",
+            "nullable": true
+          },
+          "statusAnterior": {
+            "maxLength": 5,
+            "minLength": 0,
+            "type": "string",
+            "description": "Status anterior do pedido"
+          },
+          "descricaoStatusAnterior": {
+            "maxLength": 50,
+            "minLength": 0,
+            "type": "string",
+            "description": "Descrição do status anterior do pedido"
+          },
+          "statusAtual": {
+            "maxLength": 5,
+            "minLength": 0,
+            "type": "string",
+            "description": "Status atual do pedido"
+          },
+          "descricaoStatusAtual": {
+            "maxLength": 50,
+            "minLength": 0,
+            "type": "string",
+            "description": "Descrição do status atual do pedido"
+          },
+          "controller": {
+            "maxLength": 100,
+            "minLength": 0,
+            "type": "string",
+            "description": "Controller que retorna as informações"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Status do pedido"
+      },
+      "TransportadorasDTO": {
+        "required": [
+          "codigoTransportadora",
+          "site",
+          "tipoDePessoa"
+        ],
+        "type": "object",
+        "properties": {
+          "site": {
+            "maxLength": 3,
+            "minLength": 0,
+            "type": "string",
+            "description": "Site | Example: site=STI"
+          },
+          "codigoTransportadora": {
+            "maxLength": 12,
+            "minLength": 0,
+            "type": "string",
+            "description": "Código da transportadora"
+          },
+          "cnpjCpf": {
+            "maxLength": 16,
+            "minLength": 0,
+            "type": "string",
+            "description": "CNPJ ou CPF. Informar sem mascara. Para sites com modulo AG habilitado, este campo é validado",
+            "nullable": true
+          },
+          "razaoSocial": {
+            "maxLength": 40,
+            "minLength": 0,
+            "type": "string",
+            "description": "Razão social",
+            "nullable": true
+          },
+          "nomeFantasia": {
+            "maxLength": 40,
+            "minLength": 0,
+            "type": "string",
+            "description": "Nome fantasia",
+            "nullable": true
+          },
+          "tipoDePessoa": {
+            "maxLength": 1,
+            "minLength": 0,
+            "type": "string",
+            "description": "Tipo de pessoa. 1 = Jurídica 2 = Física"
+          },
+          "inscricaoEstadual": {
+            "maxLength": 16,
+            "minLength": 0,
+            "type": "string",
+            "description": "Inscrição estadual. Informar sem mascara. Para sites com modulo AG habilitado, este campo é validado",
+            "nullable": true
+          },
+          "enderecos": {
+            "$ref": "#/components/schemas/EnderecosDTO"
+          },
+          "contatos": {
+            "$ref": "#/components/schemas/ContatosDTO"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Transportadora"
+      },
+      "TransportadorasRetornoExampleDTO": {
+        "type": "object",
+        "additionalProperties": false
+      }
+    },
+    "securitySchemes": {
+      "Bearer": {
+        "type": "http",
+        "description": "Ao adquirir o WMS Alcis, você receberá seus dados de acesso, para autenticar-se na API Alcis.Os dados devem ser enviados no cabeçalho da solicitação da chamada da API de \"token\". Todos os tokens gerados, tem validade de <b>1 minuto</b>, portanto o indicado é sempre solicitar novos tokens de acesso para cada execução.<br/> <br/> Example: \"Authorization: Bearer {token}\"<br/><br/><div><strong>Segurança:</strong><br/><a href=\"docs#tag/Token\">Token</a><br/>",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  },
+  "security": [
+    {
+      "Bearer": [ ]
+    }
+  ]
+}
