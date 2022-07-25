@@ -71,7 +71,7 @@
             "name": "body",
             "in": "body",
             "schema": {
-              "$ref": "#/definitions/Action-Plan-Route-Activities-Integration_V1_BodyEmpty"
+              "$ref": "#/definitions/Action-Plan-Route-Activities-Integration_V1_BodyCreate"
             }
           }
         ],
