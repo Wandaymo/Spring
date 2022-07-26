@@ -224,7 +224,8 @@ components:
       type: object
       properties:
         externalId:
-          description: Código único do sistema externo para o vínculo do usuário e plano de ação
+          description: Código único do sistema externo para o vínculo do usuário e 
+            plano de ação
           type: string
           example: PLAN1#USER1
         userId:
