@@ -1,1 +1,357 @@
-wandaymo
+{
+  "info": {
+    "title": "action-plan-route-activities-integrationV1",
+    "version": "1.0.0",
+    "description": "API de integração de atividades dentro da sequência (rota) de um plano de ação (Action-Plan-Route-Activities) V1\n\nCompatível com a versão V6 do serviço de negócio Opportunity\n",
+    "contact": {}
+  },
+  "paths": {
+    "/record": {
+      "get": {
+        "tags": [
+          "Action-Plan-Route-Activities"
+        ],
+        "parameters": [
+          {
+            "name": "Integration-Filter",
+            "description": "Filtro opcional para realizar a busca de um ou mais registros. Suporta o uso de\nRestQuery.\n\n\nSe o header for omitido, lista todos os registros\n\nSe o header não contiver valores, lista todos os registros\n",
+            "in": "header",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns a list of action-plan-route-activities",
+            "schema": {
+              "$ref": "#/definitions/Action-Plan-Route-Activities-Integration_V1_GetResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "summary": "Listar Action-Plan-Route-Activities",
+        "description": "Retorna uma lista de atividades de uma rota de um plano de ação cadastradas ou determinadas atividades com base nos filtros no header Integration-Filter",
+        "produces": [
+          "application/json"
+        ]
+      },
+      "post": {
+        "tags": [
+          "Action-Plan-Route-Activities"
+        ],
+        "parameters": [
+          {
+            "name": "Integration-Filter",
+            "description": "Filtro do registro específico para a ação. Deve-se usar o identificador principal da\nentidade (ID).\n",
+            "in": "header",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "Integration-Response",
+            "description": "Nível de detalhe do retorno da API. São suportados atualmente:\n\n**full** - Resposta completa, equivalente a um GET no recurso\n\n**minimum** - Resposta mínima, equivalente ao ID, data de criação e atualização do\nregistro\n\nSe o header não for informado, por padrão o retorno será equivalente ao nível\n**minimum**\n",
+            "in": "header",
+            "required": false,
+            "enum": [
+              "full",
+              "minimum"
+            ],
+            "default": "minimum",
+            "type": "string"
+          },
+          {
+            "name": "Integration-Action",
+            "description": "Ação a ser realizada na API de integração. Selecione uma das opções para carregar o\nbody da requisição.\n",
+            "in": "header",
+            "required": true
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/Action-Plan-Route-Activities-Integration_V1_BodyCreate"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns a action-plan-route-activities register",
+            "schema": {}
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "summary": "Criar, atualizar e deletar Action-Plan-Route-Activities",
+        "description": "A ação a ser realizada no cadastro depende do valor preenchido no header\n**Integration-Action**:\n\n\n**create** - Realiza a operação de POST do cadastro enviado;\n\n\n**update** - Realiza a operação de PATCH do cadastro enviado, baseado no ID do registro\npreenchido no header **Integration-Filter**;\n\n\n**upsert** - Realiza a operação de POST do cadastro enviado se não for enviado ID do registro\nno header **Integration-Filter** **OU** realiza a operação de PUT do cadastro enviado se for\nenviado o ID do registro no header **Integration-Filter**;\n\n**delete** - Realiza a operação de DELETE do registro especificado no header **Integration-Filter**;\n",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ]
+      },
+      "parameters": [
+        {
+          "name": "Integration-Service",
+          "description": "Serviço responsável pela entidade. Exemplo: opportunity",
+          "in": "header",
+          "required": true,
+          "default": "opportunity",
+          "type": "string"
+        },
+        {
+          "name": "Integration-Resource",
+          "description": "Recurso para requisição. Exemplo: action-plan-route-activities-integration",
+          "in": "header",
+          "required": true,
+          "default": "action-plan-route-activities-integration",
+          "type": "string"
+        },
+        {
+          "name": "Integration-Version",
+          "description": "Versão da API de integração. Exemplo: v1",
+          "in": "header",
+          "required": true,
+          "default": "v1",
+          "type": "string"
+        }
+      ]
+    }
+  },
+  "tags": [
+    {
+      "name": "APP2",
+      "description": "Ambiente APP2"
+    },
+    {
+      "name": "integration",
+      "description": ""
+    }
+  ],
+  "swagger": "2.0",
+  "host": "",
+  "schemes": [
+    "https"
+  ],
+  "basePath": "/%7Burl%7D/api/%7Bversion%7D/integration",
+  "definitions": {
+    "Action-Plan-Route-Activities-Integration_V1_BodyEmpty": {
+      "description": "No body",
+      "type": "object"
+    },
+    "Action-Plan-Route-Activities-Integration_V1_MinimumResponse": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "createdAt": {
+          "type": "string"
+        },
+        "updatedAt": {
+          "type": "string"
+        }
+      },
+      "example": {
+        "id": "19de1e5b-37c8-42c6-a62f-3d7bdd11e994",
+        "createAt": "2019-08-13T18:00:38.780Z",
+        "updatedAt": "2019-08-13T18:00:38.780Z"
+      }
+    },
+    "Action-Plan-Route-Activities-Integration_V1_BodyDelete": {
+      "description": "No body",
+      "type": "object"
+    },
+    "Action-Plan-Route-Activities-Integration_V1_BodyUpsert": {
+      "type": "object",
+      "properties": {
+        "externalId": {
+          "type": "string",
+          "example": "PLAN1#ROTA1#ATIV1"
+        },
+        "activityId": {
+          "format": "uuid",
+          "type": "string",
+          "example": "5d7ae0b1-4a05-421e-8a98-e27b916b7324"
+        },
+        "actionPlanRouteId": {
+          "format": "uuid",
+          "type": "string",
+          "example": "274f13db-ef80-4e2c-b2b0-9d0a870e1f16"
+        },
+        "rank": {
+          "type": "number",
+          "example": 1
+        }
+      },
+      "example": {
+        "activityId": "5d7ae0b1-4a05-421e-8a98-e27b916b7324",
+        "actionPlanRouteId": "274f13db-ef80-4e2c-b2b0-9d0a870e1f16",
+        "rank": 1,
+        "externalId": "PLAN1#ROTA1#ATIV1"
+      }
+    },
+    "Action-Plan-Route-Activities-Integration_V1_FullResponse": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "format": "uuid",
+          "type": "string",
+          "example": "aabc54a1-49c3-444d-88ec-eaa3fbe63e86"
+        },
+        "createdAt": {
+          "type": "string",
+          "example": "2019-08-13T18:00:38.780Z"
+        },
+        "updatedAt": {
+          "type": "string",
+          "example": "2019-08-13T18:00:38.780Z"
+        },
+        "externalId": {
+          "type": "string",
+          "example": "PLAN1#ROTA1#ATIV1"
+        },
+        "activityId": {
+          "format": "uuid",
+          "type": "string",
+          "example": "5d7ae0b1-4a05-421e-8a98-e27b916b7324"
+        },
+        "actionPlanRouteId": {
+          "format": "uuid",
+          "type": "string",
+          "example": "274f13db-ef80-4e2c-b2b0-9d0a870e1f16"
+        },
+        "rank": {
+          "type": "number",
+          "example": 1
+        }
+      },
+      "example": {
+        "id": "aabc54a1-49c3-444d-88ec-eaa3fbe63e86",
+        "createdAt": "2019-08-13T18:00:38.780Z",
+        "updatedAt": "2019-08-13T18:00:38.780Z",
+        "activityId": "5d7ae0b1-4a05-421e-8a98-e27b916b7324",
+        "actionPlanRouteId": "274f13db-ef80-4e2c-b2b0-9d0a870e1f16",
+        "rank": 1,
+        "externalId": "PLAN1#ROTA1#ATIV1"
+      }
+    },
+    "Action-Plan-Route-Activities-Integration_V1_GetResponse": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "format": "uuid",
+          "type": "string",
+          "example": "aabc54a1-49c3-444d-88ec-eaa3fbe63e86"
+        },
+        "createdAt": {
+          "type": "string",
+          "example": "2019-08-13T18:00:38.780Z"
+        },
+        "updatedAt": {
+          "type": "string",
+          "example": "2019-08-13T18:00:38.780Z"
+        },
+        "externalId": {
+          "type": "string",
+          "example": "PLAN1#ROTA1#ATIV1"
+        },
+        "activityId": {
+          "format": "uuid",
+          "type": "string",
+          "example": "5d7ae0b1-4a05-421e-8a98-e27b916b7324"
+        },
+        "actionPlanRouteId": {
+          "format": "uuid",
+          "type": "string",
+          "example": "274f13db-ef80-4e2c-b2b0-9d0a870e1f16"
+        },
+        "rank": {
+          "type": "number",
+          "example": 1
+        }
+      },
+      "example": {
+        "id": "aabc54a1-49c3-444d-88ec-eaa3fbe63e86",
+        "createdAt": "2019-08-13T18:00:38.780Z",
+        "updatedAt": "2019-08-13T18:00:38.780Z",
+        "activityId": "5d7ae0b1-4a05-421e-8a98-e27b916b7324",
+        "actionPlanRouteId": "274f13db-ef80-4e2c-b2b0-9d0a870e1f16",
+        "rank": 1,
+        "externalId": "PLAN1#ROTA1#ATIV1"
+      }
+    },
+    "Action-Plan-Route-Activities-Integration_V1_BodyUpdate": {
+      "type": "object",
+      "properties": {
+        "externalId": {
+          "type": "string",
+          "example": "PLAN1#ROTA1#ATIV1"
+        },
+        "activityId": {
+          "format": "uuid",
+          "type": "string",
+          "example": "5d7ae0b1-4a05-421e-8a98-e27b916b7324"
+        },
+        "actionPlanRouteId": {
+          "format": "uuid",
+          "type": "string",
+          "example": "274f13db-ef80-4e2c-b2b0-9d0a870e1f16"
+        },
+        "rank": {
+          "type": "number",
+          "example": 1
+        }
+      },
+      "example": {
+        "activityId": "5d7ae0b1-4a05-421e-8a98-e27b916b7324",
+        "actionPlanRouteId": "274f13db-ef80-4e2c-b2b0-9d0a870e1f16",
+        "rank": 1,
+        "externalId": "PLAN1#ROTA1#ATIV1"
+      }
+    },
+    "Action-Plan-Route-Activities-Integration_V1_BodyCreate": {
+      "required": [
+        "externalId",
+        "activityId",
+        "actionPlanRouteId",
+        "rank"
+      ],
+      "type": "object",
+      "properties": {
+        "externalId": {
+          "description": "Código único do registro no sistema externo",
+          "type": "string",
+          "example": "PLAN1#ROTA1#ATIV1"
+        },
+        "activityId": {
+          "format": "uuid",
+          "description": "Identificador do registro de atividade",
+          "type": "string",
+          "example": "5d7ae0b1-4a05-421e-8a98-e27b916b7324"
+        },
+        "actionPlanRouteId": {
+          "format": "uuid",
+          "description": "Identificador do registro de sequencia (rota) de atendimentos",
+          "type": "string",
+          "example": "274f13db-ef80-4e2c-b2b0-9d0a870e1f16"
+        },
+        "rank": {
+          "description": "Ordem em que deverá ocorrer o evento",
+          "type": "number",
+          "example": 1
+        }
+      },
+      "example": {
+        "activityId": "5d7ae0b1-4a05-421e-8a98-e27b916b7324",
+        "actionPlanRouteId": "274f13db-ef80-4e2c-b2b0-9d0a870e1f16",
+        "rank": 1,
+        "externalId": "PLAN1#ROTA1#ATIV1"
+      }
+    }
+  },
+  "x-components": {}
+}
