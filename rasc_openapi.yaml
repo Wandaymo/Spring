@@ -1,18 +1,18 @@
 openapi: 3.0.2
 info:
-  title: opportunity-items-integrationV2
+  title: opportunity-types-integrationV1
   version: 1.0.0
   description: |
-    API de integração de tipo de oportunidade (Opportunity-Items) V2
+    API de integração de tipo de oportunidade (Opportunity-Types) V1
 
-    Compatível com a versão V7 do serviço de negócio Opportunity
+    Compatível com a versão V6 do serviço de negócio Opportunity
   contact: {}
 servers:
 - url: https://{url}/api/{version}/integration
   description: Integration Router Server
   variables:
     url:
-      default: totvscrm.app
+      default: app2.mastercrm.ws
       description: URL de acesso ao Integration-Router
     version:
       default: v1
@@ -21,7 +21,7 @@ paths:
   /record:
     get:
       tags:
-      - Opportunity-Items
+      - Opportunity-Types
       parameters:
       - name: Integration-Filter
         description: |
@@ -41,21 +41,21 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Opportunity-Items-Integration_V2_FullResponse'
-          description: Returns a list of opportunity-items
+                $ref: '#/components/schemas/Opportunity-Types-Integration_V1_FullResponse'
+          description: Returns a list of opportunity-types
         401:
           description: Unauthorized
-      summary: Listar Opportunity-Items
-      description: Retorna uma lista de itens de oportunidades cadastradas ou determinados
-        itens com base nos filtros no header Integration-Filter
+      summary: Listar Opportunity-Types
+      description: Retorna uma lista de tipos de oportunidades cadastradas ou determinados
+        tipos com base nos filtros no header Integration-Filter
     post:
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Opportunity-Items-Integration_V2_BodyCreate'
+              $ref: '#/components/schemas/Opportunity-Types-Integration_V1_BodyCreate'
       tags:
-      - Opportunity-Items
+      - Opportunity-Types
       parameters:
       - name: Integration-Filter
         description: |
@@ -90,16 +90,14 @@ paths:
           body da requisição.
         schema:
           oneOf:
-          - $ref: '#/components/schemas/Opportunity-Items-Integration_V2_BodyCreate'
-          - $ref: '#/components/schemas/Opportunity-Items-Integration_V2_BodyUpdate'
-          - $ref: '#/components/schemas/Opportunity-Items-Integration_V2_BodyUpsert'
-          - $ref: '#/components/schemas/Opportunity-Items-Integration_V2_BodyDelete'
+          - $ref: '#/components/schemas/Opportunity-Types-Integration_V1_BodyCreate'
+          - $ref: '#/components/schemas/Opportunity-Types-Integration_V1_BodyUpdate'
+          - $ref: '#/components/schemas/Opportunity-Types-Integration_V1_BodyUpsert'
           discriminator:
             mapping:
-              create: '#/components/schemas/Opportunity-Items-Integration_V2_BodyCreate'
-              update: '#/components/schemas/Opportunity-Items-Integration_V2_BodyUpdate'
-              upsert: '#/components/schemas/Opportunity-Items-Integration_V2_BodyUpsert'
-              delete: '#/components/schemas/Opportunity-Items-Integration_V2_BodyDelete'
+              create: '#/components/schemas/Opportunity-Types-Integration_V1_BodyCreate'
+              update: '#/components/schemas/Opportunity-Types-Integration_V1_BodyUpdate'
+              upsert: '#/components/schemas/Opportunity-Types-Integration_V1_BodyUpsert'
         in: header
         required: true
       responses:
@@ -107,15 +105,15 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Opportunity-Items-Integration_V2_FullResponse'
+                $ref: '#/components/schemas/Opportunity-Types-Integration_V1_FullResponse'
                 discriminator:
                   mapping:
-                    full: '#/components/schemas/Opportunity-Items-Integration_V2_FullResponse'
-                    minimum: '#/components/schemas/Opportunity-Items-Integration_V2_MinimumResponse'
-          description: Returns a opportunity-items register
+                    full: '#/components/schemas/Opportunity-Types-Integration_V1_FullResponse'
+                    minimum: '#/components/schemas/Opportunity-Types-Integration_V1_MinimumResponse'
+          description: Returns a opportunity-types register
         401:
           description: Unauthorized
-      summary: Criar, atualizar e deletar Opportunity-Items
+      summary: Criar, atualizar e deletar Opportunity-Types
       description: |
         A ação a ser realizada no cadastro depende do valor preenchido no header
         **Integration-Action**:
@@ -131,8 +129,6 @@ paths:
         **upsert** - Realiza a operação de POST do cadastro enviado se não for enviado ID do registro
         no header **Integration-Filter** **OU** realiza a operação de PUT do cadastro enviado se for
         enviado o ID do registro no header **Integration-Filter**;
-
-        **delete** - Realiza a operação de DELETE do registro especificado no header **Integration-Filter**;
     parameters:
     - name: Integration-Service
       description: 'Serviço responsável pela entidade. Exemplo: opportunity'
@@ -142,25 +138,25 @@ paths:
       in: header
       required: true
     - name: Integration-Resource
-      description: 'Recurso para requisição. Exemplo: opportunity-items-integration'
+      description: 'Recurso para requisição. Exemplo: opportunity-types-integration'
       schema:
-        default: opportunity-items-integration
+        default: opportunity-types-integration
         type: string
       in: header
       required: true
     - name: Integration-Version
-      description: 'Versão da API de integração. Exemplo: v2'
+      description: 'Versão da API de integração. Exemplo: v1'
       schema:
-        default: v2
+        default: v1
         type: string
       in: header
       required: true
 components:
   schemas:
-    Opportunity-Items-Integration_V2_BodyEmpty:
+    Opportunity-Types-Integration_V1_BodyEmpty:
       description: No body
       type: object
-    Opportunity-Items-Integration_V2_MinimumResponse:
+    Opportunity-Types-Integration_V1_MinimumResponse:
       type: object
       properties:
         id:
@@ -173,562 +169,100 @@ components:
         id: 19de1e5b-37c8-42c6-a62f-3d7bdd11e994
         createAt: 2019-08-13T18:00:38.780Z
         updatedAt: 2019-08-13T18:00:38.780Z
-    Opportunity-Items-Integration_V2_BodyDelete:
-      description: No body
-      type: object
-    Opportunity-Items-Integration_V2_BodyUpdate:
-      type: object
-      properties:
-        externalId:
-          type: string
-          example: OP#1#PRODUTO1
-        discountPercentage:
-          maxLength: 255
-          type: number
-          example: 0
-        discountValue:
-          type: number
-          example: 0
-        opportunityId:
-          type: string
-          example: 382c27a3-cfab-4f20-9cee-3108277c9bf3
-        productId:
-          type: string
-          example: d3a31d32-585c-4035-899c-3da0b838ded9
-        serviceId:
-          type: string
-        recurrenceType:
-          type: object
-          properties:
-            id:
-              format: UUID
-              type: string
-              example: a6011109-054d-43b7-aaa7-f489fb41d660
-        recurrenceBaseDate:
-          type: string
-          example: 2021-08-24T00:00:00.000Z
-        recurrenceStartDate:
-          type: string
-          example: 2021-08-24T00:00:00.000Z
-        repetitionsQuantity:
-          type: number
-          example: 1
-        daysToStart:
-          type: number
-          example: 0
-        recurrentValue:
-          type: number
-          example: 0
-        description:
-          type: string
-          example: 384 - Tasty Steel Bacon
-        active:
-          type: boolean
-          example: true
-        quantity:
-          type: number
-          example: 676
-        sellingPrice:
-          type: number
-          example: 918.16
-        totalValue:
-          type: number
-          example: 918.16
-        basePrice:
-          type: number
-          example: 908.16
-        itemType:
-          enum:
-          - PRODUCT
-          - SERVICE
-          type: string
-          example: PRODUCT
-        bundle:
-          type: object
-          properties:
-            bundleProductId:
-              format: UUID
-              type: string
-            bundleServiceId:
-              format: UUID
-              type: string
-      example:
-        externalId: OP#1#PRODUTO1
-        discountPercentage: 0
-        discountValue: 0
-        opportunity:
-          id: 382c27a3-cfab-4f20-9cee-3108277c9bf3
-          name: oportunidade de hoje
-        productId: d3a31d32-585c-4035-899c-3da0b838ded9
-        recurrenceType: SINGLE
-        description: 384 - Tasty Steel Bacon
-        active: true
-        quantity: 676
-        sellingPrice: 918.16
-        repetitionsQuantity: 1
-        totalValue: 918.16
-        basePrice: 908.16
-        itemType: PRODUCT
-    Opportunity-Items-Integration_V2_BodyUpsert:
-      type: object
-      properties:
-        externalId:
-          type: string
-          example: OP#1#PRODUTO1
-        discountPercentage:
-          maxLength: 255
-          type: number
-          example: 0
-        discountValue:
-          type: number
-          example: 0
-        opportunityId:
-          type: string
-          example: 382c27a3-cfab-4f20-9cee-3108277c9bf3
-        productId:
-          type: string
-          example: d3a31d32-585c-4035-899c-3da0b838ded9
-        serviceId:
-          type: string
-        recurrenceType:
-          type: object
-          properties:
-            id:
-              format: UUID
-              type: string
-              example: a6011109-054d-43b7-aaa7-f489fb41d660
-        recurrenceBaseDate:
-          type: string
-          example: 2021-08-24T00:00:00.000Z
-        recurrenceStartDate:
-          type: string
-          example: 2021-08-24T00:00:00.000Z
-        repetitionsQuantity:
-          type: number
-          example: 1
-        daysToStart:
-          type: number
-          example: 0
-        recurrentValue:
-          type: number
-          example: 0
-        description:
-          type: string
-          example: 384 - Tasty Steel Bacon
-        active:
-          type: boolean
-          example: true
-        quantity:
-          type: number
-          example: 676
-        sellingPrice:
-          type: number
-          example: 918.16
-        totalValue:
-          type: number
-          example: 918.16
-        basePrice:
-          type: number
-          example: 908.16
-        itemType:
-          enum:
-          - PRODUCT
-          - SERVICE
-          type: string
-          example: PRODUCT
-        bundle:
-          type: object
-          properties:
-            bundleProductId:
-              format: UUID
-              type: string
-            bundleServiceId:
-              format: UUID
-              type: string
-      example:
-        externalId: OPO#1#PROD#1
-        discountPercentage: 0
-        discountValue: 0
-        opportunityId: 11a28301-6885-4740-a29d-feacba281641
-        productId: baab4080-36bb-4a2f-8233-6ea523582d1c
-        recurrenceType:
-          id: a6011109-054d-43b7-aaa7-f489fb41d660
-        recurrenceBaseDate: 2021-08-24
-        recurrenceStartDate: 2021-08-24
-        daysToStart: 0
-        recurrentValue: 0
-        description: Câmara
-        active: true
-        quantity: 1
-        sellingPrice: 10
-        repetitionsQuantity: 1
-        totalValue: 10
-        basePrice: 10
-        itemType: PRODUCT
-        bundle:
-          bundleProductId: 0000f21e-b81b-4de6-9484-b7cca8ffbbfb
-    Opportunity-Items-Integration_V2_FullResponse:
-      type: object
-      properties:
-        id:
-          format: uuid
-          type: string
-          example: aabc54a1-49c3-444d-88ec-eaa3fbe63e86
-        createdAt:
-          type: string
-          example: 2019-08-13T18:00:38.780Z
-        updatedAt:
-          type: string
-          example: 2019-08-13T18:00:38.780Z
-        externalId:
-          type: string
-          example: OP#1#PRODUTO1
-        discountPercentage:
-          maxLength: 255
-          type: number
-          example: 0
-        discountValue:
-          type: number
-          example: 0
-        opportunityId:
-          type: string
-          example: 382c27a3-cfab-4f20-9cee-3108277c9bf3
-        productId:
-          type: string
-          example: d3a31d32-585c-4035-899c-3da0b838ded9
-        serviceId:
-          type: string
-        recurrenceType:
-          type: object
-          properties:
-            id:
-              format: UUID
-              type: string
-              example: a6011109-054d-43b7-aaa7-f489fb41d660
-        recurrenceBaseDate:
-          type: string
-          example: 2021-08-24T00:00:00.000Z
-        recurrenceStartDate:
-          type: string
-          example: 2021-08-24T00:00:00.000Z
-        repetitionsQuantity:
-          type: number
-          example: 1
-        daysToStart:
-          type: number
-          example: 0
-        recurrentValue:
-          type: number
-          example: 0
-        description:
-          type: string
-          example: 384 - Tasty Steel Bacon
-        active:
-          type: boolean
-          example: true
-        quantity:
-          type: number
-          example: 676
-        sellingPrice:
-          type: number
-          example: 918.16
-        totalValue:
-          type: number
-          example: 918.16
-        basePrice:
-          type: number
-          example: 908.16
-        itemType:
-          enum:
-          - PRODUCT
-          - SERVICE
-          type: string
-          example: PRODUCT
-        bundle:
-          type: object
-          properties:
-            bundleProductId:
-              format: UUID
-              type: string
-            bundleServiceId:
-              format: UUID
-              type: string
-      example:
-        id: 2f0eb6ea-ad84-40cd-9668-b24229de8652
-        externalId: OPO#1#PROD#1
-        createdAt: 2021-08-24T19:43:25.310Z
-        updatedAt: 2021-08-24T20:10:26.985Z
-        discountPercentage: 0
-        discountValue: 0
-        opportunityId: 11a28301-6885-4740-a29d-feacba281641
-        productId: baab4080-36bb-4a2f-8233-6ea523582d1c
-        recurrenceType:
-          id: a6011109-054d-43b7-aaa7-f489fb41d660
-          description: Mensal
-          calculateStartDate: false
-        recurrenceBaseDate: 2021-08-24
-        recurrenceStartDate: 2021-08-24
-        daysToStart: 0
-        recurrentValue: 0
-        description: Câmara
-        active: true
-        quantity: 1
-        sellingPrice: 10
-        repetitionsQuantity: 1
-        totalValue: 10
-        basePrice: 10
-        itemType: PRODUCT
-        bundle: {}
-    Opportunity-Items-Integration_V2_GetResponse:
-      type: object
-      properties:
-        id:
-          format: uuid
-          type: string
-          example: aabc54a1-49c3-444d-88ec-eaa3fbe63e86
-        createdAt:
-          type: string
-          example: 2019-08-13T18:00:38.780Z
-        updatedAt:
-          type: string
-          example: 2019-08-13T18:00:38.780Z
-        externalId:
-          type: string
-          example: OP#1#PRODUTO1
-        discountPercentage:
-          maxLength: 255
-          type: number
-          example: 0
-        discountValue:
-          type: number
-          example: 0
-        opportunityId:
-          type: string
-          example: 382c27a3-cfab-4f20-9cee-3108277c9bf3
-        productId:
-          type: string
-          example: d3a31d32-585c-4035-899c-3da0b838ded9
-        serviceId:
-          type: string
-        recurrenceType:
-          type: object
-          properties:
-            id:
-              format: UUID
-              type: string
-              example: a6011109-054d-43b7-aaa7-f489fb41d660
-        recurrenceBaseDate:
-          type: string
-          example: 2021-08-24T00:00:00.000Z
-        recurrenceStartDate:
-          type: string
-          example: 2021-08-24T00:00:00.000Z
-        repetitionsQuantity:
-          type: number
-          example: 1
-        daysToStart:
-          type: number
-          example: 0
-        recurrentValue:
-          type: number
-          example: 0
-        description:
-          type: string
-          example: 384 - Tasty Steel Bacon
-        active:
-          type: boolean
-          example: true
-        quantity:
-          type: number
-          example: 676
-        sellingPrice:
-          type: number
-          example: 918.16
-        totalValue:
-          type: number
-          example: 918.16
-        basePrice:
-          type: number
-          example: 908.16
-        itemType:
-          enum:
-          - PRODUCT
-          - SERVICE
-          type: string
-          example: PRODUCT
-        bundle:
-          type: object
-          properties:
-            bundleProductId:
-              format: UUID
-              type: string
-            bundleServiceId:
-              format: UUID
-              type: string
-      example:
-        id: 2f0eb6ea-ad84-40cd-9668-b24229de8652
-        externalId: OPO#1#PROD#1
-        createdAt: 2021-08-24T19:43:25.310Z
-        updatedAt: 2021-08-24T20:10:26.985Z
-        discountPercentage: 0
-        discountValue: 0
-        opportunityId: 11a28301-6885-4740-a29d-feacba281641
-        productId: baab4080-36bb-4a2f-8233-6ea523582d1c
-        recurrenceType:
-          id: a6011109-054d-43b7-aaa7-f489fb41d660
-          description: Mensal
-          calculateStartDate: false
-        recurrenceBaseDate: 2021-08-24
-        recurrenceStartDate: 2021-08-24
-        daysToStart: 0
-        recurrentValue: 0
-        description: Câmara
-        active: true
-        quantity: 1
-        sellingPrice: 10
-        repetitionsQuantity: 1
-        totalValue: 10
-        basePrice: 10
-        itemType: PRODUCT
-        bundle: {}
-    Opportunity-Items-Integration_V2_BodyCreate:
+    Opportunity-Types-Integration_V1_BodyCreate:
       required:
       - externalId
-      - quantity
-      - sellingPrice
-      - repetitionsQuantity
-      - discountPercentage
-      - discountValue
-      - totalValue
-      - description
-      - recurrenceType
-      - opportunityId
-      - itemType
-      - basePrice
       - active
+      - description
       type: object
       properties:
         externalId:
-          description: Código único de referência do sistema externo para este registro
+          description: Identificador do sistema externo
           type: string
-          example: OP#1#PRODUTO1
-        discountPercentage:
-          description: Percentual de desconto
-          maxLength: 255
-          type: number
-          example: 0
-        discountValue:
-          description: Valor do desconto
-          type: number
-          example: 0
-        opportunityId:
-          description: Identificador da oportunidade
-          type: string
-          example: 382c27a3-cfab-4f20-9cee-3108277c9bf3
-        productId:
-          description: Identificador do produto. Tem prenchimento obrigatório quando
-            o itemType = 'PRODUCT'
-          type: string
-          example: d3a31d32-585c-4035-899c-3da0b838ded9
-        serviceId:
-          description: Identificador do serviço. Tem preenchimento obrigatório quando
-            itemType = 'SERVICE'
-          type: string
-        recurrenceType:
-          description: Tipo da recorrência
-          type: object
-          properties:
-            id:
-              format: UUID
-              description: Identificador do tipo da recorrência
-              type: string
-              example: a6011109-054d-43b7-aaa7-f489fb41d660
-        recurrenceBaseDate:
-          description: Data base de recorrência
-          type: string
-        recurrenceStartDate:
-          description: Data de início da recorrência
-          type: string
-        repetitionsQuantity:
-          description: Quantidade de repetições da recorrência
-          type: number
-          example: 1
-        daysToStart:
-          description: Dias para iniciar a recorrência
-          type: number
-          example: 0
-        recurrentValue:
-          description: Valor de recorrências
-          type: number
-          example: 0
+          example: Etapa 1
         description:
-          description: Descrição do item da oportunidade
+          description: Descrição do tipo de oportunidade
+          maxLength: 255
           type: string
-          example: 384 - Tasty Steel Bacon
+          example: Visita
         active:
-          description: Indica se o item da oportunidade está ativo
+          description: Situação do tipo de oportunidade
           type: boolean
           example: true
-        quantity:
-          description: Quantidade de itens do produto/serviço para a oportunidade
-          type: number
-          example: 676
-        sellingPrice:
-          description: Preço de venda
-          type: number
-          example: 918.16
-        totalValue:
-          description: Valor total do item da oportunidade (`quantity` * `sellingPrice`
-            * `repetitionsQuantity`)
-          type: number
-          example: 918.16
-        basePrice:
-          description: Preço base para o item da oportunidade
-          type: number
-          example: 908.16
-        itemType:
-          description: 'Tipo do item de oportunidade: Produto ou serviço'
-          enum:
-          - PRODUCT
-          - SERVICE
+    Opportunity-Types-Integration_V1_BodyUpdate:
+      type: object
+      properties:
+        externalId:
           type: string
-          example: PRODUCT
-        bundle:
-          description: Pacote de produto ou serviço
-          type: object
-          properties:
-            bundleProductId:
-              format: UUID
-              description: Identificador do produto no pacote
-              type: string
-            bundleServiceId:
-              format: UUID
-              description: Identificador do serviço no pacote
-              type: string
-      example:
-        externalId: OPO#1#PROD#1
-        discountPercentage: 0
-        discountValue: 0
-        opportunityId: 11a28301-6885-4740-a29d-feacba281641
-        productId: baab4080-36bb-4a2f-8233-6ea523582d1c
-        recurrenceType:
-          id: a6011109-054d-43b7-aaa7-f489fb41d660
-        recurrenceBaseDate: 2021-08-24
-        recurrenceStartDate: 2021-08-24
-        daysToStart: 0
-        recurrentValue: 0
-        description: Câmara
-        active: true
-        quantity: 1
-        sellingPrice: 10
-        repetitionsQuantity: 1
-        totalValue: 10
-        basePrice: 10
-        itemType: PRODUCT
-        bundle:
-          bundleProductId: 0000f21e-b81b-4de6-9484-b7cca8ffbbfb
+          example: OportunidadeVenda1
+        description:
+          maxLength: 255
+          type: string
+          example: Venda
+        active:
+          type: boolean
+          example: true
+    Opportunity-Types-Integration_V1_BodyUpsert:
+      type: object
+      properties:
+        externalId:
+          type: string
+          example: OportunidadeVenda1
+        description:
+          maxLength: 255
+          type: string
+          example: Venda
+        active:
+          type: boolean
+          example: true
+    Opportunity-Types-Integration_V1_FullResponse:
+      type: object
+      properties:
+        id:
+          format: uuid
+          type: string
+          example: aabc54a1-49c3-444d-88ec-eaa3fbe63e86
+        createdAt:
+          type: string
+          example: 2019-08-13T18:00:38.780Z
+        updatedAt:
+          type: string
+          example: 2019-08-13T18:00:38.780Z
+        externalId:
+          type: string
+          example: OPO#VENDA1
+        description:
+          maxLength: 255
+          type: string
+          example: Oportunidade de venda
+        active:
+          type: boolean
+          example: true
+    Opportunity-Types-Integration_V1_GetResponse:
+      type: object
+      properties:
+        id:
+          format: uuid
+          type: string
+          example: aabc54a1-49c3-444d-88ec-eaa3fbe63e86
+        createdAt:
+          type: string
+          example: 2019-08-13T18:00:38.780Z
+        updatedAt:
+          type: string
+          example: 2019-08-13T18:00:38.780Z
+        externalId:
+          type: string
+          example: OPO#VENDA1
+        description:
+          maxLength: 255
+          type: string
+          example: Oportunidade de venda
+        active:
+          type: boolean
+          example: true
 tags:
-- name: TotvsCRMApp
-  description: A API de integração é válida para o ambiente Totvs CRM APP
+- name: APP2
+  description: Ambiente APP2
 - name: integration
-  description: API de integração
+  description: ""
