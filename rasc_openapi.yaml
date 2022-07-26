@@ -8,34 +8,34 @@ info:
     Compatível com a versão V6 do serviço de negócio Opportunity
   contact: {}
 servers:
-- url: https://{url}/api/{version}/integration
-  description: Integration Router Server
-  variables:
-    url:
-      default: app2.mastercrm.ws
-      description: URL de acesso ao Integration-Router
-    version:
-      default: v1
-      description: Versão do Integration-Router
+  - url: https://{url}/api/{version}/integration
+    description: Integration Router Server
+    variables:
+      url:
+        default: app2.mastercrm.ws
+        description: URL de acesso ao Integration-Router
+      version:
+        default: v1
+        description: Versão do Integration-Router
 paths:
   /record:
     get:
       tags:
-      - Action-Plans
+        - Action-Plans
       parameters:
-      - name: Integration-Filter
-        description: |
-          Filtro opcional para realizar a busca de um ou mais registros. Suporta o uso de
-          RestQuery.
-
-
-          Se o header for omitido, lista todos os registros
-
-          Se o header não contiver valores, lista todos os registros
-        schema:
-          type: string
-        in: header
-        required: false
+        - name: Integration-Filter
+          description: |
+            Filtro opcional para realizar a busca de um ou mais registros. Suporta o uso de
+            RestQuery.
+            
+            
+            Se o header for omitido, lista todos os registros
+            
+            Se o header não contiver valores, lista todos os registros
+          schema:
+            type: string
+          in: header
+          required: false
       responses:
         200:
           content:
@@ -55,51 +55,51 @@ paths:
             schema:
               $ref: '#/components/schemas/Action-Plans-Integration_V1_BodyCreate'
       tags:
-      - Action-Plans
+        - Action-Plans
       parameters:
-      - name: Integration-Filter
-        description: |
-          Filtro do registro específico para a ação. Deve-se usar o identificador principal da
-          entidade (ID).
-        schema:
-          type: string
-        in: header
-        required: false
-      - name: Integration-Response
-        description: |
-          Nível de detalhe do retorno da API. São suportados atualmente:
-
-          **full** - Resposta completa, equivalente a um GET no recurso
-
-          **minimum** - Resposta mínima, equivalente ao ID, data de criação e atualização do
-          registro
-
-          Se o header não for informado, por padrão o retorno será equivalente ao nível
-          **minimum**
-        schema:
-          default: minimum
-          enum:
-          - full
-          - minimum
-          type: string
-        in: header
-        required: false
-      - name: Integration-Action
-        description: |
-          Ação a ser realizada na API de integração. Selecione uma das opções para carregar o
-          body da requisição.
-        schema:
-          oneOf:
-          - $ref: '#/components/schemas/Action-Plans-Integration_V1_BodyCreate'
-          - $ref: '#/components/schemas/Action-Plans-Integration_V1_BodyUpdate'
-          - $ref: '#/components/schemas/Action-Plans-Integration_V1_BodyUpsert'
-          discriminator:
-            mapping:
-              create: '#/components/schemas/Action-Plans-Integration_V1_BodyCreate'
-              update: '#/components/schemas/Action-Plans-Integration_V1_BodyUpdate'
-              upsert: '#/components/schemas/Action-Plans-Integration_V1_BodyUpsert'
-        in: header
-        required: true
+        - name: Integration-Filter
+          description: |
+            Filtro do registro específico para a ação. Deve-se usar o identificador principal da
+            entidade (ID).
+          schema:
+            type: string
+          in: header
+          required: false
+        - name: Integration-Response
+          description: |
+            Nível de detalhe do retorno da API. São suportados atualmente:
+            
+            **full** - Resposta completa, equivalente a um GET no recurso
+            
+            **minimum** - Resposta mínima, equivalente ao ID, data de criação e atualização do
+            registro
+            
+            Se o header não for informado, por padrão o retorno será equivalente ao nível
+            **minimum**
+          schema:
+            default: minimum
+            enum:
+              - full
+              - minimum
+            type: string
+          in: header
+          required: false
+        - name: Integration-Action
+          description: |
+            Ação a ser realizada na API de integração. Selecione uma das opções para carregar o
+            body da requisição.
+          schema:
+            oneOf:
+              - $ref: '#/components/schemas/Action-Plans-Integration_V1_BodyCreate'
+              - $ref: '#/components/schemas/Action-Plans-Integration_V1_BodyUpdate'
+              - $ref: '#/components/schemas/Action-Plans-Integration_V1_BodyUpsert'
+            discriminator:
+              mapping:
+                create: '#/components/schemas/Action-Plans-Integration_V1_BodyCreate'
+                update: '#/components/schemas/Action-Plans-Integration_V1_BodyUpdate'
+                upsert: '#/components/schemas/Action-Plans-Integration_V1_BodyUpsert'
+          in: header
+          required: true
       responses:
         200:
           content:
@@ -126,27 +126,27 @@ paths:
         no header **Integration-Filter** **OU** realiza a operação de PUT do cadastro enviado se for
         enviado o ID do registro no header **Integration-Filter**;
     parameters:
-    - name: Integration-Service
-      description: 'Serviço responsável pela entidade. Exemplo: opportunity'
-      schema:
-        default: opportunity
-        type: string
-      in: header
-      required: true
-    - name: Integration-Resource
-      description: 'Recurso para requisição. Exemplo: action-plans-integration'
-      schema:
-        default: action-plans-integration
-        type: string
-      in: header
-      required: true
-    - name: Integration-Version
-      description: 'Versão da API de integração. Exemplo: v1'
-      schema:
-        default: v1
-        type: string
-      in: header
-      required: true
+      - name: Integration-Service
+        description: 'Serviço responsável pela entidade. Exemplo: opportunity'
+        schema:
+          default: opportunity
+          type: string
+        in: header
+        required: true
+      - name: Integration-Resource
+        description: 'Recurso para requisição. Exemplo: action-plans-integration'
+        schema:
+          default: action-plans-integration
+          type: string
+        in: header
+        required: true
+      - name: Integration-Version
+        description: 'Versão da API de integração. Exemplo: v1'
+        schema:
+          default: v1
+          type: string
+        in: header
+        required: true
 components:
   schemas:
     Action-Plans-Integration_V1_BodyEmpty:
@@ -219,9 +219,9 @@ components:
         externalId: PLAN1#ROTA1#ATIV1
     Action-Plan-Route-ActivitiesV1_BodyCreate:
       required:
-      - externalId
-      - activityId
-      - rank
+        - externalId
+        - activityId
+        - rank
       type: object
       properties:
         externalId:
@@ -269,14 +269,14 @@ components:
         externalId: PLAN1#ROTA1
         userId: 7636f630-2358-4cf4-a290-2ec0b13ea47c
         actionPlanRouteActivity:
-        - id: aabc54a1-49c3-444d-88ec-eaa3fbe63e86
-          activityId: 5d7ae0b1-4a05-421e-8a98-e27b916b7324
-          rank: 1
-          externalId: PLAN1#ROTA1#ATIV1
-        - id: babc54a1-49c3-444d-88ec-eaa3fbe63e86
-          activityId: 093c9434-8e15-4cb3-aa70-94964adf0fe5
-          rank: 2
-          externalId: PLAN1#ROTA1#ATIV2
+          - id: aabc54a1-49c3-444d-88ec-eaa3fbe63e86
+            activityId: 5d7ae0b1-4a05-421e-8a98-e27b916b7324
+            rank: 1
+            externalId: PLAN1#ROTA1#ATIV1
+          - id: babc54a1-49c3-444d-88ec-eaa3fbe63e86
+            activityId: 093c9434-8e15-4cb3-aa70-94964adf0fe5
+            rank: 2
+            externalId: PLAN1#ROTA1#ATIV2
     Action-Plan-RoutesV1_BodyUpdate:
       type: object
       properties:
@@ -299,14 +299,14 @@ components:
         externalId: PLAN1#ROTA1
         userId: 7636f630-2358-4cf4-a290-2ec0b13ea47c
         actionPlanRouteActivity:
-        - id: aabc54a1-49c3-444d-88ec-eaa3fbe63e86
-          activityId: 5d7ae0b1-4a05-421e-8a98-e27b916b7324
-          rank: 1
-          externalId: PLAN1#ROTA1#ATIV1
-        - id: babc54a1-49c3-444d-88ec-eaa3fbe63e86
-          activityId: 093c9434-8e15-4cb3-aa70-94964adf0fe5
-          rank: 2
-          externalId: PLAN1#ROTA1#ATIV2
+          - id: aabc54a1-49c3-444d-88ec-eaa3fbe63e86
+            activityId: 5d7ae0b1-4a05-421e-8a98-e27b916b7324
+            rank: 1
+            externalId: PLAN1#ROTA1#ATIV1
+          - id: babc54a1-49c3-444d-88ec-eaa3fbe63e86
+            activityId: 093c9434-8e15-4cb3-aa70-94964adf0fe5
+            rank: 2
+            externalId: PLAN1#ROTA1#ATIV2
     Action-Plans-Integration_V1_BodyUpdate:
       type: object
       properties:
@@ -326,8 +326,8 @@ components:
           example: 2021-12-10
         status:
           enum:
-          - OPEN
-          - FINISHED
+            - OPEN
+            - FINISHED
           type: string
           example: FINISHED
         goal:
@@ -360,22 +360,22 @@ components:
         goal: primeiro objetivo
         note: Primeira nota
         users:
-        - id: 5636f630-2358-4cf4-a290-2ec0b13ea47c
-          userId: 7636f630-2358-4cf4-a290-2ec0b13ea47c
-          externalId: USER1#PLAN1
+          - id: 5636f630-2358-4cf4-a290-2ec0b13ea47c
+            userId: 7636f630-2358-4cf4-a290-2ec0b13ea47c
+            externalId: USER1#PLAN1
         actionPlanRoute:
-        - id: 6636f630-2358-4cf4-a290-2ec0b13ea47c
-          externalId: PLAN1#ROTA1
-          userId: 7636f630-2358-4cf4-a290-2ec0b13ea47c
-          actionPlanRouteActivity:
-          - id: aabc54a1-49c3-444d-88ec-eaa3fbe63e86
-            activityId: 5d7ae0b1-4a05-421e-8a98-e27b916b7324
-            rank: 1
-            externalId: PLAN1#ROTA1#ATIV1
-          - id: babc54a1-49c3-444d-88ec-eaa3fbe63e86
-            activityId: 093c9434-8e15-4cb3-aa70-94964adf0fe5
-            rank: 2
-            externalId: PLAN1#ROTA1#ATIV2
+          - id: 6636f630-2358-4cf4-a290-2ec0b13ea47c
+            externalId: PLAN1#ROTA1
+            userId: 7636f630-2358-4cf4-a290-2ec0b13ea47c
+            actionPlanRouteActivity:
+              - id: aabc54a1-49c3-444d-88ec-eaa3fbe63e86
+                activityId: 5d7ae0b1-4a05-421e-8a98-e27b916b7324
+                rank: 1
+                externalId: PLAN1#ROTA1#ATIV1
+              - id: babc54a1-49c3-444d-88ec-eaa3fbe63e86
+                activityId: 093c9434-8e15-4cb3-aa70-94964adf0fe5
+                rank: 2
+                externalId: PLAN1#ROTA1#ATIV2
         finishedAt: 2020-03-19T12:11:53.894Z
         finishedNote: Nota de finalização
     Action-Plans-Integration_V1_FullResponse:
@@ -407,8 +407,8 @@ components:
           example: 2021-12-10
         status:
           enum:
-          - OPEN
-          - FINISHED
+            - OPEN
+            - FINISHED
           type: string
           example: FINISHED
         goal:
@@ -444,18 +444,18 @@ components:
         goal: primeiro objetivo
         note: Primeira nota
         users:
-        - userId: 7636f630-2358-4cf4-a290-2ec0b13ea47c
-          externalId: USER1#PLAN1
+          - userId: 7636f630-2358-4cf4-a290-2ec0b13ea47c
+            externalId: USER1#PLAN1
         actionPlanRoute:
-        - externalId: PLAN1#ROTA1
-          userId: 7636f630-2358-4cf4-a290-2ec0b13ea47c
-          actionPlanRouteActivity:
-          - activityId: 5d7ae0b1-4a05-421e-8a98-e27b916b7324
-            rank: 1
-            externalId: PLAN1#ROTA1#ATIV1
-          - activityId: 093c9434-8e15-4cb3-aa70-94964adf0fe5
-            rank: 2
-            externalId: PLAN1#ROTA1#ATIV2
+          - externalId: PLAN1#ROTA1
+            userId: 7636f630-2358-4cf4-a290-2ec0b13ea47c
+            actionPlanRouteActivity:
+              - activityId: 5d7ae0b1-4a05-421e-8a98-e27b916b7324
+                rank: 1
+                externalId: PLAN1#ROTA1#ATIV1
+              - activityId: 093c9434-8e15-4cb3-aa70-94964adf0fe5
+                rank: 2
+                externalId: PLAN1#ROTA1#ATIV2
         finishedAt: 2020-03-19T12:11:53.894Z
         finishedNote: Nota de finalização
     Action-Plans-Integration_V1_GetResponse:
@@ -487,8 +487,8 @@ components:
           example: 2021-12-10
         status:
           enum:
-          - OPEN
-          - FINISHED
+            - OPEN
+            - FINISHED
           type: string
           example: FINISHED
         goal:
@@ -524,27 +524,27 @@ components:
         goal: primeiro objetivo
         note: Primeira nota
         users:
-        - userId: 7636f630-2358-4cf4-a290-2ec0b13ea47c
-          externalId: USER1#PLAN1
+          - userId: 7636f630-2358-4cf4-a290-2ec0b13ea47c
+            externalId: USER1#PLAN1
         actionPlanRoute:
-        - externalId: PLAN1#ROTA1
-          userId: 7636f630-2358-4cf4-a290-2ec0b13ea47c
-          actionPlanRouteActivity:
-          - activityId: 5d7ae0b1-4a05-421e-8a98-e27b916b7324
-            rank: 1
-            externalId: PLAN1#ROTA1#ATIV1
-          - activityId: 093c9434-8e15-4cb3-aa70-94964adf0fe5
-            rank: 2
-            externalId: PLAN1#ROTA1#ATIV2
+          - externalId: PLAN1#ROTA1
+            userId: 7636f630-2358-4cf4-a290-2ec0b13ea47c
+            actionPlanRouteActivity:
+              - activityId: 5d7ae0b1-4a05-421e-8a98-e27b916b7324
+                rank: 1
+                externalId: PLAN1#ROTA1#ATIV1
+              - activityId: 093c9434-8e15-4cb3-aa70-94964adf0fe5
+                rank: 2
+                externalId: PLAN1#ROTA1#ATIV2
         finishedAt: 2020-03-19T12:11:53.894Z
         finishedNote: Nota de finalização
     Action-Plans-Integration_V1_BodyCreate:
       required:
-      - externalId
-      - description
-      - startDate
-      - endDate
-      - status
+        - externalId
+        - description
+        - startDate
+        - endDate
+        - status
       type: object
       properties:
         description:
@@ -568,8 +568,8 @@ components:
         status:
           description: 'Situação do plano de ação: Aberto ou finalizado'
           enum:
-          - OPEN
-          - FINISHED
+            - OPEN
+            - FINISHED
           type: string
           example: FINISHED
         goal:
@@ -608,18 +608,18 @@ components:
         goal: primeiro objetivo
         note: Primeira nota
         users:
-        - userId: 7636f630-2358-4cf4-a290-2ec0b13ea47c
-          externalId: USER1#PLAN1
+          - userId: 7636f630-2358-4cf4-a290-2ec0b13ea47c
+            externalId: USER1#PLAN1
         actionPlanRoute:
-        - externalId: PLAN1#ROTA1
-          userId: 7636f630-2358-4cf4-a290-2ec0b13ea47c
-          actionPlanRouteActivity:
-          - activityId: 5d7ae0b1-4a05-421e-8a98-e27b916b7324
-            rank: 1
-            externalId: PLAN1#ROTA1#ATIV1
-          - activityId: 093c9434-8e15-4cb3-aa70-94964adf0fe5
-            rank: 2
-            externalId: PLAN1#ROTA1#ATIV2
+          - externalId: PLAN1#ROTA1
+            userId: 7636f630-2358-4cf4-a290-2ec0b13ea47c
+            actionPlanRouteActivity:
+              - activityId: 5d7ae0b1-4a05-421e-8a98-e27b916b7324
+                rank: 1
+                externalId: PLAN1#ROTA1#ATIV1
+              - activityId: 093c9434-8e15-4cb3-aa70-94964adf0fe5
+                rank: 2
+                externalId: PLAN1#ROTA1#ATIV2
         finishedAt: 2020-03-19T12:11:53.894Z
         finishedNote: Nota de finalização
     Action-Plan-UsersV1_GetResponse:
@@ -650,8 +650,8 @@ components:
         userId: 7636f630-2358-4cf4-a290-2ec0b13ea47c
     Action-Plan-UsersV1_BodyCreate:
       required:
-      - externalId
-      - userId
+        - externalId
+        - userId
       type: object
       properties:
         externalId:
@@ -716,14 +716,14 @@ components:
         externalId: PLAN1#ROTA1
         userId: 7636f630-2358-4cf4-a290-2ec0b13ea47c
         actionPlanRouteActivity:
-        - id: aabc54a1-49c3-444d-88ec-eaa3fbe63e86
-          activityId: 5d7ae0b1-4a05-421e-8a98-e27b916b7324
-          rank: 1
-          externalId: PLAN1#ROTA1#ATIV1
-        - id: babc54a1-49c3-444d-88ec-eaa3fbe63e86
-          activityId: 093c9434-8e15-4cb3-aa70-94964adf0fe5
-          rank: 2
-          externalId: PLAN1#ROTA1#ATIV2
+          - id: aabc54a1-49c3-444d-88ec-eaa3fbe63e86
+            activityId: 5d7ae0b1-4a05-421e-8a98-e27b916b7324
+            rank: 1
+            externalId: PLAN1#ROTA1#ATIV1
+          - id: babc54a1-49c3-444d-88ec-eaa3fbe63e86
+            activityId: 093c9434-8e15-4cb3-aa70-94964adf0fe5
+            rank: 2
+            externalId: PLAN1#ROTA1#ATIV2
     Action-Plan-Route-ActivitiesV1_BodyUpsert:
       type: object
       properties:
@@ -760,8 +760,8 @@ components:
           example: 2021-12-10
         status:
           enum:
-          - OPEN
-          - FINISHED
+            - OPEN
+            - FINISHED
           type: string
           example: FINISHED
         goal:
@@ -794,24 +794,24 @@ components:
         goal: primeiro objetivo
         note: Primeira nota
         users:
-        - userId: 7636f630-2358-4cf4-a290-2ec0b13ea47c
-          externalId: USER1#PLAN1
+          - userId: 7636f630-2358-4cf4-a290-2ec0b13ea47c
+            externalId: USER1#PLAN1
         actionPlanRoute:
-        - externalId: PLAN1#ROTA1
-          userId: 7636f630-2358-4cf4-a290-2ec0b13ea47c
-          actionPlanRouteActivity:
-          - activityId: 5d7ae0b1-4a05-421e-8a98-e27b916b7324
-            rank: 1
-            externalId: PLAN1#ROTA1#ATIV1
-          - activityId: 093c9434-8e15-4cb3-aa70-94964adf0fe5
-            rank: 2
-            externalId: PLAN1#ROTA1#ATIV2
+          - externalId: PLAN1#ROTA1
+            userId: 7636f630-2358-4cf4-a290-2ec0b13ea47c
+            actionPlanRouteActivity:
+              - activityId: 5d7ae0b1-4a05-421e-8a98-e27b916b7324
+                rank: 1
+                externalId: PLAN1#ROTA1#ATIV1
+              - activityId: 093c9434-8e15-4cb3-aa70-94964adf0fe5
+                rank: 2
+                externalId: PLAN1#ROTA1#ATIV2
         finishedAt: 2020-03-19T12:11:53.894Z
         finishedNote: Nota de finalização
     Action-Plan-RoutesV1_BodyCreate:
       required:
-      - externalId
-      - userId
+        - externalId
+        - userId
       type: object
       properties:
         externalId:
@@ -833,14 +833,14 @@ components:
         externalId: PLAN1#ROTA1
         userId: 7636f630-2358-4cf4-a290-2ec0b13ea47c
         actionPlanRouteActivity:
-        - activityId: 5d7ae0b1-4a05-421e-8a98-e27b916b7324
-          rank: 1
-          externalId: PLAN1#ROTA1#ATIV1
-        - activityId: 093c9434-8e15-4cb3-aa70-94964adf0fe5
-          rank: 2
-          externalId: PLAN1#ROTA1#ATIV2
+          - activityId: 5d7ae0b1-4a05-421e-8a98-e27b916b7324
+            rank: 1
+            externalId: PLAN1#ROTA1#ATIV1
+          - activityId: 093c9434-8e15-4cb3-aa70-94964adf0fe5
+            rank: 2
+            externalId: PLAN1#ROTA1#ATIV2
 tags:
-- name: APP2
-  description: Ambiente APP2
-- name: integration
-  description: ""
+  - name: APP2
+    description: Ambiente APP2
+  - name: integration
+    description: ""
