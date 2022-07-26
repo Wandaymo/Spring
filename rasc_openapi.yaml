@@ -1,9 +1,9 @@
 openapi: 3.0.2
 info:
-  title: stages-integrationV1
+  title: win-loss-reasons-integrationV1
   version: 1.0.0
   description: |
-    API de integração de estágio (Stages) V1
+    API de integração de causa de ganho/perda da oportunidade (Win loss reasons) V1
 
     Compatível com a versão V6 do serviço de negócio Opportunity
   contact: {}
@@ -21,7 +21,7 @@ paths:
   /record:
     get:
       tags:
-      - Stages
+      - Win-Loss-Reasons
       parameters:
       - name: Integration-Filter
         description: |
@@ -41,21 +41,21 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Stages-Integration_V1_FullResponse'
-          description: Returns a list of stages
+                $ref: '#/components/schemas/Win-loss-reasons-Integration_V1_FullResponse'
+          description: Returns a list of win loss reasons
         401:
           description: Unauthorized
-      summary: Listar Stages
-      description: Retorna uma lista de stages cadastradas ou determinadas stages
-        com base nos filtros no header Integration-Filter
+      summary: Listar causa de ganho e perda
+      description: Retorna uma lista de causa de ganha ou perda cadastradas ou determinadas
+        causa de ganha ou perda com base nos filtros no header Integration-Filter
     post:
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Stages-Integration_V1_BodyCreate'
+              $ref: '#/components/schemas/Win-loss-reasons-Integration_V1_BodyCreate'
       tags:
-      - Stages
+      - Win-Loss-Reasons
       parameters:
       - name: Integration-Filter
         description: |
@@ -90,14 +90,14 @@ paths:
           body da requisição.
         schema:
           oneOf:
-          - $ref: '#/components/schemas/Stages-Integration_V1_BodyCreate'
-          - $ref: '#/components/schemas/Stages-Integration_V1_BodyUpdate'
-          - $ref: '#/components/schemas/Stages-Integration_V1_BodyUpsert'
+          - $ref: '#/components/schemas/Win-loss-reasons-Integration_V1_BodyCreate'
+          - $ref: '#/components/schemas/Win-loss-reasons-Integration_V1_BodyUpdate'
+          - $ref: '#/components/schemas/Win-loss-reasons-Integration_V1_BodyUpsert'
           discriminator:
             mapping:
-              create: '#/components/schemas/Stages-Integration_V1_BodyCreate'
-              update: '#/components/schemas/Stages-Integration_V1_BodyUpdate'
-              upsert: '#/components/schemas/Stages-Integration_V1_BodyUpsert'
+              create: '#/components/schemas/Win-loss-reasons-Integration_V1_BodyCreate'
+              update: '#/components/schemas/Win-loss-reasons-Integration_V1_BodyUpdate'
+              upsert: '#/components/schemas/Win-loss-reasons-Integration_V1_BodyUpsert'
         in: header
         required: true
       responses:
@@ -105,15 +105,15 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Stages-Integration_V1_FullResponse'
+                $ref: '#/components/schemas/Win-loss-reasons-Integration_V1_FullResponse'
                 discriminator:
                   mapping:
-                    full: '#/components/schemas/Stages-Integration_V1_FullResponse'
-                    minimum: '#/components/schemas/Stages-Integration_V1_MinimumResponse'
-          description: Returns a stage register
+                    full: '#/components/schemas/Win-loss-reasons-Integration_V1_FullResponse'
+                    minimum: '#/components/schemas/Win-loss-reasons-Integration_V1_MinimumResponse'
+          description: Returns a win loss reasons register
         401:
           description: Unauthorized
-      summary: Criar, atualizar e deletar Stages
+      summary: Criar, atualizar e deletar causa de ganho e perda
       description: |
         A ação a ser realizada no cadastro depende do valor preenchido no header
         **Integration-Action**:
@@ -138,9 +138,9 @@ paths:
       in: header
       required: true
     - name: Integration-Resource
-      description: 'Recurso para requisição. Exemplo: stages-integration'
+      description: 'Recurso para requisição. Exemplo: win-loss-reasons-integration'
       schema:
-        default: stages-integration
+        default: win-loss-reasons-integration
         type: string
       in: header
       required: true
@@ -153,10 +153,10 @@ paths:
       required: true
 components:
   schemas:
-    Stages-Integration_V1_BodyEmpty:
+    Win-loss-reasons-Integration_V1_BodyEmpty:
       description: No body
       type: object
-    Stages-Integration_V1_MinimumResponse:
+    Win-loss-reasons-Integration_V1_MinimumResponse:
       type: object
       properties:
         id:
@@ -169,164 +169,146 @@ components:
         id: 19de1e5b-37c8-42c6-a62f-3d7bdd11e994
         createAt: 2019-08-13T18:00:38.780Z
         updatedAt: 2019-08-13T18:00:38.780Z
-    PipelineStage:
-      required:
-      - stage
-      - rank
-      type: object
-      properties:
-        rank:
-          description: Ordem da etapa na pipeline
-          type: integer
-          example: 1
-        stage:
-          description: Etapa
-          required:
-          - id
-          properties:
-            id:
-              format: uuid
-              description: ID da etapa
-              type: string
-              example: aabc54a1-49c3-444d-88ec-eaa3fbe63e86
-    Stages-Integration_V1_BodyUpdate:
-      type: object
-      properties:
-        externalId:
-          type: string
-          example: Etapa 1
-        description:
-          maxLength: 255
-          type: string
-          readOnly: true
-          example: Visita
-        color:
-          maxLength: 50
-          type: string
-          readOnly: true
-          example: '#FF0000'
-        active:
-          type: boolean
-          example: true
-        note:
-          type: string
-          example: Etapa da pipeline
-    Stages-Integration_V1_BodyUpsert:
-      type: object
-      properties:
-        externalId:
-          type: string
-          example: Etapa 1
-        description:
-          maxLength: 255
-          type: string
-          readOnly: true
-          example: Visita
-        color:
-          maxLength: 50
-          type: string
-          readOnly: true
-          example: '#FF0000'
-        active:
-          type: boolean
-          example: true
-        note:
-          type: string
-          example: Etapa da pipeline
-    Stages-Integration_V1_FullResponse:
-      properties:
-        id:
-          format: uuid
-          type: string
-          example: aabc54a1-49c3-444d-88ec-eaa3fbe63e86
-        createdAt:
-          type: string
-          example: 2019-08-13T18:00:38.780Z
-        updatedAt:
-          type: string
-          example: 2019-08-13T18:00:38.780Z
-        externalId:
-          type: string
-          example: Etapa 1
-        description:
-          maxLength: 255
-          type: string
-          readOnly: true
-          example: Visita
-        color:
-          maxLength: 50
-          type: string
-          readOnly: true
-          example: '#FF0000'
-        active:
-          type: boolean
-          example: true
-        note:
-          type: string
-          example: Etapa da pipeline
-    Stages-Integration_V1_GetResponse:
-      properties:
-        id:
-          format: uuid
-          type: string
-          example: aabc54a1-49c3-444d-88ec-eaa3fbe63e86
-        createdAt:
-          type: string
-          example: 2019-08-13T18:00:38.780Z
-        updatedAt:
-          type: string
-          example: 2019-08-13T18:00:38.780Z
-        externalId:
-          type: string
-          example: Etapa 1
-        description:
-          maxLength: 255
-          type: string
-          readOnly: true
-          example: Visita
-        color:
-          maxLength: 50
-          type: string
-          readOnly: true
-          example: '#FF0000'
-        active:
-          type: boolean
-          example: true
-        note:
-          type: string
-          example: Etapa da pipeline
-    Stages-Integration_V1_BodyCreate:
+    Win-loss-reasons-Integration_V1_BodyCreate:
       required:
       - externalId
       - active
-      - color
+      - type
       - description
       type: object
       properties:
         externalId:
           description: Identificador do sistema externo
           type: string
-          example: Etapa 1
+          example: Concorrencia
         description:
-          description: Descrição da etapa
+          description: Descrição do motivo do ganho ou perda da oportunidade
           maxLength: 255
           type: string
           readOnly: true
-          example: Visita
-        color:
-          description: Cor da etapa
-          maxLength: 50
-          type: string
-          readOnly: true
-          example: '#FF0000'
+          example: Ação da concorrência
         active:
-          description: Situação da etapa
+          description: Situação do motivo do ganho ou perda da oportunidade
           type: boolean
           example: true
-        note:
-          description: Observação
+        type:
+          description: Tipo do ganho ou perda da oportunidade
+          maxLength: 50
+          enum:
+          - WIN
+          - LOSS
+          - WIN_LOSS
           type: string
-          example: Etapa da pipeline
+          readOnly: true
+          example: LOSS
+    Win-loss-reasons-Integration_V1_BodyUpdate:
+      type: object
+      properties:
+        externalId:
+          type: string
+          example: Concorrencia
+        description:
+          maxLength: 255
+          type: string
+          readOnly: true
+          example: Ação da concorrência
+        active:
+          type: boolean
+          example: true
+        type:
+          maxLength: 50
+          enum:
+          - WIN
+          - LOSS
+          - WIN_LOSS
+          type: string
+          example: LOSS
+    Win-loss-reasons-Integration_V1_BodyUpsert:
+      type: object
+      properties:
+        externalId:
+          type: string
+          example: Concorrencia
+        description:
+          maxLength: 255
+          type: string
+          readOnly: true
+          example: Ação da concorrência
+        active:
+          type: boolean
+          example: true
+        type:
+          maxLength: 50
+          enum:
+          - WIN
+          - LOSS
+          - WIN_LOSS
+          type: string
+          example: LOSS
+    Win-loss-reasons-Integration_V1_FullResponse:
+      type: object
+      properties:
+        id:
+          format: uuid
+          type: string
+          example: aabc54a1-49c3-444d-88ec-eaa3fbe63e86
+        createdAt:
+          type: string
+          example: 2019-08-13T18:00:38.780Z
+        updatedAt:
+          type: string
+          example: 2019-08-13T18:00:38.780Z
+        externalId:
+          type: string
+          example: Concorrencia
+        description:
+          maxLength: 255
+          type: string
+          readOnly: true
+          example: Ação da concorrência
+        active:
+          type: boolean
+          example: true
+        type:
+          maxLength: 50
+          enum:
+          - WIN
+          - LOSS
+          - WIN_LOSS
+          type: string
+          example: LOSS
+    Win-loss-reasons-Integration_V1_GetResponse:
+      type: object
+      properties:
+        id:
+          format: uuid
+          type: string
+          example: aabc54a1-49c3-444d-88ec-eaa3fbe63e86
+        createdAt:
+          type: string
+          example: 2019-08-13T18:00:38.780Z
+        updatedAt:
+          type: string
+          example: 2019-08-13T18:00:38.780Z
+        externalId:
+          type: string
+          example: Concorrencia
+        description:
+          maxLength: 255
+          type: string
+          readOnly: true
+          example: Ação da concorrência
+        active:
+          type: boolean
+          example: true
+        type:
+          maxLength: 50
+          enum:
+          - WIN
+          - LOSS
+          - WIN_LOSS
+          type: string
+          example: LOSS
 tags:
 - name: APP2
   description: Ambiente APP2
