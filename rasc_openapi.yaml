@@ -1,10 +1,10 @@
 ---
 openapi: 3.0.2
 info:
-  title: action-plan-route-activities-integrationV1
+  title: action-plan-routes-integrationV1
   version: 1.0.0
   description: |
-    API de integração de atividades dentro da sequência (rota) de um plano de ação (Action-Plan-Route-Activities) V1
+    API de integração de rota de atividades de um plano de ação (Action-Plan-Routes) V1
 
     Compatível com a versão V6 do serviço de negócio Opportunity
   contact: {}
@@ -22,7 +22,7 @@ paths:
   /record:
     get:
       tags:
-      - Action-Plan-Route-Activities
+      - Action-Plan-Routes
       parameters:
       - name: Integration-Filter
         description: |
@@ -42,21 +42,21 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Action-Plan-Route-Activities-Integration_V1_GetResponse'
-          description: Returns a list of action-plan-route-activities
+                $ref: '#/components/schemas/Action-Plan-Routes-Integration_V1_GetResponse'
+          description: Returns a list of action-plan-routes
         401:
           description: Unauthorized
-      summary: Listar Action-Plan-Route-Activities
-      description: Retorna uma lista de atividades de uma rota de um plano de ação
-        cadastradas ou determinadas atividades com base nos filtros no header Integration-Filter
+      summary: Listar Action-Plan-Routes
+      description: Retorna uma lista de rotas de plano de ação cadastradas ou determinadas
+        rotas com base nos filtros no header Integration-Filter
     post:
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Action-Plan-Route-Activities-Integration_V1_BodyEmpty'
+              $ref: '#/components/schemas/Action-Plan-Routes-Integration_V1_BodyEmpty'
       tags:
-      - Action-Plan-Route-Activities
+      - Action-Plan-Routes
       parameters:
       - name: Integration-Filter
         description: |
@@ -91,16 +91,16 @@ paths:
           body da requisição.
         schema:
           oneOf:
-          - $ref: '#/components/schemas/Action-Plan-Route-Activities-Integration_V1_BodyCreate'
-          - $ref: '#/components/schemas/Action-Plan-Route-Activities-Integration_V1_BodyUpdate'
-          - $ref: '#/components/schemas/Action-Plan-Route-Activities-Integration_V1_BodyUpsert'
-          - $ref: '#/components/schemas/Action-Plan-Route-Activities-Integration_V1_BodyDelete'
+          - $ref: '#/components/schemas/Action-Plan-Routes-Integration_V1_BodyCreate'
+          - $ref: '#/components/schemas/Action-Plan-Routes-Integration_V1_BodyUpdate'
+          - $ref: '#/components/schemas/Action-Plan-Routes-Integration_V1_BodyUpsert'
+          - $ref: '#/components/schemas/Action-Plan-Routes-Integration_V1_BodyDelete'
           discriminator:
             mapping:
-              create: '#/components/schemas/Action-Plan-Route-Activities-Integration_V1_BodyCreate'
-              update: '#/components/schemas/Action-Plan-Route-Activities-Integration_V1_BodyUpdate'
-              upsert: '#/components/schemas/Action-Plan-Route-Activities-Integration_V1_BodyUpsert'
-              delete: '#/components/schemas/Action-Plan-Route-Activities-Integration_V1_BodyDelete'
+              create: '#/components/schemas/Action-Plan-Routes-Integration_V1_BodyCreate'
+              update: '#/components/schemas/Action-Plan-Routes-Integration_V1_BodyUpdate'
+              upsert: '#/components/schemas/Action-Plan-Routes-Integration_V1_BodyUpsert'
+              delete: '#/components/schemas/Action-Plan-Routes-Integration_V1_BodyDelete'
         in: header
         required: true
       responses:
@@ -109,16 +109,16 @@ paths:
             application/json:
               schema:
                 oneOf:
-                - $ref: '#/components/schemas/Action-Plan-Route-Activities-Integration_V1_FullResponse'
-                - $ref: '#/components/schemas/Action-Plan-Route-Activities-Integration_V1_MinimumResponse'
+                - $ref: '#/components/schemas/Action-Plan-Routes-Integration_V1_FullResponse'
+                - $ref: '#/components/schemas/Action-Plan-Routes-Integration_V1_MinimumResponse'
                 discriminator:
                   mapping:
-                    full: '#/components/schemas/Action-Plan-Route-Activities-Integration_V1_FullResponse'
-                    minimum: '#/components/schemas/Action-Plan-Route-Activities-Integration_V1_MinimumResponse'
-          description: Returns a action-plan-route-activities register
+                    full: '#/components/schemas/Action-Plan-Routes-Integration_V1_FullResponse'
+                    minimum: '#/components/schemas/Action-Plan-Routes-Integration_V1_MinimumResponse'
+          description: Returns a action-plan-routes register
         401:
           description: Unauthorized
-      summary: Criar, atualizar e deletar Action-Plan-Route-Activities
+      summary: Criar, atualizar e deletar Action-Plan-Routes
       description: |
         A ação a ser realizada no cadastro depende do valor preenchido no header
         **Integration-Action**:
@@ -135,7 +135,7 @@ paths:
         no header **Integration-Filter** **OU** realiza a operação de PUT do cadastro enviado se for
         enviado o ID do registro no header **Integration-Filter**;
 
-        **delete** - Realiza a operação de DELETE do registro especificado no header **Integration-Filter**;
+        **delete** - Realiza a operação de DELETE do registro especificado no header **Integration-Filter** bem como atividades associadas a esta rota, se houver;
     parameters:
     - name: Integration-Service
       description: 'Serviço responsável pela entidade. Exemplo: opportunity'
@@ -145,9 +145,9 @@ paths:
       in: header
       required: true
     - name: Integration-Resource
-      description: 'Recurso para requisição. Exemplo: action-plan-route-activities-integration'
+      description: 'Recurso para requisição. Exemplo: action-plan-routes-integration'
       schema:
-        default: action-plan-route-activities-integration
+        default: action-plan-routes-integration
         type: string
       in: header
       required: true
@@ -160,10 +160,10 @@ paths:
       required: true
 components:
   schemas:
-    Action-Plan-Route-Activities-Integration_V1_BodyEmpty:
+    Action-Plan-Routes-Integration_V1_BodyEmpty:
       description: No body
       type: object
-    Action-Plan-Route-Activities-Integration_V1_MinimumResponse:
+    Action-Plan-Routes-Integration_V1_MinimumResponse:
       type: object
       properties:
         id:
@@ -176,12 +176,16 @@ components:
         id: 19de1e5b-37c8-42c6-a62f-3d7bdd11e994
         createAt: 2019-08-13T18:00:38.780Z
         updatedAt: 2019-08-13T18:00:38.780Z
-    Action-Plan-Route-Activities-Integration_V1_BodyDelete:
+    Action-Plan-Routes-Integration_V1_BodyDelete:
       description: No body
       type: object
-    Action-Plan-Route-Activities-Integration_V1_BodyUpsert:
+    Action-Plan-Route-ActivitiesV1_BodyUpdate:
       type: object
       properties:
+        id:
+          format: uuid
+          type: string
+          example: aabc54a1-49c3-444d-88ec-eaa3fbe63e86
         externalId:
           type: string
           example: PLAN1#ROTA1#ATIV1
@@ -189,19 +193,154 @@ components:
           format: uuid
           type: string
           example: 5d7ae0b1-4a05-421e-8a98-e27b916b7324
-        actionPlanRouteId:
-          format: uuid
-          type: string
-          example: 274f13db-ef80-4e2c-b2b0-9d0a870e1f16
         rank:
           type: number
           example: 1
       example:
+        id: aabc54a1-49c3-444d-88ec-eaa3fbe63e86
         activityId: 5d7ae0b1-4a05-421e-8a98-e27b916b7324
-        actionPlanRouteId: 274f13db-ef80-4e2c-b2b0-9d0a870e1f16
         rank: 1
         externalId: PLAN1#ROTA1#ATIV1
-    Action-Plan-Route-Activities-Integration_V1_FullResponse:
+    Action-Plan-Routes-Integration_V1_BodyUpdate:
+      type: object
+      properties:
+        externalId:
+          type: string
+          example: PLAN1#ROTA1
+        userId:
+          format: uuid
+          type: string
+          example: 7636f630-2358-4cf4-a290-2ec0b13ea47c
+        actionPlanId:
+          format: uuid
+          type: string
+          example: 2f25831d-a7ff-4408-bf1e-3595b621fdc2
+        actionPlanRouteActivity:
+          type: array
+          items:
+            $ref: '#/components/schemas/Action-Plan-Route-ActivitiesV1_BodyUpdate'
+      example:
+        externalId: PLAN1#ROTA1
+        userId: 7636f630-2358-4cf4-a290-2ec0b13ea47c
+        actionPlanId: 2f25831d-a7ff-4408-bf1e-3595b621fdc2
+        actionPlanRouteActivity:
+        - id: aabc54a1-49c3-444d-88ec-eaa3fbe63e86
+          activityId: 5d7ae0b1-4a05-421e-8a98-e27b916b7324
+          rank: 1
+          externalId: PLAN1#ROTA1#ATIV1
+        - id: babc54a1-49c3-444d-88ec-eaa3fbe63e86
+          activityId: 093c9434-8e15-4cb3-aa70-94964adf0fe5
+          rank: 2
+          externalId: PLAN1#ROTA1#ATIV2
+    Action-Plan-Routes-Integration_V1_BodyUpsert:
+      type: object
+      properties:
+        externalId:
+          type: string
+          example: PLAN1#ROTA1
+        userId:
+          format: uuid
+          type: string
+          example: 7636f630-2358-4cf4-a290-2ec0b13ea47c
+        actionPlanId:
+          format: uuid
+          type: string
+          example: 2f25831d-a7ff-4408-bf1e-3595b621fdc2
+        actionPlanRouteActivity:
+          type: array
+          items:
+            $ref: '#/components/schemas/Action-Plan-Route-ActivitiesV1_BodyCreate'
+      example:
+        externalId: PLAN1#ROTA1
+        userId: 7636f630-2358-4cf4-a290-2ec0b13ea47c
+        actionPlanId: 2f25831d-a7ff-4408-bf1e-3595b621fdc2
+        actionPlanRouteActivity:
+        - activityId: 5d7ae0b1-4a05-421e-8a98-e27b916b7324
+          rank: 1
+          externalId: PLAN1#ROTA1#ATIV1
+        - activityId: 093c9434-8e15-4cb3-aa70-94964adf0fe5
+          rank: 2
+          externalId: PLAN1#ROTA1#ATIV2
+    Action-Plan-Routes-Integration_V1_FullResponse:
+      type: object
+      properties:
+        id:
+          format: uuid
+          type: string
+          example: aabc54a1-49c3-444d-88ec-eaa3fbe63e86
+        createdAt:
+          type: string
+          example: 2019-08-13T18:00:38.780Z
+        updatedAt:
+          type: string
+          example: 2019-08-13T18:00:38.780Z
+        externalId:
+          type: string
+          example: PLAN1#ROTA1
+        userId:
+          format: uuid
+          type: string
+          example: 7636f630-2358-4cf4-a290-2ec0b13ea47c
+        actionPlanId:
+          format: uuid
+          type: string
+          example: 2f25831d-a7ff-4408-bf1e-3595b621fdc2
+        actionPlanRouteActivity:
+          type: array
+          items:
+            $ref: '#/components/schemas/Action-Plan-Route-ActivitiesV1_GetResponse'
+      example:
+        externalId: PLAN1#ROTA1
+        userId: 7636f630-2358-4cf4-a290-2ec0b13ea47c
+        actionPlanId: 2f25831d-a7ff-4408-bf1e-3595b621fdc2
+        actionPlanRouteActivity:
+        - id: aabc54a1-49c3-444d-88ec-eaa3fbe63e86
+          activityId: 5d7ae0b1-4a05-421e-8a98-e27b916b7324
+          rank: 1
+          externalId: PLAN1#ROTA1#ATIV1
+        - id: babc54a1-49c3-444d-88ec-eaa3fbe63e86
+          activityId: 093c9434-8e15-4cb3-aa70-94964adf0fe5
+          rank: 2
+          externalId: PLAN1#ROTA1#ATIV2
+    Action-Plan-Routes-Integration_V1_BodyCreate:
+      required:
+      - externalId
+      - actionPlanId
+      - userId
+      type: object
+      properties:
+        externalId:
+          description: Código único do registro no sistema externo
+          type: string
+          example: PLAN1#ROTA1
+        userId:
+          format: uuid
+          description: Identificador do registro de usuário
+          type: string
+          example: 7636f630-2358-4cf4-a290-2ec0b13ea47c
+        actionPlanId:
+          format: uuid
+          description: Identificador do registro de plano de ação
+          type: string
+          example: 2f25831d-a7ff-4408-bf1e-3595b621fdc2
+        actionPlanRouteActivity:
+          description: Lista de atividades dentro de uma rota inserida em um plano
+            de ação
+          type: array
+          items:
+            $ref: '#/components/schemas/Action-Plan-Route-ActivitiesV1_BodyCreate'
+      example:
+        externalId: PLAN1#ROTA1
+        userId: 7636f630-2358-4cf4-a290-2ec0b13ea47c
+        actionPlanId: 2f25831d-a7ff-4408-bf1e-3595b621fdc2
+        actionPlanRouteActivity:
+        - activityId: 5d7ae0b1-4a05-421e-8a98-e27b916b7324
+          rank: 1
+          externalId: PLAN1#ROTA1#ATIV1
+        - activityId: 093c9434-8e15-4cb3-aa70-94964adf0fe5
+          rank: 2
+          externalId: PLAN1#ROTA1#ATIV2
+    Action-Plan-Route-ActivitiesV1_GetResponse:
       type: object
       properties:
         id:
@@ -221,10 +360,6 @@ components:
           format: uuid
           type: string
           example: 5d7ae0b1-4a05-421e-8a98-e27b916b7324
-        actionPlanRouteId:
-          format: uuid
-          type: string
-          example: 274f13db-ef80-4e2c-b2b0-9d0a870e1f16
         rank:
           type: number
           example: 1
@@ -233,10 +368,9 @@ components:
         createdAt: 2019-08-13T18:00:38.780Z
         updatedAt: 2019-08-13T18:00:38.780Z
         activityId: 5d7ae0b1-4a05-421e-8a98-e27b916b7324
-        actionPlanRouteId: 274f13db-ef80-4e2c-b2b0-9d0a870e1f16
         rank: 1
         externalId: PLAN1#ROTA1#ATIV1
-    Action-Plan-Route-Activities-Integration_V1_GetResponse:
+    Action-Plan-Routes-Integration_V1_GetResponse:
       type: object
       properties:
         id:
@@ -251,53 +385,36 @@ components:
           example: 2019-08-13T18:00:38.780Z
         externalId:
           type: string
-          example: PLAN1#ROTA1#ATIV1
-        activityId:
+          example: PLAN1#ROTA1
+        userId:
           format: uuid
           type: string
-          example: 5d7ae0b1-4a05-421e-8a98-e27b916b7324
-        actionPlanRouteId:
+          example: 7636f630-2358-4cf4-a290-2ec0b13ea47c
+        actionPlanId:
           format: uuid
           type: string
-          example: 274f13db-ef80-4e2c-b2b0-9d0a870e1f16
-        rank:
-          type: number
-          example: 1
+          example: 2f25831d-a7ff-4408-bf1e-3595b621fdc2
+        actionPlanRouteActivity:
+          type: array
+          items:
+            $ref: '#/components/schemas/Action-Plan-Route-ActivitiesV1_GetResponse'
       example:
-        id: aabc54a1-49c3-444d-88ec-eaa3fbe63e86
-        createdAt: 2019-08-13T18:00:38.780Z
-        updatedAt: 2019-08-13T18:00:38.780Z
-        activityId: 5d7ae0b1-4a05-421e-8a98-e27b916b7324
-        actionPlanRouteId: 274f13db-ef80-4e2c-b2b0-9d0a870e1f16
-        rank: 1
-        externalId: PLAN1#ROTA1#ATIV1
-    Action-Plan-Route-Activities-Integration_V1_BodyUpdate:
-      type: object
-      properties:
-        externalId:
-          type: string
-          example: PLAN1#ROTA1#ATIV1
-        activityId:
-          format: uuid
-          type: string
-          example: 5d7ae0b1-4a05-421e-8a98-e27b916b7324
-        actionPlanRouteId:
-          format: uuid
-          type: string
-          example: 274f13db-ef80-4e2c-b2b0-9d0a870e1f16
-        rank:
-          type: number
-          example: 1
-      example:
-        activityId: 5d7ae0b1-4a05-421e-8a98-e27b916b7324
-        actionPlanRouteId: 274f13db-ef80-4e2c-b2b0-9d0a870e1f16
-        rank: 1
-        externalId: PLAN1#ROTA1#ATIV1
-    Action-Plan-Route-Activities-Integration_V1_BodyCreate:
+        externalId: PLAN1#ROTA1
+        userId: 7636f630-2358-4cf4-a290-2ec0b13ea47c
+        actionPlanId: 2f25831d-a7ff-4408-bf1e-3595b621fdc2
+        actionPlanRouteActivity:
+        - id: aabc54a1-49c3-444d-88ec-eaa3fbe63e86
+          activityId: 5d7ae0b1-4a05-421e-8a98-e27b916b7324
+          rank: 1
+          externalId: PLAN1#ROTA1#ATIV1
+        - id: babc54a1-49c3-444d-88ec-eaa3fbe63e86
+          activityId: 093c9434-8e15-4cb3-aa70-94964adf0fe5
+          rank: 2
+          externalId: PLAN1#ROTA1#ATIV2
+    Action-Plan-Route-ActivitiesV1_BodyCreate:
       required:
       - externalId
       - activityId
-      - actionPlanRouteId
       - rank
       type: object
       properties:
@@ -310,18 +427,12 @@ components:
           description: Identificador do registro de atividade
           type: string
           example: 5d7ae0b1-4a05-421e-8a98-e27b916b7324
-        actionPlanRouteId:
-          format: uuid
-          description: Identificador do registro de sequencia (rota) de atendimentos
-          type: string
-          example: 274f13db-ef80-4e2c-b2b0-9d0a870e1f16
         rank:
           description: Ordem em que deverá ocorrer o evento
           type: number
           example: 1
       example:
         activityId: 5d7ae0b1-4a05-421e-8a98-e27b916b7324
-        actionPlanRouteId: 274f13db-ef80-4e2c-b2b0-9d0a870e1f16
         rank: 1
         externalId: PLAN1#ROTA1#ATIV1
 tags:
