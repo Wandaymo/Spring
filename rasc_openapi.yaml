@@ -1,9 +1,9 @@
 openapi: 3.0.2
 info:
-  title: activities-integrationV1
+  title: activity-types-integrationV1
   version: 1.0.0
   description: |
-    API de integração de atividades (Activities) V1
+    API de integração de tipo de atividade (Activity-Types) V1
 
     Compatível com a versão V6 do serviço de negócio Opportunity
   contact: {}
@@ -21,7 +21,7 @@ paths:
   /record:
     get:
       tags:
-      - Activities
+      - Activity-Types
       parameters:
       - name: Integration-Filter
         description: |
@@ -41,11 +41,11 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Activities-Integration_V1_FullResponse'
-          description: Returns a list of activities
+                $ref: '#/components/schemas/Activity-Types-Integration_V1_FullResponse'
+          description: Returns a list of activity-types
         401:
           description: Unauthorized
-      summary: Listar Activities
+      summary: Listar Activity-Types
       description: Retorna uma lista de tipos de atividades cadastradas ou determinados
         tipos com base nos filtros no header Integration-Filter
     post:
@@ -53,9 +53,9 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Activities-Integration_V1_BodyCreate'
+              $ref: '#/components/schemas/Activity-Types-Integration_V1_BodyCreate'
       tags:
-      - Activities
+      - Activity-Types
       parameters:
       - name: Integration-Filter
         description: |
@@ -90,14 +90,14 @@ paths:
           body da requisição.
         schema:
           oneOf:
-          - $ref: '#/components/schemas/Activities-Integration_V1_BodyCreate'
-          - $ref: '#/components/schemas/Activities-Integration_V1_BodyUpdate'
-          - $ref: '#/components/schemas/Activities-Integration_V1_BodyUpsert'
+          - $ref: '#/components/schemas/Activity-Types-Integration_V1_BodyCreate'
+          - $ref: '#/components/schemas/Activity-Types-Integration_V1_BodyUpdate'
+          - $ref: '#/components/schemas/Activity-Types-Integration_V1_BodyUpsert'
           discriminator:
             mapping:
-              create: '#/components/schemas/Activities-Integration_V1_BodyCreate'
-              update: '#/components/schemas/Activities-Integration_V1_BodyUpdate'
-              upsert: '#/components/schemas/Activities-Integration_V1_BodyUpsert'
+              create: '#/components/schemas/Activity-Types-Integration_V1_BodyCreate'
+              update: '#/components/schemas/Activity-Types-Integration_V1_BodyUpdate'
+              upsert: '#/components/schemas/Activity-Types-Integration_V1_BodyUpsert'
         in: header
         required: true
       responses:
@@ -105,15 +105,15 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Activities-Integration_V1_FullResponse'
+                $ref: '#/components/schemas/Activity-Types-Integration_V1_FullResponse'
                 discriminator:
                   mapping:
-                    full: '#/components/schemas/Activities-Integration_V1_FullResponse'
-                    minimum: '#/components/schemas/Activities-Integration_V1_MinimumResponse'
-          description: Returns a activities register
+                    full: '#/components/schemas/Activity-Types-Integration_V1_FullResponse'
+                    minimum: '#/components/schemas/Activity-Types-Integration_V1_MinimumResponse'
+          description: Returns a activity-types register
         401:
           description: Unauthorized
-      summary: Criar, atualizar e deletar Activities
+      summary: Criar, atualizar e deletar Activity-Types
       description: |
         A ação a ser realizada no cadastro depende do valor preenchido no header
         **Integration-Action**:
@@ -138,9 +138,9 @@ paths:
       in: header
       required: true
     - name: Integration-Resource
-      description: 'Recurso para requisição. Exemplo: activities-integration'
+      description: 'Recurso para requisição. Exemplo: activity-types-integration'
       schema:
-        default: activities-integration
+        default: activity-types-integration
         type: string
       in: header
       required: true
@@ -153,10 +153,10 @@ paths:
       required: true
 components:
   schemas:
-    Activities-Integration_V1_BodyEmpty:
+    Activity-Types-Integration_V1_BodyEmpty:
       description: No body
       type: object
-    Activities-Integration_V1_MinimumResponse:
+    Activity-Types-Integration_V1_MinimumResponse:
       type: object
       properties:
         id:
@@ -169,676 +169,114 @@ components:
         id: 19de1e5b-37c8-42c6-a62f-3d7bdd11e994
         createAt: 2019-08-13T18:00:38.780Z
         updatedAt: 2019-08-13T18:00:38.780Z
-    Activities-Integration_V1_BodyCreate:
+    Activity-Types-Integration_V1_FullResponse:
+      type: object
+      properties:
+        id:
+          format: uuid
+          type: string
+          example: aabc54a1-49c3-444d-88ec-eaa3fbe63e86
+        createdAt:
+          type: string
+          example: 2019-08-13T18:00:38.780Z
+        updatedAt:
+          type: string
+          example: 2019-08-13T18:00:38.780Z
+        externalId:
+          type: string
+          example: COMPROMISSO
+        description:
+          maxLength: 255
+          type: string
+          example: Compromisso
+        active:
+          type: boolean
+          example: true
+        internal:
+          type: boolean
+          example: false
+    Activity-Types-Integration_V1_GetResponse:
+      type: object
+      properties:
+        id:
+          format: uuid
+          type: string
+          example: aabc54a1-49c3-444d-88ec-eaa3fbe63e86
+        createdAt:
+          type: string
+          example: 2019-08-13T18:00:38.780Z
+        updatedAt:
+          type: string
+          example: 2019-08-13T18:00:38.780Z
+        externalId:
+          type: string
+          example: COMPROMISSO
+        description:
+          maxLength: 255
+          type: string
+          example: Compromisso
+        active:
+          type: boolean
+          example: true
+        internal:
+          type: boolean
+          example: false
+    Activity-Types-Integration_V1_BodyCreate:
       required:
       - externalId
-      - activityType
+      - active
       - description
-      - status
-      - userId
-      - priority
-      - allDay
-      - startDate
-      - endDate
       type: object
       properties:
-        customerId:
-          format: uuid
-          description: Identificador do registro do cliente
+        externalId:
+          description: Identificador do sistema externo
           type: string
-          example: 56e0d49f-30e7-401b-a63f-0a91214cc044
-        leadId:
-          format: uuid
-          description: Identificador do registro do lead
-          type: string
-          example: fb37d852-6398-4481-b880-749ecb1b6fd5
-        activityTypeId:
-          format: uuid
-          description: Identificador do registro do tipo de atividade
-          type: string
-          example: 867c738d-56a9-4909-9116-7254075e5dac
-        callId:
-          format: uuid
-          description: Identificador do id da chamada
-          type: string
-          example: 34c07a08-4272-37f8-a1b0-661359027a91
+          example: Compromisso
         description:
-          description: Descrição da atividade
+          description: Descrição do tipo de atividade
           maxLength: 255
           type: string
-          example: NEGOCIAÇÃO DHERMA PEDIDO
-        startDate:
-          format: timestamp
-          description: Data de início da atividade
-          type: string
-          example: 2020-05-21T12:45Z
-        endDate:
-          description: Data de finalização da atividade
-          type: string
-          example: 2020-05-22T13:00Z
-        externalId:
-          description: Código único do sistema externo para o registro
-          type: string
-          example: OPO#1
-        allDay:
-          description: Indica se a atividade é para o dia inteiro
+          example: Compromisso
+        active:
+          description: Situação do tipo de atividade
+          type: boolean
+          example: true
+        internal:
+          description: Indica se é uma atividade interna
           type: boolean
           example: false
-        userId:
-          format: uuid
-          description: Identificador do registro de usuário
-          type: string
-          example: 55c07a08-4272-37f8-a1b0-661359027a91
-        locationId:
-          description: Chave de acesso do google maps para o endereço
-          type: string
-          example: ChIJFSZLitr3zpQRYlKq0SE_zIA
-        locationName:
-          description: Endereço para a atividade
-          type: string
-          example: TOTVS - Av. Braz Leme, 1000 - Santana, São Paulo - SP, 02511-000,
-            Brasil
-        origin:
-          description: Registro que originou esta atividade
-          type: object
-          properties:
-            id:
-              format: uuid
-              description: ID da origem
-              type: string
-              example: 50203861-95f3-4101-80c1-2b64f6613682
-            type:
-              description: Tipo de origem da atividade
-              enum:
-              - ACTIVITY
-              - OPPORTUNITY
-              - CUSTOMER
-              - LEAD
-              - CAMPAIGN
-              type: string
-              example: ACTIVITY
-            description:
-              description: Descrição da origem da atividade
-              type: string
-              example: Ligação de proposta
-        actionPlanId:
-          format: uuid
-          description: Identificador do registro de plano de ação
-          type: string
-          example: 9d63cafb-443b-4ed6-b512-084a7f16f836
-        priority:
-          description: Prioridade para a atividade
-          enum:
-          - LOW
-          - MEDIUM
-          - HIGH
-          - URGENT
-          type: string
-          example: MEDIUM
-        note:
-          description: Observação da atividade
-          type: string
-          example: Estamos fechando um pedido negociado! 100k
-        status:
-          description: Status da atividade
-          enum:
-          - CANCELED
-          - SUCCESSFULLY_COMPLETED
-          - UNSUCCESSFULLY_COMPLETED
-          - OPEN
-          type: string
-          example: SUCCESSFULLY_COMPLETED
-        completedAt:
-          description: Data em que a atividade foi concluída
-          type: string
-          example: 2020-06-03T17:38:01.580Z
-        inconsistencyNote:
-          description: Observação de inconsistência da atividade
-          type: string
-          example: obs
-        closedNote:
-          description: Observação de fechamento da atividade
-          type: string
-          example: Observacao fechamento
-      example:
-        customerId: 56e0d49f-30e7-401b-a63f-0a91214cc044
-        leadId: fb37d852-6398-4481-b880-749ecb1b6fd5
-        activityTypeId: 867c738d-56a9-4909-9116-7254075e5dac
-        callId: 34c07a08-4272-37f8-a1b0-661359027a91
-        description: NEGOCIAÇÃO DHERMA PEDIDO
-        startDate: 2020-05-21T12:45Z
-        endDate: 2020-05-22T13:00Z
-        externalId: OPO#1
-        allDay: false
-        userId: 55c07a08-4272-37f8-a1b0-661359027a91
-        locationId: ChIJFSZLitr3zpQRYlKq0SE_zIA
-        locationName: TOTVS - Av. Braz Leme, 1000 - Santana, São Paulo - SP, 02511-000,
-          Brasil
-        origin:
-          id: 50203861-95f3-4101-80c1-2b64f6613682
-          type: ACTIVITY
-          description: Ligação de proposta
-        actionPlanId: 9d63cafb-443b-4ed6-b512-084a7f16f836
-        priority: MEDIUM
-        note: Estamos fechando um pedido negociado! 100k
-        status: SUCCESSFULLY_COMPLETED
-        completedAt: 2020-06-03T17:38:01.580Z
-        inconsistencyNote: obs
-        closedNote: Observacao fechamento
-    Activities-Integration_V1_BodyUpdate:
+    Activity-Types-Integration_V1_BodyUpdate:
       type: object
       properties:
-        customerId:
-          format: uuid
+        externalId:
           type: string
-          example: 56e0d49f-30e7-401b-a63f-0a91214cc044
-        leadId:
-          format: uuid
-          type: string
-          example: fb37d852-6398-4481-b880-749ecb1b6fd5
-        activityTypeId:
-          format: uuid
-          type: string
-          example: 867c738d-56a9-4909-9116-7254075e5dac
-        callId:
-          format: uuid
-          type: string
-          example: 34c07a08-4272-37f8-a1b0-661359027a91
+          example: Compromisso
         description:
           maxLength: 255
           type: string
-          example: NEGOCIAÇÃO DHERMA PEDIDO
-        startDate:
-          format: timestamp
-          type: string
-          example: 2020-05-21T12:45Z
-        endDate:
-          type: string
-          example: 2020-05-22T13:00Z
-        externalId:
-          type: string
-          example: OPO#1
-        allDay:
+          example: Compromisso
+        active:
+          type: boolean
+          example: true
+        internal:
           type: boolean
           example: false
-        userId:
-          format: uuid
-          type: string
-          example: 55c07a08-4272-37f8-a1b0-661359027a91
-        locationId:
-          type: string
-          example: ChIJFSZLitr3zpQRYlKq0SE_zIA
-        locationName:
-          type: string
-          example: TOTVS - Av. Braz Leme, 1000 - Santana, São Paulo - SP, 02511-000,
-            Brasil
-        origin:
-          properties:
-            id:
-              format: uuid
-              type: string
-              example: 50203861-95f3-4101-80c1-2b64f6613682
-            type:
-              enum:
-              - ACTIVITY
-              - OPPORTUNITY
-              - CUSTOMER
-              - LEAD
-              - CAMPAIGN
-              type: string
-              example: ACTIVITY
-            description:
-              type: string
-              example: Ligação de proposta
-        actionPlanId:
-          format: uuid
-          type: string
-          example: 9d63cafb-443b-4ed6-b512-084a7f16f836
-        priority:
-          enum:
-          - LOW
-          - MEDIUM
-          - HIGH
-          - URGENT
-          type: string
-          example: MEDIUM
-        note:
-          type: string
-          example: Estamos fechando um pedido negociado! 100k
-        status:
-          enum:
-          - CANCELED
-          - SUCCESSFULLY_COMPLETED
-          - UNSUCCESSFULLY_COMPLETED
-          - OPEN
-          type: string
-          example: SUCCESSFULLY_COMPLETED
-        completedAt:
-          type: string
-          example: 2020-06-03T17:38:01.580Z
-        inconsistencyNote:
-          type: string
-          example: obs
-        closedNote:
-          type: string
-          example: Observacao fechamento
-      example:
-        customerId: 56e0d49f-30e7-401b-a63f-0a91214cc044
-        leadId: fb37d852-6398-4481-b880-749ecb1b6fd5
-        activityTypeId: 867c738d-56a9-4909-9116-7254075e5dac
-        callId: 34c07a08-4272-37f8-a1b0-661359027a91
-        description: NEGOCIAÇÃO DHERMA PEDIDO
-        startDate: 2020-05-21T12:45Z
-        endDate: 2020-05-22T13:00Z
-        externalId: OPO#1
-        allDay: false
-        userId: 55c07a08-4272-37f8-a1b0-661359027a91
-        locationId: ChIJFSZLitr3zpQRYlKq0SE_zIA
-        locationName: TOTVS - Av. Braz Leme, 1000 - Santana, São Paulo - SP, 02511-000,
-          Brasil
-        origin:
-          id: 50203861-95f3-4101-80c1-2b64f6613682
-          type: ACTIVITY
-          description: Ligação de proposta
-        actionPlanId: 9d63cafb-443b-4ed6-b512-084a7f16f836
-        priority: MEDIUM
-        note: Estamos fechando um pedido negociado! 100k
-        status: SUCCESSFULLY_COMPLETED
-        completedAt: 2020-06-03T17:38:01.580Z
-        inconsistencyNote: obs
-        closedNote: Observacao fechamento
-    Activities-Integration_V1_BodyUpsert:
+    Activity-Types-Integration_V1_BodyUpsert:
       type: object
       properties:
-        customerId:
-          format: uuid
+        externalId:
           type: string
-          example: 56e0d49f-30e7-401b-a63f-0a91214cc044
-        leadId:
-          format: uuid
-          type: string
-          example: fb37d852-6398-4481-b880-749ecb1b6fd5
-        activityTypeId:
-          format: uuid
-          type: string
-          example: 867c738d-56a9-4909-9116-7254075e5dac
-        callId:
-          format: uuid
-          type: string
-          example: 34c07a08-4272-37f8-a1b0-661359027a91
+          example: Compromisso
         description:
           maxLength: 255
           type: string
-          example: NEGOCIAÇÃO DHERMA PEDIDO
-        startDate:
-          format: timestamp
-          type: string
-          example: 2020-05-21T12:45Z
-        endDate:
-          type: string
-          example: 2020-05-22T13:00Z
-        externalId:
-          type: string
-          example: OPO#1
-        allDay:
+          example: Compromisso
+        active:
+          type: boolean
+          example: true
+        internal:
           type: boolean
           example: false
-        userId:
-          format: uuid
-          type: string
-          example: 55c07a08-4272-37f8-a1b0-661359027a91
-        locationId:
-          type: string
-          example: ChIJFSZLitr3zpQRYlKq0SE_zIA
-        locationName:
-          type: string
-          example: TOTVS - Av. Braz Leme, 1000 - Santana, São Paulo - SP, 02511-000,
-            Brasil
-        origin:
-          properties:
-            id:
-              format: uuid
-              type: string
-              example: 50203861-95f3-4101-80c1-2b64f6613682
-            type:
-              enum:
-              - ACTIVITY
-              - OPPORTUNITY
-              - CUSTOMER
-              - LEAD
-              - CAMPAIGN
-              type: string
-              example: ACTIVITY
-            description:
-              type: string
-              example: Ligação de proposta
-        actionPlanId:
-          format: uuid
-          type: string
-          example: 9d63cafb-443b-4ed6-b512-084a7f16f836
-        priority:
-          enum:
-          - LOW
-          - MEDIUM
-          - HIGH
-          - URGENT
-          type: string
-          example: MEDIUM
-        note:
-          type: string
-          example: Estamos fechando um pedido negociado! 100k
-        status:
-          enum:
-          - CANCELED
-          - SUCCESSFULLY_COMPLETED
-          - UNSUCCESSFULLY_COMPLETED
-          - OPEN
-          type: string
-          example: SUCCESSFULLY_COMPLETED
-        completedAt:
-          type: string
-          example: 2020-06-03T17:38:01.580Z
-        inconsistencyNote:
-          type: string
-          example: obs
-        closedNote:
-          type: string
-          example: Observacao fechamento
-      example:
-        customerId: 56e0d49f-30e7-401b-a63f-0a91214cc044
-        leadId: fb37d852-6398-4481-b880-749ecb1b6fd5
-        activityTypeId: 867c738d-56a9-4909-9116-7254075e5dac
-        callId: 34c07a08-4272-37f8-a1b0-661359027a91
-        description: NEGOCIAÇÃO DHERMA PEDIDO
-        startDate: 2020-05-21T12:45Z
-        endDate: 2020-05-22T13:00Z
-        externalId: OPO#1
-        allDay: false
-        userId: 55c07a08-4272-37f8-a1b0-661359027a91
-        locationId: ChIJFSZLitr3zpQRYlKq0SE_zIA
-        locationName: TOTVS - Av. Braz Leme, 1000 - Santana, São Paulo - SP, 02511-000,
-          Brasil
-        origin:
-          id: 50203861-95f3-4101-80c1-2b64f6613682
-          type: ACTIVITY
-          description: Ligação de proposta
-        actionPlanId: 9d63cafb-443b-4ed6-b512-084a7f16f836
-        priority: MEDIUM
-        note: Estamos fechando um pedido negociado! 100k
-        status: SUCCESSFULLY_COMPLETED
-        completedAt: 2020-06-03T17:38:01.580Z
-        inconsistencyNote: obs
-        closedNote: Observacao fechamento
-    Activities-Integration_V1_FullResponse:
-      type: object
-      properties:
-        id:
-          format: uuid
-          type: string
-          example: aabc54a1-49c3-444d-88ec-eaa3fbe63e86
-        createdAt:
-          type: string
-          example: 2019-08-13T18:00:38.780Z
-        updatedAt:
-          type: string
-          example: 2019-08-13T18:00:38.780Z
-        customerId:
-          format: uuid
-          type: string
-          example: 56e0d49f-30e7-401b-a63f-0a91214cc044
-        leadId:
-          format: uuid
-          type: string
-          example: fb37d852-6398-4481-b880-749ecb1b6fd5
-        activityTypeId:
-          format: uuid
-          type: string
-          example: 867c738d-56a9-4909-9116-7254075e5dac
-        callId:
-          format: uuid
-          type: string
-          example: 34c07a08-4272-37f8-a1b0-661359027a91
-        description:
-          maxLength: 255
-          type: string
-          example: NEGOCIAÇÃO DHERMA PEDIDO
-        startDate:
-          format: timestamp
-          type: string
-          example: 2020-05-21T12:45Z
-        endDate:
-          type: string
-          example: 2020-05-22T13:00Z
-        externalId:
-          type: string
-          example: OPO#1
-        allDay:
-          type: boolean
-          example: false
-        userId:
-          format: uuid
-          type: string
-          example: 55c07a08-4272-37f8-a1b0-661359027a91
-        locationId:
-          type: string
-          example: ChIJFSZLitr3zpQRYlKq0SE_zIA
-        locationName:
-          type: string
-          example: TOTVS - Av. Braz Leme, 1000 - Santana, São Paulo - SP, 02511-000,
-            Brasil
-        origin:
-          properties:
-            id:
-              format: uuid
-              type: string
-              example: 50203861-95f3-4101-80c1-2b64f6613682
-            type:
-              enum:
-              - ACTIVITY
-              - OPPORTUNITY
-              - CUSTOMER
-              - LEAD
-              - CAMPAIGN
-              type: string
-              example: ACTIVITY
-            description:
-              type: string
-              example: Ligação de proposta
-        actionPlanId:
-          format: uuid
-          type: string
-          example: 9d63cafb-443b-4ed6-b512-084a7f16f836
-        priority:
-          enum:
-          - LOW
-          - MEDIUM
-          - HIGH
-          - URGENT
-          type: string
-          example: MEDIUM
-        note:
-          type: string
-          example: Estamos fechando um pedido negociado! 100k
-        status:
-          enum:
-          - CANCELED
-          - SUCCESSFULLY_COMPLETED
-          - UNSUCCESSFULLY_COMPLETED
-          - OPEN
-          type: string
-          example: SUCCESSFULLY_COMPLETED
-        completedAt:
-          type: string
-          example: 2020-06-03T17:38:01.580Z
-        inconsistencyNote:
-          type: string
-          example: obs
-        closedNote:
-          type: string
-          example: Observacao fechamento
-      example:
-        id: aabc54a1-49c3-444d-88ec-eaa3fbe63e86
-        createdAt: 2019-08-13T18:00:38.780Z
-        updatedAt: 2019-08-13T18:00:38.780Z
-        customerId: 56e0d49f-30e7-401b-a63f-0a91214cc044
-        leadId: fb37d852-6398-4481-b880-749ecb1b6fd5
-        activityTypeId: 867c738d-56a9-4909-9116-7254075e5dac
-        callId: 34c07a08-4272-37f8-a1b0-661359027a91
-        description: NEGOCIAÇÃO DHERMA PEDIDO
-        startDate: 2020-05-21T12:45Z
-        endDate: 2020-05-22T13:00Z
-        externalId: OPO#1
-        allDay: false
-        userId: 55c07a08-4272-37f8-a1b0-661359027a91
-        locationId: ChIJFSZLitr3zpQRYlKq0SE_zIA
-        locationName: TOTVS - Av. Braz Leme, 1000 - Santana, São Paulo - SP, 02511-000,
-          Brasil
-        origin:
-          id: 50203861-95f3-4101-80c1-2b64f6613682
-          type: ACTIVITY
-          description: Ligação de proposta
-        actionPlanId: 9d63cafb-443b-4ed6-b512-084a7f16f836
-        priority: MEDIUM
-        note: Estamos fechando um pedido negociado! 100k
-        status: SUCCESSFULLY_COMPLETED
-        completedAt: 2020-06-03T17:38:01.580Z
-        inconsistencyNote: obs
-        closedNote: Observacao fechamento
-    Activities-Integration_V1_GetResponse:
-      type: object
-      properties:
-        id:
-          format: uuid
-          type: string
-          example: aabc54a1-49c3-444d-88ec-eaa3fbe63e86
-        createdAt:
-          type: string
-          example: 2019-08-13T18:00:38.780Z
-        updatedAt:
-          type: string
-          example: 2019-08-13T18:00:38.780Z
-        customerId:
-          format: uuid
-          type: string
-          example: 56e0d49f-30e7-401b-a63f-0a91214cc044
-        leadId:
-          format: uuid
-          type: string
-          example: fb37d852-6398-4481-b880-749ecb1b6fd5
-        activityTypeId:
-          format: uuid
-          type: string
-          example: 867c738d-56a9-4909-9116-7254075e5dac
-        callId:
-          format: uuid
-          type: string
-          example: 34c07a08-4272-37f8-a1b0-661359027a91
-        description:
-          maxLength: 255
-          type: string
-          example: NEGOCIAÇÃO DHERMA PEDIDO
-        startDate:
-          format: timestamp
-          type: string
-          example: 2020-05-21T12:45Z
-        endDate:
-          type: string
-          example: 2020-05-22T13:00Z
-        externalId:
-          type: string
-          example: OPO#1
-        allDay:
-          type: boolean
-          example: false
-        userId:
-          format: uuid
-          type: string
-          example: 55c07a08-4272-37f8-a1b0-661359027a91
-        locationId:
-          type: string
-          example: ChIJFSZLitr3zpQRYlKq0SE_zIA
-        locationName:
-          type: string
-          example: TOTVS - Av. Braz Leme, 1000 - Santana, São Paulo - SP, 02511-000,
-            Brasil
-        origin:
-          properties:
-            id:
-              format: uuid
-              type: string
-              example: 50203861-95f3-4101-80c1-2b64f6613682
-            type:
-              enum:
-              - ACTIVITY
-              - OPPORTUNITY
-              - CUSTOMER
-              - LEAD
-              - CAMPAIGN
-              type: string
-              example: ACTIVITY
-            description:
-              type: string
-              example: Ligação de proposta
-        actionPlanId:
-          format: uuid
-          type: string
-          example: 9d63cafb-443b-4ed6-b512-084a7f16f836
-        priority:
-          enum:
-          - LOW
-          - MEDIUM
-          - HIGH
-          - URGENT
-          type: string
-          example: MEDIUM
-        note:
-          type: string
-          example: Estamos fechando um pedido negociado! 100k
-        status:
-          enum:
-          - CANCELED
-          - SUCCESSFULLY_COMPLETED
-          - UNSUCCESSFULLY_COMPLETED
-          - OPEN
-          type: string
-          example: SUCCESSFULLY_COMPLETED
-        completedAt:
-          type: string
-          example: 2020-06-03T17:38:01.580Z
-        inconsistencyNote:
-          type: string
-          example: obs
-        closedNote:
-          type: string
-          example: Observacao fechamento
-      example:
-        id: aabc54a1-49c3-444d-88ec-eaa3fbe63e86
-        createdAt: 2019-08-13T18:00:38.780Z
-        updatedAt: 2019-08-13T18:00:38.780Z
-        customerId: 56e0d49f-30e7-401b-a63f-0a91214cc044
-        leadId: fb37d852-6398-4481-b880-749ecb1b6fd5
-        activityTypeId: 867c738d-56a9-4909-9116-7254075e5dac
-        callId: 34c07a08-4272-37f8-a1b0-661359027a91
-        description: NEGOCIAÇÃO DHERMA PEDIDO
-        startDate: 2020-05-21T12:45Z
-        endDate: 2020-05-22T13:00Z
-        externalId: OPO#1
-        allDay: false
-        userId: 55c07a08-4272-37f8-a1b0-661359027a91
-        locationId: ChIJFSZLitr3zpQRYlKq0SE_zIA
-        locationName: TOTVS - Av. Braz Leme, 1000 - Santana, São Paulo - SP, 02511-000,
-          Brasil
-        origin:
-          id: 50203861-95f3-4101-80c1-2b64f6613682
-          type: ACTIVITY
-          description: Ligação de proposta
-        actionPlanId: 9d63cafb-443b-4ed6-b512-084a7f16f836
-        priority: MEDIUM
-        note: Estamos fechando um pedido negociado! 100k
-        status: SUCCESSFULLY_COMPLETED
-        completedAt: 2020-06-03T17:38:01.580Z
-        inconsistencyNote: obs
-        closedNote: Observacao fechamento
 tags:
 - name: APP2
   description: Ambiente APP2
