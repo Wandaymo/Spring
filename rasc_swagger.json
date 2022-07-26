@@ -65,7 +65,8 @@
             "name": "Integration-Action",
             "description": "Ação a ser realizada na API de integração. Selecione uma das opções para carregar o\nbody da requisição.\n",
             "in": "header",
-            "required": true
+            "required": true,
+            "type": "string"
           },
           {
             "name": "body",
