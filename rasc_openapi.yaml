@@ -217,6 +217,25 @@ components:
         activityId: 5d7ae0b1-4a05-421e-8a98-e27b916b7324
         rank: 1
         externalId: PLAN1#ROTA1#ATIV1
+    Action-Plan-UsersV1_BodyCreate:
+      required:
+        - externalId
+        - userId
+      type: object
+      properties:
+        externalId:
+          description: Código único do sistema externo para o vínculo do usuário e
+            plano de ação
+          type: string
+          example: PLAN1#USER1
+        userId:
+          format: uuid
+          description: Identificador do usuário
+          type: string
+          example: 7636f630-2358-4cf4-a290-2ec0b13ea47c
+      example:
+        externalId: PLAN1#USER1
+        userId: 7636f630-2358-4cf4-a290-2ec0b13ea47c
     Action-Plan-Route-ActivitiesV1_BodyCreate:
       required:
         - externalId
@@ -643,25 +662,6 @@ components:
         id: aabc54a1-49c3-444d-88ec-eaa3fbe63e86
         createAt: 2019-08-13T18:00:38.780Z
         updatedAt: 2019-08-13T18:00:38.780Z
-        externalId: PLAN1#USER1
-        userId: 7636f630-2358-4cf4-a290-2ec0b13ea47c
-    Action-Plan-UsersV1_BodyCreate:
-      required:
-        - externalId
-        - userId
-      type: object
-      properties:
-        externalId:
-          description: Código único do sistema externo para o vínculo do usuário e
-            plano de ação
-          type: string
-          example: PLAN1#USER1
-        userId:
-          format: uuid
-          description: Identificador do usuário
-          type: string
-          example: 7636f630-2358-4cf4-a290-2ec0b13ea47c
-      example:
         externalId: PLAN1#USER1
         userId: 7636f630-2358-4cf4-a290-2ec0b13ea47c
     Action-Plan-UsersV1_BodyUpdate:
