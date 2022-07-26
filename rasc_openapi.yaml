@@ -1,18 +1,18 @@
 openapi: 3.0.2
 info:
-  title: opportunity-types-integrationV1
+  title: origins-integrationV1
   version: 1.0.0
   description: |
-    API de integração de tipo de oportunidade (Opportunity-Types) V1
+    API de integração de origem de oportunidade (Origins) V1
 
-    Compatível com a versão V6 do serviço de negócio Opportunity
+    Compatível com a versão V7 do serviço de negócio Opportunity
   contact: {}
 servers:
 - url: https://{url}/api/{version}/integration
   description: Integration Router Server
   variables:
     url:
-      default: app2.mastercrm.ws
+      default: totvscrm.app
       description: URL de acesso ao Integration-Router
     version:
       default: v1
@@ -21,13 +21,33 @@ paths:
   /record:
     get:
       tags:
-      - Opportunity-Types
+      - origins
       parameters:
+      - name: Integration-Service
+        description: 'Serviço responsável pela entidade. Exemplo: Opportunity'
+        schema:
+          default: opportunity
+          type: string
+        in: header
+        required: true
+      - name: Integration-Resource
+        description: 'Recurso para requisição. Exemplo: origins-integration'
+        schema:
+          default: origins-integration
+          type: string
+        in: header
+        required: true
+      - name: Integration-Version
+        description: 'Versão da API de integração. Exemplo: v1'
+        schema:
+          default: v1
+          type: string
+        in: header
+        required: true
       - name: Integration-Filter
         description: |
           Filtro opcional para realizar a busca de um ou mais registros. Suporta o uso de
           RestQuery.
-
 
           Se o header for omitido, lista todos os registros
 
@@ -41,228 +61,85 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Opportunity-Types-Integration_V1_FullResponse'
-          description: Returns a list of opportunity-types
+                $ref: '#/components/schemas/Origin_GetResponse'
+          description: Returns a list of origins
         401:
           description: Unauthorized
-      summary: Listar Opportunity-Types
-      description: Retorna uma lista de tipos de oportunidades cadastradas ou determinados
-        tipos com base nos filtros no header Integration-Filter
-    post:
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Opportunity-Types-Integration_V1_BodyCreate'
-      tags:
-      - Opportunity-Types
-      parameters:
-      - name: Integration-Filter
-        description: |
-          Filtro do registro específico para a ação. Deve-se usar o identificador principal da
-          entidade (ID).
-        schema:
-          type: string
-        in: header
-        required: false
-      - name: Integration-Response
-        description: |
-          Nível de detalhe do retorno da API. São suportados atualmente:
-
-          **full** - Resposta completa, equivalente a um GET no recurso
-
-          **minimum** - Resposta mínima, equivalente ao ID, data de criação e atualização do
-          registro
-
-          Se o header não for informado, por padrão o retorno será equivalente ao nível
-          **minimum**
-        schema:
-          default: minimum
-          enum:
-          - full
-          - minimum
-          type: string
-        in: header
-        required: false
-      - name: Integration-Action
-        description: |
-          Ação a ser realizada na API de integração. Selecione uma das opções para carregar o
-          body da requisição.
-        schema:
-          oneOf:
-          - $ref: '#/components/schemas/Opportunity-Types-Integration_V1_BodyCreate'
-          - $ref: '#/components/schemas/Opportunity-Types-Integration_V1_BodyUpdate'
-          - $ref: '#/components/schemas/Opportunity-Types-Integration_V1_BodyUpsert'
-          discriminator:
-            mapping:
-              create: '#/components/schemas/Opportunity-Types-Integration_V1_BodyCreate'
-              update: '#/components/schemas/Opportunity-Types-Integration_V1_BodyUpdate'
-              upsert: '#/components/schemas/Opportunity-Types-Integration_V1_BodyUpsert'
-        in: header
-        required: true
-      responses:
-        200:
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Opportunity-Types-Integration_V1_FullResponse'
-                discriminator:
-                  mapping:
-                    full: '#/components/schemas/Opportunity-Types-Integration_V1_FullResponse'
-                    minimum: '#/components/schemas/Opportunity-Types-Integration_V1_MinimumResponse'
-          description: Returns a opportunity-types register
-        401:
-          description: Unauthorized
-      summary: Criar, atualizar e deletar Opportunity-Types
-      description: |
-        A ação a ser realizada no cadastro depende do valor preenchido no header
-        **Integration-Action**:
-
-
-        **create** - Realiza a operação de POST do cadastro enviado;
-
-
-        **update** - Realiza a operação de PATCH do cadastro enviado, baseado no ID do registro
-        preenchido no header **Integration-Filter**;
-
-
-        **upsert** - Realiza a operação de POST do cadastro enviado se não for enviado ID do registro
-        no header **Integration-Filter** **OU** realiza a operação de PUT do cadastro enviado se for
-        enviado o ID do registro no header **Integration-Filter**;
-    parameters:
-    - name: Integration-Service
-      description: 'Serviço responsável pela entidade. Exemplo: opportunity'
-      schema:
-        default: opportunity
-        type: string
-      in: header
-      required: true
-    - name: Integration-Resource
-      description: 'Recurso para requisição. Exemplo: opportunity-types-integration'
-      schema:
-        default: opportunity-types-integration
-        type: string
-      in: header
-      required: true
-    - name: Integration-Version
-      description: 'Versão da API de integração. Exemplo: v1'
-      schema:
-        default: v1
-        type: string
-      in: header
-      required: true
+      summary: Listar origins
+      description: Retorna uma lista de origens cadastrados ou determinadas origens
+        com base nos filtros na URL.
 components:
   schemas:
-    Opportunity-Types-Integration_V1_BodyEmpty:
-      description: No body
-      type: object
-    Opportunity-Types-Integration_V1_MinimumResponse:
+    Origin_GetResponse:
       type: object
       properties:
         id:
+          description: Identificador do registro no CRM. O UUID é único.
           type: string
+          example: b11d97a5-ebec-4e8e-ac12-abe88853a284
+        externalId:
+          description: Chave de identificação do registro em sistema externo. Deve
+            ser único
+          type: string
+          example: origemLead#cf707124-07fe-45fe-987f-c2ccffe4e479
+        customerSourceId:
+          format: UUID
+          description: Identificador do cliente de origem
+          type: string
+        leadSourceId:
+          format: UUID
+          description: Identificador do lead de origem
+          type: string
+          example: cf707124-07fe-45fe-987f-c2ccffe4e479
+        campaignSourceId:
+          format: UUID
+          description: Identificador da campanha de origem
+          type: string
+        opportunitySourceId:
+          format: UUID
+          description: Identificador da oportunidade de origem
+          type: string
+        activitySourceId:
+          format: UUID
+          description: Identificador da atividade de origem
+          type: string
+        actionPlanSourceId:
+          format: UUID
+          description: Identificador do plano de ação de origem
+          type: string
+        sourceType:
+          description: Tipo da origem
+          enum:
+          - CUSTOMER
+          - LEAD
+          - CAMPAIGN
+          - OPPORTUNITY
+          - ACTIVITY
+          - ACTION_PLAN
+          - UNKNOWN
+          type: string
+          example: LEAD
+        targetType:
+          description: Tipo do destino
+          enum:
+          - OPPORTUNITY
+          - ACTIVITY
+          - UNKNOWN
+          type: string
+          example: ACTIVITY
         createdAt:
+          description: Data e hora de criação
           type: string
+          example: 2020-09-02T16:44:11.225Z
         updatedAt:
+          description: Data e hora de atualização
           type: string
+          example: 2020-09-03T19:25:30.775Z
       example:
-        id: 19de1e5b-37c8-42c6-a62f-3d7bdd11e994
-        createAt: 2019-08-13T18:00:38.780Z
-        updatedAt: 2019-08-13T18:00:38.780Z
-    Opportunity-Types-Integration_V1_BodyCreate:
-      required:
-      - externalId
-      - active
-      - description
-      type: object
-      properties:
-        externalId:
-          description: Identificador do sistema externo
-          type: string
-          example: Etapa 1
-        description:
-          description: Descrição do tipo de oportunidade
-          maxLength: 255
-          type: string
-          example: Visita
-        active:
-          description: Situação do tipo de oportunidade
-          type: boolean
-          example: true
-    Opportunity-Types-Integration_V1_BodyUpdate:
-      type: object
-      properties:
-        externalId:
-          type: string
-          example: OportunidadeVenda1
-        description:
-          maxLength: 255
-          type: string
-          example: Venda
-        active:
-          type: boolean
-          example: true
-    Opportunity-Types-Integration_V1_BodyUpsert:
-      type: object
-      properties:
-        externalId:
-          type: string
-          example: OportunidadeVenda1
-        description:
-          maxLength: 255
-          type: string
-          example: Venda
-        active:
-          type: boolean
-          example: true
-    Opportunity-Types-Integration_V1_FullResponse:
-      type: object
-      properties:
-        id:
-          format: uuid
-          type: string
-          example: aabc54a1-49c3-444d-88ec-eaa3fbe63e86
-        createdAt:
-          type: string
-          example: 2019-08-13T18:00:38.780Z
-        updatedAt:
-          type: string
-          example: 2019-08-13T18:00:38.780Z
-        externalId:
-          type: string
-          example: OPO#VENDA1
-        description:
-          maxLength: 255
-          type: string
-          example: Oportunidade de venda
-        active:
-          type: boolean
-          example: true
-    Opportunity-Types-Integration_V1_GetResponse:
-      type: object
-      properties:
-        id:
-          format: uuid
-          type: string
-          example: aabc54a1-49c3-444d-88ec-eaa3fbe63e86
-        createdAt:
-          type: string
-          example: 2019-08-13T18:00:38.780Z
-        updatedAt:
-          type: string
-          example: 2019-08-13T18:00:38.780Z
-        externalId:
-          type: string
-          example: OPO#VENDA1
-        description:
-          maxLength: 255
-          type: string
-          example: Oportunidade de venda
-        active:
-          type: boolean
-          example: true
-tags:
-- name: APP2
-  description: Ambiente APP2
-- name: integration
-  description: ""
+        id: b11d97a5-ebec-4e8e-ac12-abe88853a284
+        externalId: origemLead#cf707124-07fe-45fe-987f-c2ccffe4e479
+        leadSourceId: cf707124-07fe-45fe-987f-c2ccffe4e479
+        sourceType: LEAD
+        targetType: ACTIVITY
+        createdAt: 2020-09-02T16:44:11.225Z
+        updatedAt: 2020-09-03T19:25:30.775Z
