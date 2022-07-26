@@ -1,27 +1,36 @@
 openapi: 3.0.2
 info:
-  title: activity-types-integrationV1
+  title: opportunities-integrationV1
   version: 1.0.0
   description: |
-    API de integração de tipo de atividade (Activity-Types) V1
+    API de integração de oportunidades (Opportunities) V1
 
-    Compatível com a versão V6 do serviço de negócio Opportunity
+    Compatível com a versão V6 e V7 do serviço de negócio Opportunity
   contact: {}
 servers:
 - url: https://{url}/api/{version}/integration
-  description: Integration Router Server
+  description: Integration Router Server APP2
   variables:
     url:
       default: app2.mastercrm.ws
       description: URL de acesso ao Integration-Router
     version:
       default: v1
-      description: Versão do Integration-Router
+      description: Versão do Integration-Router no APP2
+- url: https://{url}/api/{version}/integration
+  description: Integration Router Server APP3
+  variables:
+    url:
+      default: totvscrm.app
+      description: URL de acesso ao Integration-Router
+    version:
+      default: v1
+      description: Versão do Integration-Router no APP3
 paths:
   /record:
     get:
       tags:
-      - Activity-Types
+      - Opportunities
       parameters:
       - name: Integration-Filter
         description: |
@@ -41,21 +50,21 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Activity-Types-Integration_V1_FullResponse'
-          description: Returns a list of activity-types
+                $ref: '#/components/schemas/Opportunities-Integration_V1_FullResponse'
+          description: Returns a list of opportunities
         401:
           description: Unauthorized
-      summary: Listar Activity-Types
-      description: Retorna uma lista de tipos de atividades cadastradas ou determinados
+      summary: Listar Opportunities
+      description: Retorna uma lista de tipos de oportunidades cadastradas ou determinados
         tipos com base nos filtros no header Integration-Filter
     post:
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Activity-Types-Integration_V1_BodyCreate'
+              $ref: '#/components/schemas/Opportunities-Integration_V1_BodyCreate'
       tags:
-      - Activity-Types
+      - Opportunities
       parameters:
       - name: Integration-Filter
         description: |
@@ -90,14 +99,15 @@ paths:
           body da requisição.
         schema:
           oneOf:
-          - $ref: '#/components/schemas/Activity-Types-Integration_V1_BodyCreate'
-          - $ref: '#/components/schemas/Activity-Types-Integration_V1_BodyUpdate'
-          - $ref: '#/components/schemas/Activity-Types-Integration_V1_BodyUpsert'
+          - $ref: '#/components/schemas/Opportunities-Integration_V1_BodyCreate'
+          - $ref: '#/components/schemas/Opportunities-Integration_V1_BodyUpdate'
+          - $ref: '#/components/schemas/Opportunities-Integration_V1_BodyUpsert'
           discriminator:
+            propertyName: Corpo da mensagem
             mapping:
-              create: '#/components/schemas/Activity-Types-Integration_V1_BodyCreate'
-              update: '#/components/schemas/Activity-Types-Integration_V1_BodyUpdate'
-              upsert: '#/components/schemas/Activity-Types-Integration_V1_BodyUpsert'
+              create: '#/components/schemas/Opportunities-Integration_V1_BodyCreate'
+              update: '#/components/schemas/Opportunities-Integration_V1_BodyUpdate'
+              upsert: '#/components/schemas/Opportunities-Integration_V1_BodyUpsert'
         in: header
         required: true
       responses:
@@ -105,15 +115,16 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Activity-Types-Integration_V1_FullResponse'
+                $ref: '#/components/schemas/Opportunities-Integration_V1_FullResponse'
                 discriminator:
+                  propertyName: Nível de resposta
                   mapping:
-                    full: '#/components/schemas/Activity-Types-Integration_V1_FullResponse'
-                    minimum: '#/components/schemas/Activity-Types-Integration_V1_MinimumResponse'
-          description: Returns a activity-types register
+                    full: '#/components/schemas/Opportunities-Integration_V1_FullResponse'
+                    minimum: '#/components/schemas/Opportunities-Integration_V1_MinimumResponse'
+          description: Returns a opportunities register
         401:
           description: Unauthorized
-      summary: Criar, atualizar e deletar Activity-Types
+      summary: Criar, atualizar e deletar Opportunities
       description: |
         A ação a ser realizada no cadastro depende do valor preenchido no header
         **Integration-Action**:
@@ -138,9 +149,9 @@ paths:
       in: header
       required: true
     - name: Integration-Resource
-      description: 'Recurso para requisição. Exemplo: activity-types-integration'
+      description: 'Recurso para requisição. Exemplo: opportunities-integration'
       schema:
-        default: activity-types-integration
+        default: opportunities-integration
         type: string
       in: header
       required: true
@@ -153,10 +164,10 @@ paths:
       required: true
 components:
   schemas:
-    Activity-Types-Integration_V1_BodyEmpty:
+    Opportunities-Integration_V1_BodyEmpty:
       description: No body
       type: object
-    Activity-Types-Integration_V1_MinimumResponse:
+    Opportunities-Integration_V1_MinimumResponse:
       type: object
       properties:
         id:
@@ -169,116 +180,1098 @@ components:
         id: 19de1e5b-37c8-42c6-a62f-3d7bdd11e994
         createAt: 2019-08-13T18:00:38.780Z
         updatedAt: 2019-08-13T18:00:38.780Z
-    Activity-Types-Integration_V1_FullResponse:
-      type: object
-      properties:
-        id:
-          format: uuid
-          type: string
-          example: aabc54a1-49c3-444d-88ec-eaa3fbe63e86
-        createdAt:
-          type: string
-          example: 2019-08-13T18:00:38.780Z
-        updatedAt:
-          type: string
-          example: 2019-08-13T18:00:38.780Z
-        externalId:
-          type: string
-          example: COMPROMISSO
-        description:
-          maxLength: 255
-          type: string
-          example: Compromisso
-        active:
-          type: boolean
-          example: true
-        internal:
-          type: boolean
-          example: false
-    Activity-Types-Integration_V1_GetResponse:
-      type: object
-      properties:
-        id:
-          format: uuid
-          type: string
-          example: aabc54a1-49c3-444d-88ec-eaa3fbe63e86
-        createdAt:
-          type: string
-          example: 2019-08-13T18:00:38.780Z
-        updatedAt:
-          type: string
-          example: 2019-08-13T18:00:38.780Z
-        externalId:
-          type: string
-          example: COMPROMISSO
-        description:
-          maxLength: 255
-          type: string
-          example: Compromisso
-        active:
-          type: boolean
-          example: true
-        internal:
-          type: boolean
-          example: false
-    Activity-Types-Integration_V1_BodyCreate:
+    Opportunities-Integration_V1_BodyCreate:
       required:
       - externalId
-      - active
       - description
+      - opportunityTypeId
+      - pipelineId
+      - stageId
+      - userId
+      - accountType
+      - totalSingleValue
+      - totalRecurrentValue
+      - totalValue
+      - startedAt
+      - status
+      - code
+      - expectedAt
       type: object
       properties:
         externalId:
-          description: Identificador do sistema externo
+          description: Código único do sistema externo para a oportunidade
           type: string
-          example: Compromisso
+          example: PEDRO20200630
+        status:
+          description: Situação da oportunidade
+          enum:
+          - PROGRESS
+          - WON
+          - LOST
+          - DISCARDED
+          type: string
+          example: PROGRESS
+        code:
+          description: Código da oportunidade
+          type: string
+          example: 205
         description:
-          description: Descrição do tipo de atividade
+          description: Descrição da oportunidade
           maxLength: 255
           type: string
-          example: Compromisso
-        active:
-          description: Situação do tipo de atividade
-          type: boolean
-          example: true
-        internal:
-          description: Indica se é uma atividade interna
-          type: boolean
-          example: false
-    Activity-Types-Integration_V1_BodyUpdate:
+          example: Oportunidade para cliente Pedro
+        opportunityTypeId:
+          format: uuid
+          description: Identificador do tipo da oportunidade
+          type: string
+          example: 7e7884b1-80a3-4772-9855-a36f4f830b1b
+        winLossReasonId:
+          format: uuid
+          description: Identificador do registro de causa de ganho/perda da oportunidade
+          type: string
+          example: 88812f23-a53e-4eae-8635-eb7e17d4e08d
+        winLossNote:
+          description: Observação de ganho/perda da oportunidade
+          type: string
+          example: Observacao ganha ou perda
+        pipelineId:
+          format: uuid
+          description: Identificador da pipeline
+          type: string
+          example: 990f7ca5-e7fb-468c-a683-ae3dd2a87d5c
+        stageId:
+          format: uuid
+          description: Identificador do estado da pipeline
+          type: string
+          example: 990f7ca5-e7fb-468c-a683-ae3dd2a87d5c
+        userId:
+          format: uuid
+          description: Identificador do usuário
+          type: string
+          example: 9dcf5aec-aedd-448c-90e8-5ec309de3af3
+        accountType:
+          description: Tipo da conta (cliente ou lead)
+          enum:
+          - CUSTOMER
+          - LEAD
+          type: string
+          example: CUSTOMER
+        customerId:
+          format: uuid
+          description: Identificador do cliente
+          type: string
+          example: b55995ef-d87a-4884-98c5-866a58bb90e8
+        leadId:
+          format: uuid
+          description: Identificador do lead
+          type: string
+          example: c55995ef-d87a-4884-98c5-866a58bb90e8
+        expectedAt:
+          format: date
+          description: Data esperada da oportunidade
+          type: string
+          example: 2021-02-01
+        probabilityPercentage:
+          description: Probabilidade de ganho da oportunidade
+          type: number
+          example: 75
+        totalSingleValue:
+          description: Valor único da oportunidade
+          type: number
+          example: "100.00"
+        totalRecurrentValue:
+          description: Valor total recorrente da oportunidade
+          type: number
+          example: "200.00"
+        totalValue:
+          description: Valor total da oportunidade (Recorrente + unico)
+          type: number
+          example: "300.00"
+        note:
+          description: Observação para a oportunidade
+          type: string
+          example: Somente com frete
+        startedAt:
+          format: timestamp
+          description: Data de início da oportunidade
+          type: string
+          example: 2019-07-12T16:28:11.760Z
+        inconsistencyNote:
+          description: Observação de inconsistência da oportunidade
+          type: string
+          example: observacao de inconsistencia
+        discardedAt:
+          format: timestamp
+          description: Data de descarte da oportunidade
+          type: string
+          example: 2019-07-12T16:28:11.760Z
+        recoverNote:
+          description: Observação da recuperação da oportunidade
+          type: string
+          example: observacao de recuperação
+        discardedNote:
+          description: Observação para o descarte da oportunidade
+          type: string
+          example: observacao de descarte
+        extendNote:
+          description: Observação completa
+          type: string
+          example: A data foi prorrogada a pedido do cliente
+        origin:
+          description: Se a oportunidade foi originada por outro evento do sistema,
+            deve ser preenchidos o ID do registro, tipo e descrição
+          type: object
+          properties:
+            id:
+              format: uuid
+              description: Identificador do registro que originou esta oportunidade
+              type: string
+              example: 50203861-95f3-4101-80c1-2b64f6613682
+            type:
+              description: Tipo do registro que originou esta oportunidade
+              enum:
+              - ACTIVITY
+              - OPPORTUNITY
+              - CUSTOMER
+              - LEAD
+              - CAMPAIGN
+              type: string
+              example: ACTIVITY
+            description:
+              description: Descrição do registro que gerou esta oportunidade
+              type: string
+              example: Ligação de proposta
+        completedAt:
+          description: Data de finalização da oportunidade
+          type: string
+          example: 2019-07-12T16:28:11.760Z
+        contacts:
+          description: Contatos do cliente/lead
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                format: uuid
+                description: Identificador do usuário
+                type: string
+                example: 610c7441-f2ce-4931-b0d8-1ffc6c373da8
+        exchange:
+          description: Dados do câmbio da oportunidade
+          type: object
+          properties:
+            currencyId:
+              format: uuid
+              description: Identificador da moeda padrão
+              type: string
+              example: 67828a92-1503-4adb-c31b-c5416ad47c73
+            currencyRateId:
+              format: uuid
+              description: Identificador da moeda a ser convertida
+              type: string
+              example: b5848795-75df-48a1-820a-fc3c6c163785
+            exchangeRateId:
+              format: uuid
+              description: Identificador da cotação de troca da moeda
+              type: string
+              example: f73cf687-5aa0-4f5d-9cde-2708f8cd0af0
+            exchangeRateDate:
+              format: date
+              description: Data da cotação de troca da moeda
+              type: string
+              example: 2020-07-17
+            exchageRateValue:
+              description: Valor da cotação de troca da moeda
+              type: number
+              example: "5.37"
+            externalId:
+              description: Código único do sistema externo para a troca da moeda
+              type: string
+              example: Dolar
+        totalExchangeConvertedValue:
+          description: Total da oportunidade convertido para a moeda
+          type: number
+          example: "2000.00"
+        companyId:
+          format: UUID
+          description: Identificador da empresa/filial
+          type: string
+          example: 0006ba35-bee7-3249-a5e8-acd3b7f534d6
+      example:
+        externalId: PEDRO20200630
+        status: PROGRESS
+        code: 205
+        description: Oportunidade para cliente Pedro
+        opportunityTypeId: 7e7884b1-80a3-4772-9855-a36f4f830b1b
+        winLossReasonId: 88812f23-a53e-4eae-8635-eb7e17d4e08d
+        winLossNote: Observacao ganha ou perda
+        pipelineId: 990f7ca5-e7fb-468c-a683-ae3dd2a87d5c
+        stageId: 990f7ca5-e7fb-468c-a683-ae3dd2a87d5c
+        userId: 9dcf5aec-aedd-448c-90e8-5ec309de3af3
+        accountType: CUSTOMER
+        customerId: b55995ef-d87a-4884-98c5-866a58bb90e8
+        expectedAt: 2021-02-01
+        probabilityPercentage: 75
+        totalSingleValue: "100.00"
+        totalRecurrentValue: "200.00"
+        totalValue: "300.00"
+        note: Somente com frete
+        startedAt: 2019-07-12T16:28:11.760Z
+        inconsistencyNote: observacao de inconsistencia
+        discardedAt: 2019-07-12T16:28:11.760Z
+        recoverNote: observacao de recuperação
+        discardedNote: observacao de descarte
+        extendNote: A data foi prorrogada a pedido do cliente
+        origin:
+          id: 50203861-95f3-4101-80c1-2b64f6613682
+          type: ACTIVITY
+          description: Ligação de proposta
+        completedAt: 2019-07-12T16:28:11.760Z
+        contacts:
+        - id: 610c7441-f2ce-4931-b0d8-1ffc6c373da8
+        exchange:
+          currencyId: 67828a92-1503-4adb-c31b-c5416ad47c73
+          currencyRateId: b5848795-75df-48a1-820a-fc3c6c163785
+          exchangeRateId: f73cf687-5aa0-4f5d-9cde-2708f8cd0af0
+          exchangeRateDate: 2020-07-17
+          exchageRateValue: "5.37"
+          externalId: Dolar
+        totalExchangeConvertedValue: "2000.00"
+        companyId: 0006ba35-bee7-3249-a5e8-acd3b7f534d6
+    Opportunities-Integration_V1_BodyUpdate:
       type: object
       properties:
         externalId:
           type: string
-          example: Compromisso
+          example: PEDRO20200630
+        status:
+          description: ""
+          enum:
+          - PROGRESS
+          - WON
+          - LOST
+          - DISCARDED
+          type: string
+          example: PROGRESS
+        code:
+          type: string
+          example: 205
         description:
           maxLength: 255
           type: string
-          example: Compromisso
-        active:
-          type: boolean
-          example: true
-        internal:
-          type: boolean
-          example: false
-    Activity-Types-Integration_V1_BodyUpsert:
+          example: Oportunidade para cliente Pedro
+        opportunityTypeId:
+          format: uuid
+          type: string
+          example: 7e7884b1-80a3-4772-9855-a36f4f830b1b
+        winLossReasonId:
+          format: uuid
+          type: string
+          example: 88812f23-a53e-4eae-8635-eb7e17d4e08d
+        winLossNote:
+          type: string
+          example: Observacao ganha ou perda
+        pipelineId:
+          format: uuid
+          type: string
+          example: 990f7ca5-e7fb-468c-a683-ae3dd2a87d5c
+        stageId:
+          format: uuid
+          type: string
+          example: 990f7ca5-e7fb-468c-a683-ae3dd2a87d5c
+        userId:
+          format: uuid
+          type: string
+          example: 9dcf5aec-aedd-448c-90e8-5ec309de3af3
+        accountType:
+          enum:
+          - CUSTOMER
+          - LEAD
+          type: string
+          example: CUSTOMER
+        customerId:
+          format: uuid
+          type: string
+          example: b55995ef-d87a-4884-98c5-866a58bb90e8
+        leadId:
+          format: uuid
+          type: string
+        expectedAt:
+          format: date
+          type: string
+          example: 2021-02-01
+        probabilityPercentage:
+          type: number
+          example: 75
+        totalSingleValue:
+          type: number
+          example: "100.00"
+        totalRecurrentValue:
+          type: number
+          example: "200.00"
+        totalValue:
+          type: number
+          example: "300.00"
+        note:
+          type: string
+          example: Somente com frete
+        startedAt:
+          format: timestamp
+          type: string
+          example: 2019-07-12T16:28:11.760Z
+        inconsistencyNote:
+          type: string
+          example: observacao de inconsistencia
+        discardedAt:
+          format: timestamp
+          type: string
+          example: 2019-07-12T16:28:11.760Z
+        recoverNote:
+          type: string
+          example: observacao de recuperação
+        discardedNote:
+          type: string
+          example: observacao de descarte
+        extendNote:
+          type: string
+          example: A data foi prorrogada a pedido do cliente
+        origin:
+          type: object
+          properties:
+            id:
+              format: uuid
+              type: string
+              example: 50203861-95f3-4101-80c1-2b64f6613682
+            type:
+              enum:
+              - ACTIVITY
+              - OPPORTUNITY
+              - CUSTOMER
+              - LEAD
+              - CAMPAIGN
+              type: string
+              example: ACTIVITY
+            description:
+              type: string
+              example: Ligação de proposta
+        completedAt:
+          type: string
+          example: 2019-07-12T16:28:11.760Z
+        contacts:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                format: uuid
+                type: string
+                example: 610c7441-f2ce-4931-b0d8-1ffc6c373da8
+        exchange:
+          type: object
+          properties:
+            currencyId:
+              format: uuid
+              type: string
+              example: 67828a92-1503-4adb-c31b-c5416ad47c73
+            currencyRate:
+              format: uuid
+              type: string
+              example: b5848795-75df-48a1-820a-fc3c6c163785
+            exchangeRateId:
+              format: uuid
+              type: string
+              example: f73cf687-5aa0-4f5d-9cde-2708f8cd0af0
+            exchangeRateDate:
+              format: date
+              type: string
+              example: 2020-07-17
+            exchageRateValue:
+              type: number
+              example: "5.37"
+            externalId:
+              type: string
+              example: Dolar
+        totalExchangeConvertedValue:
+          type: number
+          example: "2000.00"
+        companyId:
+          format: UUID
+          type: string
+          example: 0006ba35-bee7-3249-a5e8-acd3b7f534d6
+      example:
+        externalId: PEDRO20200630
+        status: PROGRESS
+        code: 205
+        description: Oportunidade para cliente Pedro
+        opportunityTypeId: 7e7884b1-80a3-4772-9855-a36f4f830b1b
+        winLossReasonId: 88812f23-a53e-4eae-8635-eb7e17d4e08d
+        winLossNote: Observacao ganha ou perda
+        pipelineId: 990f7ca5-e7fb-468c-a683-ae3dd2a87d5c
+        stageId: 990f7ca5-e7fb-468c-a683-ae3dd2a87d5c
+        userId: 9dcf5aec-aedd-448c-90e8-5ec309de3af3
+        accountType: CUSTOMER
+        customerId: b55995ef-d87a-4884-98c5-866a58bb90e8
+        expectedAt: 2021-02-01
+        probabilityPercentage: 75
+        totalSingleValue: "100.00"
+        totalRecurrentValue: "200.00"
+        totalValue: "300.00"
+        note: Somente com frete
+        startedAt: 2019-07-12T16:28:11.760Z
+        inconsistencyNote: observacao de inconsistencia
+        discardedAt: 2019-07-12T16:28:11.760Z
+        recoverNote: observacao de recuperação
+        discardedNote: observacao de descarte
+        extendNote: A data foi prorrogada a pedido do cliente
+        origin:
+          id: 50203861-95f3-4101-80c1-2b64f6613682
+          type: ACTIVITY
+          description: Ligação de proposta
+        completedAt: 2019-07-12T16:28:11.760Z
+        contacts:
+        - id: 610c7441-f2ce-4931-b0d8-1ffc6c373da8
+        exchange:
+          currencyId: 67828a92-1503-4adb-c31b-c5416ad47c73
+          currencyRate: b5848795-75df-48a1-820a-fc3c6c163785
+          exchangeRateId: f73cf687-5aa0-4f5d-9cde-2708f8cd0af0
+          exchangeRateDate: 2020-07-17
+          exchageRateValue: "5.37"
+          externalId: Dolar
+        totalExchangeConvertedValue: "2000.00"
+        companyId: 0006ba35-bee7-3249-a5e8-acd3b7f534d6
+    Opportunities-Integration_V1_BodyUpsert:
       type: object
       properties:
         externalId:
           type: string
-          example: Compromisso
+          example: PEDRO20200630
+        status:
+          description: ""
+          enum:
+          - PROGRESS
+          - WON
+          - LOST
+          - DISCARDED
+          type: string
+          example: PROGRESS
+        code:
+          type: string
+          example: 205
         description:
           maxLength: 255
           type: string
-          example: Compromisso
-        active:
-          type: boolean
-          example: true
-        internal:
-          type: boolean
-          example: false
+          example: Oportunidade para cliente Pedro
+        opportunityTypeId:
+          format: uuid
+          type: string
+          example: 7e7884b1-80a3-4772-9855-a36f4f830b1b
+        winLossReasonId:
+          format: uuid
+          type: string
+          example: 88812f23-a53e-4eae-8635-eb7e17d4e08d
+        winLossNote:
+          type: string
+          example: Observacao ganha ou perda
+        pipelineId:
+          format: uuid
+          type: string
+          example: 990f7ca5-e7fb-468c-a683-ae3dd2a87d5c
+        stageId:
+          format: uuid
+          type: string
+          example: 990f7ca5-e7fb-468c-a683-ae3dd2a87d5c
+        userId:
+          format: uuid
+          type: string
+          example: 9dcf5aec-aedd-448c-90e8-5ec309de3af3
+        accountType:
+          enum:
+          - CUSTOMER
+          - LEAD
+          type: string
+          example: CUSTOMER
+        customerId:
+          format: uuid
+          type: string
+          example: b55995ef-d87a-4884-98c5-866a58bb90e8
+        leadId:
+          format: uuid
+          type: string
+        expectedAt:
+          format: date
+          type: string
+          example: 2021-02-01
+        probabilityPercentage:
+          type: number
+          example: 75
+        totalSingleValue:
+          type: number
+          example: "100.00"
+        totalRecurrentValue:
+          type: number
+          example: "200.00"
+        totalValue:
+          type: number
+          example: "300.00"
+        note:
+          type: string
+          example: Somente com frete
+        startedAt:
+          format: timestamp
+          type: string
+          example: 2019-07-12T16:28:11.760Z
+        inconsistencyNote:
+          type: string
+          example: observacao de inconsistencia
+        discardedAt:
+          format: timestamp
+          type: string
+          example: 2019-07-12T16:28:11.760Z
+        recoverNote:
+          type: string
+          example: observacao de recuperação
+        discardedNote:
+          type: string
+          example: observacao de descarte
+        extendNote:
+          type: string
+          example: A data foi prorrogada a pedido do cliente
+        origin:
+          type: object
+          properties:
+            id:
+              format: uuid
+              type: string
+              example: 50203861-95f3-4101-80c1-2b64f6613682
+            type:
+              enum:
+              - ACTIVITY
+              - OPPORTUNITY
+              - CUSTOMER
+              - LEAD
+              - CAMPAIGN
+              type: string
+              example: ACTIVITY
+            description:
+              type: string
+              example: Ligação de proposta
+        completedAt:
+          type: string
+          example: 2019-07-12T16:28:11.760Z
+        contacts:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                format: uuid
+                type: string
+                example: 610c7441-f2ce-4931-b0d8-1ffc6c373da8
+        exchange:
+          type: object
+          properties:
+            currencyId:
+              format: uuid
+              type: string
+              example: 67828a92-1503-4adb-c31b-c5416ad47c73
+            currencyRate:
+              format: uuid
+              type: string
+              example: b5848795-75df-48a1-820a-fc3c6c163785
+            exchangeRateId:
+              format: uuid
+              type: string
+              example: f73cf687-5aa0-4f5d-9cde-2708f8cd0af0
+            exchangeRateDate:
+              format: date
+              type: string
+              example: 2020-07-17
+            exchageRateValue:
+              type: number
+              example: "5.37"
+            externalId:
+              type: string
+              example: Dolar
+        totalExchangeConvertedValue:
+          type: number
+          example: "2000.00"
+        companyId:
+          format: UUID
+          type: string
+          example: 0006ba35-bee7-3249-a5e8-acd3b7f534d6
+      example:
+        externalId: PEDRO20200630
+        status: PROGRESS
+        code: 205
+        description: Oportunidade para cliente Pedro
+        opportunityTypeId: 7e7884b1-80a3-4772-9855-a36f4f830b1b
+        winLossReasonId: 88812f23-a53e-4eae-8635-eb7e17d4e08d
+        winLossNote: Observacao ganha ou perda
+        pipelineId: 990f7ca5-e7fb-468c-a683-ae3dd2a87d5c
+        stageId: 990f7ca5-e7fb-468c-a683-ae3dd2a87d5c
+        userId: 9dcf5aec-aedd-448c-90e8-5ec309de3af3
+        accountType: CUSTOMER
+        customerId: b55995ef-d87a-4884-98c5-866a58bb90e8
+        expectedAt: 2021-02-01
+        probabilityPercentage: 75
+        totalSingleValue: "100.00"
+        totalRecurrentValue: "200.00"
+        totalValue: "300.00"
+        note: Somente com frete
+        startedAt: 2019-07-12T16:28:11.760Z
+        inconsistencyNote: observacao de inconsistencia
+        discardedAt: 2019-07-12T16:28:11.760Z
+        recoverNote: observacao de recuperação
+        discardedNote: observacao de descarte
+        extendNote: A data foi prorrogada a pedido do cliente
+        origin:
+          id: 50203861-95f3-4101-80c1-2b64f6613682
+          type: ACTIVITY
+          description: Ligação de proposta
+        completedAt: 2019-07-12T16:28:11.760Z
+        contacts:
+        - id: 610c7441-f2ce-4931-b0d8-1ffc6c373da8
+        exchange:
+          currencyId: 67828a92-1503-4adb-c31b-c5416ad47c73
+          currencyRate: b5848795-75df-48a1-820a-fc3c6c163785
+          exchangeRateId: f73cf687-5aa0-4f5d-9cde-2708f8cd0af0
+          exchangeRateDate: 2020-07-17
+          exchageRateValue: "5.37"
+          externalId: Dolar
+        totalExchangeConvertedValue: "2000.00"
+        companyId: 0006ba35-bee7-3249-a5e8-acd3b7f534d6
+    Opportunities-Integration_V1_FullResponse:
+      type: object
+      properties:
+        id:
+          format: uuid
+          type: string
+          example: aabc54a1-49c3-444d-88ec-eaa3fbe63e86
+        createdAt:
+          type: string
+          example: 2019-08-13T18:00:38.780Z
+        updatedAt:
+          type: string
+          example: 2019-08-13T18:00:38.780Z
+        externalId:
+          type: string
+          example: PEDRO20200630
+        status:
+          description: ""
+          enum:
+          - PROGRESS
+          - WON
+          - LOST
+          - DISCARDED
+          type: string
+          example: PROGRESS
+        code:
+          type: string
+          example: 205
+        description:
+          maxLength: 255
+          type: string
+          example: Oportunidade para cliente Pedro
+        opportunityTypeId:
+          format: uuid
+          type: string
+          example: 7e7884b1-80a3-4772-9855-a36f4f830b1b
+        winLossReasonId:
+          format: uuid
+          type: string
+          example: 88812f23-a53e-4eae-8635-eb7e17d4e08d
+        winLossNote:
+          type: string
+          example: Observacao ganha ou perda
+        pipelineId:
+          format: uuid
+          type: string
+          example: 990f7ca5-e7fb-468c-a683-ae3dd2a87d5c
+        stageId:
+          format: uuid
+          type: string
+          example: 990f7ca5-e7fb-468c-a683-ae3dd2a87d5c
+        userId:
+          format: uuid
+          type: string
+          example: 9dcf5aec-aedd-448c-90e8-5ec309de3af3
+        accountType:
+          enum:
+          - CUSTOMER
+          - LEAD
+          type: string
+          example: CUSTOMER
+        customerId:
+          format: uuid
+          type: string
+          example: b55995ef-d87a-4884-98c5-866a58bb90e8
+        leadId:
+          format: uuid
+          type: string
+        expectedAt:
+          format: date
+          type: string
+          example: 2021-02-01
+        probabilityPercentage:
+          type: number
+          example: 75
+        totalSingleValue:
+          type: number
+          example: "100.00"
+        totalRecurrentValue:
+          type: number
+          example: "200.00"
+        totalValue:
+          type: number
+          example: "300.00"
+        note:
+          type: string
+          example: Somente com frete
+        startedAt:
+          format: timestamp
+          type: string
+          example: 2019-07-12T16:28:11.760Z
+        inconsistencyNote:
+          type: string
+          example: observacao de inconsistencia
+        discardedAt:
+          format: timestamp
+          type: string
+          example: 2019-07-12T16:28:11.760Z
+        recoverNote:
+          type: string
+          example: observacao de recuperação
+        discardedNote:
+          type: string
+          example: observacao de descarte
+        extendNote:
+          type: string
+          example: A data foi prorrogada a pedido do cliente
+        origin:
+          type: object
+          properties:
+            id:
+              format: uuid
+              type: string
+              example: 50203861-95f3-4101-80c1-2b64f6613682
+            type:
+              enum:
+              - ACTIVITY
+              - OPPORTUNITY
+              - CUSTOMER
+              - LEAD
+              - CAMPAIGN
+              type: string
+              example: ACTIVITY
+            description:
+              type: string
+              example: Ligação de proposta
+        completedAt:
+          type: string
+          example: 2019-07-12T16:28:11.760Z
+        contacts:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                format: uuid
+                type: string
+                example: 610c7441-f2ce-4931-b0d8-1ffc6c373da8
+        exchange:
+          type: object
+          properties:
+            currencyId:
+              format: uuid
+              type: string
+              example: 67828a92-1503-4adb-c31b-c5416ad47c73
+            currencyRate:
+              format: uuid
+              type: string
+              example: b5848795-75df-48a1-820a-fc3c6c163785
+            exchangeRateId:
+              format: uuid
+              type: string
+              example: f73cf687-5aa0-4f5d-9cde-2708f8cd0af0
+            exchangeRateDate:
+              format: date
+              type: string
+              example: 2020-07-17
+            exchageRateValue:
+              type: number
+              example: "5.37"
+            externalId:
+              type: string
+              example: Dolar
+        totalExchangeConvertedValue:
+          type: number
+          example: "2000.00"
+        companyId:
+          format: UUID
+          type: string
+          example: 0006ba35-bee7-3249-a5e8-acd3b7f534d6
+      example:
+        id: aabc54a1-49c3-444d-88ec-eaa3fbe63e86
+        createdAt: 2019-08-13T18:00:38.780Z
+        updatedAt: 2019-08-13T18:00:38.780Z
+        externalId: PEDRO20200630
+        status: PROGRESS
+        code: 205
+        description: Oportunidade para cliente Pedro
+        opportunityTypeId: 7e7884b1-80a3-4772-9855-a36f4f830b1b
+        winLossReasonId: 88812f23-a53e-4eae-8635-eb7e17d4e08d
+        winLossNote: Observacao ganha ou perda
+        pipelineId: 990f7ca5-e7fb-468c-a683-ae3dd2a87d5c
+        stageId: 990f7ca5-e7fb-468c-a683-ae3dd2a87d5c
+        userId: 9dcf5aec-aedd-448c-90e8-5ec309de3af3
+        accountType: CUSTOMER
+        customerId: b55995ef-d87a-4884-98c5-866a58bb90e8
+        expectedAt: 2021-02-01
+        probabilityPercentage: 75
+        totalSingleValue: "100.00"
+        totalRecurrentValue: "200.00"
+        totalValue: "300.00"
+        note: Somente com frete
+        startedAt: 2019-07-12T16:28:11.760Z
+        inconsistencyNote: observacao de inconsistencia
+        discardedAt: 2019-07-12T16:28:11.760Z
+        recoverNote: observacao de recuperação
+        discardedNote: observacao de descarte
+        extendNote: A data foi prorrogada a pedido do cliente
+        origin:
+          id: 50203861-95f3-4101-80c1-2b64f6613682
+          type: ACTIVITY
+          description: Ligação de proposta
+        completedAt: 2019-07-12T16:28:11.760Z
+        contacts:
+        - id: 610c7441-f2ce-4931-b0d8-1ffc6c373da8
+        exchange:
+          currencyId: 67828a92-1503-4adb-c31b-c5416ad47c73
+          currencyRate: b5848795-75df-48a1-820a-fc3c6c163785
+          exchangeRateId: f73cf687-5aa0-4f5d-9cde-2708f8cd0af0
+          exchangeRateDate: 2020-07-17
+          exchageRateValue: "5.37"
+          externalId: Dolar
+        totalExchangeConvertedValue: "2000.00"
+        companyId: 0006ba35-bee7-3249-a5e8-acd3b7f534d6
+    Opportunities-Integration_V1_GetResponse:
+      type: object
+      properties:
+        id:
+          format: uuid
+          type: string
+          example: aabc54a1-49c3-444d-88ec-eaa3fbe63e86
+        createdAt:
+          type: string
+          example: 2019-08-13T18:00:38.780Z
+        updatedAt:
+          type: string
+          example: 2019-08-13T18:00:38.780Z
+        externalId:
+          type: string
+          example: PEDRO20200630
+        status:
+          description: ""
+          enum:
+          - PROGRESS
+          - WON
+          - LOST
+          - DISCARDED
+          type: string
+          example: PROGRESS
+        code:
+          type: string
+          example: 205
+        description:
+          maxLength: 255
+          type: string
+          example: Oportunidade para cliente Pedro
+        opportunityTypeId:
+          format: uuid
+          type: string
+          example: 7e7884b1-80a3-4772-9855-a36f4f830b1b
+        winLossReasonId:
+          format: uuid
+          type: string
+          example: 88812f23-a53e-4eae-8635-eb7e17d4e08d
+        winLossNote:
+          type: string
+          example: Observacao ganha ou perda
+        pipelineId:
+          format: uuid
+          type: string
+          example: 990f7ca5-e7fb-468c-a683-ae3dd2a87d5c
+        stageId:
+          format: uuid
+          type: string
+          example: 990f7ca5-e7fb-468c-a683-ae3dd2a87d5c
+        userId:
+          format: uuid
+          type: string
+          example: 9dcf5aec-aedd-448c-90e8-5ec309de3af3
+        accountType:
+          enum:
+          - CUSTOMER
+          - LEAD
+          type: string
+          example: CUSTOMER
+        customerId:
+          format: uuid
+          type: string
+          example: b55995ef-d87a-4884-98c5-866a58bb90e8
+        leadId:
+          format: uuid
+          type: string
+        expectedAt:
+          format: date
+          type: string
+          example: 2021-02-01
+        probabilityPercentage:
+          type: number
+          example: 75
+        totalSingleValue:
+          type: number
+          example: "100.00"
+        totalRecurrentValue:
+          type: number
+          example: "200.00"
+        totalValue:
+          type: number
+          example: "300.00"
+        note:
+          type: string
+          example: Somente com frete
+        startedAt:
+          format: timestamp
+          type: string
+          example: 2019-07-12T16:28:11.760Z
+        inconsistencyNote:
+          type: string
+          example: observacao de inconsistencia
+        discardedAt:
+          format: timestamp
+          type: string
+          example: 2019-07-12T16:28:11.760Z
+        recoverNote:
+          type: string
+          example: observacao de recuperação
+        discardedNote:
+          type: string
+          example: observacao de descarte
+        extendNote:
+          type: string
+          example: A data foi prorrogada a pedido do cliente
+        origin:
+          type: object
+          properties:
+            id:
+              format: uuid
+              type: string
+              example: 50203861-95f3-4101-80c1-2b64f6613682
+            type:
+              enum:
+              - ACTIVITY
+              - OPPORTUNITY
+              - CUSTOMER
+              - LEAD
+              - CAMPAIGN
+              type: string
+              example: ACTIVITY
+            description:
+              type: string
+              example: Ligação de proposta
+        completedAt:
+          type: string
+          example: 2019-07-12T16:28:11.760Z
+        contacts:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                format: uuid
+                type: string
+                example: 610c7441-f2ce-4931-b0d8-1ffc6c373da8
+        exchange:
+          type: object
+          properties:
+            currencyId:
+              format: uuid
+              type: string
+              example: 67828a92-1503-4adb-c31b-c5416ad47c73
+            currencyRate:
+              format: uuid
+              type: string
+              example: b5848795-75df-48a1-820a-fc3c6c163785
+            exchangeRateId:
+              format: uuid
+              type: string
+              example: f73cf687-5aa0-4f5d-9cde-2708f8cd0af0
+            exchangeRateDate:
+              format: date
+              type: string
+              example: 2020-07-17
+            exchageRateValue:
+              type: number
+              example: "5.37"
+            externalId:
+              type: string
+              example: Dolar
+        totalExchangeConvertedValue:
+          type: number
+          example: "2000.00"
+        companyId:
+          format: UUID
+          type: string
+          example: 0006ba35-bee7-3249-a5e8-acd3b7f534d6
+      example:
+        id: aabc54a1-49c3-444d-88ec-eaa3fbe63e86
+        createdAt: 2019-08-13T18:00:38.780Z
+        updatedAt: 2019-08-13T18:00:38.780Z
+        externalId: PEDRO20200630
+        status: PROGRESS
+        code: 205
+        description: Oportunidade para cliente Pedro
+        opportunityTypeId: 7e7884b1-80a3-4772-9855-a36f4f830b1b
+        winLossReasonId: 88812f23-a53e-4eae-8635-eb7e17d4e08d
+        winLossNote: Observacao ganha ou perda
+        pipelineId: 990f7ca5-e7fb-468c-a683-ae3dd2a87d5c
+        stageId: 990f7ca5-e7fb-468c-a683-ae3dd2a87d5c
+        userId: 9dcf5aec-aedd-448c-90e8-5ec309de3af3
+        accountType: CUSTOMER
+        customerId: b55995ef-d87a-4884-98c5-866a58bb90e8
+        expectedAt: 2021-02-01
+        probabilityPercentage: 75
+        totalSingleValue: "100.00"
+        totalRecurrentValue: "200.00"
+        totalValue: "300.00"
+        note: Somente com frete
+        startedAt: 2019-07-12T16:28:11.760Z
+        inconsistencyNote: observacao de inconsistencia
+        discardedAt: 2019-07-12T16:28:11.760Z
+        recoverNote: observacao de recuperação
+        discardedNote: observacao de descarte
+        extendNote: A data foi prorrogada a pedido do cliente
+        origin:
+          id: 50203861-95f3-4101-80c1-2b64f6613682
+          type: ACTIVITY
+          description: Ligação de proposta
+        completedAt: 2019-07-12T16:28:11.760Z
+        contacts:
+        - id: 610c7441-f2ce-4931-b0d8-1ffc6c373da8
+        exchange:
+          currencyId: 67828a92-1503-4adb-c31b-c5416ad47c73
+          currencyRate: b5848795-75df-48a1-820a-fc3c6c163785
+          exchangeRateId: f73cf687-5aa0-4f5d-9cde-2708f8cd0af0
+          exchangeRateDate: 2020-07-17
+          exchageRateValue: "5.37"
+          externalId: Dolar
+        totalExchangeConvertedValue: "2000.00"
+        companyId: 0006ba35-bee7-3249-a5e8-acd3b7f534d6
 tags:
 - name: APP2
   description: Ambiente APP2
+- name: APP3
+  description: Ambiente TotvsCRM.app
 - name: integration
   description: ""
