@@ -567,9 +567,6 @@ components:
           example: 2021-12-10
         status:
           description: 'Situação do plano de ação: Aberto ou finalizado'
-          enum:
-            - OPEN
-            - FINISHED
           type: string
           example: FINISHED
         goal:
@@ -759,9 +756,6 @@ components:
           type: string
           example: 2021-12-10
         status:
-          enum:
-            - OPEN
-            - FINISHED
           type: string
           example: FINISHED
         goal:
