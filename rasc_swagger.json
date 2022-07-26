@@ -1,15 +1,15 @@
 {
   "info": {
-    "title": "action-plan-route-activities-integrationV1",
+    "title": "action-plans-integrationV1",
     "version": "1.0.0",
-    "description": "API de integração de atividades dentro da sequência (rota) de um plano de ação (Action-Plan-Route-Activities) V1\n\nCompatível com a versão V6 do serviço de negócio Opportunity\n",
+    "description": "API de integração de planos de ação (Action-Plans) V1\n\nCompatível com a versão V6 do serviço de negócio Opportunity\n",
     "contact": {}
   },
   "paths": {
     "/record": {
       "get": {
         "tags": [
-          "Action-Plan-Route-Activities"
+          "Action-Plans"
         ],
         "parameters": [
           {
@@ -22,24 +22,24 @@
         ],
         "responses": {
           "200": {
-            "description": "Returns a list of action-plan-route-activities",
+            "description": "Returns a list of action plans",
             "schema": {
-              "$ref": "#/definitions/Action-Plan-Route-Activities-Integration_V1_GetResponse"
+              "$ref": "#/definitions/Action-Plans-Integration_V1_FullResponse"
             }
           },
           "401": {
             "description": "Unauthorized"
           }
         },
-        "summary": "Listar Action-Plan-Route-Activities",
-        "description": "Retorna uma lista de atividades de uma rota de um plano de ação cadastradas ou determinadas atividades com base nos filtros no header Integration-Filter",
+        "summary": "Listar Action-Plans",
+        "description": "Retorna uma lista de planos de ação cadastradas ou determinados planos com base nos filtros no header Integration-Filter",
         "produces": [
           "application/json"
         ]
       },
       "post": {
         "tags": [
-          "Action-Plan-Route-Activities"
+          "Action-Plans"
         ],
         "parameters": [
           {
@@ -71,21 +71,23 @@
             "name": "body",
             "in": "body",
             "schema": {
-              "$ref": "#/definitions/Action-Plan-Route-Activities-Integration_V1_BodyCreate"
+              "$ref": "#/definitions/Action-Plans-Integration_V1_BodyCreate"
             }
           }
         ],
         "responses": {
           "200": {
-            "description": "Returns a action-plan-route-activities register",
-            "schema": {}
+            "description": "Returns a action-plans register",
+            "schema": {
+              "$ref": "#/definitions/Action-Plans-Integration_V1_FullResponse"
+            }
           },
           "401": {
             "description": "Unauthorized"
           }
         },
-        "summary": "Criar, atualizar e deletar Action-Plan-Route-Activities",
-        "description": "A ação a ser realizada no cadastro depende do valor preenchido no header\n**Integration-Action**:\n\n\n**create** - Realiza a operação de POST do cadastro enviado;\n\n\n**update** - Realiza a operação de PATCH do cadastro enviado, baseado no ID do registro\npreenchido no header **Integration-Filter**;\n\n\n**upsert** - Realiza a operação de POST do cadastro enviado se não for enviado ID do registro\nno header **Integration-Filter** **OU** realiza a operação de PUT do cadastro enviado se for\nenviado o ID do registro no header **Integration-Filter**;\n\n**delete** - Realiza a operação de DELETE do registro especificado no header **Integration-Filter**;\n",
+        "summary": "Criar, atualizar e deletar Action-Plans",
+        "description": "A ação a ser realizada no cadastro depende do valor preenchido no header **Integration-Action**:\n\n**create** - Realiza a operação de POST do cadastro enviado;\n\n**update** - Realiza a operação de PATCH do cadastro enviado, baseado no ID do registro\npreenchido no header **Integration-Filter**;\n\n**upsert** - Realiza a operação de POST do cadastro enviado se não for enviado ID do registro\nno header **Integration-Filter** **OU** realiza a operação de PUT do cadastro enviado se for\nenviado o ID do registro no header **Integration-Filter**;\n",
         "consumes": [
           "application/json"
         ],
@@ -104,10 +106,10 @@
         },
         {
           "name": "Integration-Resource",
-          "description": "Recurso para requisição. Exemplo: action-plan-route-activities-integration",
+          "description": "Recurso para requisição. Exemplo: action-plans-integration",
           "in": "header",
           "required": true,
-          "default": "action-plan-route-activities-integration",
+          "default": "action-plans-integration",
           "type": "string"
         },
         {
@@ -138,11 +140,11 @@
   ],
   "basePath": "/%7Burl%7D/api/%7Bversion%7D/integration",
   "definitions": {
-    "Action-Plan-Route-Activities-Integration_V1_BodyEmpty": {
+    "Action-Plans-Integration_V1_BodyEmpty": {
       "description": "No body",
       "type": "object"
     },
-    "Action-Plan-Route-Activities-Integration_V1_MinimumResponse": {
+    "Action-Plans-Integration_V1_MinimumResponse": {
       "type": "object",
       "properties": {
         "id": {
@@ -159,15 +161,18 @@
         "id": "19de1e5b-37c8-42c6-a62f-3d7bdd11e994",
         "createAt": "2019-08-13T18:00:38.780Z",
         "updatedAt": "2019-08-13T18:00:38.780Z"
-      }
+      },
+      "x-discriminator-value": "minimum",
+      "x-ms-discriminator-value": "minimum"
     },
-    "Action-Plan-Route-Activities-Integration_V1_BodyDelete": {
-      "description": "No body",
-      "type": "object"
-    },
-    "Action-Plan-Route-Activities-Integration_V1_BodyUpsert": {
+    "Action-Plan-Route-ActivitiesV1_BodyUpdate": {
       "type": "object",
       "properties": {
+        "id": {
+          "format": "uuid",
+          "type": "string",
+          "example": "aabc54a1-49c3-444d-88ec-eaa3fbe63e86"
+        },
         "externalId": {
           "type": "string",
           "example": "PLAN1#ROTA1#ATIV1"
@@ -177,24 +182,19 @@
           "type": "string",
           "example": "5d7ae0b1-4a05-421e-8a98-e27b916b7324"
         },
-        "actionPlanRouteId": {
-          "format": "uuid",
-          "type": "string",
-          "example": "274f13db-ef80-4e2c-b2b0-9d0a870e1f16"
-        },
         "rank": {
           "type": "number",
           "example": 1
         }
       },
       "example": {
+        "id": "aabc54a1-49c3-444d-88ec-eaa3fbe63e86",
         "activityId": "5d7ae0b1-4a05-421e-8a98-e27b916b7324",
-        "actionPlanRouteId": "274f13db-ef80-4e2c-b2b0-9d0a870e1f16",
         "rank": 1,
         "externalId": "PLAN1#ROTA1#ATIV1"
       }
     },
-    "Action-Plan-Route-Activities-Integration_V1_FullResponse": {
+    "Action-Plan-Route-ActivitiesV1_GetResponse": {
       "type": "object",
       "properties": {
         "id": {
@@ -219,11 +219,6 @@
           "type": "string",
           "example": "5d7ae0b1-4a05-421e-8a98-e27b916b7324"
         },
-        "actionPlanRouteId": {
-          "format": "uuid",
-          "type": "string",
-          "example": "274f13db-ef80-4e2c-b2b0-9d0a870e1f16"
-        },
         "rank": {
           "type": "number",
           "example": 1
@@ -234,90 +229,14 @@
         "createdAt": "2019-08-13T18:00:38.780Z",
         "updatedAt": "2019-08-13T18:00:38.780Z",
         "activityId": "5d7ae0b1-4a05-421e-8a98-e27b916b7324",
-        "actionPlanRouteId": "274f13db-ef80-4e2c-b2b0-9d0a870e1f16",
         "rank": 1,
         "externalId": "PLAN1#ROTA1#ATIV1"
       }
     },
-    "Action-Plan-Route-Activities-Integration_V1_GetResponse": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "format": "uuid",
-          "type": "string",
-          "example": "aabc54a1-49c3-444d-88ec-eaa3fbe63e86"
-        },
-        "createdAt": {
-          "type": "string",
-          "example": "2019-08-13T18:00:38.780Z"
-        },
-        "updatedAt": {
-          "type": "string",
-          "example": "2019-08-13T18:00:38.780Z"
-        },
-        "externalId": {
-          "type": "string",
-          "example": "PLAN1#ROTA1#ATIV1"
-        },
-        "activityId": {
-          "format": "uuid",
-          "type": "string",
-          "example": "5d7ae0b1-4a05-421e-8a98-e27b916b7324"
-        },
-        "actionPlanRouteId": {
-          "format": "uuid",
-          "type": "string",
-          "example": "274f13db-ef80-4e2c-b2b0-9d0a870e1f16"
-        },
-        "rank": {
-          "type": "number",
-          "example": 1
-        }
-      },
-      "example": {
-        "id": "aabc54a1-49c3-444d-88ec-eaa3fbe63e86",
-        "createdAt": "2019-08-13T18:00:38.780Z",
-        "updatedAt": "2019-08-13T18:00:38.780Z",
-        "activityId": "5d7ae0b1-4a05-421e-8a98-e27b916b7324",
-        "actionPlanRouteId": "274f13db-ef80-4e2c-b2b0-9d0a870e1f16",
-        "rank": 1,
-        "externalId": "PLAN1#ROTA1#ATIV1"
-      }
-    },
-    "Action-Plan-Route-Activities-Integration_V1_BodyUpdate": {
-      "type": "object",
-      "properties": {
-        "externalId": {
-          "type": "string",
-          "example": "PLAN1#ROTA1#ATIV1"
-        },
-        "activityId": {
-          "format": "uuid",
-          "type": "string",
-          "example": "5d7ae0b1-4a05-421e-8a98-e27b916b7324"
-        },
-        "actionPlanRouteId": {
-          "format": "uuid",
-          "type": "string",
-          "example": "274f13db-ef80-4e2c-b2b0-9d0a870e1f16"
-        },
-        "rank": {
-          "type": "number",
-          "example": 1
-        }
-      },
-      "example": {
-        "activityId": "5d7ae0b1-4a05-421e-8a98-e27b916b7324",
-        "actionPlanRouteId": "274f13db-ef80-4e2c-b2b0-9d0a870e1f16",
-        "rank": 1,
-        "externalId": "PLAN1#ROTA1#ATIV1"
-      }
-    },
-    "Action-Plan-Route-Activities-Integration_V1_BodyCreate": {
+    "Action-Plan-Route-ActivitiesV1_BodyCreate": {
       "required": [
         "externalId",
         "activityId",
-        "actionPlanRouteId",
         "rank"
       ],
       "type": "object",
@@ -333,12 +252,6 @@
           "type": "string",
           "example": "5d7ae0b1-4a05-421e-8a98-e27b916b7324"
         },
-        "actionPlanRouteId": {
-          "format": "uuid",
-          "description": "Identificador do registro de sequencia (rota) de atendimentos",
-          "type": "string",
-          "example": "274f13db-ef80-4e2c-b2b0-9d0a870e1f16"
-        },
         "rank": {
           "description": "Ordem em que deverá ocorrer o evento",
           "type": "number",
@@ -347,9 +260,837 @@
       },
       "example": {
         "activityId": "5d7ae0b1-4a05-421e-8a98-e27b916b7324",
-        "actionPlanRouteId": "274f13db-ef80-4e2c-b2b0-9d0a870e1f16",
         "rank": 1,
         "externalId": "PLAN1#ROTA1#ATIV1"
+      }
+    },
+    "Action-Plan-RoutesV1_GetResponse": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "format": "uuid",
+          "type": "string",
+          "example": "aabc54a1-49c3-444d-88ec-eaa3fbe63e86"
+        },
+        "createdAt": {
+          "type": "string",
+          "example": "2019-08-13T18:00:38.780Z"
+        },
+        "updatedAt": {
+          "type": "string",
+          "example": "2019-08-13T18:00:38.780Z"
+        },
+        "externalId": {
+          "type": "string",
+          "example": "PLAN1#ROTA1"
+        },
+        "userId": {
+          "format": "uuid",
+          "type": "string",
+          "example": "7636f630-2358-4cf4-a290-2ec0b13ea47c"
+        },
+        "actionPlanRouteActivity": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Action-Plan-Route-ActivitiesV1_GetResponse"
+          }
+        }
+      },
+      "example": {
+        "externalId": "PLAN1#ROTA1",
+        "userId": "7636f630-2358-4cf4-a290-2ec0b13ea47c",
+        "actionPlanRouteActivity": [
+          {
+            "id": "aabc54a1-49c3-444d-88ec-eaa3fbe63e86",
+            "activityId": "5d7ae0b1-4a05-421e-8a98-e27b916b7324",
+            "rank": 1,
+            "externalId": "PLAN1#ROTA1#ATIV1"
+          },
+          {
+            "id": "babc54a1-49c3-444d-88ec-eaa3fbe63e86",
+            "activityId": "093c9434-8e15-4cb3-aa70-94964adf0fe5",
+            "rank": 2,
+            "externalId": "PLAN1#ROTA1#ATIV2"
+          }
+        ]
+      }
+    },
+    "Action-Plan-RoutesV1_BodyUpdate": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "example": "6636f630-2358-4cf4-a290-2ec0b13ea47c"
+        },
+        "externalId": {
+          "type": "string",
+          "example": "PLAN1#ROTA1"
+        },
+        "userId": {
+          "format": "uuid",
+          "type": "string",
+          "example": "7636f630-2358-4cf4-a290-2ec0b13ea47c"
+        },
+        "actionPlanRouteActivity": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Action-Plan-Route-ActivitiesV1_BodyUpdate"
+          }
+        }
+      },
+      "example": {
+        "id": "6636f630-2358-4cf4-a290-2ec0b13ea47c",
+        "externalId": "PLAN1#ROTA1",
+        "userId": "7636f630-2358-4cf4-a290-2ec0b13ea47c",
+        "actionPlanRouteActivity": [
+          {
+            "id": "aabc54a1-49c3-444d-88ec-eaa3fbe63e86",
+            "activityId": "5d7ae0b1-4a05-421e-8a98-e27b916b7324",
+            "rank": 1,
+            "externalId": "PLAN1#ROTA1#ATIV1"
+          },
+          {
+            "id": "babc54a1-49c3-444d-88ec-eaa3fbe63e86",
+            "activityId": "093c9434-8e15-4cb3-aa70-94964adf0fe5",
+            "rank": 2,
+            "externalId": "PLAN1#ROTA1#ATIV2"
+          }
+        ]
+      }
+    },
+    "Action-Plans-Integration_V1_BodyUpdate": {
+      "type": "object",
+      "properties": {
+        "description": {
+          "type": "string",
+          "example": "Primeiro plano de ação"
+        },
+        "externalId": {
+          "type": "string",
+          "example": "PA1"
+        },
+        "startDate": {
+          "format": "date",
+          "type": "string",
+          "example": "2020-12-10T00:00:00.000Z"
+        },
+        "endDate": {
+          "format": "date",
+          "type": "string",
+          "example": "2021-12-10T00:00:00.000Z"
+        },
+        "status": {
+          "enum": [
+            "OPEN",
+            "FINISHED"
+          ],
+          "type": "string",
+          "example": "FINISHED"
+        },
+        "goal": {
+          "type": "string",
+          "example": "primeiro objetivo"
+        },
+        "note": {
+          "type": "string",
+          "example": "Primeira nota"
+        },
+        "users": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Action-Plan-UsersV1_BodyUpdate"
+          },
+          "example": "7636f630-2358-4cf4-a290-2ec0b13ea47c"
+        },
+        "actionPlanRoute": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Action-Plan-RoutesV1_BodyUpdate"
+          }
+        },
+        "finishedAt": {
+          "type": "string",
+          "example": "2020-03-19T12:11:53.894Z"
+        },
+        "finishedNote": {
+          "type": "string",
+          "example": "Nota de finalização"
+        }
+      },
+      "example": {
+        "description": "Primeiro plano de ação",
+        "externalId": "PA1",
+        "startDate": "2020-12-10T00:00:00.000Z",
+        "endDate": "2021-12-10T00:00:00.000Z",
+        "status": "FINISHED",
+        "goal": "primeiro objetivo",
+        "note": "Primeira nota",
+        "users": [
+          {
+            "id": "5636f630-2358-4cf4-a290-2ec0b13ea47c",
+            "userId": "7636f630-2358-4cf4-a290-2ec0b13ea47c",
+            "externalId": "USER1#PLAN1"
+          }
+        ],
+        "actionPlanRoute": [
+          {
+            "id": "6636f630-2358-4cf4-a290-2ec0b13ea47c",
+            "externalId": "PLAN1#ROTA1",
+            "userId": "7636f630-2358-4cf4-a290-2ec0b13ea47c",
+            "actionPlanRouteActivity": [
+              {
+                "id": "aabc54a1-49c3-444d-88ec-eaa3fbe63e86",
+                "activityId": "5d7ae0b1-4a05-421e-8a98-e27b916b7324",
+                "rank": 1,
+                "externalId": "PLAN1#ROTA1#ATIV1"
+              },
+              {
+                "id": "babc54a1-49c3-444d-88ec-eaa3fbe63e86",
+                "activityId": "093c9434-8e15-4cb3-aa70-94964adf0fe5",
+                "rank": 2,
+                "externalId": "PLAN1#ROTA1#ATIV2"
+              }
+            ]
+          }
+        ],
+        "finishedAt": "2020-03-19T12:11:53.894Z",
+        "finishedNote": "Nota de finalização"
+      }
+    },
+    "Action-Plans-Integration_V1_FullResponse": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "format": "uuid",
+          "type": "string",
+          "example": "aabc54a1-49c3-444d-88ec-eaa3fbe63e86"
+        },
+        "createdAt": {
+          "type": "string",
+          "example": "2019-08-13T18:00:38.780Z"
+        },
+        "updatedAt": {
+          "type": "string",
+          "example": "2019-08-13T18:00:38.780Z"
+        },
+        "description": {
+          "type": "string",
+          "example": "Primeiro plano de ação"
+        },
+        "externalId": {
+          "type": "string",
+          "example": "PA1"
+        },
+        "startDate": {
+          "format": "date",
+          "type": "string",
+          "example": "2020-12-10T00:00:00.000Z"
+        },
+        "endDate": {
+          "format": "date",
+          "type": "string",
+          "example": "2021-12-10T00:00:00.000Z"
+        },
+        "status": {
+          "enum": [
+            "OPEN",
+            "FINISHED"
+          ],
+          "type": "string",
+          "example": "FINISHED"
+        },
+        "goal": {
+          "type": "string",
+          "example": "primeiro objetivo"
+        },
+        "note": {
+          "type": "string",
+          "example": "Primeira nota"
+        },
+        "users": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Action-Plan-UsersV1_GetResponse"
+          },
+          "example": "7636f630-2358-4cf4-a290-2ec0b13ea47c"
+        },
+        "actionPlanRoute": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Action-Plan-RoutesV1_GetResponse"
+          }
+        },
+        "finishedAt": {
+          "type": "string",
+          "example": "2020-03-19T12:11:53.894Z"
+        },
+        "finishedNote": {
+          "type": "string",
+          "example": "Nota de finalização"
+        }
+      },
+      "example": {
+        "id": "aabc54a1-49c3-444d-88ec-eaa3fbe63e86",
+        "createAt": "2019-08-13T18:00:38.780Z",
+        "updatedAt": "2019-08-13T18:00:38.780Z",
+        "description": "Primeiro plano de ação",
+        "externalId": "PA1",
+        "startDate": "2020-12-10T00:00:00.000Z",
+        "endDate": "2021-12-10T00:00:00.000Z",
+        "status": "FINISHED",
+        "goal": "primeiro objetivo",
+        "note": "Primeira nota",
+        "users": [
+          {
+            "userId": "7636f630-2358-4cf4-a290-2ec0b13ea47c",
+            "externalId": "USER1#PLAN1"
+          }
+        ],
+        "actionPlanRoute": [
+          {
+            "externalId": "PLAN1#ROTA1",
+            "userId": "7636f630-2358-4cf4-a290-2ec0b13ea47c",
+            "actionPlanRouteActivity": [
+              {
+                "activityId": "5d7ae0b1-4a05-421e-8a98-e27b916b7324",
+                "rank": 1,
+                "externalId": "PLAN1#ROTA1#ATIV1"
+              },
+              {
+                "activityId": "093c9434-8e15-4cb3-aa70-94964adf0fe5",
+                "rank": 2,
+                "externalId": "PLAN1#ROTA1#ATIV2"
+              }
+            ]
+          }
+        ],
+        "finishedAt": "2020-03-19T12:11:53.894Z",
+        "finishedNote": "Nota de finalização"
+      },
+      "x-discriminator-value": "full",
+      "x-ms-discriminator-value": "full"
+    },
+    "Action-Plans-Integration_V1_GetResponse": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "format": "uuid",
+          "type": "string",
+          "example": "aabc54a1-49c3-444d-88ec-eaa3fbe63e86"
+        },
+        "createdAt": {
+          "type": "string",
+          "example": "2019-08-13T18:00:38.780Z"
+        },
+        "updatedAt": {
+          "type": "string",
+          "example": "2019-08-13T18:00:38.780Z"
+        },
+        "description": {
+          "type": "string",
+          "example": "Primeiro plano de ação"
+        },
+        "externalId": {
+          "type": "string",
+          "example": "PA1"
+        },
+        "startDate": {
+          "format": "date",
+          "type": "string",
+          "example": "2020-12-10T00:00:00.000Z"
+        },
+        "endDate": {
+          "format": "date",
+          "type": "string",
+          "example": "2021-12-10T00:00:00.000Z"
+        },
+        "status": {
+          "enum": [
+            "OPEN",
+            "FINISHED"
+          ],
+          "type": "string",
+          "example": "FINISHED"
+        },
+        "goal": {
+          "type": "string",
+          "example": "primeiro objetivo"
+        },
+        "note": {
+          "type": "string",
+          "example": "Primeira nota"
+        },
+        "users": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Action-Plan-UsersV1_GetResponse"
+          },
+          "example": "7636f630-2358-4cf4-a290-2ec0b13ea47c"
+        },
+        "actionPlanRoute": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Action-Plan-RoutesV1_GetResponse"
+          }
+        },
+        "finishedAt": {
+          "type": "string",
+          "example": "2020-03-19T12:11:53.894Z"
+        },
+        "finishedNote": {
+          "type": "string",
+          "example": "Nota de finalização"
+        }
+      },
+      "example": {
+        "id": "aabc54a1-49c3-444d-88ec-eaa3fbe63e86",
+        "createAt": "2019-08-13T18:00:38.780Z",
+        "updatedAt": "2019-08-13T18:00:38.780Z",
+        "description": "Primeiro plano de ação",
+        "externalId": "PA1",
+        "startDate": "2020-12-10T00:00:00.000Z",
+        "endDate": "2021-12-10T00:00:00.000Z",
+        "status": "FINISHED",
+        "goal": "primeiro objetivo",
+        "note": "Primeira nota",
+        "users": [
+          {
+            "userId": "7636f630-2358-4cf4-a290-2ec0b13ea47c",
+            "externalId": "USER1#PLAN1"
+          }
+        ],
+        "actionPlanRoute": [
+          {
+            "externalId": "PLAN1#ROTA1",
+            "userId": "7636f630-2358-4cf4-a290-2ec0b13ea47c",
+            "actionPlanRouteActivity": [
+              {
+                "activityId": "5d7ae0b1-4a05-421e-8a98-e27b916b7324",
+                "rank": 1,
+                "externalId": "PLAN1#ROTA1#ATIV1"
+              },
+              {
+                "activityId": "093c9434-8e15-4cb3-aa70-94964adf0fe5",
+                "rank": 2,
+                "externalId": "PLAN1#ROTA1#ATIV2"
+              }
+            ]
+          }
+        ],
+        "finishedAt": "2020-03-19T12:11:53.894Z",
+        "finishedNote": "Nota de finalização"
+      }
+    },
+    "Action-Plans-Integration_V1_BodyCreate": {
+      "required": [
+        "externalId",
+        "description",
+        "startDate",
+        "endDate",
+        "status"
+      ],
+      "type": "object",
+      "properties": {
+        "description": {
+          "description": "Descrição do plano de ação",
+          "type": "string",
+          "example": "Primeiro plano de ação"
+        },
+        "externalId": {
+          "description": "Código único do sistema externo para o registro",
+          "type": "string",
+          "example": "PA1"
+        },
+        "startDate": {
+          "format": "date",
+          "description": "Data de início do plano de ação",
+          "type": "string",
+          "example": "2020-12-10T00:00:00.000Z"
+        },
+        "endDate": {
+          "format": "date",
+          "description": "Data esperada de finalização do plano de ação",
+          "type": "string",
+          "example": "2021-12-10T00:00:00.000Z"
+        },
+        "status": {
+          "description": "Situação do plano de ação: Aberto ou finalizado",
+          "enum": [
+            "OPEN",
+            "FINISHED"
+          ],
+          "type": "string",
+          "example": "FINISHED"
+        },
+        "goal": {
+          "description": "Objetivo do plano de ação",
+          "type": "string",
+          "example": "primeiro objetivo"
+        },
+        "note": {
+          "description": "Observação",
+          "type": "string",
+          "example": "Primeira nota"
+        },
+        "users": {
+          "description": "Lista de usuários participantes do plano de ação",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Action-Plan-UsersV1_BodyCreate"
+          },
+          "example": "7636f630-2358-4cf4-a290-2ec0b13ea47c"
+        },
+        "actionPlanRoute": {
+          "description": "Sequência de atividades do plano de ação",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Action-Plan-RoutesV1_BodyCreate"
+          }
+        },
+        "finishedAt": {
+          "description": "Data em que o plano foi finalizado efetivamente",
+          "type": "string",
+          "example": "2020-03-19T12:11:53.894Z"
+        },
+        "finishedNote": {
+          "description": "Observação para a finalização do plano de ação",
+          "type": "string",
+          "example": "Nota de finalização"
+        }
+      },
+      "example": {
+        "description": "Primeiro plano de ação",
+        "externalId": "PA1",
+        "startDate": "2020-12-10T00:00:00.000Z",
+        "endDate": "2021-12-10T00:00:00.000Z",
+        "status": "FINISHED",
+        "goal": "primeiro objetivo",
+        "note": "Primeira nota",
+        "users": [
+          {
+            "userId": "7636f630-2358-4cf4-a290-2ec0b13ea47c",
+            "externalId": "USER1#PLAN1"
+          }
+        ],
+        "actionPlanRoute": [
+          {
+            "externalId": "PLAN1#ROTA1",
+            "userId": "7636f630-2358-4cf4-a290-2ec0b13ea47c",
+            "actionPlanRouteActivity": [
+              {
+                "activityId": "5d7ae0b1-4a05-421e-8a98-e27b916b7324",
+                "rank": 1,
+                "externalId": "PLAN1#ROTA1#ATIV1"
+              },
+              {
+                "activityId": "093c9434-8e15-4cb3-aa70-94964adf0fe5",
+                "rank": 2,
+                "externalId": "PLAN1#ROTA1#ATIV2"
+              }
+            ]
+          }
+        ],
+        "finishedAt": "2020-03-19T12:11:53.894Z",
+        "finishedNote": "Nota de finalização"
+      }
+    },
+    "Action-Plan-UsersV1_GetResponse": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "format": "uuid",
+          "type": "string",
+          "example": "aabc54a1-49c3-444d-88ec-eaa3fbe63e86"
+        },
+        "createdAt": {
+          "type": "string",
+          "example": "2019-08-13T18:00:38.780Z"
+        },
+        "updatedAt": {
+          "type": "string",
+          "example": "2019-08-13T18:00:38.780Z"
+        },
+        "externalId": {
+          "type": "string",
+          "example": "PLAN1#USER1"
+        },
+        "userId": {
+          "format": "uuid",
+          "type": "string",
+          "example": "7636f630-2358-4cf4-a290-2ec0b13ea47c"
+        }
+      },
+      "example": {
+        "id": "aabc54a1-49c3-444d-88ec-eaa3fbe63e86",
+        "createAt": "2019-08-13T18:00:38.780Z",
+        "updatedAt": "2019-08-13T18:00:38.780Z",
+        "externalId": "PLAN1#USER1",
+        "userId": "7636f630-2358-4cf4-a290-2ec0b13ea47c"
+      }
+    },
+    "Action-Plan-UsersV1_BodyCreate": {
+      "required": [
+        "externalId",
+        "userId"
+      ],
+      "type": "object",
+      "properties": {
+        "externalId": {
+          "description": "Código único do sistema externo para o vínculo do usuário e plano de ação",
+          "type": "string",
+          "example": "PLAN1#USER1"
+        },
+        "userId": {
+          "format": "uuid",
+          "description": "Identificador do usuário",
+          "type": "string",
+          "example": "7636f630-2358-4cf4-a290-2ec0b13ea47c"
+        }
+      },
+      "example": {
+        "externalId": "PLAN1#USER1",
+        "userId": "7636f630-2358-4cf4-a290-2ec0b13ea47c"
+      }
+    },
+    "Action-Plan-UsersV1_BodyUpdate": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "format": "uuid",
+          "type": "string",
+          "example": "aabc54a1-49c3-444d-88ec-eaa3fbe63e86"
+        },
+        "externalId": {
+          "type": "string",
+          "example": "PLAN1#USER1"
+        },
+        "userId": {
+          "format": "uuid",
+          "type": "string",
+          "example": "7636f630-2358-4cf4-a290-2ec0b13ea47c"
+        }
+      },
+      "example": {
+        "id": "aabc54a1-49c3-444d-88ec-eaa3fbe63e86",
+        "externalId": "PLAN1#USER1",
+        "userId": "7636f630-2358-4cf4-a290-2ec0b13ea47c"
+      }
+    },
+    "Action-Plan-UsersV1_BodyUpsert": {
+      "type": "object",
+      "properties": {
+        "externalId": {
+          "type": "string",
+          "example": "PLAN1#USER1"
+        },
+        "userId": {
+          "format": "uuid",
+          "type": "string",
+          "example": "7636f630-2358-4cf4-a290-2ec0b13ea47c"
+        }
+      },
+      "example": {
+        "externalId": "PLAN1#USER1",
+        "userId": "7636f630-2358-4cf4-a290-2ec0b13ea47c"
+      }
+    },
+    "Action-Plan-RoutesV1_BodyUpsert": {
+      "type": "object",
+      "properties": {
+        "externalId": {
+          "type": "string",
+          "example": "PLAN1#ROTA1"
+        },
+        "userId": {
+          "format": "uuid",
+          "type": "string",
+          "example": "7636f630-2358-4cf4-a290-2ec0b13ea47c"
+        },
+        "actionPlanRouteActivity": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Action-Plan-Route-ActivitiesV1_BodyUpsert"
+          }
+        }
+      },
+      "example": {
+        "externalId": "PLAN1#ROTA1",
+        "userId": "7636f630-2358-4cf4-a290-2ec0b13ea47c",
+        "actionPlanRouteActivity": [
+          {
+            "id": "aabc54a1-49c3-444d-88ec-eaa3fbe63e86",
+            "activityId": "5d7ae0b1-4a05-421e-8a98-e27b916b7324",
+            "rank": 1,
+            "externalId": "PLAN1#ROTA1#ATIV1"
+          },
+          {
+            "id": "babc54a1-49c3-444d-88ec-eaa3fbe63e86",
+            "activityId": "093c9434-8e15-4cb3-aa70-94964adf0fe5",
+            "rank": 2,
+            "externalId": "PLAN1#ROTA1#ATIV2"
+          }
+        ]
+      }
+    },
+    "Action-Plan-Route-ActivitiesV1_BodyUpsert": {
+      "type": "object",
+      "properties": {
+        "externalId": {
+          "type": "string",
+          "example": "PLAN1#ROTA1#ATIV1"
+        },
+        "activityId": {
+          "format": "uuid",
+          "type": "string",
+          "example": "5d7ae0b1-4a05-421e-8a98-e27b916b7324"
+        },
+        "rank": {
+          "type": "number",
+          "example": 1
+        }
+      },
+      "example": {
+        "activityId": "5d7ae0b1-4a05-421e-8a98-e27b916b7324",
+        "rank": 1,
+        "externalId": "PLAN1#ROTA1#ATIV1"
+      }
+    },
+    "Action-Plans-Integration_V1_BodyUpsert": {
+      "type": "object",
+      "properties": {
+        "description": {
+          "type": "string",
+          "example": "Primeiro plano de ação"
+        },
+        "externalId": {
+          "type": "string",
+          "example": "PA1"
+        },
+        "startDate": {
+          "format": "date",
+          "type": "string",
+          "example": "2020-12-10T00:00:00.000Z"
+        },
+        "endDate": {
+          "format": "date",
+          "type": "string",
+          "example": "2021-12-10T00:00:00.000Z"
+        },
+        "status": {
+          "enum": [
+            "OPEN",
+            "FINISHED"
+          ],
+          "type": "string",
+          "example": "FINISHED"
+        },
+        "goal": {
+          "type": "string",
+          "example": "primeiro objetivo"
+        },
+        "note": {
+          "type": "string",
+          "example": "Primeira nota"
+        },
+        "users": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Action-Plan-UsersV1_BodyUpsert"
+          },
+          "example": "7636f630-2358-4cf4-a290-2ec0b13ea47c"
+        },
+        "actionPlanRoute": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Action-Plan-RoutesV1_BodyUpsert"
+          }
+        },
+        "finishedAt": {
+          "type": "string",
+          "example": "2020-03-19T12:11:53.894Z"
+        },
+        "finishedNote": {
+          "type": "string",
+          "example": "Nota de finalização"
+        }
+      },
+      "example": {
+        "description": "Primeiro plano de ação",
+        "externalId": "PA1",
+        "startDate": "2020-12-10T00:00:00.000Z",
+        "endDate": "2021-12-10T00:00:00.000Z",
+        "status": "FINISHED",
+        "goal": "primeiro objetivo",
+        "note": "Primeira nota",
+        "users": [
+          {
+            "userId": "7636f630-2358-4cf4-a290-2ec0b13ea47c",
+            "externalId": "USER1#PLAN1"
+          }
+        ],
+        "actionPlanRoute": [
+          {
+            "externalId": "PLAN1#ROTA1",
+            "userId": "7636f630-2358-4cf4-a290-2ec0b13ea47c",
+            "actionPlanRouteActivity": [
+              {
+                "activityId": "5d7ae0b1-4a05-421e-8a98-e27b916b7324",
+                "rank": 1,
+                "externalId": "PLAN1#ROTA1#ATIV1"
+              },
+              {
+                "activityId": "093c9434-8e15-4cb3-aa70-94964adf0fe5",
+                "rank": 2,
+                "externalId": "PLAN1#ROTA1#ATIV2"
+              }
+            ]
+          }
+        ],
+        "finishedAt": "2020-03-19T12:11:53.894Z",
+        "finishedNote": "Nota de finalização"
+      }
+    },
+    "Action-Plan-RoutesV1_BodyCreate": {
+      "required": [
+        "externalId",
+        "userId"
+      ],
+      "type": "object",
+      "properties": {
+        "externalId": {
+          "description": "Código único do registro no sistema externo",
+          "type": "string",
+          "example": "PLAN1#ROTA1"
+        },
+        "userId": {
+          "format": "uuid",
+          "description": "Identificador do registro de usuário",
+          "type": "string",
+          "example": "7636f630-2358-4cf4-a290-2ec0b13ea47c"
+        },
+        "actionPlanRouteActivity": {
+          "description": "Lista de atividades dentro de uma rota inserida em um plano de ação",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Action-Plan-Route-ActivitiesV1_BodyCreate"
+          }
+        }
+      },
+      "example": {
+        "externalId": "PLAN1#ROTA1",
+        "userId": "7636f630-2358-4cf4-a290-2ec0b13ea47c",
+        "actionPlanRouteActivity": [
+          {
+            "activityId": "5d7ae0b1-4a05-421e-8a98-e27b916b7324",
+            "rank": 1,
+            "externalId": "PLAN1#ROTA1#ATIV1"
+          },
+          {
+            "activityId": "093c9434-8e15-4cb3-aa70-94964adf0fe5",
+            "rank": 2,
+            "externalId": "PLAN1#ROTA1#ATIV2"
+          }
+        ]
       }
     }
   },
