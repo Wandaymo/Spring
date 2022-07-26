@@ -1,9 +1,9 @@
 openapi: 3.0.2
 info:
-  title: pipeline-stages-integrationV1
+  title: pipelines-integrationV1
   version: 1.0.0
   description: |
-    API de integração de estágios da pipeline (Pipeline-Stages) V1
+    API de integração de pipelines (Pipelines) V1
 
     Compatível com a versão V6 do serviço de negócio Opportunity
   contact: {}
@@ -21,7 +21,7 @@ paths:
   /record:
     get:
       tags:
-      - Pipeline-Stages
+      - Pipelines
       parameters:
       - name: Integration-Filter
         description: |
@@ -41,21 +41,21 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Pipeline-Stages-Integration_V1_FullResponse'
-          description: Returns a list of pipeline-stages
+                $ref: '#/components/schemas/Pipelines-Integration_V1_FullResponse'
+          description: Returns a list of pipelines
         401:
           description: Unauthorized
-      summary: Listar Pipeline-Stages
-      description: Retorna uma lista de estágios da pipeline cadastradas ou determinadas
-        estapa com base nos filtros no header Integration-Filter
+      summary: Listar Pipelines
+      description: Retorna uma lista de pipelines cadastradas ou determinadas pipelines
+        com base nos filtros no header Integration-Filter
     post:
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Pipeline-Stages-Integration_V1_BodyCreate'
+              $ref: '#/components/schemas/Pipelines-Integration_V1_BodyCreate'
       tags:
-      - Pipeline-Stages
+      - Pipelines
       parameters:
       - name: Integration-Filter
         description: |
@@ -90,16 +90,14 @@ paths:
           body da requisição.
         schema:
           oneOf:
-          - $ref: '#/components/schemas/Pipeline-Stages-Integration_V1_BodyCreate'
-          - $ref: '#/components/schemas/Pipeline-Stages-Integration_V1_BodyUpdate'
-          - $ref: '#/components/schemas/Pipeline-Stages-Integration_V1_BodyUpsert'
-          - $ref: '#/components/schemas/Pipeline-Stages-Integration_V1_BodyDelete'
+          - $ref: '#/components/schemas/Pipelines-Integration_V1_BodyCreate'
+          - $ref: '#/components/schemas/Pipelines-Integration_V1_BodyUpdate'
+          - $ref: '#/components/schemas/Pipelines-Integration_V1_BodyUpsert'
           discriminator:
             mapping:
-              create: '#/components/schemas/Pipeline-Stages-Integration_V1_BodyCreate'
-              update: '#/components/schemas/Pipeline-Stages-Integration_V1_BodyUpdate'
-              upsert: '#/components/schemas/Pipeline-Stages-Integration_V1_BodyUpsert'
-              delete: '#/components/schemas/Pipeline-Stages-Integration_V1_BodyDelete'
+              create: '#/components/schemas/Pipelines-Integration_V1_BodyCreate'
+              update: '#/components/schemas/Pipelines-Integration_V1_BodyUpdate'
+              upsert: '#/components/schemas/Pipelines-Integration_V1_BodyUpsert'
         in: header
         required: true
       responses:
@@ -107,15 +105,15 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Pipeline-Stages-Integration_V1_FullResponse'
+                $ref: '#/components/schemas/Pipelines-Integration_V1_FullResponse'
                 discriminator:
                   mapping:
-                    full: '#/components/schemas/Pipeline-Stages-Integration_V1_FullResponse'
-                    minimum: '#/components/schemas/Pipeline-Stages-Integration_V1_MinimumResponse'
-          description: Returns a pipeline stage register
+                    full: '#/components/schemas/Pipelines-Integration_V1_FullResponse'
+                    minimum: '#/components/schemas/Pipelines-Integration_V1_MinimumResponse'
+          description: Returns a pipeline register
         401:
           description: Unauthorized
-      summary: Criar, atualizar e deletar Pipeline-Stages
+      summary: Criar, atualizar e deletar Pipelines
       description: |
         A ação a ser realizada no cadastro depende do valor preenchido no header
         **Integration-Action**:
@@ -131,8 +129,6 @@ paths:
         **upsert** - Realiza a operação de POST do cadastro enviado se não for enviado ID do registro
         no header **Integration-Filter** **OU** realiza a operação de PUT do cadastro enviado se for
         enviado o ID do registro no header **Integration-Filter**;
-
-        **delete** - Realiza a operação de DELETE do registro especificado no header **Integration-Filter**
     parameters:
     - name: Integration-Service
       description: 'Serviço responsável pela entidade. Exemplo: opportunity'
@@ -142,9 +138,9 @@ paths:
       in: header
       required: true
     - name: Integration-Resource
-      description: 'Recurso para requisição. Exemplo: pipeline-stages-integration'
+      description: 'Recurso para requisição. Exemplo: pipelines-integration'
       schema:
-        default: pipeline-stages-integration
+        default: pipelines-integration
         type: string
       in: header
       required: true
@@ -157,10 +153,10 @@ paths:
       required: true
 components:
   schemas:
-    Pipeline-Stages-Integration_V1_BodyEmpty:
+    Pipelines-Integration_V1_BodyEmpty:
       description: No body
       type: object
-    Pipeline-Stages-Integration_V1_MinimumResponse:
+    Pipelines-Integration_V1_MinimumResponse:
       type: object
       properties:
         id:
@@ -173,54 +169,105 @@ components:
         id: 19de1e5b-37c8-42c6-a62f-3d7bdd11e994
         createAt: 2019-08-13T18:00:38.780Z
         updatedAt: 2019-08-13T18:00:38.780Z
-    Pipeline-Stages-Integration_V1_BodyDelete:
-      description: No body
-      type: object
-    Pipeline-Stages-Integration_V1_BodyUpdate:
+    Pipelines-Integration_V1_BodyUpdate:
       properties:
-        stageId:
-          format: uuid
+        active:
+          type: boolean
+          example: true
+        description:
+          maxLength: 255
           type: string
-          example: aabc54a1-49c3-444d-88ec-eaa3fbe63e86
+          example: Venda
+        standard:
+          type: boolean
+          example: true
+        stages:
+          maxItems: 50
+          minItems: 1
+          type: array
+          items:
+            $ref: '#/components/schemas/PipelineStage'
         externalId:
           format: uuid
           type: string
           example: 2bb960bf-e789-4aba-8916-8d53e84b6c4f
-        pipelineId:
-          format: uuid
+        allowOpportunityReturn:
+          type: boolean
+          example: false
+        allowReopenWon:
+          type: boolean
+          example: true
+        allowReopenLost:
+          type: boolean
+          example: true
+        showOpportunityTotalValue:
+          type: boolean
+          example: false
+        showOpportunitySingleValue:
+          type: boolean
+          example: true
+        showOpportunityRecurrentValue:
+          type: boolean
+          example: true
+        mainTotalizer:
+          enum:
+            - TOTAL_VALUE
+            - SINGLE_VALUE
+            - RECURRENT_VALUE
+            - ITEM_COUNT
+            - UNIT_COUNT
           type: string
-          example: b36196de-dbe9-4dd7-a419-5c0ca65395a4
-        rank:
-          type: number
-          example: 1
-      example:
-        pipelineId: b36196de-dbe9-4dd7-a419-5c0ca65395a4
-        externalId: Stage1#Pipe1
-        rank: 1
-        stageId: aabc54a1-49c3-444d-88ec-eaa3fbe63e86
-    Pipeline-Stages-Integration_V1_BodyUpsert:
+          example: TOTAL_VALUE
+    Pipelines-Integration_V1_BodyUpsert:
       properties:
-        stageId:
-          format: uuid
+        active:
+          type: boolean
+          example: true
+        description:
+          maxLength: 255
           type: string
-          example: aabc54a1-49c3-444d-88ec-eaa3fbe63e86
+          example: Venda
+        standard:
+          type: boolean
+          example: true
+        stages:
+          maxItems: 50
+          minItems: 1
+          type: array
+          items:
+            $ref: '#/components/schemas/PipelineStage'
         externalId:
           format: uuid
           type: string
           example: 2bb960bf-e789-4aba-8916-8d53e84b6c4f
-        pipelineId:
-          format: uuid
+        allowOpportunityReturn:
+          type: boolean
+          example: false
+        allowReopenWon:
+          type: boolean
+          example: true
+        allowReopenLost:
+          type: boolean
+          example: true
+        showOpportunityTotalValue:
+          type: boolean
+          example: false
+        showOpportunitySingleValue:
+          type: boolean
+          example: true
+        showOpportunityRecurrentValue:
+          type: boolean
+          example: true
+        mainTotalizer:
+          enum:
+            - TOTAL_VALUE
+            - SINGLE_VALUE
+            - RECURRENT_VALUE
+            - ITEM_COUNT
+            - UNIT_COUNT
           type: string
-          example: b36196de-dbe9-4dd7-a419-5c0ca65395a4
-        rank:
-          type: number
-          example: 1
-      example:
-        pipelineId: b36196de-dbe9-4dd7-a419-5c0ca65395a4
-        externalId: Stage1#Pipe1
-        rank: 1
-        stageId: aabc54a1-49c3-444d-88ec-eaa3fbe63e86
-    Pipeline-Stages-Integration_V1_FullResponse:
+          example: TOTAL_VALUE
+    Pipelines-Integration_V1_FullResponse:
       properties:
         id:
           format: uuid
@@ -232,92 +279,209 @@ components:
         updatedAt:
           type: string
           example: 2019-08-13T18:00:38.780Z
-        stageId:
-          format: uuid
+        active:
+          type: boolean
+          example: true
+        description:
+          maxLength: 255
           type: string
-          example: aabc54a1-49c3-444d-88ec-eaa3fbe63e86
+          example: Venda
+        standard:
+          type: boolean
+          example: true
+        stages:
+          maxItems: 50
+          minItems: 1
+          type: array
+          items:
+            $ref: '#/components/schemas/PipelineStage'
         externalId:
           format: uuid
           type: string
           example: 2bb960bf-e789-4aba-8916-8d53e84b6c4f
-        pipelineId:
-          format: uuid
+        allowOpportunityReturn:
+          type: boolean
+          example: false
+        allowReopenWon:
+          type: boolean
+          example: true
+        allowReopenLost:
+          type: boolean
+          example: true
+        showOpportunityTotalValue:
+          type: boolean
+          example: false
+        showOpportunitySingleValue:
+          type: boolean
+          example: true
+        showOpportunityRecurrentValue:
+          type: boolean
+          example: true
+        mainTotalizer:
+          enum:
+            - TOTAL_VALUE
+            - SINGLE_VALUE
+            - RECURRENT_VALUE
+            - ITEM_COUNT
+            - UNIT_COUNT
           type: string
-          example: b36196de-dbe9-4dd7-a419-5c0ca65395a4
-        rank:
-          type: number
-          example: 1
-      example:
-        id: 2bb960bf-e789-4aba-8916-8d53e84b6c4f
-        createdAt: 2019-08-13T18:00:38.780Z
-        updatedAt: 2019-08-13T18:00:38.780Z
-        pipelineId: b36196de-dbe9-4dd7-a419-5c0ca65395a4
-        externalId: Stage1#Pipe1
-        rank: 1
-        stageId: aabc54a1-49c3-444d-88ec-eaa3fbe63e86
-    Pipeline-Stages-Integration_V1_GetResponse:
-      properties:
-        id:
-          format: uuid
-          type: string
-          example: 2bb960bf-e789-4aba-8916-8d53e84b6c4f
-        createdAt:
-          type: string
-          example: 2019-08-13T18:00:38.780Z
-        updatedAt:
-          type: string
-          example: 2019-08-13T18:00:38.780Z
-        stageId:
-          format: uuid
-          type: string
-          example: aabc54a1-49c3-444d-88ec-eaa3fbe63e86
-        externalId:
-          format: uuid
-          type: string
-          example: 2bb960bf-e789-4aba-8916-8d53e84b6c4f
-        pipelineId:
-          format: uuid
-          type: string
-          example: b36196de-dbe9-4dd7-a419-5c0ca65395a4
-        rank:
-          type: number
-          example: 1
-      example:
-        id: 2bb960bf-e789-4aba-8916-8d53e84b6c4f
-        createdAt: 2019-08-13T18:00:38.780Z
-        updatedAt: 2019-08-13T18:00:38.780Z
-        pipelineId: b36196de-dbe9-4dd7-a419-5c0ca65395a4
-        externalId: Stage1#Pipe1
-        rank: 1
-        stageId: aabc54a1-49c3-444d-88ec-eaa3fbe63e86
-    Pipeline-Stages-Integration_V1_BodyCreate:
+          example: TOTAL_VALUE
+    PipelineStage:
       required:
-      - externalId
-      - pipelineId
-      - stageId
+      - stage
       - rank
       type: object
       properties:
-        stageId:
+        rank:
+          description: Ordem da etapa na pipeline
+          type: integer
+          example: 1
+        stage:
+          description: Etapa
+          required:
+          - id
+          properties:
+            id:
+              format: uuid
+              description: ID da etapa
+              type: string
+              example: aabc54a1-49c3-444d-88ec-eaa3fbe63e86
+    Pipelines-Integration_V1_GetResponse:
+      properties:
+        id:
           format: uuid
           type: string
-          example: aabc54a1-49c3-444d-88ec-eaa3fbe63e86
+          example: 2bb960bf-e789-4aba-8916-8d53e84b6c4f
+        createdAt:
+          type: string
+          example: 2019-08-13T18:00:38.780Z
+        updatedAt:
+          type: string
+          example: 2019-08-13T18:00:38.780Z
+        active:
+          type: boolean
+          example: true
+        description:
+          maxLength: 255
+          type: string
+          example: Venda
+        standard:
+          type: boolean
+          example: true
+        stages:
+          maxItems: 50
+          minItems: 1
+          type: array
+          items:
+            $ref: '#/components/schemas/PipelineStage'
         externalId:
           format: uuid
           type: string
           example: 2bb960bf-e789-4aba-8916-8d53e84b6c4f
-        pipelineId:
-          format: uuid
+        allowOpportunityReturn:
+          type: boolean
+          example: false
+        allowReopenWon:
+          type: boolean
+          example: true
+        allowReopenLost:
+          type: boolean
+          example: true
+        showOpportunityTotalValue:
+          type: boolean
+          example: false
+        showOpportunitySingleValue:
+          type: boolean
+          example: true
+        showOpportunityRecurrentValue:
+          type: boolean
+          example: true
+        mainTotalizer:
+          enum:
+            - TOTAL_VALUE
+            - SINGLE_VALUE
+            - RECURRENT_VALUE
+            - ITEM_COUNT
+            - UNIT_COUNT
           type: string
-          example: b36196de-dbe9-4dd7-a419-5c0ca65395a4
-        rank:
-          type: number
-          example: 1
-      example:
-        pipelineId: b36196de-dbe9-4dd7-a419-5c0ca65395a4
-        externalId: Stage1#Pipe1
-        rank: 1
-        stageId: aabc54a1-49c3-444d-88ec-eaa3fbe63e86
+          example: TOTAL_VALUE
+    Pipelines-Integration_V1_BodyCreate:
+      required:
+      - externalId
+      - active
+      - standard
+      - description
+      - stages
+      - allowOpportunityReturn
+      - allowReopenWon
+      - allowReopenLost
+      - showOpportunityTotalValue
+      - showOpportunitySingleValue
+      - showOpportunityRecurrentValue
+      type: object
+      properties:
+        active:
+          description: Situação da pipeline
+          type: boolean
+          example: true
+        description:
+          description: Descrição da pipeline
+          maxLength: 255
+          type: string
+          example: Venda
+        standard:
+          description: Define se a pipeline é a pipeline padrão
+          type: boolean
+          example: true
+        stages:
+          description: Lista de etapas da pipeline
+          maxItems: 50
+          minItems: 1
+          type: array
+          items:
+            $ref: '#/components/schemas/PipelineStage'
+        externalId:
+          format: uuid
+          description: ID do registro em aplicações externas
+          type: string
+          example: 2bb960bf-e789-4aba-8916-8d53e84b6c4f
+        allowOpportunityReturn:
+          description: Define se oportunidades podem ser movidas para etapas anteriores
+            a atual
+          type: boolean
+          example: false
+        allowReopenWon:
+          description: Define se oportunidades ganhas podem ser reabertas
+          type: boolean
+          example: true
+        allowReopenLost:
+          description: Define se oportunidades perdidas podem ser reabertas
+          type: boolean
+          example: true
+        showOpportunityTotalValue:
+          description: Define se o card de oportunidades da pipeline irá exibir o
+            valor total da oportunidade
+          type: boolean
+          example: false
+        showOpportunitySingleValue:
+          description: Define se o card de oportunidades da pipeline irá exibir o
+            valor total único da oportunidade
+          type: boolean
+          example: true
+        showOpportunityRecurrentValue:
+          description: Define se o card de oportunidades da pipeline irá exibir o
+            valor total recorrente da oportunidade
+          type: boolean
+          example: true
+        mainTotalizer:
+          enum:
+            - TOTAL_VALUE
+            - SINGLE_VALUE
+            - RECURRENT_VALUE
+            - ITEM_COUNT
+            - UNIT_COUNT
+          type: string
+          example: TOTAL_VALUE
 tags:
 - name: APP2
   description: Ambiente APP2
