@@ -224,8 +224,7 @@ components:
       type: object
       properties:
         externalId:
-          description: Código único do sistema externo para o vínculo do usuário e
-            plano de ação
+          description: Código único do sistema externo para o vínculo do usuário e plano de ação
           type: string
           example: PLAN1#USER1
         userId:
@@ -601,7 +600,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Action-Plan-UsersV1_BodyCreate'
-          example: 7636f630-2358-4cf4-a290-2ec0b13ea47c
         actionPlanRoute:
           description: Sequência de atividades do plano de ação
           type: array
