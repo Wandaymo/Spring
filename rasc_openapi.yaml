@@ -605,7 +605,7 @@ components:
           description: Sequência de atividades do plano de ação
           type: array
           items:
-            $ref: '#/components/schemas/Action-Plan-Route-ActivitiesV1_BodyCreate'
+            $ref: '#/components/schemas/Action-Plan-RoutesV1_BodyCreate'
         finishedAt:
           description: Data em que o plano foi finalizado efetivamente
           type: string
