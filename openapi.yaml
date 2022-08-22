@@ -47,7 +47,9 @@ paths:
       responses:
         200:
           description: Returns a list of customers
-          headers: { }
+          type: array
+          items:
+            type: string
         401:
           description: Unauthorized
       summary: Listar clientes
