@@ -1,29 +1,35 @@
 ---
 openapi: 3.0.2
 info:
-  title: service-groups-integrationV1
-  version: 1.0.0
+  title: customers-integrationV4
+  version: 4.0.0
   description: |
-    API de integração de grupos de produto (Service Groups) V1
+    API de integração de clientes (Customers) V4
 
-    Compatível com a versão de negócio Product V7
+    Compatível com a versão de negócio Customer V11
+
+    O módulo de customer possui as seguintes funcionalidades em sua API
+    - Cadastro de cliente {customersIntegration} e as entidades associadas ao cliente:
+        - Documento de identificação (IdentificationDocument)
+        - Endereço (Address)
+        - Telefone (Phone)
+        - Email (Email)
   contact: {}
 servers:
 - url: https://{url}/api/{version}/integration
   description: Integration Router Server
   variables:
     url:
-      default: app2.mastercrm.ws
+      default: totvscrm.app
       description: URL de acesso ao Integration-Router
     version:
       default: v1
       description: Versão do Integration-Router
 paths:
   /record:
-    summary: API de integração groups
     get:
       tags:
-      - Service-Groups
+      - Customers
       parameters:
       - name: Integration-Filter
         description: |
@@ -43,21 +49,21 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Service-Groups-Integration_V1_GetResponse'
-          description: Returns a list of service groups
+                $ref: '#/components/schemas/CustomersIntegration_V4_GetResponse'
+          description: Returns a list of customers
         401:
           description: Unauthorized
-      summary: Listar grupo de serviços
-      description: Retorna uma lista de grupos de serviço cadastrados ou determinados
-        grupos com base nos filtros do header Integration-Filter
+      summary: Listar clientes
+      description: Retorna uma lista de clientes cadastrados ou determinados clientes
+        com base nos filtros na URL.
     post:
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Service-Groups-Integration_V1_BodyEmpty'
+              $ref: '#/components/schemas/CustomersIntegration_V4_BodyEmpty'
       tags:
-      - Service-groups
+      - Customers
       parameters:
       - name: Integration-Filter
         description: |
@@ -91,14 +97,14 @@ paths:
           body da requisição.
         schema:
           anyOf:
-          - $ref: '#/components/schemas/Service-Groups-Integration_V1_BodyCreate'
-          - $ref: '#/components/schemas/Service-Groups-Integration_V1_BodyUpdate'
-          - $ref: '#/components/schemas/Service-Groups-Integration_V1_BodyUpsert'
+          - $ref: '#/components/schemas/CustomersIntegration_V4_BodyCreate'
+          - $ref: '#/components/schemas/CustomersIntegration_V4_BodyUpdate'
+          - $ref: '#/components/schemas/CustomersIntegration_V4_BodyUpsert'
           discriminator:
             mapping:
-              create: '#/components/schemas/Service-Groups-Integration_V1_BodyCreate'
-              update: '#/components/schemas/Service-Groups-Integration_V1_BodyUpdate'
-              upsert: '#/components/schemas/Service-Groups-Integration_V1_BodyUpsert'
+              create: '#/components/schemas/CustomersIntegration_V4_BodyCreate'
+              update: '#/components/schemas/CustomersIntegration_V4_BodyUpdate'
+              upsert: '#/components/schemas/CustomersIntegration_V4_BodyUpsert'
         in: header
         required: true
       responses:
@@ -107,16 +113,16 @@ paths:
             application/json:
               schema:
                 oneOf:
-                - $ref: '#/components/schemas/Service-Groups-Integration_V1_FullResponse'
-                - $ref: '#/components/schemas/Service-Groups-Integration_V1_MinimumResponse'
+                - $ref: '#/components/schemas/CustomersIntegration_V4_FullResponse'
+                - $ref: '#/components/schemas/CustomersIntegration_V4_MinimumResponse'
                 discriminator:
                   mapping:
-                    full: '#/components/schemas/Service-Groups-Integration_V1_FullResponse'
-                    minimum: '#/components/schemas/Service-Groups-Integration_V1_MinimumResponse'
-          description: Returns a service group register
+                    full: '#/components/schemas/CustomersIntegration_V4_FullResponse'
+                    minimum: '#/components/schemas/CustomersIntegration_V4_MinimumResponse'
+          description: Returns a Customer register
         401:
           description: Unauthorized
-      summary: Criar, atualizar e deletar grupos de serviço
+      summary: Criar, atualizar e deletar clientes
       description: |
         A ação a ser realizada no cadastro depende do valor preenchido no header
         **Integration-Action**:
@@ -134,32 +140,29 @@ paths:
         enviado o ID do registro no header **Integration-Filter**;
     parameters:
     - name: Integration-Service
-      description: 'Serviço responsável pela entidade. Exemplo: product'
+      description: 'Serviço responsável pela entidade. Exemplo: customer'
       schema:
-        default: product
+        default: customer
         type: string
       in: header
       required: true
     - name: Integration-Resource
-      description: 'Recurso para requisição. Exemplo: service-groups-integration'
+      description: 'Recurso para requisição. Exemplo: customers-integration'
       schema:
-        default: service-groups-integration
+        default: customers-integration
         type: string
       in: header
       required: true
     - name: Integration-Version
-      description: 'Versão da API de integração. Exemplo: v1'
+      description: 'Versão da API de integração. Exemplo: v4'
       schema:
-        default: v1
+        default: v4
         type: string
       in: header
       required: true
 components:
   schemas:
-    Service-Groups-Integration_V1_BodyEmpty:
-      description: No body
-      type: object
-    Service-Groups-Integration_V1_MinimumResponse:
+    CustomersIntegration_V4_MinimumResponse:
       type: object
       properties:
         id:
@@ -172,121 +175,1856 @@ components:
         id: 19de1e5b-37c8-42c6-a62f-3d7bdd11e994
         createAt: 2019-08-13T18:00:38.780Z
         updatedAt: 2019-08-13T18:00:38.780Z
-    Service-Groups-Integration_V1_BodyCreate:
+    CustomersIntegration_V4_BodyEmpty:
+      description: No body
+      type: object
+    AddressPost:
+      description: ""
       required:
-      - active
       - description
+      type: object
+      properties:
+        description:
+          description: Descrição do endereço
+          type: string
+        active:
+          description: Define se o registro de endereço está ativo
+          type: boolean
+        standard:
+          description: Define se o registro de endereço é o padrão entre os endereços
+            disponíveis
+          type: boolean
+        cityId:
+          description: Identificador da cidade
+          type: string
+        cityName:
+          description: Nome da cidade
+          type: string
+        stateId:
+          description: Identificador do estado
+          type: string
+        stateName:
+          description: Nome do estado
+          type: string
+        countryId:
+          description: Identificador do País
+          type: string
+        countryName:
+          description: Nome do País
+          type: string
+        postalCode:
+          description: Código postal
+          type: string
+        region:
+          description: Região
+          type: string
+        zone:
+          description: Zona do endereço
+          type: string
+        neighborhood:
+          description: Bairro
+          type: string
+        address:
+          description: Endereço
+          type: string
+        number:
+          description: Número do endereço
+          type: string
+        complement:
+          description: Complemento do endereço
+          type: string
+        mappingId:
+          description: Identificador do mapeamento
+          type: string
+        externalId:
+          description: Código do sistema externo para identificação única do registro
+          type: string
+        addressType:
+          description: Tipo do endereço
+          type: object
+          properties:
+            id:
+              description: Id do tipo de endereço
+              type: string
+        code:
+          description: Código do endereço
+          type: string
+    CustomersIntegration_V4_BodyCreate:
+      required:
+      - name
       - externalId
-      - code
       type: object
       properties:
         active:
           description: Define se o registro está ativo
           type: boolean
-          example: true
-        code:
-          description: Código do grupo de produto
+        name:
+          description: Nome do cliente
           type: string
-          example: CONS
-        description:
-          description: Descrição do grupo de produto
-          type: string
-          example: Consultoria
         externalId:
           description: Código do sistema externo para identificação única do registro
           type: string
-          example: Cons
-        serviceGroupUpperId:
-          description: Grupo de produto superior
+        tradingName:
+          description: Nome fantasia do cliente
           type: string
-    Service-Groups-Integration_V1_BodyUpdate:
+        imageId:
+          format: UUID
+          description: Id da imagem do cliente
+          type: string
+        birthday:
+          format: date
+          description: Data de aniversário
+          type: string
+        code:
+          description: Código do cliente
+          type: number
+        note:
+          description: Observação do cliente
+          type: string
+        customerSince:
+          format: date
+          description: Data de início do relacionamento de cliente
+          type: string
+        exportedAt:
+          format: date-time
+          description: Data de exportação
+          type: string
+        customerClassification:
+          description: Classificação do cliente
+          type: object
+          properties:
+            id:
+              format: UUID
+              description: Id da classificação
+              type: string
+        facebook:
+          description: Link do Perfil do facebook
+          type: string
+        instagram:
+          description: Link da conta do instagram do cliente
+          type: string
+        twitter:
+          description: Link do perfil do cliente no twitter
+          type: string
+        linkedin:
+          description: Link do perfil do linkedin do cliente
+          type: string
+        website:
+          description: Link do website do cliente
+          type: string
+        customerPersonType:
+          description: Tipo da pessoa (física ou jurídica)
+          type: object
+          properties:
+            id:
+              format: UUID
+              description: Id do tipo de pessoa
+              type: string
+        phones:
+          description: Lista de telefones do cliente
+          type: array
+          items:
+            properties:
+              standard:
+                description: Define se o telefone é padrão
+                type: boolean
+              phoneTypeId:
+                format: UUID
+                description: Tipo do telefone
+                type: string
+              number:
+                description: Número do telefone
+                type: string
+              externalId:
+                description: Código do sistema externo para identificação única do
+                  registro
+                type: string
+        emails:
+          description: Lista de emails
+          type: array
+          items:
+            properties:
+              standard:
+                description: Define se o email é padrão
+                type: boolean
+              emailTypeId:
+                format: UUID
+                description: Tipo do email
+                type: string
+              email:
+                description: Email do cliente
+                type: string
+              externalId:
+                description: Código do sistema externo para identificação única do
+                  registro
+                type: string
+        customerGroups:
+          description: Lista de grupo de clientes
+          type: array
+          items:
+            properties:
+              id:
+                format: UUID
+                description: Id do grupo de produto
+                type: string
+        contacts:
+          description: Lista de contatos
+          type: array
+          items:
+            properties:
+              id:
+                format: UUID
+                description: Id do contato
+                type: string
+        addresses:
+          description: Endereços do cliente
+          required:
+          - description
+          type: array
+          items:
+            $ref: '#/components/schemas/AddressPost'
+        locationBusinessLines:
+          description: Ramo de atividade
+          type: array
+          items:
+            properties:
+              id:
+                format: UUID
+                description: Id do ramo de atividade
+                type: string
+        customerIdentificationDocuments:
+          description: Lista de documentos de identificação
+          type: array
+          items:
+            properties:
+              identificationDocumentAcronym:
+                description: Sigla do tipo de documento
+                type: string
+              identificationDocumentId:
+                format: UUID
+                description: Identificador do tipo de documento
+                type: string
+              identificationDocumentDescription:
+                description: Nome do tipo de documento
+                type: string
+              documentNumber:
+                description: Número do documento
+                type: string
+              identificationDocumentMask:
+                description: Máscara do documento
+                type: string
+              externalId:
+                description: Código do sistema externo para identificação única do
+                  registro
+                type: string
+        leadOrigin:
+          description: Origem do Lead
+          type: object
+          properties:
+            id:
+              format: UUID
+              description: Identificador da origem do lead
+              type: string
+        leadSituation:
+          description: Situação do Lead
+          type: object
+          properties:
+            id:
+              format: UUID
+              description: Identificador da situação do lead
+              type: string
+        parentAccount:
+          description: Identificador do registro pai do cliente
+          type: object
+          properties:
+            id:
+              format: UUID
+              description: Identificador do cliente
+              type: string
+        professionalId:
+          format: UUID
+          description: Identificador do profissional responsável pelo cliente
+          type: string
+        professionalName:
+          description: Nome do profissional responsável pelo cliente
+          type: string
+        companies:
+          description: Lista de empresas ligadas ao cliente.
+          type: array
+          items:
+            format: UUID
+            description: Identificador da empresa
+            type: string
+      example:
+        active: true
+        name: Frim LTDA
+        externalId: 21015174e079f1d8d7355
+        tradingName: Comércio de alimentos LTDA
+        imageId: c87d1210-1517-4e07-9f1d-8d7355b5acc5
+        birthday: 1964-02-15
+        code: "12"
+        note: Cliente antigo
+        parentAccount:
+          id: 21de1e5b-37c8-42c6-a62f-3d7bdd11e994
+        customerSince: 2005-02-15
+        exportedAt: 2019-08-13T18:00:38.780Z
+        facebook: https://facebook.com/nickname
+        instagram: https://instagram.com/nickname
+        twitter: https://twitter.com/nickname
+        linkedin: https://linkedin.com/in/nickname
+        website: www.mywebsite.com
+        phones:
+        - standard: "true"
+          phoneTypeId: 5b45276b-e85d-45c8-8254-f50e6bf654a5
+          number: 554632259874
+          externalId: 21015174e079f1d8d7355#+554632259874
+        emails:
+        - standard: "true"
+          emailTypeId: 3735642b-b975-4402-ae11-144ce71e965a
+          email: frim@email.com.br
+          externalId: 21015174e079f1d8d7355#frim@email.com.br
+        customerClassification:
+          id: a52da153-afc3-4fa4-9a87-a218f39c3cc7
+        customerPersonType:
+          id: c8067c48-0e98-4e01-b0de-d11303ab041b
+        customerGroups:
+        - id: 65c82ca5-fe2b-4445-be48-80edad65c5dd
+        locationBusinessLines:
+        - id: 3735642b-b975-4402-ae11-144ce71e965a
+        contacts:
+        - id: 3735642b-b975-4402-ae11-144ce71e965a
+        professionalId: 8b9debdd-b37b-4fa6-b3cb-d43a81ce021b
+        professionalName: Máquina de vendas
+        customerIdentificationDocuments:
+        - identificationDocumentAcronym: CPF
+          identificationDocumentId: 3735642b-b975-4402-ae11-144ce71e965a
+          identificationDocumentDescription: CPF
+          documentNumber: "827182827134"
+          externalId: 21015174e079f1d8d7355#827182827134
+        addresses:
+        - description: Address one
+          active: "true"
+          standard: "true"
+          code: "0"
+          cityId: 3735642b-b975-4402-ae11-144ce71e965a
+          cityName: San Francisco
+          stateId: 3b9846f3-f77b-4482-83b0-f5c7d7e42b5c
+          stateName: California
+          countryId: 7031e460-1572-44c4-95c5-46393949d810
+          countryName: United States
+          postalCode: 85812-011
+          region: Região Sul
+          zone: Zona Sul
+          neighborhood: San Francisco
+          address: St. London
+          number: "123"
+          complement: Complement Address
+          mappingId: 3735642b-b975-4402-ae11-144ce71e965a
+          addressType:
+            id: c8067c48-0e98-4e01-b0de-d11303ab041b
+        companies:
+        - 18730bea-95b4-486c-8cb6-7f664a9c937a
+    CustomersIntegration_V4_BodyUpdate:
       type: object
+      properties:
+        code:
+          type: string
+        name:
+          type: string
+        externalId:
+          type: string
+        tradingName:
+          type: string
+        active:
+          type: boolean
+        birthday:
+          type: string
+        note:
+          type: string
+        imageId:
+          type: string
+        facebook:
+          type: string
+        instagram:
+          type: string
+        twitter:
+          type: string
+        linkedin:
+          type: string
+        website:
+          type: string
+        emails:
+          type: array
+          items:
+            properties:
+              id:
+                format: UUID
+                type: string
+              email:
+                type: string
+              emailTypeId:
+                format: UUID
+                type: string
+              standard:
+                type: boolean
+        phones:
+          type: array
+          items:
+            properties:
+              id:
+                format: UUID
+                type: string
+              number:
+                type: string
+              phoneTypeId:
+                format: UUID
+                type: string
+              standard:
+                type: boolean
+        customerGroups:
+          type: array
+          items:
+            properties:
+              id:
+                format: UUID
+                type: string
+        customerClassification:
+          type: object
+          properties:
+            id:
+              format: UUID
+              type: string
+        customerPersonType:
+          type: object
+          properties:
+            id:
+              format: UUID
+              type: string
+        contacts:
+          type: array
+          items:
+            properties:
+              id:
+                format: UUID
+                type: string
+        addresses:
+          type: array
+          items:
+            properties:
+              id:
+                format: UUID
+                type: string
+              description:
+                type: string
+              active:
+                type: boolean
+              standard:
+                type: boolean
+              cityId:
+                format: UUID
+                type: string
+              cityName:
+                type: string
+              stateId:
+                format: UUID
+                type: string
+              stateName:
+                type: string
+              countryId:
+                format: UUID
+                type: string
+              countryName:
+                type: string
+              postalCode:
+                type: string
+              region:
+                type: string
+              zone:
+                type: string
+              neighborhood:
+                type: string
+              address:
+                type: string
+              number:
+                type: string
+              complement:
+                type: string
+              mappingId:
+                format: UUID
+                type: string
+              addressType:
+                type: object
+                properties:
+                  id:
+                    format: UUID
+                    type: string
+        locationBusinessLines:
+          type: array
+          items:
+            properties:
+              id:
+                format: UUID
+                type: string
+        customerIdentificationDocuments:
+          type: array
+          items:
+            properties:
+              identificationDocumentId:
+                format: UUID
+                type: string
+              documentNumber:
+                type: string
+        parentAccount:
+          type: object
+          properties:
+            id:
+              format: UUID
+              type: string
+        professionalId:
+          format: UUID
+          type: string
+        professionalName:
+          type: string
+        leadOrigin:
+          type: object
+          properties:
+            id:
+              format: UUID
+              type: string
+        leadSituation:
+          type: object
+          properties:
+            id:
+              format: UUID
+              type: string
+        companies:
+          type: array
+          items:
+            format: UUID
+            type: string
+      example:
+        code: "0001"
+        name: NAME CUSTOMER
+        tradingName: TRADING NAME CUSTOMER
+        active: true
+        birthday: 1978-03-21
+        note: NOTE CUSTOMER
+        imageId: 3735642b-b975-4402-ae11-144ce71e965a
+        parentAccount:
+          id: 21de1e5b-37c8-42c6-a62f-3d7bdd11e994
+        facebook: https://facebook.com/nickname
+        instagram: https://instagram.com/nickname
+        twitter: https://twitter.com/nickname
+        linkedin: https://linkedin.com/in/nickname
+        website: www.mywebsite.com
+        professionalId: 8b9debdd-b37b-4fa6-b3cb-d43a81ce021b
+        professionalName: Máquina de vendas
+        emails:
+        - id: 3735642b-b975-4402-ae11-144ce71e965a
+          email: mail@mail.com
+          emailTypeId: 3735642b-b975-4402-ae11-144ce71e965a
+          standard: true
+        phones:
+        - id: 3735642b-b975-4402-ae11-144ce71e965a
+          number: 551136451010
+          phoneTypeId: 3735642b-b975-4402-ae11-144ce71e965a
+          standard: true
+        customerGroups:
+        - id: 3735642b-b975-4402-ae11-144ce71e965a
+        customerClassification:
+          id: 3735642b-b975-4402-ae11-144ce71e965a
+        customerPersonType:
+          id: 3735642b-b975-4402-ae11-144ce71e965a
+        contacts:
+        - id: 3735642b-b975-4402-ae11-144ce71e965a
+        locationBusinessLines:
+        - id: 3735642b-b975-4402-ae11-144ce71e965a
+        customerIdentificationDocuments:
+        - identificationDocumentId: 3735642b-b975-4402-ae11-144ce71e965a
+          documentNumber: "827182827134"
+        addresses:
+        - id: 3735642b-b975-4402-ae11-144ce71e965a
+          description: Address one
+          active: "true"
+          code: "0"
+          standard: "true"
+          cityId: 3735642b-b975-4402-ae11-144ce71e965a
+          cityName: San Francisco
+          stateId: 3735642b-b975-4402-ae11-144ce71e965a
+          stateName: California
+          countryId: 3735642b-b975-4402-ae11-144ce71e965a
+          countryName: United States
+          postalCode: 85812-011
+          region: Região Sul
+          zone: Zona Sul
+          neighborhood: San Francisco
+          address: St. London
+          number: "123"
+          complement: Complement Address
+          mappingId: 3735642b-b975-4402-ae11-144ce71e965a
+          addressType:
+            id: c8067c48-0e98-4e01-b0de-d11303ab041b
+        companies:
+        - 18730bea-95b4-486c-8cb6-7f664a9c937a
+    CustomersIntegration_V4_BodyUpsert:
       properties:
         active:
           type: boolean
-          example: true
-        code:
+        name:
           type: string
-          example: CONS
-        description:
-          type: string
-          example: Consultoria
         externalId:
           type: string
-          example: Cons
-        serviceGroupUpperId:
+        tradingName:
           type: string
-    Service-Groups-Integration_V1_BodyUpsert:
-      type: object
-      properties:
-        active:
-          type: boolean
-          example: true
+        imageId:
+          format: UUID
+          type: string
+        birthday:
+          format: date
+          type: string
         code:
+          type: number
+        note:
           type: string
-          example: CONS
-        description:
+        customerSince:
+          format: date
           type: string
-          example: Consultoria
-        externalId:
+        exportedAt:
+          format: date-time
           type: string
-          example: Cons
-        serviceGroupUpperId:
+        customerClassification:
+          type: object
+          properties:
+            id:
+              format: UUID
+              type: string
+        facebook:
           type: string
-    Service-Groups-Integration_V1_FullResponse:
+        instagram:
+          type: string
+        twitter:
+          type: string
+        linkedin:
+          type: string
+        website:
+          type: string
+        customerPersonType:
+          type: object
+          properties:
+            id:
+              format: UUID
+              type: string
+        phones:
+          type: array
+          items:
+            properties:
+              standard:
+                type: boolean
+              phoneTypeId:
+                format: UUID
+                type: string
+              number:
+                type: string
+              externalId:
+                type: string
+        emails:
+          type: array
+          items:
+            properties:
+              standard:
+                type: boolean
+              emailTypeId:
+                format: UUID
+                type: string
+              email:
+                type: string
+              externalId:
+                type: string
+        customerGroups:
+          type: array
+          items:
+            properties:
+              id:
+                format: UUID
+                type: string
+        contacts:
+          type: array
+          items:
+            properties:
+              id:
+                format: UUID
+                type: string
+        addresses:
+          required:
+          - description
+          type: array
+          items:
+            $ref: '#/components/schemas/AddressPost'
+        locationBusinessLines:
+          type: array
+          items:
+            properties:
+              id:
+                format: UUID
+                type: string
+        customerIdentificationDocuments:
+          type: array
+          items:
+            properties:
+              identificationDocumentAcronym:
+                type: string
+              identificationDocumentId:
+                format: UUID
+                type: string
+              identificationDocumentDescription:
+                type: string
+              documentNumber:
+                type: string
+              identificationDocumentMask:
+                type: string
+              externalId:
+                type: string
+        leadOrigin:
+          type: object
+          properties:
+            id:
+              format: UUID
+              type: string
+        leadSituation:
+          type: object
+          properties:
+            id:
+              format: UUID
+              type: string
+        parentAccount:
+          type: object
+          properties:
+            id:
+              format: UUID
+              type: string
+        professionalId:
+          format: UUID
+          type: string
+        professionalName:
+          type: string
+        companies:
+          type: array
+          items:
+            format: UUID
+            type: string
+      example:
+        active: true
+        name: Frim LTDA
+        externalId: 21015174e079f1d8d7355
+        tradingName: Comércio de alimentos LTDA
+        imageId: c87d1210-1517-4e07-9f1d-8d7355b5acc5
+        birthday: 1964-02-15
+        code: "12"
+        note: Cliente antigo
+        parentAccount:
+          id: 21de1e5b-37c8-42c6-a62f-3d7bdd11e994
+        customerSince: 2005-02-15
+        exportedAt: 2019-08-13T18:00:38.780Z
+        facebook: https://facebook.com/nickname
+        instagram: https://instagram.com/nickname
+        twitter: https://twitter.com/nickname
+        linkedin: https://linkedin.com/in/nickname
+        website: www.mywebsite.com
+        phones:
+        - standard: "true"
+          phoneTypeId: 5b45276b-e85d-45c8-8254-f50e6bf654a5
+          number: 554632259874
+          externalId: 21015174e079f1d8d7355#+554632259874
+        emails:
+        - standard: "true"
+          emailTypeId: 3735642b-b975-4402-ae11-144ce71e965a
+          email: frim@email.com.br
+          externalId: 21015174e079f1d8d7355#frim@email.com.br
+        customerClassification:
+          id: a52da153-afc3-4fa4-9a87-a218f39c3cc7
+        customerPersonType:
+          id: c8067c48-0e98-4e01-b0de-d11303ab041b
+        customerGroups:
+        - id: 65c82ca5-fe2b-4445-be48-80edad65c5dd
+        locationBusinessLines:
+        - id: 3735642b-b975-4402-ae11-144ce71e965a
+        contacts:
+        - id: 3735642b-b975-4402-ae11-144ce71e965a
+        professionalId: 8b9debdd-b37b-4fa6-b3cb-d43a81ce021b
+        professionalName: Máquina de vendas
+        customerIdentificationDocuments:
+        - identificationDocumentAcronym: CPF
+          identificationDocumentId: 3735642b-b975-4402-ae11-144ce71e965a
+          identificationDocumentDescription: CPF
+          documentNumber: "827182827134"
+          externalId: 21015174e079f1d8d7355#827182827134
+        addresses:
+        - description: Address one
+          active: "true"
+          standard: "true"
+          code: "0"
+          cityId: 3735642b-b975-4402-ae11-144ce71e965a
+          cityName: San Francisco
+          stateId: 3b9846f3-f77b-4482-83b0-f5c7d7e42b5c
+          stateName: California
+          countryId: 7031e460-1572-44c4-95c5-46393949d810
+          countryName: United States
+          postalCode: 85812-011
+          region: Região Sul
+          zone: Zona Sul
+          neighborhood: San Francisco
+          address: St. London
+          number: "123"
+          complement: Complement Address
+          mappingId: 3735642b-b975-4402-ae11-144ce71e965a
+          addressType:
+            id: c8067c48-0e98-4e01-b0de-d11303ab041b
+        companies:
+        - 18730bea-95b4-486c-8cb6-7f664a9c937a
+    CustomersIntegration_V4_FullResponse:
       type: object
       properties:
         id:
+          format: UUID
           type: string
-          example: 02285a7b-de5e-460b-a19f-29ae81e1e3cb
         createdAt:
           type: string
-          example: 2020-05-22T12:13:21.571Z
         updatedAt:
           type: string
-          example: 2020-05-22T12:13:21.571Z
+        lastUpdatedAt:
+          type: string
         active:
           type: boolean
-          example: true
-        code:
+        name:
           type: string
-          example: CONS
-        description:
-          type: string
-          example: Consultoria
         externalId:
+          format: UUID
           type: string
-          example: Cons
-        serviceGroupUpperId:
+        tradingName:
           type: string
-    Service-Groups-Integration_V1_GetResponse:
+        imageId:
+          format: UUID
+          type: string
+        birthday:
+          format: date
+          type: string
+        code:
+          type: number
+        note:
+          type: string
+        customerSince:
+          type: string
+        exportedAt:
+          type: string
+        customerClassification:
+          type: object
+          properties:
+            id:
+              type: string
+            createdAt:
+              type: string
+            updatedAt:
+              type: string
+            active:
+              type: boolean
+            description:
+              type: string
+            externalId:
+              type: string
+        facebook:
+          type: string
+        instagram:
+          type: string
+        twitter:
+          type: string
+        linkedin:
+          type: string
+        website:
+          type: string
+        customerPersonType:
+          type: object
+          properties:
+            id:
+              format: UUID
+              type: string
+            createdAt:
+              type: string
+            updatedaAt:
+              type: string
+            active:
+              type: boolean
+            code:
+              type: string
+            description:
+              type: string
+            acronym:
+              type: string
+            externalId:
+              type: string
+        phones:
+          type: array
+          items:
+            properties:
+              id:
+                format: UUID
+                type: string
+              createdAt:
+                type: string
+              updatedaAt:
+                type: string
+              standard:
+                type: boolean
+              phoneTypeId:
+                type: string
+              number:
+                type: string
+              externalId:
+                type: string
+        emails:
+          type: array
+          items:
+            properties:
+              id:
+                format: UUID
+                type: string
+              createdAt:
+                type: string
+              updatedaAt:
+                type: string
+              standard:
+                type: boolean
+              emailTypeId:
+                format: UUID
+                type: string
+              email:
+                type: string
+              externalId:
+                type: string
+        customerGroups:
+          type: array
+          items:
+            properties:
+              id:
+                format: UUID
+                type: string
+              createdAt:
+                type: string
+              updatedaAt:
+                type: string
+              description:
+                type: string
+              active:
+                type: boolean
+              familiarGroup:
+                type: boolean
+              externalId:
+                type: string
+        contacts:
+          type: array
+          items:
+            properties:
+              id:
+                format: UUID
+                type: string
+              createdAt:
+                type: string
+              updatedAt:
+                type: string
+              externalId:
+                type: string
+              active:
+                type: boolean
+              name:
+                type: string
+              role:
+                type: string
+              department:
+                type: string
+              birthday:
+                type: string
+              note:
+                type: string
+              facebook:
+                type: string
+              instagram:
+                type: string
+              linkedin:
+                type: string
+              twitter:
+                type: string
+              website:
+                type: string
+              imageId:
+                format: UUID
+                type: string
+              exportedAt:
+                type: string
+              lastUpdatedAt:
+                type: string
+              phones:
+                type: array
+                items:
+                  properties:
+                    id:
+                      format: UUID
+                      type: string
+                    createdAt:
+                      type: string
+                    updatedaAt:
+                      type: string
+                    standard:
+                      type: boolean
+                    phoneTypeId:
+                      format: UUID
+                      type: string
+                    number:
+                      type: string
+                    externalId:
+                      type: string
+              emails:
+                type: array
+                items:
+                  properties:
+                    id:
+                      format: UUID
+                      type: string
+                    createdAt:
+                      type: string
+                    updatedaAt:
+                      type: string
+                    standard:
+                      type: boolean
+                    emailTypeId:
+                      format: UUID
+                      type: string
+                    email:
+                      type: string
+                    externalId:
+                      type: string
+        addresses:
+          type: array
+          items:
+            properties:
+              id:
+                format: UUID
+                type: string
+              createdAt:
+                type: string
+              updatedAt:
+                type: string
+              description:
+                type: string
+              active:
+                type: boolean
+              standard:
+                type: boolean
+              code:
+                type: string
+              cityId:
+                format: UUID
+                type: string
+              cityName:
+                type: string
+              stateId:
+                format: UUID
+                type: string
+              stateName:
+                type: string
+              countryId:
+                format: UUID
+                type: string
+              countryName:
+                type: string
+              postalCode:
+                type: string
+              region:
+                type: string
+              zone:
+                type: string
+              neighborhood:
+                type: string
+              address:
+                type: string
+              number:
+                type: string
+              complement:
+                type: string
+              mappingId:
+                type: string
+              externalId:
+                type: string
+              addressType:
+                type: object
+                properties:
+                  id:
+                    format: UUID
+                    type: string
+                  createdAt:
+                    type: string
+                  updatedAt:
+                    type: string
+                  active:
+                    type: boolean
+                  code:
+                    type: string
+                  description:
+                    type: string
+                  acronym:
+                    type: string
+                  externalId:
+                    type: string
+        locationBusinessLines:
+          type: array
+          items:
+            properties:
+              id:
+                format: UUID
+                type: string
+              createdAt:
+                type: string
+              updatedAt:
+                type: string
+              description:
+                type: string
+              active:
+                type: boolean
+              externalId:
+                type: string
+        customerIdentificationDocuments:
+          type: array
+          items:
+            properties:
+              createdAt:
+                type: string
+              updatedAt:
+                type: string
+              identificationDocumentAcronym:
+                type: string
+              identificationDocumentId:
+                format: UUID
+                type: string
+              identificationDocumentDescription:
+                type: string
+              documentNumber:
+                type: string
+              identificationDocumentMask:
+                type: string
+              externalId:
+                type: string
+        leadOrigin:
+          type: object
+          properties:
+            id:
+              format: UUID
+              type: string
+            externalId:
+              type: string
+            createdAt:
+              format: timestamp
+              type: string
+            updatedAt:
+              format: timestamp
+              type: string
+            active:
+              type: boolean
+            description:
+              type: string
+            defaultValue:
+              type: string
+        leadSituation:
+          type: object
+          properties:
+            id:
+              format: UUID
+              type: string
+            externalId:
+              type: string
+            createdAt:
+              format: timestamp
+              type: string
+            updatedAt:
+              format: timestamp
+              type: string
+            description:
+              type: string
+            descriptionKey:
+              type: string
+        parentAccount:
+          $ref: '#/components/schemas/CustomersIntegration_V4_FullResponse'
+          type: object
+        professionalId:
+          format: UUID
+          type: string
+        professionalName:
+          type: string
+        companies:
+          type: array
+          items:
+            format: UUID
+            type: string
+      example:
+        id: 19de1e5b-37c8-42c6-a62f-3d7bdd11e994
+        active: true
+        name: Frim LTDA
+        externalId: 21015174e079f1d8d7355
+        tradingName: Comércio de alimentos LTDA
+        imageId: c87d1210-1517-4e07-9f1d-8d7355b5acc5
+        birthday: 1964-02-15
+        code: "12"
+        note: Cliente antigo
+        parentAccount:
+          id: 21de1e5b-37c8-42c6-a62f-3d7bdd11e994
+        customerSince: 2005-02-15
+        createAt: 2019-08-13T18:00:38.780Z
+        updatedAt: 2019-08-13T18:00:38.780Z
+        lastUpdatedAt: 2019-08-13T18:00:38.780Z
+        exportedAt: 2019-08-13T18:00:38.780Z
+        facebook: https://facebook.com/nickname
+        instagram: https://instagram.com/nickname
+        twitter: https://twitter.com/nickname
+        linkedin: https://linkedin.com/in/nickname
+        website: www.mywebsite.com
+        phones:
+        - id: cc9c3ce2-2cb1-405d-ab77-d411d5407cd3
+          createdAt: 2019-08-13T18:00:38.780Z
+          updatedAt: 2019-08-13T18:00:38.780Z
+          standard: "true"
+          phoneTypeId: 5b45276b-e85d-45c8-8254-f50e6bf654a5
+          number: 554632259874
+        emails:
+        - id: d6045908-a444-4095-8a7b-179f3f7c8b24
+          createdAt: 2019-08-13T18:00:38.780Z
+          updatedAt: 2019-08-13T18:00:38.780Z
+          standard: "true"
+          emailTypeId: 3735642b-b975-4402-ae11-144ce71e965a
+          email: frim@email.com.br
+        customerClassification:
+          id: a52da153-afc3-4fa4-9a87-a218f39c3cc7
+          createdAt: 2019-08-13T18:00:38.780Z
+          updatedAt: 2019-08-13T18:00:38.780Z
+          active: "true"
+          description: Classificação A
+        customerPersonType:
+          id: c8067c48-0e98-4e01-b0de-d11303ab041b
+          createdAt: 2019-08-13T18:00:38.780Z
+          updatedAt: 2019-08-13T18:00:38.780Z
+          active: "true"
+          code: "11"
+          description: física
+          acronym: f
+        customerGroups:
+        - id: 65c82ca5-fe2b-4445-be48-80edad65c5dd
+          createdAt: 2019-08-13T18:00:38.780Z
+          updatedAt: 2019-08-13T18:00:38.780Z
+          description: Grupo de clientes antigos
+          active: "true"
+          familiarGroup: "false"
+        contacts:
+        - id: 11e7a087-aeda-4f2c-810d-de9e9a31c4b1
+          createdAt: 2020-08-10T14:11:11.43Z
+          updatedAt: 2020-08-13T16:41:48.795Z
+          active: true
+          name: Julio
+          lastUpdatedAt: 2020-08-13T16:41:48.795Z
+          phones:
+          - id: 0855365c-7bd9-4217-8fe5-d937732fd6cf
+            createdAt: 2020-08-10T14:11:11.77Z
+            updatedAt: 2020-08-10T14:11:11.77Z
+            standard: true
+            phoneTypeId: d870427c-bbad-4eb8-9af5-5183b47f648f
+            number: +55 (45) 2554-8344
+          emails:
+          - id: bff6e5e8-6338-4adc-9b98-06b2074b1449
+            createdAt: 2020-08-10T14:11:12Z
+            updatedAt: 2020-08-10T14:11:12Z
+            standard: true
+            emailTypeId: 301f0e6e-4270-472b-aa96-45ab017bcbb1
+            email: julio@teste.com.br
+          addresses:
+          - id: 5364442b-b975-4402-ae11-144ce71e965b
+            createdAt: 2019-08-13T18:00:38.780Z
+            updatedAt: 2019-08-13T18:00:38.780Z
+            description: Address one
+            active: "true"
+            standard: "true"
+            code: "0"
+            cityId: 3735642b-b975-4402-ae11-144ce71e965a
+            cityName: San Francisco
+            stateId: 3735642b-b975-4402-ae11-144ce71e965a
+            stateName: California
+            countryId: 3735642b-b975-4402-ae11-144ce71e965a
+            countryName: United States
+            postalCode: 85812-011
+            region: Região Sul
+            zone: Zona Sul
+            neighborhood: San Francisco
+            address: St. London
+            number: "123"
+            complement: Complement Address
+            mappingId: 3735642b-b975-4402-ae11-144ce71e965a
+            addressType:
+              id: c8067c48-0e98-4e01-b0de-d11303ab041b
+              createdAt: 2019-08-13T18:00:38.780Z
+              updatedAt: 2019-08-13T18:00:38.780Z
+              active: "true"
+              description: Tipo de endereço
+              acronym: TE
+        addresses:
+        - id: 3735642b-b975-4402-ae11-144ce71e965a
+          createdAt: 2019-08-13T18:00:38.780Z
+          updatedAt: 2019-08-13T18:00:38.780Z
+          description: Address one
+          active: "true"
+          standard: "true"
+          code: "0"
+          cityId: 3735642b-b975-4402-ae11-144ce71e965a
+          cityName: San Francisco
+          stateId: 3735642b-b975-4402-ae11-144ce71e965a
+          stateName: California
+          countryId: 3735642b-b975-4402-ae11-144ce71e965a
+          countryName: United States
+          postalCode: 85812-011
+          region: Região Sul
+          zone: Zona Sul
+          neighborhood: San Francisco
+          address: St. London
+          number: "123"
+          complement: Complement Address
+          mappingId: 3735642b-b975-4402-ae11-144ce71e965a
+          addressType:
+            id: c8067c48-0e98-4e01-b0de-d11303ab041b
+            createAt: 2019-08-13T18:00:38.780Z
+            updatedAt: 2019-08-13T18:00:38.780Z
+            active: "true"
+            description: Tipo de endereço
+            acronym: TE
+        professionalId: 8b9debdd-b37b-4fa6-b3cb-d43a81ce021b
+        professionalName: Máquina de vendas
+        companies:
+        - 18730bea-95b4-486c-8cb6-7f664a9c937a
+    CustomersIntegration_V4_GetResponse:
       type: object
       properties:
         id:
+          format: UUID
           type: string
-          example: 02285a7b-de5e-460b-a19f-29ae81e1e3cb
         createdAt:
           type: string
-          example: 2020-05-22T12:13:21.571Z
         updatedAt:
           type: string
-          example: 2020-05-22T12:13:21.571Z
+        lastUpdatedAt:
+          type: string
         active:
           type: boolean
-          example: true
-        code:
+        name:
           type: string
-          example: CONS
-        description:
-          type: string
-          example: Consultoria
         externalId:
+          format: UUID
           type: string
-          example: Cons
-        serviceGroupUpperId:
+        tradingName:
           type: string
+        imageId:
+          format: UUID
+          type: string
+        birthday:
+          format: date
+          type: string
+        code:
+          type: number
+        note:
+          type: string
+        customerSince:
+          type: string
+        exportedAt:
+          type: string
+        customerClassification:
+          type: object
+          properties:
+            id:
+              type: string
+            createdAt:
+              type: string
+            updatedAt:
+              type: string
+            active:
+              type: boolean
+            description:
+              type: string
+            externalId:
+              type: string
+        facebook:
+          type: string
+        instagram:
+          type: string
+        twitter:
+          type: string
+        linkedin:
+          type: string
+        website:
+          type: string
+        customerPersonType:
+          type: object
+          properties:
+            id:
+              format: UUID
+              type: string
+            createdAt:
+              type: string
+            updatedaAt:
+              type: string
+            active:
+              type: boolean
+            code:
+              type: string
+            description:
+              type: string
+            acronym:
+              type: string
+            externalId:
+              type: string
+        phones:
+          type: array
+          items:
+            properties:
+              id:
+                format: UUID
+                type: string
+              createdAt:
+                type: string
+              updatedaAt:
+                type: string
+              standard:
+                type: boolean
+              phoneTypeId:
+                type: string
+              number:
+                type: string
+              externalId:
+                type: string
+        emails:
+          type: array
+          items:
+            properties:
+              id:
+                format: UUID
+                type: string
+              createdAt:
+                type: string
+              updatedaAt:
+                type: string
+              standard:
+                type: boolean
+              emailTypeId:
+                format: UUID
+                type: string
+              email:
+                type: string
+              externalId:
+                type: string
+        customerGroups:
+          type: array
+          items:
+            properties:
+              id:
+                format: UUID
+                type: string
+              createdAt:
+                type: string
+              updatedaAt:
+                type: string
+              description:
+                type: string
+              active:
+                type: boolean
+              familiarGroup:
+                type: boolean
+              externalId:
+                type: string
+        contacts:
+          type: array
+          items:
+            properties:
+              id:
+                format: UUID
+                type: string
+              createdAt:
+                type: string
+              updatedAt:
+                type: string
+              externalId:
+                type: string
+              active:
+                type: boolean
+              name:
+                type: string
+              role:
+                type: string
+              department:
+                type: string
+              birthday:
+                type: string
+              note:
+                type: string
+              facebook:
+                type: string
+              instagram:
+                type: string
+              linkedin:
+                type: string
+              twitter:
+                type: string
+              website:
+                type: string
+              imageId:
+                format: UUID
+                type: string
+              exportedAt:
+                type: string
+              lastUpdatedAt:
+                type: string
+              phones:
+                type: array
+                items:
+                  properties:
+                    id:
+                      format: UUID
+                      type: string
+                    createdAt:
+                      type: string
+                    updatedaAt:
+                      type: string
+                    standard:
+                      type: boolean
+                    phoneTypeId:
+                      format: UUID
+                      type: string
+                    number:
+                      type: string
+                    externalId:
+                      type: string
+              emails:
+                type: array
+                items:
+                  properties:
+                    id:
+                      format: UUID
+                      type: string
+                    createdAt:
+                      type: string
+                    updatedaAt:
+                      type: string
+                    standard:
+                      type: boolean
+                    emailTypeId:
+                      format: UUID
+                      type: string
+                    email:
+                      type: string
+                    externalId:
+                      type: string
+        addresses:
+          type: array
+          items:
+            properties:
+              id:
+                format: UUID
+                type: string
+              createdAt:
+                type: string
+              updatedAt:
+                type: string
+              description:
+                type: string
+              active:
+                type: boolean
+              standard:
+                type: boolean
+              code:
+                type: string
+              cityId:
+                format: UUID
+                type: string
+              cityName:
+                type: string
+              stateId:
+                format: UUID
+                type: string
+              stateName:
+                type: string
+              countryId:
+                format: UUID
+                type: string
+              countryName:
+                type: string
+              postalCode:
+                type: string
+              region:
+                type: string
+              zone:
+                type: string
+              neighborhood:
+                type: string
+              address:
+                type: string
+              number:
+                type: string
+              complement:
+                type: string
+              mappingId:
+                type: string
+              externalId:
+                type: string
+              addressType:
+                type: object
+                properties:
+                  id:
+                    format: UUID
+                    type: string
+                  createdAt:
+                    type: string
+                  updatedAt:
+                    type: string
+                  active:
+                    type: boolean
+                  code:
+                    type: string
+                  description:
+                    type: string
+                  acronym:
+                    type: string
+                  externalId:
+                    type: string
+        locationBusinessLines:
+          type: array
+          items:
+            properties:
+              id:
+                format: UUID
+                type: string
+              createdAt:
+                type: string
+              updatedAt:
+                type: string
+              description:
+                type: string
+              active:
+                type: boolean
+              externalId:
+                type: string
+        customerIdentificationDocuments:
+          type: array
+          items:
+            properties:
+              createdAt:
+                type: string
+              updatedAt:
+                type: string
+              identificationDocumentAcronym:
+                type: string
+              identificationDocumentId:
+                format: UUID
+                type: string
+              identificationDocumentDescription:
+                type: string
+              documentNumber:
+                type: string
+              identificationDocumentMask:
+                type: string
+              externalId:
+                type: string
+        leadOrigin:
+          type: object
+          properties:
+            id:
+              format: UUID
+              type: string
+            externalId:
+              type: string
+            createdAt:
+              format: timestamp
+              type: string
+            updatedAt:
+              format: timestamp
+              type: string
+            active:
+              type: boolean
+            description:
+              type: string
+            defaultValue:
+              type: string
+        leadSituation:
+          type: object
+          properties:
+            id:
+              format: UUID
+              type: string
+            externalId:
+              type: string
+            createdAt:
+              format: timestamp
+              type: string
+            updatedAt:
+              format: timestamp
+              type: string
+            description:
+              type: string
+            descriptionKey:
+              type: string
+        parentAccount:
+          $ref: '#/components/schemas/CustomersIntegration_V4_FullResponse'
+          type: object
+        professionalId:
+          format: UUID
+          type: string
+        professionalName:
+          type: string
+        companies:
+          type: array
+          items:
+            format: UUID
+            type: string
+      example:
+        id: 19de1e5b-37c8-42c6-a62f-3d7bdd11e994
+        active: true
+        name: Frim LTDA
+        externalId: 21015174e079f1d8d7355
+        tradingName: Comércio de alimentos LTDA
+        imageId: c87d1210-1517-4e07-9f1d-8d7355b5acc5
+        birthday: 1964-02-15
+        code: "12"
+        note: Cliente antigo
+        parentAccount:
+          id: 21de1e5b-37c8-42c6-a62f-3d7bdd11e994
+        customerSince: 2005-02-15
+        createAt: 2019-08-13T18:00:38.780Z
+        updatedAt: 2019-08-13T18:00:38.780Z
+        lastUpdatedAt: 2019-08-13T18:00:38.780Z
+        exportedAt: 2019-08-13T18:00:38.780Z
+        facebook: https://facebook.com/nickname
+        instagram: https://instagram.com/nickname
+        twitter: https://twitter.com/nickname
+        linkedin: https://linkedin.com/in/nickname
+        website: www.mywebsite.com
+        phones:
+        - id: cc9c3ce2-2cb1-405d-ab77-d411d5407cd3
+          createdAt: 2019-08-13T18:00:38.780Z
+          updatedAt: 2019-08-13T18:00:38.780Z
+          standard: "true"
+          phoneTypeId: 5b45276b-e85d-45c8-8254-f50e6bf654a5
+          number: 554632259874
+        emails:
+        - id: d6045908-a444-4095-8a7b-179f3f7c8b24
+          createdAt: 2019-08-13T18:00:38.780Z
+          updatedAt: 2019-08-13T18:00:38.780Z
+          standard: "true"
+          emailTypeId: 3735642b-b975-4402-ae11-144ce71e965a
+          email: frim@email.com.br
+        customerClassification:
+          id: a52da153-afc3-4fa4-9a87-a218f39c3cc7
+          createdAt: 2019-08-13T18:00:38.780Z
+          updatedAt: 2019-08-13T18:00:38.780Z
+          active: "true"
+          description: Classificação A
+        customerPersonType:
+          id: c8067c48-0e98-4e01-b0de-d11303ab041b
+          createdAt: 2019-08-13T18:00:38.780Z
+          updatedAt: 2019-08-13T18:00:38.780Z
+          active: "true"
+          code: "11"
+          description: física
+          acronym: f
+        customerGroups:
+        - id: 65c82ca5-fe2b-4445-be48-80edad65c5dd
+          createdAt: 2019-08-13T18:00:38.780Z
+          updatedAt: 2019-08-13T18:00:38.780Z
+          description: Grupo de clientes antigos
+          active: "true"
+          familiarGroup: "false"
+        contacts:
+        - id: 11e7a087-aeda-4f2c-810d-de9e9a31c4b1
+          createdAt: 2020-08-10T14:11:11.43Z
+          updatedAt: 2020-08-13T16:41:48.795Z
+          active: true
+          name: Julio
+          lastUpdatedAt: 2020-08-13T16:41:48.795Z
+          phones:
+          - id: 0855365c-7bd9-4217-8fe5-d937732fd6cf
+            createdAt: 2020-08-10T14:11:11.77Z
+            updatedAt: 2020-08-10T14:11:11.77Z
+            standard: true
+            phoneTypeId: d870427c-bbad-4eb8-9af5-5183b47f648f
+            number: +55 (45) 2554-8344
+          emails:
+          - id: bff6e5e8-6338-4adc-9b98-06b2074b1449
+            createdAt: 2020-08-10T14:11:12Z
+            updatedAt: 2020-08-10T14:11:12Z
+            standard: true
+            emailTypeId: 301f0e6e-4270-472b-aa96-45ab017bcbb1
+            email: julio@teste.com.br
+          addresses:
+          - id: 5364442b-b975-4402-ae11-144ce71e965b
+            createdAt: 2019-08-13T18:00:38.780Z
+            updatedAt: 2019-08-13T18:00:38.780Z
+            description: Address one
+            active: "true"
+            standard: "true"
+            code: "0"
+            cityId: 3735642b-b975-4402-ae11-144ce71e965a
+            cityName: San Francisco
+            stateId: 3735642b-b975-4402-ae11-144ce71e965a
+            stateName: California
+            countryId: 3735642b-b975-4402-ae11-144ce71e965a
+            countryName: United States
+            postalCode: 85812-011
+            region: Região Sul
+            zone: Zona Sul
+            neighborhood: San Francisco
+            address: St. London
+            number: "123"
+            complement: Complement Address
+            mappingId: 3735642b-b975-4402-ae11-144ce71e965a
+            addressType:
+              id: c8067c48-0e98-4e01-b0de-d11303ab041b
+              createdAt: 2019-08-13T18:00:38.780Z
+              updatedAt: 2019-08-13T18:00:38.780Z
+              active: "true"
+              description: Tipo de endereço
+              acronym: TE
+        addresses:
+        - id: 3735642b-b975-4402-ae11-144ce71e965a
+          createdAt: 2019-08-13T18:00:38.780Z
+          updatedAt: 2019-08-13T18:00:38.780Z
+          description: Address one
+          active: "true"
+          standard: "true"
+          code: "0"
+          cityId: 3735642b-b975-4402-ae11-144ce71e965a
+          cityName: San Francisco
+          stateId: 3735642b-b975-4402-ae11-144ce71e965a
+          stateName: California
+          countryId: 3735642b-b975-4402-ae11-144ce71e965a
+          countryName: United States
+          postalCode: 85812-011
+          region: Região Sul
+          zone: Zona Sul
+          neighborhood: San Francisco
+          address: St. London
+          number: "123"
+          complement: Complement Address
+          mappingId: 3735642b-b975-4402-ae11-144ce71e965a
+          addressType:
+            id: c8067c48-0e98-4e01-b0de-d11303ab041b
+            createAt: 2019-08-13T18:00:38.780Z
+            updatedAt: 2019-08-13T18:00:38.780Z
+            active: "true"
+            description: Tipo de endereço
+            acronym: TE
+        professionalId: 8b9debdd-b37b-4fa6-b3cb-d43a81ce021b
+        professionalName: Máquina de vendas
+        companies:
+        - 18730bea-95b4-486c-8cb6-7f664a9c937a
 tags:
-- name: APP2
-  description: Ambiente APP2
+- name: TotvsCRMApp
+  description: A API de integração é válida para o ambiente Totvs CRM APP
 - name: integration
-  description: ""
+  description: API de integração
