@@ -16,41 +16,38 @@ info:
         - Email (Email)
   contact: {}
 servers:
-- url: https://{url}/api/{version}/integration
-  description: Integration Router Server
-  variables:
-    url:
-      default: totvscrm.app
-      description: URL de acesso ao Integration-Router
-    version:
-      default: v1
-      description: Versão do Integration-Router
+  - url: https://{url}/api/{version}/integration
+    description: Integration Router Server
+    variables:
+      url:
+        default: totvscrm.app
+        description: URL de acesso ao Integration-Router
+      version:
+        default: v1
+        description: Versão do Integration-Router
 paths:
   /record:
     get:
       tags:
-      - Customers
+        - Customers
       parameters:
-      - name: Integration-Filter
-        description: |
-          Filtro opcional para realizar a busca de um ou mais registros. Suporta o uso de
-          RestQuery.
-
-
-          Se o header for omitido, lista todos os registros
-
-          Se o header não contiver valores, lista todos os registros
-        schema:
-          type: string
-        in: header
-        required: false
+        - name: Integration-Filter
+          description: |
+            Filtro opcional para realizar a busca de um ou mais registros. Suporta o uso de
+            RestQuery.
+            
+            
+            Se o header for omitido, lista todos os registros
+            
+            Se o header não contiver valores, lista todos os registros
+          schema:
+            type: string
+          in: header
+          required: false
       responses:
         200:
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/CustomersIntegration_V4_FullResponse'
           description: Returns a list of customers
+          headers: { }
         401:
           description: Unauthorized
       summary: Listar clientes
@@ -63,58 +60,58 @@ paths:
             schema:
               $ref: '#/components/schemas/CustomersIntegration_V4_BodyCreate'
       tags:
-      - Customers
+        - Customers
       parameters:
-      - name: Integration-Filter
-        description: |
-          Filtro do registro específico para a ação. Deve-se usar o identificador principal da
-          entidade (ID).
-        schema:
-          type: string
-        in: header
-        required: false
-      - name: Integration-Response
-        description: |
-          Nível de detalhe do retorno da API. São suportados atualmente:
-
-          **full** - Resposta completa, equivalente a um GET no recurso
-
-          **minimum** - Resposta mínima, equivalente ao ID, data de criação e atualização do
-          registro
-
-          Se o header não for informado, por padrão o retorno será equivalente ao nível
-          **minimum**
-        schema:
-          enum:
-          - full
-          - minimum
-          type: string
-        in: header
-        required: false
-      - name: Integration-Action
-        description: |
-          Ação a ser realizada na API de integração. Selecione uma das opções para carregar o
-          body da requisição.
-        schema:
-          anyOf:
-          - $ref: '#/components/schemas/CustomersIntegration_V4_BodyCreate'
-          - $ref: '#/components/schemas/CustomersIntegration_V4_BodyUpdate'
-          - $ref: '#/components/schemas/CustomersIntegration_V4_BodyUpsert'
-          discriminator:
-            mapping:
-              create: '#/components/schemas/CustomersIntegration_V4_BodyCreate'
-              update: '#/components/schemas/CustomersIntegration_V4_BodyUpdate'
-              upsert: '#/components/schemas/CustomersIntegration_V4_BodyUpsert'
-        in: header
-        required: true
+        - name: Integration-Filter
+          description: |
+            Filtro do registro específico para a ação. Deve-se usar o identificador principal da
+            entidade (ID).
+          schema:
+            type: string
+          in: header
+          required: false
+        - name: Integration-Response
+          description: |
+            Nível de detalhe do retorno da API. São suportados atualmente:
+            
+            **full** - Resposta completa, equivalente a um GET no recurso
+            
+            **minimum** - Resposta mínima, equivalente ao ID, data de criação e atualização do
+            registro
+            
+            Se o header não for informado, por padrão o retorno será equivalente ao nível
+            **minimum**
+          schema:
+            enum:
+              - full
+              - minimum
+            type: string
+          in: header
+          required: false
+        - name: Integration-Action
+          description: |
+            Ação a ser realizada na API de integração. Selecione uma das opções para carregar o
+            body da requisição.
+          schema:
+            anyOf:
+              - $ref: '#/components/schemas/CustomersIntegration_V4_BodyCreate'
+              - $ref: '#/components/schemas/CustomersIntegration_V4_BodyUpdate'
+              - $ref: '#/components/schemas/CustomersIntegration_V4_BodyUpsert'
+            discriminator:
+              mapping:
+                create: '#/components/schemas/CustomersIntegration_V4_BodyCreate'
+                update: '#/components/schemas/CustomersIntegration_V4_BodyUpdate'
+                upsert: '#/components/schemas/CustomersIntegration_V4_BodyUpsert'
+          in: header
+          required: true
       responses:
         200:
           content:
             application/json:
               schema:
                 oneOf:
-                - $ref: '#/components/schemas/CustomersIntegration_V4_FullResponse'
-                - $ref: '#/components/schemas/CustomersIntegration_V4_MinimumResponse'
+                  - $ref: '#/components/schemas/CustomersIntegration_V4_FullResponse'
+                  - $ref: '#/components/schemas/CustomersIntegration_V4_MinimumResponse'
                 discriminator:
                   mapping:
                     full: '#/components/schemas/CustomersIntegration_V4_FullResponse'
@@ -139,27 +136,27 @@ paths:
         no header **Integration-Filter** **OU** realiza a operação de PUT do cadastro enviado se for
         enviado o ID do registro no header **Integration-Filter**;
     parameters:
-    - name: Integration-Service
-      description: 'Serviço responsável pela entidade. Exemplo: customer'
-      schema:
-        default: customer
-        type: string
-      in: header
-      required: true
-    - name: Integration-Resource
-      description: 'Recurso para requisição. Exemplo: customers-integration'
-      schema:
-        default: customers-integration
-        type: string
-      in: header
-      required: true
-    - name: Integration-Version
-      description: 'Versão da API de integração. Exemplo: v4'
-      schema:
-        default: v4
-        type: string
-      in: header
-      required: true
+      - name: Integration-Service
+        description: 'Serviço responsável pela entidade. Exemplo: customer'
+        schema:
+          default: customer
+          type: string
+        in: header
+        required: true
+      - name: Integration-Resource
+        description: 'Recurso para requisição. Exemplo: customers-integration'
+        schema:
+          default: customers-integration
+          type: string
+        in: header
+        required: true
+      - name: Integration-Version
+        description: 'Versão da API de integração. Exemplo: v4'
+        schema:
+          default: v4
+          type: string
+        in: header
+        required: true
 components:
   schemas:
     CustomersIntegration_V4_MinimumResponse:
@@ -181,7 +178,7 @@ components:
     AddressPost:
       description: ""
       required:
-      - description
+        - description
       type: object
       properties:
         description:
@@ -251,8 +248,8 @@ components:
           type: string
     CustomersIntegration_V4_BodyCreate:
       required:
-      - name
-      - externalId
+        - name
+        - externalId
       type: object
       properties:
         active:
@@ -379,7 +376,7 @@ components:
         addresses:
           description: Endereços do cliente
           required:
-          - description
+            - description
           type: array
           items:
             $ref: '#/components/schemas/AddressPost'
@@ -474,56 +471,56 @@ components:
         linkedin: https://linkedin.com/in/nickname
         website: www.mywebsite.com
         phones:
-        - standard: "true"
-          phoneTypeId: 5b45276b-e85d-45c8-8254-f50e6bf654a5
-          number: 554632259874
-          externalId: 21015174e079f1d8d7355#+554632259874
+          - standard: "true"
+            phoneTypeId: 5b45276b-e85d-45c8-8254-f50e6bf654a5
+            number: 554632259874
+            externalId: 21015174e079f1d8d7355#+554632259874
         emails:
-        - standard: "true"
-          emailTypeId: 3735642b-b975-4402-ae11-144ce71e965a
-          email: frim@email.com.br
-          externalId: 21015174e079f1d8d7355#frim@email.com.br
+          - standard: "true"
+            emailTypeId: 3735642b-b975-4402-ae11-144ce71e965a
+            email: frim@email.com.br
+            externalId: 21015174e079f1d8d7355#frim@email.com.br
         customerClassification:
           id: a52da153-afc3-4fa4-9a87-a218f39c3cc7
         customerPersonType:
           id: c8067c48-0e98-4e01-b0de-d11303ab041b
         customerGroups:
-        - id: 65c82ca5-fe2b-4445-be48-80edad65c5dd
+          - id: 65c82ca5-fe2b-4445-be48-80edad65c5dd
         locationBusinessLines:
-        - id: 3735642b-b975-4402-ae11-144ce71e965a
+          - id: 3735642b-b975-4402-ae11-144ce71e965a
         contacts:
-        - id: 3735642b-b975-4402-ae11-144ce71e965a
+          - id: 3735642b-b975-4402-ae11-144ce71e965a
         professionalId: 8b9debdd-b37b-4fa6-b3cb-d43a81ce021b
         professionalName: Máquina de vendas
         customerIdentificationDocuments:
-        - identificationDocumentAcronym: CPF
-          identificationDocumentId: 3735642b-b975-4402-ae11-144ce71e965a
-          identificationDocumentDescription: CPF
-          documentNumber: "827182827134"
-          externalId: 21015174e079f1d8d7355#827182827134
+          - identificationDocumentAcronym: CPF
+            identificationDocumentId: 3735642b-b975-4402-ae11-144ce71e965a
+            identificationDocumentDescription: CPF
+            documentNumber: "827182827134"
+            externalId: 21015174e079f1d8d7355#827182827134
         addresses:
-        - description: Address one
-          active: "true"
-          standard: "true"
-          code: "0"
-          cityId: 3735642b-b975-4402-ae11-144ce71e965a
-          cityName: San Francisco
-          stateId: 3b9846f3-f77b-4482-83b0-f5c7d7e42b5c
-          stateName: California
-          countryId: 7031e460-1572-44c4-95c5-46393949d810
-          countryName: United States
-          postalCode: 85812-011
-          region: Região Sul
-          zone: Zona Sul
-          neighborhood: San Francisco
-          address: St. London
-          number: "123"
-          complement: Complement Address
-          mappingId: 3735642b-b975-4402-ae11-144ce71e965a
-          addressType:
-            id: c8067c48-0e98-4e01-b0de-d11303ab041b
+          - description: Address one
+            active: "true"
+            standard: "true"
+            code: "0"
+            cityId: 3735642b-b975-4402-ae11-144ce71e965a
+            cityName: San Francisco
+            stateId: 3b9846f3-f77b-4482-83b0-f5c7d7e42b5c
+            stateName: California
+            countryId: 7031e460-1572-44c4-95c5-46393949d810
+            countryName: United States
+            postalCode: 85812-011
+            region: Região Sul
+            zone: Zona Sul
+            neighborhood: San Francisco
+            address: St. London
+            number: "123"
+            complement: Complement Address
+            mappingId: 3735642b-b975-4402-ae11-144ce71e965a
+            addressType:
+              id: c8067c48-0e98-4e01-b0de-d11303ab041b
         companies:
-        - 18730bea-95b4-486c-8cb6-7f664a9c937a
+          - 18730bea-95b4-486c-8cb6-7f664a9c937a
     CustomersIntegration_V4_BodyUpdate:
       type: object
       properties:
@@ -720,52 +717,52 @@ components:
         professionalId: 8b9debdd-b37b-4fa6-b3cb-d43a81ce021b
         professionalName: Máquina de vendas
         emails:
-        - id: 3735642b-b975-4402-ae11-144ce71e965a
-          email: mail@mail.com
-          emailTypeId: 3735642b-b975-4402-ae11-144ce71e965a
-          standard: true
+          - id: 3735642b-b975-4402-ae11-144ce71e965a
+            email: mail@mail.com
+            emailTypeId: 3735642b-b975-4402-ae11-144ce71e965a
+            standard: true
         phones:
-        - id: 3735642b-b975-4402-ae11-144ce71e965a
-          number: 551136451010
-          phoneTypeId: 3735642b-b975-4402-ae11-144ce71e965a
-          standard: true
+          - id: 3735642b-b975-4402-ae11-144ce71e965a
+            number: 551136451010
+            phoneTypeId: 3735642b-b975-4402-ae11-144ce71e965a
+            standard: true
         customerGroups:
-        - id: 3735642b-b975-4402-ae11-144ce71e965a
+          - id: 3735642b-b975-4402-ae11-144ce71e965a
         customerClassification:
           id: 3735642b-b975-4402-ae11-144ce71e965a
         customerPersonType:
           id: 3735642b-b975-4402-ae11-144ce71e965a
         contacts:
-        - id: 3735642b-b975-4402-ae11-144ce71e965a
+          - id: 3735642b-b975-4402-ae11-144ce71e965a
         locationBusinessLines:
-        - id: 3735642b-b975-4402-ae11-144ce71e965a
+          - id: 3735642b-b975-4402-ae11-144ce71e965a
         customerIdentificationDocuments:
-        - identificationDocumentId: 3735642b-b975-4402-ae11-144ce71e965a
-          documentNumber: "827182827134"
+          - identificationDocumentId: 3735642b-b975-4402-ae11-144ce71e965a
+            documentNumber: "827182827134"
         addresses:
-        - id: 3735642b-b975-4402-ae11-144ce71e965a
-          description: Address one
-          active: "true"
-          code: "0"
-          standard: "true"
-          cityId: 3735642b-b975-4402-ae11-144ce71e965a
-          cityName: San Francisco
-          stateId: 3735642b-b975-4402-ae11-144ce71e965a
-          stateName: California
-          countryId: 3735642b-b975-4402-ae11-144ce71e965a
-          countryName: United States
-          postalCode: 85812-011
-          region: Região Sul
-          zone: Zona Sul
-          neighborhood: San Francisco
-          address: St. London
-          number: "123"
-          complement: Complement Address
-          mappingId: 3735642b-b975-4402-ae11-144ce71e965a
-          addressType:
-            id: c8067c48-0e98-4e01-b0de-d11303ab041b
+          - id: 3735642b-b975-4402-ae11-144ce71e965a
+            description: Address one
+            active: "true"
+            code: "0"
+            standard: "true"
+            cityId: 3735642b-b975-4402-ae11-144ce71e965a
+            cityName: San Francisco
+            stateId: 3735642b-b975-4402-ae11-144ce71e965a
+            stateName: California
+            countryId: 3735642b-b975-4402-ae11-144ce71e965a
+            countryName: United States
+            postalCode: 85812-011
+            region: Região Sul
+            zone: Zona Sul
+            neighborhood: San Francisco
+            address: St. London
+            number: "123"
+            complement: Complement Address
+            mappingId: 3735642b-b975-4402-ae11-144ce71e965a
+            addressType:
+              id: c8067c48-0e98-4e01-b0de-d11303ab041b
         companies:
-        - 18730bea-95b4-486c-8cb6-7f664a9c937a
+          - 18730bea-95b4-486c-8cb6-7f664a9c937a
     CustomersIntegration_V4_BodyUpsert:
       properties:
         active:
@@ -856,7 +853,7 @@ components:
                 type: string
         addresses:
           required:
-          - description
+            - description
           type: array
           items:
             $ref: '#/components/schemas/AddressPost'
@@ -931,56 +928,56 @@ components:
         linkedin: https://linkedin.com/in/nickname
         website: www.mywebsite.com
         phones:
-        - standard: "true"
-          phoneTypeId: 5b45276b-e85d-45c8-8254-f50e6bf654a5
-          number: 554632259874
-          externalId: 21015174e079f1d8d7355#+554632259874
+          - standard: "true"
+            phoneTypeId: 5b45276b-e85d-45c8-8254-f50e6bf654a5
+            number: 554632259874
+            externalId: 21015174e079f1d8d7355#+554632259874
         emails:
-        - standard: "true"
-          emailTypeId: 3735642b-b975-4402-ae11-144ce71e965a
-          email: frim@email.com.br
-          externalId: 21015174e079f1d8d7355#frim@email.com.br
+          - standard: "true"
+            emailTypeId: 3735642b-b975-4402-ae11-144ce71e965a
+            email: frim@email.com.br
+            externalId: 21015174e079f1d8d7355#frim@email.com.br
         customerClassification:
           id: a52da153-afc3-4fa4-9a87-a218f39c3cc7
         customerPersonType:
           id: c8067c48-0e98-4e01-b0de-d11303ab041b
         customerGroups:
-        - id: 65c82ca5-fe2b-4445-be48-80edad65c5dd
+          - id: 65c82ca5-fe2b-4445-be48-80edad65c5dd
         locationBusinessLines:
-        - id: 3735642b-b975-4402-ae11-144ce71e965a
+          - id: 3735642b-b975-4402-ae11-144ce71e965a
         contacts:
-        - id: 3735642b-b975-4402-ae11-144ce71e965a
+          - id: 3735642b-b975-4402-ae11-144ce71e965a
         professionalId: 8b9debdd-b37b-4fa6-b3cb-d43a81ce021b
         professionalName: Máquina de vendas
         customerIdentificationDocuments:
-        - identificationDocumentAcronym: CPF
-          identificationDocumentId: 3735642b-b975-4402-ae11-144ce71e965a
-          identificationDocumentDescription: CPF
-          documentNumber: "827182827134"
-          externalId: 21015174e079f1d8d7355#827182827134
+          - identificationDocumentAcronym: CPF
+            identificationDocumentId: 3735642b-b975-4402-ae11-144ce71e965a
+            identificationDocumentDescription: CPF
+            documentNumber: "827182827134"
+            externalId: 21015174e079f1d8d7355#827182827134
         addresses:
-        - description: Address one
-          active: "true"
-          standard: "true"
-          code: "0"
-          cityId: 3735642b-b975-4402-ae11-144ce71e965a
-          cityName: San Francisco
-          stateId: 3b9846f3-f77b-4482-83b0-f5c7d7e42b5c
-          stateName: California
-          countryId: 7031e460-1572-44c4-95c5-46393949d810
-          countryName: United States
-          postalCode: 85812-011
-          region: Região Sul
-          zone: Zona Sul
-          neighborhood: San Francisco
-          address: St. London
-          number: "123"
-          complement: Complement Address
-          mappingId: 3735642b-b975-4402-ae11-144ce71e965a
-          addressType:
-            id: c8067c48-0e98-4e01-b0de-d11303ab041b
+          - description: Address one
+            active: "true"
+            standard: "true"
+            code: "0"
+            cityId: 3735642b-b975-4402-ae11-144ce71e965a
+            cityName: San Francisco
+            stateId: 3b9846f3-f77b-4482-83b0-f5c7d7e42b5c
+            stateName: California
+            countryId: 7031e460-1572-44c4-95c5-46393949d810
+            countryName: United States
+            postalCode: 85812-011
+            region: Região Sul
+            zone: Zona Sul
+            neighborhood: San Francisco
+            address: St. London
+            number: "123"
+            complement: Complement Address
+            mappingId: 3735642b-b975-4402-ae11-144ce71e965a
+            addressType:
+              id: c8067c48-0e98-4e01-b0de-d11303ab041b
         companies:
-        - 18730bea-95b4-486c-8cb6-7f664a9c937a
+          - 18730bea-95b4-486c-8cb6-7f664a9c937a
     CustomersIntegration_V4_FullResponse:
       type: object
       properties:
@@ -1385,19 +1382,19 @@ components:
         linkedin: https://linkedin.com/in/nickname
         website: www.mywebsite.com
         phones:
-        - id: cc9c3ce2-2cb1-405d-ab77-d411d5407cd3
-          createdAt: 2019-08-13T18:00:38.780Z
-          updatedAt: 2019-08-13T18:00:38.780Z
-          standard: "true"
-          phoneTypeId: 5b45276b-e85d-45c8-8254-f50e6bf654a5
-          number: 554632259874
+          - id: cc9c3ce2-2cb1-405d-ab77-d411d5407cd3
+            createdAt: 2019-08-13T18:00:38.780Z
+            updatedAt: 2019-08-13T18:00:38.780Z
+            standard: "true"
+            phoneTypeId: 5b45276b-e85d-45c8-8254-f50e6bf654a5
+            number: 554632259874
         emails:
-        - id: d6045908-a444-4095-8a7b-179f3f7c8b24
-          createdAt: 2019-08-13T18:00:38.780Z
-          updatedAt: 2019-08-13T18:00:38.780Z
-          standard: "true"
-          emailTypeId: 3735642b-b975-4402-ae11-144ce71e965a
-          email: frim@email.com.br
+          - id: d6045908-a444-4095-8a7b-179f3f7c8b24
+            createdAt: 2019-08-13T18:00:38.780Z
+            updatedAt: 2019-08-13T18:00:38.780Z
+            standard: "true"
+            emailTypeId: 3735642b-b975-4402-ae11-144ce71e965a
+            email: frim@email.com.br
         customerClassification:
           id: a52da153-afc3-4fa4-9a87-a218f39c3cc7
           createdAt: 2019-08-13T18:00:38.780Z
@@ -1413,35 +1410,64 @@ components:
           description: física
           acronym: f
         customerGroups:
-        - id: 65c82ca5-fe2b-4445-be48-80edad65c5dd
-          createdAt: 2019-08-13T18:00:38.780Z
-          updatedAt: 2019-08-13T18:00:38.780Z
-          description: Grupo de clientes antigos
-          active: "true"
-          familiarGroup: "false"
+          - id: 65c82ca5-fe2b-4445-be48-80edad65c5dd
+            createdAt: 2019-08-13T18:00:38.780Z
+            updatedAt: 2019-08-13T18:00:38.780Z
+            description: Grupo de clientes antigos
+            active: "true"
+            familiarGroup: "false"
         contacts:
-        - id: 11e7a087-aeda-4f2c-810d-de9e9a31c4b1
-          createdAt: 2020-08-10T14:11:11.43Z
-          updatedAt: 2020-08-13T16:41:48.795Z
-          active: true
-          name: Julio
-          lastUpdatedAt: 2020-08-13T16:41:48.795Z
-          phones:
-          - id: 0855365c-7bd9-4217-8fe5-d937732fd6cf
-            createdAt: 2020-08-10T14:11:11.77Z
-            updatedAt: 2020-08-10T14:11:11.77Z
-            standard: true
-            phoneTypeId: d870427c-bbad-4eb8-9af5-5183b47f648f
-            number: +55 (45) 2554-8344
-          emails:
-          - id: bff6e5e8-6338-4adc-9b98-06b2074b1449
-            createdAt: 2020-08-10T14:11:12Z
-            updatedAt: 2020-08-10T14:11:12Z
-            standard: true
-            emailTypeId: 301f0e6e-4270-472b-aa96-45ab017bcbb1
-            email: julio@teste.com.br
-          addresses:
-          - id: 5364442b-b975-4402-ae11-144ce71e965b
+          - id: 11e7a087-aeda-4f2c-810d-de9e9a31c4b1
+            createdAt: 2020-08-10T14:11:11.43Z
+            updatedAt: 2020-08-13T16:41:48.795Z
+            active: true
+            name: Julio
+            lastUpdatedAt: 2020-08-13T16:41:48.795Z
+            phones:
+              - id: 0855365c-7bd9-4217-8fe5-d937732fd6cf
+                createdAt: 2020-08-10T14:11:11.77Z
+                updatedAt: 2020-08-10T14:11:11.77Z
+                standard: true
+                phoneTypeId: d870427c-bbad-4eb8-9af5-5183b47f648f
+                number: +55 (45) 2554-8344
+            emails:
+              - id: bff6e5e8-6338-4adc-9b98-06b2074b1449
+                createdAt: 2020-08-10T14:11:12Z
+                updatedAt: 2020-08-10T14:11:12Z
+                standard: true
+                emailTypeId: 301f0e6e-4270-472b-aa96-45ab017bcbb1
+                email: julio@teste.com.br
+            addresses:
+              - id: 5364442b-b975-4402-ae11-144ce71e965b
+                createdAt: 2019-08-13T18:00:38.780Z
+                updatedAt: 2019-08-13T18:00:38.780Z
+                description: Address one
+                active: "true"
+                standard: "true"
+                code: "0"
+                cityId: 3735642b-b975-4402-ae11-144ce71e965a
+                cityName: San Francisco
+                stateId: 3735642b-b975-4402-ae11-144ce71e965a
+                stateName: California
+                countryId: 3735642b-b975-4402-ae11-144ce71e965a
+                countryName: United States
+                postalCode: 85812-011
+                region: Região Sul
+                zone: Zona Sul
+                neighborhood: San Francisco
+                address: St. London
+                number: "123"
+                complement: Complement Address
+                mappingId: 3735642b-b975-4402-ae11-144ce71e965a
+                addressType:
+                  id: c8067c48-0e98-4e01-b0de-d11303ab041b
+                  createdAt: 2019-08-13T18:00:38.780Z
+                  updatedAt: 2019-08-13T18:00:38.780Z
+                  active: "true"
+                  description: Tipo de endereço
+                  acronym: TE
+        addresses:
+          - id: 3735642b-b975-4402-ae11-144ce71e965a
             createdAt: 2019-08-13T18:00:38.780Z
             updatedAt: 2019-08-13T18:00:38.780Z
             description: Address one
@@ -1464,44 +1490,15 @@ components:
             mappingId: 3735642b-b975-4402-ae11-144ce71e965a
             addressType:
               id: c8067c48-0e98-4e01-b0de-d11303ab041b
-              createdAt: 2019-08-13T18:00:38.780Z
+              createAt: 2019-08-13T18:00:38.780Z
               updatedAt: 2019-08-13T18:00:38.780Z
               active: "true"
               description: Tipo de endereço
               acronym: TE
-        addresses:
-        - id: 3735642b-b975-4402-ae11-144ce71e965a
-          createdAt: 2019-08-13T18:00:38.780Z
-          updatedAt: 2019-08-13T18:00:38.780Z
-          description: Address one
-          active: "true"
-          standard: "true"
-          code: "0"
-          cityId: 3735642b-b975-4402-ae11-144ce71e965a
-          cityName: San Francisco
-          stateId: 3735642b-b975-4402-ae11-144ce71e965a
-          stateName: California
-          countryId: 3735642b-b975-4402-ae11-144ce71e965a
-          countryName: United States
-          postalCode: 85812-011
-          region: Região Sul
-          zone: Zona Sul
-          neighborhood: San Francisco
-          address: St. London
-          number: "123"
-          complement: Complement Address
-          mappingId: 3735642b-b975-4402-ae11-144ce71e965a
-          addressType:
-            id: c8067c48-0e98-4e01-b0de-d11303ab041b
-            createAt: 2019-08-13T18:00:38.780Z
-            updatedAt: 2019-08-13T18:00:38.780Z
-            active: "true"
-            description: Tipo de endereço
-            acronym: TE
         professionalId: 8b9debdd-b37b-4fa6-b3cb-d43a81ce021b
         professionalName: Máquina de vendas
         companies:
-        - 18730bea-95b4-486c-8cb6-7f664a9c937a
+          - 18730bea-95b4-486c-8cb6-7f664a9c937a
     CustomersIntegration_V4_GetResponse:
       type: object
       properties:
@@ -1906,19 +1903,19 @@ components:
         linkedin: https://linkedin.com/in/nickname
         website: www.mywebsite.com
         phones:
-        - id: cc9c3ce2-2cb1-405d-ab77-d411d5407cd3
-          createdAt: 2019-08-13T18:00:38.780Z
-          updatedAt: 2019-08-13T18:00:38.780Z
-          standard: "true"
-          phoneTypeId: 5b45276b-e85d-45c8-8254-f50e6bf654a5
-          number: 554632259874
+          - id: cc9c3ce2-2cb1-405d-ab77-d411d5407cd3
+            createdAt: 2019-08-13T18:00:38.780Z
+            updatedAt: 2019-08-13T18:00:38.780Z
+            standard: "true"
+            phoneTypeId: 5b45276b-e85d-45c8-8254-f50e6bf654a5
+            number: 554632259874
         emails:
-        - id: d6045908-a444-4095-8a7b-179f3f7c8b24
-          createdAt: 2019-08-13T18:00:38.780Z
-          updatedAt: 2019-08-13T18:00:38.780Z
-          standard: "true"
-          emailTypeId: 3735642b-b975-4402-ae11-144ce71e965a
-          email: frim@email.com.br
+          - id: d6045908-a444-4095-8a7b-179f3f7c8b24
+            createdAt: 2019-08-13T18:00:38.780Z
+            updatedAt: 2019-08-13T18:00:38.780Z
+            standard: "true"
+            emailTypeId: 3735642b-b975-4402-ae11-144ce71e965a
+            email: frim@email.com.br
         customerClassification:
           id: a52da153-afc3-4fa4-9a87-a218f39c3cc7
           createdAt: 2019-08-13T18:00:38.780Z
@@ -1934,35 +1931,64 @@ components:
           description: física
           acronym: f
         customerGroups:
-        - id: 65c82ca5-fe2b-4445-be48-80edad65c5dd
-          createdAt: 2019-08-13T18:00:38.780Z
-          updatedAt: 2019-08-13T18:00:38.780Z
-          description: Grupo de clientes antigos
-          active: "true"
-          familiarGroup: "false"
+          - id: 65c82ca5-fe2b-4445-be48-80edad65c5dd
+            createdAt: 2019-08-13T18:00:38.780Z
+            updatedAt: 2019-08-13T18:00:38.780Z
+            description: Grupo de clientes antigos
+            active: "true"
+            familiarGroup: "false"
         contacts:
-        - id: 11e7a087-aeda-4f2c-810d-de9e9a31c4b1
-          createdAt: 2020-08-10T14:11:11.43Z
-          updatedAt: 2020-08-13T16:41:48.795Z
-          active: true
-          name: Julio
-          lastUpdatedAt: 2020-08-13T16:41:48.795Z
-          phones:
-          - id: 0855365c-7bd9-4217-8fe5-d937732fd6cf
-            createdAt: 2020-08-10T14:11:11.77Z
-            updatedAt: 2020-08-10T14:11:11.77Z
-            standard: true
-            phoneTypeId: d870427c-bbad-4eb8-9af5-5183b47f648f
-            number: +55 (45) 2554-8344
-          emails:
-          - id: bff6e5e8-6338-4adc-9b98-06b2074b1449
-            createdAt: 2020-08-10T14:11:12Z
-            updatedAt: 2020-08-10T14:11:12Z
-            standard: true
-            emailTypeId: 301f0e6e-4270-472b-aa96-45ab017bcbb1
-            email: julio@teste.com.br
-          addresses:
-          - id: 5364442b-b975-4402-ae11-144ce71e965b
+          - id: 11e7a087-aeda-4f2c-810d-de9e9a31c4b1
+            createdAt: 2020-08-10T14:11:11.43Z
+            updatedAt: 2020-08-13T16:41:48.795Z
+            active: true
+            name: Julio
+            lastUpdatedAt: 2020-08-13T16:41:48.795Z
+            phones:
+              - id: 0855365c-7bd9-4217-8fe5-d937732fd6cf
+                createdAt: 2020-08-10T14:11:11.77Z
+                updatedAt: 2020-08-10T14:11:11.77Z
+                standard: true
+                phoneTypeId: d870427c-bbad-4eb8-9af5-5183b47f648f
+                number: +55 (45) 2554-8344
+            emails:
+              - id: bff6e5e8-6338-4adc-9b98-06b2074b1449
+                createdAt: 2020-08-10T14:11:12Z
+                updatedAt: 2020-08-10T14:11:12Z
+                standard: true
+                emailTypeId: 301f0e6e-4270-472b-aa96-45ab017bcbb1
+                email: julio@teste.com.br
+            addresses:
+              - id: 5364442b-b975-4402-ae11-144ce71e965b
+                createdAt: 2019-08-13T18:00:38.780Z
+                updatedAt: 2019-08-13T18:00:38.780Z
+                description: Address one
+                active: "true"
+                standard: "true"
+                code: "0"
+                cityId: 3735642b-b975-4402-ae11-144ce71e965a
+                cityName: San Francisco
+                stateId: 3735642b-b975-4402-ae11-144ce71e965a
+                stateName: California
+                countryId: 3735642b-b975-4402-ae11-144ce71e965a
+                countryName: United States
+                postalCode: 85812-011
+                region: Região Sul
+                zone: Zona Sul
+                neighborhood: San Francisco
+                address: St. London
+                number: "123"
+                complement: Complement Address
+                mappingId: 3735642b-b975-4402-ae11-144ce71e965a
+                addressType:
+                  id: c8067c48-0e98-4e01-b0de-d11303ab041b
+                  createdAt: 2019-08-13T18:00:38.780Z
+                  updatedAt: 2019-08-13T18:00:38.780Z
+                  active: "true"
+                  description: Tipo de endereço
+                  acronym: TE
+        addresses:
+          - id: 3735642b-b975-4402-ae11-144ce71e965a
             createdAt: 2019-08-13T18:00:38.780Z
             updatedAt: 2019-08-13T18:00:38.780Z
             description: Address one
@@ -1985,46 +2011,17 @@ components:
             mappingId: 3735642b-b975-4402-ae11-144ce71e965a
             addressType:
               id: c8067c48-0e98-4e01-b0de-d11303ab041b
-              createdAt: 2019-08-13T18:00:38.780Z
+              createAt: 2019-08-13T18:00:38.780Z
               updatedAt: 2019-08-13T18:00:38.780Z
               active: "true"
               description: Tipo de endereço
               acronym: TE
-        addresses:
-        - id: 3735642b-b975-4402-ae11-144ce71e965a
-          createdAt: 2019-08-13T18:00:38.780Z
-          updatedAt: 2019-08-13T18:00:38.780Z
-          description: Address one
-          active: "true"
-          standard: "true"
-          code: "0"
-          cityId: 3735642b-b975-4402-ae11-144ce71e965a
-          cityName: San Francisco
-          stateId: 3735642b-b975-4402-ae11-144ce71e965a
-          stateName: California
-          countryId: 3735642b-b975-4402-ae11-144ce71e965a
-          countryName: United States
-          postalCode: 85812-011
-          region: Região Sul
-          zone: Zona Sul
-          neighborhood: San Francisco
-          address: St. London
-          number: "123"
-          complement: Complement Address
-          mappingId: 3735642b-b975-4402-ae11-144ce71e965a
-          addressType:
-            id: c8067c48-0e98-4e01-b0de-d11303ab041b
-            createAt: 2019-08-13T18:00:38.780Z
-            updatedAt: 2019-08-13T18:00:38.780Z
-            active: "true"
-            description: Tipo de endereço
-            acronym: TE
         professionalId: 8b9debdd-b37b-4fa6-b3cb-d43a81ce021b
         professionalName: Máquina de vendas
         companies:
-        - 18730bea-95b4-486c-8cb6-7f664a9c937a
+          - 18730bea-95b4-486c-8cb6-7f664a9c937a
 tags:
-- name: TotvsCRMApp
-  description: A API de integração é válida para o ambiente Totvs CRM APP
-- name: integration
-  description: API de integração
+  - name: TotvsCRMApp
+    description: A API de integração é válida para o ambiente Totvs CRM APP
+  - name: integration
+    description: API de integração
