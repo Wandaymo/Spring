@@ -1,25 +1,16 @@
 ---
 openapi: 3.0.2
 info:
-  title: credit-limits-integrationV1
-  version: 1.0.1
+  title: price-list-customer-permission-integrationV1
+  version: 1.0.0
   description: |
-    API de integração de limite de crédito (Credit-limits) V1
+    API de integração de vínculo de tabela de preço com cliente (Price-list-customer-permission) V1
 
-    Compatível com a versão V7, V8 do serviço de negócio Financial
+    Compatível com a versão de negócio Product V7
   contact: {}
 servers:
   - url: https://{url}/api/{version}/integration
-    description: TotvsCRM APP Integration Router Server
-    variables:
-      url:
-        default: totvscrm.app
-        description: URL de acesso ao Integration-Router
-      version:
-        default: v1
-        description: Versão do Integration-Router
-  - url: https://{url}/api/{version}/integration
-    description: APP2 Integration Router Server
+    description: Integration Router Server
     variables:
       url:
         default: app2.mastercrm.ws
@@ -31,7 +22,7 @@ paths:
   /record:
     get:
       tags:
-        - Credit-Limits
+        - Price-List-Customer-Permission
       parameters:
         - name: Integration-Filter
           description: |
@@ -51,21 +42,21 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Credit-Limits-Integration_V1_FullResponse'
-          description: Returns a list of credit-limits
+                $ref: '#/components/schemas/Price-List-Customer-Permission-Integration_V1_FullResponse'
+          description: Returns a list of price lists
         401:
           description: Unauthorized
-      summary: Listar credit limits
-      description: Retorna uma lista de limites de crédito cadastradas ou determinados
-        limites com base nos filtros no header Integration-Filter
+      summary: Listar vinculos de tabela de preço com cliente
+      description: Retorna uma lista de vínculos de tabelas de preço e clientes cadastrados
+        ou determinadas vínculos com base nos filtros no header Integration-Filter
     post:
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Credit-Limits-Integration_V1_BodyCreate'
+              $ref: '#/components/schemas/Price-List-Customer-Permission-Integration_V1_BodyCreate'
       tags:
-        - Credit-Limits
+        - Price-List-Customer-Permission
       parameters:
         - name: Integration-Filter
           description: |
@@ -87,7 +78,6 @@ paths:
             Se o header não for informado, por padrão o retorno será equivalente ao nível
             **minimum**
           schema:
-            default: minimum
             enum:
               - full
               - minimum
@@ -99,17 +89,17 @@ paths:
             Ação a ser realizada na API de integração. Selecione uma das opções para carregar o
             body da requisição.
           schema:
-            oneOf:
-              - $ref: '#/components/schemas/Credit-Limits-Integration_V1_BodyCreate'
-              - $ref: '#/components/schemas/Credit-Limits-Integration_V1_BodyUpdate'
-              - $ref: '#/components/schemas/Credit-Limits-Integration_V1_BodyUpsert'
-              - $ref: '#/components/schemas/Credit-Limits-Integration_V1_BodyDelete'
+            anyOf:
+              - $ref: '#/components/schemas/Price-List-Customer-Permission-Integration_V1_BodyCreate'
+              - $ref: '#/components/schemas/Price-List-Customer-Permission-Integration_V1_BodyUpdate'
+              - $ref: '#/components/schemas/Price-List-Customer-Permission-Integration_V1_BodyUpsert'
+              - $ref: '#/components/schemas/Price-List-Customer-Permission-Integration_V1_BodyDelete'
             discriminator:
               mapping:
-                create: '#/components/schemas/Credit-Limits-Integration_V1_BodyCreate'
-                update: '#/components/schemas/Credit-Limits-Integration_V1_BodyUpdate'
-                upsert: '#/components/schemas/Credit-Limits-Integration_V1_BodyUpsert'
-                delete: '#/components/schemas/Credit-Limits-Integration_V1_BodyDelete'
+                create: '#/components/schemas/Price-List-Customer-Permission-Integration_V1_BodyCreate'
+                update: '#/components/schemas/Price-List-Customer-Permission-Integration_V1_BodyUpdate'
+                upsert: '#/components/schemas/Price-List-Customer-Permission-Integration_V1_BodyUpsert'
+                delete: '#/components/schemas/Price-List-Customer-Permission-Integration_V1_BodyDelete'
           in: header
           required: true
       responses:
@@ -117,46 +107,33 @@ paths:
           content:
             application/json:
               schema:
-                oneOf:
-                  - $ref: '#/components/schemas/Credit-Limits-Integration_V1_FullResponse'
-                  - $ref: '#/components/schemas/Credit-Limits-Integration_V1_MinimumResponse'
-                discriminator:
-                  mapping:
-                    full: '#/components/schemas/Credit-Limits-Integration_V1_FullResponse'
-                    minimum: '#/components/schemas/Credit-Limits-Integration_V1_MinimumResponse'
-          description: Returns a credit-limits register
+                $ref: '#/components/schemas/Price-List-Customer-Permission-Integration_V1_FullResponse'
+          description: Returns a price list customer permission register
         401:
           description: Unauthorized
-      summary: Criar, atualizar e deletar credit limits
+      summary: Criar, atualizar e deletar vínculos de tabelas de preço e cliente
       description: |
-        A ação a ser realizada no cadastro depende do valor preenchido no header
-        **Integration-Action**:
-
+        A ação a ser realizada no cadastro depende do valor preenchido no header **Integration-Action**:
 
         **create** - Realiza a operação de POST do cadastro enviado;
 
+        **update** - Realiza a operação de PATCH do cadastro enviado, baseado no ID do registro preenchido no header **Integration-Filter**;
 
-        **update** - Realiza a operação de PATCH do cadastro enviado, baseado no ID do registro
-        preenchido no header **Integration-Filter**;
+        **upsert** - Realiza a operação de POST do cadastro enviado se não for enviado ID do registro no header **Integration-Filter** **OU** realiza a operação de PUT do cadastro enviado se for enviado o ID do registro no header **Integration-Filter**;
 
-
-        **upsert** - Realiza a operação de POST do cadastro enviado se não for enviado ID do registro
-        no header **Integration-Filter** **OU** realiza a operação de PUT do cadastro enviado se for
-        enviado o ID do registro no header **Integration-Filter**;
-
-        **delete** - Realiza a operação de DELETE do cadastro enviado com base no ID informado no header **Integration-Filter**
+        **delete** - Realiza a operação de DELETE do cadastro baseado no ID do registro, informado no header **Integration-Filter**;
     parameters:
       - name: Integration-Service
-        description: 'Serviço responsável pela entidade. Exemplo: financial'
+        description: 'Serviço responsável pela entidade. Exemplo: product'
         schema:
-          default: financial
+          default: product
           type: string
         in: header
         required: true
       - name: Integration-Resource
-        description: 'Recurso para requisição. Exemplo: credit-limits-integration'
+        description: 'Recurso para requisição. Exemplo: price-list-customer-permission-integration'
         schema:
-          default: credit-limits-integration
+          default: price-list-customer-permission-integration
           type: string
         in: header
         required: true
@@ -169,10 +146,10 @@ paths:
         required: true
 components:
   schemas:
-    Credit-Limits-Integration_V1_BodyEmpty:
+    Price-List-Customer-Permission-Integration_V1_BodyEmpty:
       description: No body
       type: object
-    Credit-Limits-Integration_V1_MinimumResponse:
+    Price-List-Customer-Permission-Integration_V1_MinimumResponse:
       type: object
       properties:
         id:
@@ -185,248 +162,155 @@ components:
         id: 19de1e5b-37c8-42c6-a62f-3d7bdd11e994
         createAt: 2019-08-13T18:00:38.780Z
         updatedAt: 2019-08-13T18:00:38.780Z
-    Credit-Limits-Integration_V1_BodyCreate:
+    Price-List-Customer-Permission-Integration_V1_BodyCreate:
       required:
-        - externalId
+        - priceListId
         - customerId
-        - active
-        - totalValue
-        - startDate
-        - endDate
+        - customerName
+        - externalId
       type: object
       properties:
         externalId:
-          description: Identificador do sistema externo
+          description: Código externo único para o registro
           type: string
-          example: LIM#30
-        active:
-          description: Situação do limite de crédito
-          type: boolean
-          example: true
-        companyId:
+          example: PRICELIST#1#CUSTOMER#2555
+        priceListId:
           format: UUID
-          description: Identificador do registro de empresa/filial
+          description: Identificador da tabela de preço
           type: string
-          example: 164eb3b0-e3cd-4a74-b3ec-eb3a87a607c5
-        companyName:
-          description: Nome da empresa/filial
-          type: string
-          example: WS
+          example: 0099e73f-e6e5-4117-810a-4ed630a93b02
         customerId:
           format: UUID
           description: Identificador do cliente
           type: string
-          example: 03372773-7b2d-41ae-823d-ffbaf9b79cf4
+          example: f101c590-5ad6-4c8e-88de-b0060ea49295
         customerName:
           description: Nome do cliente
           type: string
-          example: José das Neves
-        totalValue:
-          description: Valor total do limite de crédito
-          type: number
-          example: 200
-        availableValue:
-          description: Valor disponível de limite de crédito
-          type: number
-          example: 100
-        startDate:
-          format: date
-          description: Data inicial de validade do limite de crédito
-          type: string
-          example: 2020-10-01
-        endDate:
-          format: date
-          description: Data final de validade do limite de crédito
-          type: string
-          example: 2020-12-01
-        note:
-          description: Observação do limite de crédito
-          type: string
-          example: Observação do limite
-    Credit-Limits-Integration_V1_BodyUpdate:
+          example: AAAAADRIANA ROSA JÉSSICA CARVALHO LTDA
+      example:
+        priceListId: 0099e73f-e6e5-4117-810a-4ed630a93b02
+        externalId: PRICELIST#1#CUSTOMER#2555
+        customerId: f101c590-5ad6-4c8e-88de-b0060ea49295
+        customerName: AAAAADRIANA ROSA JÉSSICA CARVALHO LTDA
+    Price-List-Customer-Permission-Integration_V1_BodyUpdate:
       type: object
       properties:
         externalId:
           type: string
-          example: LIM#30
-        active:
-          type: boolean
-          example: true
-        companyId:
+          example: PRICELIST#1#CUSTOMER#2555
+        priceListId:
           format: UUID
           type: string
-          example: 164eb3b0-e3cd-4a74-b3ec-eb3a87a607c5
-        companyName:
-          type: string
-          example: WS
+          example: 0099e73f-e6e5-4117-810a-4ed630a93b02
         customerId:
           format: UUID
           type: string
-          example: 03372773-7b2d-41ae-823d-ffbaf9b79cf4
+          example: f101c590-5ad6-4c8e-88de-b0060ea49295
         customerName:
           type: string
-          example: José das Neves
-        totalValue:
-          type: number
-          example: 200
-        availableValue:
-          type: number
-          example: 100
-        startDate:
-          format: date
-          type: string
-          example: 2020-10-01
-        endDate:
-          format: date
-          type: string
-          example: 2020-12-01
-        note:
-          type: string
-          example: Observação do limite
-    Credit-Limits-Integration_V1_BodyUpsert:
+          example: AAAAADRIANA ROSA JÉSSICA CARVALHO LTDA
+      example:
+        priceListId: 0099e73f-e6e5-4117-810a-4ed630a93b02
+        externalId: PRICELIST#1#CUSTOMER#2555
+        customerId: f101c590-5ad6-4c8e-88de-b0060ea49295
+        customerName: AAAAADRIANA ROSA JÉSSICA CARVALHO LTDA
+    Price-List-Customer-Permission-Integration_V1_BodyUpsert:
       type: object
       properties:
         externalId:
           type: string
-          example: LIM#30
-        active:
-          type: boolean
-          example: true
-        companyId:
+          example: PRICELIST#1#CUSTOMER#2555
+        priceListId:
           format: UUID
           type: string
-          example: 164eb3b0-e3cd-4a74-b3ec-eb3a87a607c5
-        companyName:
-          type: string
-          example: WS
+          example: 0099e73f-e6e5-4117-810a-4ed630a93b02
         customerId:
           format: UUID
           type: string
-          example: 03372773-7b2d-41ae-823d-ffbaf9b79cf4
+          example: f101c590-5ad6-4c8e-88de-b0060ea49295
         customerName:
           type: string
-          example: José das Neves
-        totalValue:
-          type: number
-          example: 200
-        availableValue:
-          type: number
-          example: 100
-        startDate:
-          format: date
-          type: string
-          example: 2020-10-01
-        endDate:
-          format: date
-          type: string
-          example: 2020-12-01
-        note:
-          type: string
-          example: Observação do limite
-    Credit-Limits-Integration_V1_FullResponse:
+          example: AAAAADRIANA ROSA JÉSSICA CARVALHO LTDA
+      example:
+        priceListId: 0099e73f-e6e5-4117-810a-4ed630a93b02
+        externalId: PRICELIST#1#CUSTOMER#2555
+        customerId: f101c590-5ad6-4c8e-88de-b0060ea49295
+        customerName: AAAAADRIANA ROSA JÉSSICA CARVALHO LTDA
+    Price-List-Customer-Permission-Integration_V1_GetResponse:
+      type: object
       properties:
         id:
-          format: uuid
-          type: string
-          example: aabc54a1-49c3-444d-88ec-eaa3fbe63e86
-        createdAt:
-          type: string
-          example: 2019-08-13T18:00:38.780Z
-        updatedAt:
-          type: string
-          example: 2019-08-13T18:00:38.780Z
-        externalId:
-          type: string
-          example: LIM#30
-        active:
-          type: boolean
-          example: true
-        companyId:
           format: UUID
           type: string
-          example: 164eb3b0-e3cd-4a74-b3ec-eb3a87a607c5
-        companyName:
+          example: 4b3e19b9-5978-4ae5-8710-3c5cb7a48c43
+        createdAt:
           type: string
-          example: WS
+          example: 2020-10-29T13:42:14.891Z
+        updatedAt:
+          type: string
+          example: 2020-10-29T13:42:14.891Z
+        externalId:
+          type: string
+          example: PRICELIST#1#CUSTOMER#2555
+        priceListId:
+          format: UUID
+          type: string
+          example: 0099e73f-e6e5-4117-810a-4ed630a93b02
         customerId:
           format: UUID
           type: string
-          example: 03372773-7b2d-41ae-823d-ffbaf9b79cf4
+          example: f101c590-5ad6-4c8e-88de-b0060ea49295
         customerName:
           type: string
-          example: José das Neves
-        totalValue:
-          type: number
-          example: 200
-        availableValue:
-          type: number
-          example: 100
-        startDate:
-          format: date
-          type: string
-          example: 2020-10-01
-        endDate:
-          format: date
-          type: string
-          example: 2020-12-01
-        note:
-          type: string
-          example: Observação do limite
-    Credit-Limits-Integration_V1_GetResponse:
+          example: AAAAADRIANA ROSA JÉSSICA CARVALHO LTDA
+      example:
+        id: 4b3e19b9-5978-4ae5-8710-3c5cb7a48c43
+        createdAt: 2020-10-29T13:42:14.891Z
+        updatedAt: 2020-10-29T13:42:14.891Z
+        priceListId: 0099e73f-e6e5-4117-810a-4ed630a93b02
+        externalId: PRICELIST#1#CUSTOMER#2555
+        customerId: f101c590-5ad6-4c8e-88de-b0060ea49295
+        customerName: AAAAADRIANA ROSA JÉSSICA CARVALHO LTDA
+    Price-List-Customer-Permission-Integration_V1_FullResponse:
+      type: object
       properties:
         id:
-          format: uuid
-          type: string
-          example: aabc54a1-49c3-444d-88ec-eaa3fbe63e86
-        createdAt:
-          type: string
-          example: 2019-08-13T18:00:38.780Z
-        updatedAt:
-          type: string
-          example: 2019-08-13T18:00:38.780Z
-        externalId:
-          type: string
-          example: LIM#30
-        active:
-          type: boolean
-          example: true
-        companyId:
           format: UUID
           type: string
-          example: 164eb3b0-e3cd-4a74-b3ec-eb3a87a607c5
-        companyName:
+          example: 4b3e19b9-5978-4ae5-8710-3c5cb7a48c43
+        createdAt:
           type: string
-          example: WS
+          example: 2020-10-29T13:42:14.891Z
+        updatedAt:
+          type: string
+          example: 2020-10-29T13:42:14.891Z
+        externalId:
+          type: string
+          example: PRICELIST#1#CUSTOMER#2555
+        priceListId:
+          format: UUID
+          type: string
+          example: 0099e73f-e6e5-4117-810a-4ed630a93b02
         customerId:
           format: UUID
           type: string
-          example: 03372773-7b2d-41ae-823d-ffbaf9b79cf4
+          example: f101c590-5ad6-4c8e-88de-b0060ea49295
         customerName:
           type: string
-          example: José das Neves
-        totalValue:
-          type: number
-          example: 200
-        availableValue:
-          type: number
-          example: 100
-        startDate:
-          format: date
-          type: string
-          example: 2020-10-01
-        endDate:
-          format: date
-          type: string
-          example: 2020-12-01
-        note:
-          type: string
-          example: Observação do limite
-    Credit-Limits-Integration_V1_BodyDelete:
+          example: AAAAADRIANA ROSA JÉSSICA CARVALHO LTDA
+      example:
+        id: 4b3e19b9-5978-4ae5-8710-3c5cb7a48c43
+        createdAt: 2020-10-29T13:42:14.891Z
+        updatedAt: 2020-10-29T13:42:14.891Z
+        priceListId: 0099e73f-e6e5-4117-810a-4ed630a93b02
+        externalId: PRICELIST#1#CUSTOMER#2555
+        customerId: f101c590-5ad6-4c8e-88de-b0060ea49295
+        customerName: AAAAADRIANA ROSA JÉSSICA CARVALHO LTDA
+    Price-List-Customer-Permission-Integration_V1_BodyDelete:
       description: No body
       type: object
 tags:
-  - name: TotvsCRMAPP
-    description: Ambiente TotvsCRM APP
   - name: APP2
     description: Ambiente APP2
   - name: integration
