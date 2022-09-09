@@ -12611,10 +12611,7 @@
         "type": "object",
         "properties": {
           "product": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Product"
-            }
+            "$ref": "#/components/schemas/Product"
           },
           "quantity": {
             "type": "number",
