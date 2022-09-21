@@ -1,19 +1,19 @@
 ---
 openapi: 3.0.2
 info:
-  title: companies-integrationV1
+  title: users-integrationV1
   version: 1.0.0
   description: |
-    API de integração de empresas/filiais (Companies) V1
+    API de integração de usuário (User) V1
 
-    Compatível com a versão de negócio Administration V9
+    Compatível com a versão V12 do serviço de negócio User
   contact: {}
 servers:
   - url: https://{url}/api/{version}/integration
     description: Integration Router Server
     variables:
       url:
-        default: app2.mastercrm.ws
+        default: totvscrm.app
         description: URL de acesso ao Integration-Router
       version:
         default: v1
@@ -22,7 +22,7 @@ paths:
   /record:
     get:
       tags:
-        - Companies
+        - Users
       parameters:
         - name: Integration-Filter
           description: |
@@ -42,21 +42,21 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CompaniesIntegration_V1_FullResponse'
-          description: Returns a list of companies
+                $ref: '#/components/schemas/UsersIntegration_V1_FullResponse'
+          description: Returns a list of users
         401:
           description: Unauthorized
-      summary: Listar Companies
-      description: Retorna uma lista de empresas/filiais cadastrados ou determinadas
-        empresas/filiais com base nos filtros no header Integration-Filter
+      summary: Listar Users
+      description: Retorna uma lista de usuários cadastrados ou determinados usuários
+        com base nos filtros no header Integration-Filter
     post:
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CompaniesIntegration_V1_BodyCreate'
+              $ref: '#/components/schemas/UsersIntegration_V1_BodyCreate'
       tags:
-        - Companies
+        - Users
       parameters:
         - name: Integration-Filter
           description: |
@@ -78,6 +78,7 @@ paths:
             Se o header não for informado, por padrão o retorno será equivalente ao nível
             **minimum**
           schema:
+            default: minimum
             enum:
               - full
               - minimum
@@ -89,15 +90,15 @@ paths:
             Ação a ser realizada na API de integração. Selecione uma das opções para carregar o
             body da requisição.
           schema:
-            anyOf:
-              - $ref: '#/components/schemas/CompaniesIntegration_V1_BodyCreate'
-              - $ref: '#/components/schemas/CompaniesIntegration_V1_BodyUpdate'
-              - $ref: '#/components/schemas/CompaniesIntegration_V1_BodyUpsert'
+            oneOf:
+              - $ref: '#/components/schemas/UsersIntegration_V1_BodyCreate'
+              - $ref: '#/components/schemas/UsersIntegration_V1_BodyUpdate'
+              - $ref: '#/components/schemas/UsersIntegration_V1_BodyUpsert'
             discriminator:
               mapping:
-                create: '#/components/schemas/CompaniesIntegration_V1_BodyCreate'
-                update: '#/components/schemas/CompaniesIntegration_V1_BodyUpdate'
-                upsert: '#/components/schemas/CompaniesIntegration_V1_BodyUpsert'
+                create: '#/components/schemas/UsersIntegration_V1_BodyCreate'
+                update: '#/components/schemas/UsersIntegration_V1_BodyUpdate'
+                upsert: '#/components/schemas/UsersIntegration_V1_BodyUpsert'
           in: header
           required: true
       responses:
@@ -105,15 +106,11 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CompaniesIntegration_V1_FullResponse'
-                discriminator:
-                  mapping:
-                    full: '#/components/schemas/CompaniesIntegration_V1_FullResponse'
-                    minimum: '#/components/schemas/CompaniesIntegration_V1_MinimumResponse'
-          description: Returns a company register
+                $ref: '#/components/schemas/UsersIntegration_V1_FullResponse'
+          description: Returns a user register
         401:
           description: Unauthorized
-      summary: Criar, atualizar e deletar companies
+      summary: Criar, atualizar e deletar Users
       description: |
         A ação a ser realizada no cadastro depende do valor preenchido no header
         **Integration-Action**:
@@ -131,16 +128,16 @@ paths:
         enviado o ID do registro no header **Integration-Filter**;
     parameters:
       - name: Integration-Service
-        description: 'Serviço responsável pela entidade. Exemplo: administration'
+        description: 'Serviço responsável pela entidade. Exemplo: user'
         schema:
-          default: administration
+          default: user
           type: string
         in: header
         required: true
       - name: Integration-Resource
-        description: 'Recurso para requisição. Exemplo: companies-integration'
+        description: 'Recurso para requisição. Exemplo: Users-integration'
         schema:
-          default: companies-integration
+          default: users-integration
           type: string
         in: header
         required: true
@@ -153,64 +150,72 @@ paths:
         required: true
 components:
   schemas:
-    CompaniesIntegration_V1_BodyEmpty:
+    UsersIntegration_V1_BodyEmpty:
       description: No body
       type: object
-    CompaniesIntegration_V1_MinimumResponse:
+    UpperUserId:
+      title: Root Type for UpperUserId
+      description: ""
       type: object
       properties:
-        id:
-          type: string
-        createdAt:
-          type: string
-        updatedAt:
-          type: string
+        upperUser:
+          type: object
+          properties:
+            id:
+              type: string
       example:
-        id: 19de1e5b-37c8-42c6-a62f-3d7bdd11e994
-        createAt: 2019-08-13T18:00:38.780Z
-        updatedAt: 2019-08-13T18:00:38.780Z
-    CompaniesIntegration_V1_BodyCreate:
+        upperUser:
+          id: 32cf57d9-699e-471a-ab26-ba25f666616c
+    UsersIntegration_V1_BodyCreate:
       required:
         - active
         - name
-        - tradingName
-        - redistributor
-        - headOffice
+        - username
         - externalId
+        - profile
+        - companyIds
       type: object
       properties:
         active:
           description: Define se o registro está ativo
           type: boolean
         name:
-          description: Nome da empresa/filial
+          description: Nome do usuário
           type: string
-        externalId:
-          description: Código do sistema externo para identificação única do registro
+        username:
+          description: Credencial de acesso do usuário, formato de email
           type: string
-        tradingName:
-          description: Nome comercial da empresa/filial
+        profile:
+          description: Identificador do perfil do usuário
           type: string
+          properties:
+            id:
+              type: string
+        companyIds:
+          description: Lista de empresas/filiais que este usuário tem acesso
+          type: array
+          items:
+            type: string
         country:
-          description: Nome do País
+          description: Descrição do País do usuário
           type: string
         countryId:
+          format: UUID
           description: Identificador do País
           type: string
-        code:
-          description: Código da filial/empresa
-          type: string
         state:
-          description: Descrição da unidade federativa
+          description: Descrição da unidade federativa/estado
           type: string
         stateId:
+          format: UUID
           description: Identificador da unidade federativa/estado
           type: string
         stateAcronym:
-          description: Sigla da unidade federativa
+          description: Sigla da unidade federativa/estado
           type: string
         city:
-          description: Descrição da cidade
+          format: UUID
+          description: Descrição da cidade do usuário
           type: string
         cityId:
           description: Identificador da cidade
@@ -219,229 +224,66 @@ components:
           description: Descrição do fuso horário
           type: string
         timeZoneId:
+          format: UUID
           description: Identificador do fuso horário
           type: string
         address:
-          description: Endereço da empresa/filial
+          description: Endereço do usuário
           type: string
         complement:
-          description: Complemento de descrição da empresa
+          description: Complemento de descrição do cadastro de usuário
           type: string
         postalCode:
-          description: Código postal da empresa/filial
+          description: Código postal do usuário
           type: string
-        redistributor:
-          description: Indica se a empresa/filial é distribuidora
+        languageId:
+          description: Identificador da língua
           type: string
-        companyType:
-          description: Identificador de tipo da empresa
-          type: object
+        userEmail:
+          description: Email do usuário
+          type: array
+          items:
+            $ref: '#/components/schemas/UserEmailPost'
+        userPhoneNumber:
+          description: Telefone(s) do usuário
+          type: array
+          items:
+            $ref: '#/components/schemas/UserPhoneNumberPost'
+        userIdentificationDocument:
+          description: Documento(s) de identificação do usuário
+          type: array
+          items:
+            $ref: '#/components/schemas/UserIdentificationDocumentPost'
+        userHierarchies:
+          description: 'Usuário(s) superiore(s) à este usuário '
+          type: array
+          items:
+            $ref: '#/components/schemas/UpperUserId'
+        userGroup:
+          description: Grupo de usuário
+          type: string
           properties:
             id:
+              format: UUID
               type: string
-        headOffice:
-          description: Indica se a empresa é a mãe/matriz de todas as outras filiais
-          type: boolean
-        companyHeadOffice:
-          description: Identificador da empresa mãe
-          type: string
-          properties:
-            id:
-              type: string
-        slogan:
-          description: Texto de slogan da empresa
-          type: string
-        imageId:
-          description: Identificador da imagem da empresa/filial
-          type: string
-        companyEmails:
-          description: E-mails da empresa/filial
-          type: array
-          items:
-            properties:
-              email:
-                type: string
-              emailTypeId:
-                type: string
-              emailTypeIdField:
-                type: string
-        companyPhones:
-          description: Telefone(s) da empresa/filial
-          type: array
-          items:
-            properties:
-              phoneNumber:
-                type: string
-              phoneTypeId:
-                type: string
-              phoneTypeIdField:
-                type: string
-        companyIdentificationDocuments:
-          description: Documento(s) de identificação da empresa/filial
-          type: array
-          items:
-            properties:
-              identificationDocumentAcronym:
-                description: Sigla do tipo de documento
-                type: string
-              identificationDocumentId:
-                description: Identificador do tipo de documento
-                type: string
-              identificationDocumentDescription:
-                description: Nome do tipo de documento
-                type: string
-              documentNumber:
-                description: Número do documento
-                type: string
-              identificationDocumentMask:
-                description: Máscara do documento
-                type: string
-              externalId:
-                description: Código do sistema externo para identificação única do
-                  registro
-                type: string
-      example:
-        active: true
-        name: WSSIM Informática
-        tradingName: Wealth Systemas Informática LTDA
-        country: Brazil
-        countryId: 9a792485-bfb9-4e87-97d6-b797a994ca2b
-        state: Paraná
-        stateId: c242bcf5-c317-4bed-b395-f56a85b47c3f
-        stateAcronym: PR
-        externalId: WSSIM Informática
-        city: Cascavel
-        cityId: dabd4fce-27c1-4059-a9f8-a10be66583db
-        timeZoneDescription: Brasil - Brasília, São Paulo (-03:00)
-        timeZoneId: 9f596395-2f8f-43ec-b7ab-9345d173ca13
-        address: João Leite de Moura, 515
-        complement: Bairro Industrial
-        postalCode: 1810-295
-        redistributor: true
-        code: D MG 001
-        companyType:
-          id: 03159f36-42fc-4ff8-98b6-f419f58bc967
-        headOffice: false
-        companyHeadOffice:
-          id: cb610f22-f6ca-4088-9bef-35461b021705
-        slogan: Vem pra WS
-        imageId: 62610111-8e92-4019-9b51-9b74d5287bfd
-        companyEmails:
-          - email: felippesr@wssim.com.br
-            emailTypeId: 301f0e6e-4270-472b-aa96-45ab017bcbb1
-            emailTypeIdField: dpd_new_email_abe80850-2e08-4cae-8b48-4a82e859aa25
-        companyPhones:
-          - phoneNumber: 551533253689
-            phoneTypeId: d870427c-bbad-4eb8-9af5-5183b47f648f
-            phoneTypeIdField: dpd_new_phoneNumber_90917b87-2ed9-46d6-ac44-d96c0c180cc5
-        companyIdentificationDocuments:
-          - identificationDocumentAcronym: CPF
-            identificationDocumentId: 3735642b-b975-4402-ae11-144ce71e965a
-            identificationDocumentDescription: CPF
-            documentNumber: "827182827134"
-            externalId: 21015174e079f1d8d7355#827182827134
-    CompaniesIntegration_V1_BodyUpdate:
-      type: object
-      properties:
-        active:
-          type: boolean
-        name:
-          type: string
-        tradingName:
-          type: string
-        externalId:
-          type: string
-        country:
-          type: string
-        countryId:
-          type: string
         code:
+          description: Código do usuário
           type: string
-        state:
+        roleId:
+          format: UUID
+          description: Identificador do papel do profissional
           type: string
-        stateId:
-          type: string
-        stateAcronym:
-          type: string
-        city:
-          type: string
-        cityId:
-          type: string
-        timeZoneDescription:
-          type: string
-        timeZoneId:
-          type: string
-        address:
-          type: string
-        complement:
-          type: string
-        postalCode:
-          type: string
-        redistributor:
-          type: string
-        companyType:
-          type: object
-          properties:
-            id:
-              type: string
-        headOffice:
-          type: boolean
-        companyHeadOffice:
-          type: string
-          properties:
-            id:
-              type: string
-        slogan:
-          type: string
-        imageId:
-          type: string
-        companyEmails:
-          type: array
-          items:
-            properties:
-              id:
-                type: string
-              email:
-                type: string
-              emailTypeId:
-                type: string
-              emailTypeIdField:
-                type: string
-        companyPhones:
-          type: array
-          items:
-            properties:
-              id:
-                type: string
-              phoneNumber:
-                type: string
-              phoneTypeId:
-                type: string
-              phoneTypeIdField:
-                type: string
-        companyIdentificationDocuments:
-          type: array
-          items:
-            properties:
-              id:
-                type: string
-              identificationDocumentAcronym:
-                type: string
-              identificationDocumentId:
-                type: string
-              identificationDocumentDescription:
-                type: string
-              documentNumber:
-                type: string
-              identificationDocumentMask:
-                type: string
-              externalId:
-                type: string
       example:
         active: true
-        name: WSSIM Informática
-        externalId: WSSIM Informática
-        tradingName: Wealth Systemas Informática LTDA
+        name: José da Silva
+        username: jose.silva@wssim.com.br
+        code: "10"
+        profile:
+          id: 6eddfbd2-2350-4218-90ca-781a1b7325b5
+        companyIds:
+          - 08cf8616-cd40-4134-ad1e-f28bd9ff756d
+          - 08cf8616-cd40-4134-ad1e-f28bd9ff7563
+        administrator: false
         country: Brazil
         countryId: 9a792485-bfb9-4e87-97d6-b797a994ca2b
         state: Paraná
@@ -451,174 +293,27 @@ components:
         cityId: dabd4fce-27c1-4059-a9f8-a10be66583db
         timeZoneDescription: Brasil - Brasília, São Paulo (-03:00)
         timeZoneId: 9f596395-2f8f-43ec-b7ab-9345d173ca13
-        address: João Leite de Moura, 515
-        complement: Bairro Industrial
-        postalCode: 1810-295
-        redistributor: true
-        code: D MG 001
-        companyType:
-          id: 03159f36-42fc-4ff8-98b6-f419f58bc967
-        headOffice: false
-        companyHeadOffice:
-          id: cb610f22-f6ca-4088-9bef-35461b021705
-        slogan: Vem pra WS
-        imageId: 62610111-8e92-4019-9b51-9b74d5287bfd
-        companyEmails:
-          - id: cabd4fce-27c1-4059-a9f8-a10be66583db
-            email: felippesr@wssim.com.br
-            emailTypeId: 301f0e6e-4270-472b-aa96-45ab017bcbb1
-            emailTypeIdField: dpd_new_email_abe80850-2e08-4cae-8b48-4a82e859aa25
-        companyPhones:
-          - id: eabd4fce-27c1-4059-a9f8-a10be66583db
-            phoneNumber: 551533253689
-            phoneTypeId: d870427c-bbad-4eb8-9af5-5183b47f648f
-            phoneTypeIdField: dpd_new_phoneNumber_90917b87-2ed9-46d6-ac44-d96c0c180cc5
-        companyIdentificationDocuments:
-          - id: fabd4fce-27c1-4059-a9f8-a10be66583db
-            identificationDocumentAcronym: CPF
-            identificationDocumentId: 3735642b-b975-4402-ae11-144ce71e965a
-            identificationDocumentDescription: CPF
-            documentNumber: "827182827134"
-            externalId: 21015174e079f1d8d7355#827182827134
-    CompaniesIntegration_V1_BodyUpsert:
-      type: object
-      properties:
-        active:
-          type: boolean
-        name:
-          type: string
-        externalId:
-          type: string
-        tradingName:
-          type: string
-        country:
-          type: string
-        countryId:
-          type: string
-        code:
-          type: string
-        state:
-          type: string
-        stateId:
-          type: string
-        stateAcronym:
-          type: string
-        city:
-          type: string
-        cityId:
-          type: string
-        timeZoneDescription:
-          type: string
-        timeZoneId:
-          type: string
-        address:
-          type: string
-        complement:
-          type: string
-        postalCode:
-          type: string
-        redistributor:
-          type: string
-        companyType:
-          type: object
-          properties:
-            id:
-              type: string
-        headOffice:
-          type: boolean
-        companyHeadOffice:
-          type: string
-          properties:
-            id:
-              type: string
-        slogan:
-          type: string
-        imageId:
-          type: string
-        companyEmails:
-          type: array
-          items:
-            properties:
-              email:
-                type: string
-              emailTypeId:
-                type: string
-              emailTypeIdField:
-                type: string
-        companyPhones:
-          type: array
-          items:
-            properties:
-              phoneNumber:
-                type: string
-              phoneTypeId:
-                type: string
-              phoneTypeIdField:
-                type: string
-        companyIdentificationDocuments:
-          type: array
-          items:
-            properties:
-              identificationDocumentAcronym:
-                description: Sigla do tipo de documento
-                type: string
-              identificationDocumentId:
-                description: Identificador do tipo de documento
-                type: string
-              identificationDocumentDescription:
-                description: Nome do tipo de documento
-                type: string
-              documentNumber:
-                description: Número do documento
-                type: string
-              identificationDocumentMask:
-                description: Máscara do documento
-                type: string
-              externalId:
-                description: Código do sistema externo para identificação única do
-                  registro
-                type: string
-      example:
-        active: true
-        name: WSSIM Informática
-        externalId: WSSIM Informática
-        tradingName: Wealth Systemas Informática LTDA
-        country: Brazil
-        countryId: 9a792485-bfb9-4e87-97d6-b797a994ca2b
-        state: Paraná
-        stateId: c242bcf5-c317-4bed-b395-f56a85b47c3f
-        stateAcronym: PR
-        city: Cascavel
-        cityId: dabd4fce-27c1-4059-a9f8-a10be66583db
-        timeZoneDescription: Brasil - Brasília, São Paulo (-03:00)
-        timeZoneId: 9f596395-2f8f-43ec-b7ab-9345d173ca13
-        address: João Leite de Moura, 515
-        complement: Bairro Industrial
-        postalCode: 1810-295
-        redistributor: true
-        code: D MG 001
-        companyType:
-          id: 03159f36-42fc-4ff8-98b6-f419f58bc967
-        headOffice: false
-        companyHeadOffice:
-          id: cb610f22-f6ca-4088-9bef-35461b021705
-        slogan: Vem pra WS
-        imageId: 62610111-8e92-4019-9b51-9b74d5287bfd
-        companyEmails:
-          - email: felippesr@wssim.com.br
-            emailTypeId: 301f0e6e-4270-472b-aa96-45ab017bcbb1
-            emailTypeIdField: dpd_new_email_abe80850-2e08-4cae-8b48-4a82e859aa25
-        companyPhones:
-          - phoneNumber: 551533253689
-            phoneTypeId: d870427c-bbad-4eb8-9af5-5183b47f648f
-            phoneTypeIdField: dpd_new_phoneNumber_90917b87-2ed9-46d6-ac44-d96c0c180cc5
-        companyIdentificationDocuments:
-          - identificationDocumentAcronym: CPF
-            identificationDocumentId: 3735642b-b975-4402-ae11-144ce71e965a
-            identificationDocumentDescription: CPF
-            documentNumber: "827182827134"
-            externalId: 21015174e079f1d8d7355#827182827134
-    CompaniesIntegration_V1_FullResponse:
+        address: Presidente Bernardes
+        complement: 3° Andar
+        postalCode: "1845678789"
+        imageId: 21614cd6-af7d-47df-aa6d-31907cf56608
+        languageId: 3b77a3b4-516c-4aea-846f-76720e5f8482
+        userEmail:
+          - email: jose.silva@gmail.com
+            emailTypeId: 0694a50f-d25b-4b10-ae05-619b30731ba7
+        userPhoneNumber:
+          - phoneNumber: "5545887976465"
+            phoneTypeId: 67cd545a-cf05-441e-a0ec-635c44e60d41
+        userIdentificationDocument:
+          - identificationDocumentId: 81d16d3a-f374-4238-b0f1-5d3602a0db76
+            numberDocument: "28692693588"
+        userHierarchies:
+          - upperUser:
+              id: 9927a30d-19d2-45e7-bf42-09d4e8ec4d22
+        userGroup:
+          id: 349b245e-223b-4267-b8f7-c0dea36f33bf
+        roleId: 0968a7a9-f85f-4c29-917c-f017155b66c1
+    UsersIntegration_V1_MinimumResponse:
       type: object
       properties:
         id:
@@ -627,31 +322,53 @@ components:
           type: string
         updatedAt:
           type: string
+      example:
+        id: 19de1e5b-37c8-42c6-a62f-3d7bdd11e994
+        createdAt: 2019-08-13T18:00:38.780Z
+        updatedAt: 2019-08-13T18:00:38.780Z
+    UsersIntegration_V1_BodyUpdate:
+      type: object
+      properties:
         active:
           type: boolean
         name:
           type: string
-        tradingName:
+        username:
           type: string
+        code:
+          type: string
+        profile:
+          type: string
+          properties:
+            id:
+              format: UUID
+              type: string
+        companyIds:
+          type: array
+          items:
+            format: UUID
+            type: string
         country:
           type: string
         countryId:
-          type: string
-        code:
+          format: UUID
           type: string
         state:
           type: string
         stateId:
+          format: UUID
           type: string
         stateAcronym:
           type: string
         city:
           type: string
         cityId:
+          format: UUID
           type: string
         timeZoneDescription:
           type: string
         timeZoneId:
+          format: UUID
           type: string
         address:
           type: string
@@ -659,78 +376,44 @@ components:
           type: string
         postalCode:
           type: string
-        redistributor:
+        languageId:
+          format: UUID
           type: string
-        companyType:
-          type: object
+        userEmail:
+          type: array
+          items:
+            $ref: '#/components/schemas/UserEmailPost'
+        userPhoneNumber:
+          type: array
+          items:
+            $ref: '#/components/schemas/UserPhoneNumberPost'
+        userIdentificationDocument:
+          type: array
+          items:
+            $ref: '#/components/schemas/UserIdentificationDocumentPost'
+        userHierarchies:
+          type: array
+          items:
+            $ref: '#/components/schemas/UpperUserId'
+        userGroup:
+          type: string
           properties:
             id:
+              format: UUID
               type: string
-        headOffice:
-          type: boolean
-        companyHeadOffice:
+        roleId:
+          format: UUID
           type: string
-          properties:
-            id:
-              type: string
-        slogan:
-          type: string
-        imageId:
-          type: string
-        companyEmails:
-          type: array
-          items:
-            properties:
-              id:
-                type: string
-              email:
-                type: string
-              emailTypeId:
-                type: string
-              emailTypeIdField:
-                type: string
-        companyPhones:
-          type: array
-          items:
-            properties:
-              id:
-                type: string
-              phoneNumber:
-                type: string
-              phoneTypeId:
-                type: string
-              phoneTypeIdField:
-                type: string
-        companyIdentificationDocuments:
-          type: array
-          items:
-            properties:
-              identificationDocumentAcronym:
-                description: Sigla do tipo de documento
-                type: string
-              identificationDocumentId:
-                description: Identificador do tipo de documento
-                type: string
-              identificationDocumentDescription:
-                description: Nome do tipo de documento
-                type: string
-              documentNumber:
-                description: Número do documento
-                type: string
-              identificationDocumentMask:
-                description: Máscara do documento
-                type: string
-              externalId:
-                description: Código do sistema externo para identificação única do
-                  registro
-                type: string
       example:
-        id: 19de1e5b-37c8-42c6-a62f-3d7bdd11e994
         active: true
-        name: WSSIM Informática
-        createAt: 2019-08-13T18:00:38.780Z
-        updatedAt: 2019-08-13T18:00:38.780Z
-        tradingName: Wealth Systemas Informática LTDA
+        name: José da Silva
+        username: jose.silva@wssim.com.br
+        code: "10"
+        profile:
+          id: 6eddfbd2-2350-4218-90ca-781a1b7325b5
+        companyIds:
+          - 08cf8616-cd40-4134-ad1e-f28bd9ff756d
+        administrator: false
         country: Brazil
         countryId: 9a792485-bfb9-4e87-97d6-b797a994ca2b
         state: Paraná
@@ -740,73 +423,79 @@ components:
         cityId: dabd4fce-27c1-4059-a9f8-a10be66583db
         timeZoneDescription: Brasil - Brasília, São Paulo (-03:00)
         timeZoneId: 9f596395-2f8f-43ec-b7ab-9345d173ca13
-        address: João Leite de Moura, 515
-        complement: Bairro Industrial
-        postalCode: 1810-295
-        redistributor: true
-        code: D MG 001
-        companyType:
-          id: 03159f36-42fc-4ff8-98b6-f419f58bc967
-          description: Privada
-          active: true
-        headOffice: false
-        companyHeadOffice:
-          id: cb610f22-f6ca-4088-9bef-35461b021705
-          active: true
-          name: WS
-        slogan: Vem pra WS
-        imageId: 62610111-8e92-4019-9b51-9b74d5287bfd
-        companyEmails:
-          - id: 901f0e6e-4270-472b-aa96-45ab017bcbb1
-            email: felippesr@wssim.com.br
-            emailTypeId: 301f0e6e-4270-472b-aa96-45ab017bcbb1
-            emailTypeIdField: dpd_new_email_abe80850-2e08-4cae-8b48-4a82e859aa25
-        companyPhones:
-          - id: 801f0e6e-4270-472b-aa96-45ab017bcbb1
-            phoneNumber: 551533253689
-            phoneTypeId: d870427c-bbad-4eb8-9af5-5183b47f648f
-            phoneTypeIdField: dpd_new_phoneNumber_90917b87-2ed9-46d6-ac44-d96c0c180cc5
-        companyIdentificationDocuments:
-          - id: 401f0e6e-4270-472b-aa96-45ab017bcbb1
-            identificationDocumentAcronym: CPF
-            identificationDocumentId: 3735642b-b975-4402-ae11-144ce71e965a
-            identificationDocumentDescription: CPF
-            documentNumber: "827182827134"
-            externalId: 21015174e079f1d8d7355#827182827134
-    CompaniesIntegration_V1_GetResponse:
+        address: Presidente Bernardes
+        complement: 3° Andar
+        postalCode: "1845678789"
+        imageId: 21614cd6-af7d-47df-aa6d-31907cf56608
+        languageId: 3b77a3b4-516c-4aea-846f-76720e5f8482
+        userEmail:
+          - id: 41614cd6-af7d-47df-aa6d-31907cf56608
+            email: jose.silva@gmail.com
+            emailTypeId: 0694a50f-d25b-4b10-ae05-619b30731ba7
+        userPhoneNumber:
+          - id: 31614cd6-af7d-47df-aa6d-31907cf56608
+            phoneNumber: "5545887976465"
+            phoneTypeId: 67cd545a-cf05-441e-a0ec-635c44e60d41
+        userIdentificationDocument:
+          - id: 51614cd6-af7d-47df-aa6d-31907cf56608
+            identificationDocumentId: 81d16d3a-f374-4238-b0f1-5d3602a0db76
+            numberDocument: "28692693588"
+        userHierarchies:
+          - upperUser:
+              id: 9927a30d-19d2-45e7-bf42-09d4e8ec4d22
+        userGroup:
+          id: 349b245e-223b-4267-b8f7-c0dea36f33bf
+        roleId: 0968a7a9-f85f-4c29-917c-f017155b66c1
+    UsersIntegration_V1_FullResponse:
       type: object
       properties:
         id:
+          format: UUID
           type: string
         createdAt:
           type: string
         updatedAt:
           type: string
+        code:
+          type: string
         active:
           type: boolean
         name:
           type: string
-        tradingName:
+        username:
           type: string
+        profile:
+          type: string
+          properties:
+            id:
+              format: UUID
+              type: string
+        companyIds:
+          type: array
+          items:
+            format: UUID
+            type: string
         country:
           type: string
         countryId:
-          type: string
-        code:
+          format: UUID
           type: string
         state:
           type: string
         stateId:
+          format: UUID
           type: string
         stateAcronym:
           type: string
         city:
           type: string
         cityId:
+          format: UUID
           type: string
         timeZoneDescription:
           type: string
         timeZoneId:
+          format: UUID
           type: string
         address:
           type: string
@@ -814,78 +503,47 @@ components:
           type: string
         postalCode:
           type: string
-        redistributor:
+        languageId:
+          format: UUID
           type: string
-        companyType:
-          type: object
+        userEmail:
+          type: array
+          items:
+            $ref: '#/components/schemas/UserEmailPost'
+        userPhoneNumber:
+          type: array
+          items:
+            $ref: '#/components/schemas/UserPhoneNumberPost'
+        userIdentificationDocument:
+          type: array
+          items:
+            $ref: '#/components/schemas/UserIdentificationDocumentPost'
+        userHierarchies:
+          type: array
+          items:
+            $ref: '#/components/schemas/UpperUserId'
+        userGroup:
+          type: string
           properties:
             id:
+              format: UUID
               type: string
-        headOffice:
-          type: boolean
-        companyHeadOffice:
+        roleId:
+          format: UUID
           type: string
-          properties:
-            id:
-              type: string
-        slogan:
-          type: string
-        imageId:
-          type: string
-        companyEmails:
-          type: array
-          items:
-            properties:
-              id:
-                type: string
-              email:
-                type: string
-              emailTypeId:
-                type: string
-              emailTypeIdField:
-                type: string
-        companyPhones:
-          type: array
-          items:
-            properties:
-              id:
-                type: string
-              phoneNumber:
-                type: string
-              phoneTypeId:
-                type: string
-              phoneTypeIdField:
-                type: string
-        companyIdentificationDocuments:
-          type: array
-          items:
-            properties:
-              identificationDocumentAcronym:
-                description: Sigla do tipo de documento
-                type: string
-              identificationDocumentId:
-                description: Identificador do tipo de documento
-                type: string
-              identificationDocumentDescription:
-                description: Nome do tipo de documento
-                type: string
-              documentNumber:
-                description: Número do documento
-                type: string
-              identificationDocumentMask:
-                description: Máscara do documento
-                type: string
-              externalId:
-                description: Código do sistema externo para identificação única do
-                  registro
-                type: string
       example:
-        id: 19de1e5b-37c8-42c6-a62f-3d7bdd11e994
-        active: true
-        name: WSSIM Informática
+        id: 59507946-db16-4087-8bd6-7c118c4672d6
         createAt: 2019-08-13T18:00:38.780Z
         updatedAt: 2019-08-13T18:00:38.780Z
-        tradingName: Wealth Systemas Informática LTDA
+        active: true
+        code: 10
+        name: José da Silva
+        username: jose.silva@wssim.com.br
+        profile:
+          id: 6eddfbd2-2350-4218-90ca-781a1b7325b5
+        companyIds:
+          - 08cf8616-cd40-4134-ad1e-f28bd9ff756d
+        administrator: false
         country: Brazil
         countryId: 9a792485-bfb9-4e87-97d6-b797a994ca2b
         state: Paraná
@@ -895,41 +553,371 @@ components:
         cityId: dabd4fce-27c1-4059-a9f8-a10be66583db
         timeZoneDescription: Brasil - Brasília, São Paulo (-03:00)
         timeZoneId: 9f596395-2f8f-43ec-b7ab-9345d173ca13
-        address: João Leite de Moura, 515
-        complement: Bairro Industrial
-        postalCode: 1810-295
-        redistributor: true
-        code: D MG 001
-        companyType:
-          id: 03159f36-42fc-4ff8-98b6-f419f58bc967
-          description: Privada
-          active: true
-        headOffice: false
-        companyHeadOffice:
-          id: cb610f22-f6ca-4088-9bef-35461b021705
-          active: true
-          name: WS
-        slogan: Vem pra WS
-        imageId: 62610111-8e92-4019-9b51-9b74d5287bfd
-        companyEmails:
-          - id: 901f0e6e-4270-472b-aa96-45ab017bcbb1
-            email: felippesr@wssim.com.br
-            emailTypeId: 301f0e6e-4270-472b-aa96-45ab017bcbb1
-            emailTypeIdField: dpd_new_email_abe80850-2e08-4cae-8b48-4a82e859aa25
-        companyPhones:
-          - id: 801f0e6e-4270-472b-aa96-45ab017bcbb1
-            phoneNumber: 551533253689
-            phoneTypeId: d870427c-bbad-4eb8-9af5-5183b47f648f
-            phoneTypeIdField: dpd_new_phoneNumber_90917b87-2ed9-46d6-ac44-d96c0c180cc5
-        companyIdentificationDocuments:
-          - id: 401f0e6e-4270-472b-aa96-45ab017bcbb1
-            identificationDocumentAcronym: CPF
-            identificationDocumentId: 3735642b-b975-4402-ae11-144ce71e965a
-            identificationDocumentDescription: CPF
-            documentNumber: "827182827134"
-            externalId: 21015174e079f1d8d7355#827182827134
+        address: Presidente Bernardes
+        complement: 3° Andar
+        postalCode: "1845678789"
+        imageId: 21614cd6-af7d-47df-aa6d-31907cf56608
+        languageId: 3b77a3b4-516c-4aea-846f-76720e5f8482
+        userEmail:
+          - email: jose.silva@gmail.com
+            emailTypeId: 0694a50f-d25b-4b10-ae05-619b30731ba7
+        userPhoneNumber:
+          - phoneNumber: "5545887976465"
+            phoneTypeId: 67cd545a-cf05-441e-a0ec-635c44e60d41
+        userIdentificationDocument:
+          - identificationDocumentId: 81d16d3a-f374-4238-b0f1-5d3602a0db76
+            numberDocument: "28692693588"
+        userHierarchies:
+          - upperUser:
+              id: 9927a30d-19d2-45e7-bf42-09d4e8ec4d22
+        userGroup:
+          id: 349b245e-223b-4267-b8f7-c0dea36f33bf
+        roleId: 0968a7a9-f85f-4c29-917c-f017155b66c1
+    UsersIntegration_V1_GetResponse:
+      type: object
+      properties:
+        id:
+          format: UUID
+          type: string
+        createdAt:
+          type: string
+        updatedAt:
+          type: string
+        code:
+          type: string
+        active:
+          type: boolean
+        name:
+          type: string
+        username:
+          type: string
+        profile:
+          type: string
+          properties:
+            id:
+              format: UUID
+              type: string
+        companyIds:
+          type: array
+          items:
+            format: UUID
+            type: string
+        country:
+          type: string
+        countryId:
+          format: UUID
+          type: string
+        state:
+          type: string
+        stateId:
+          format: UUID
+          type: string
+        stateAcronym:
+          type: string
+        city:
+          type: string
+        cityId:
+          format: UUID
+          type: string
+        timeZoneDescription:
+          type: string
+        timeZoneId:
+          format: UUID
+          type: string
+        address:
+          type: string
+        complement:
+          type: string
+        postalCode:
+          type: string
+        languageId:
+          format: UUID
+          type: string
+        userEmail:
+          type: array
+          items:
+            $ref: '#/components/schemas/UserEmailPost'
+        userPhoneNumber:
+          type: array
+          items:
+            $ref: '#/components/schemas/UserPhoneNumberPost'
+        userIdentificationDocument:
+          type: array
+          items:
+            $ref: '#/components/schemas/UserIdentificationDocumentPost'
+        userHierarchies:
+          type: array
+          items:
+            $ref: '#/components/schemas/UpperUserId'
+        userGroup:
+          type: string
+          properties:
+            id:
+              format: UUID
+              type: string
+        roleId:
+          format: UUID
+          type: string
+      example:
+        id: 59507946-db16-4087-8bd6-7c118c4672d6
+        createAt: 2019-08-13T18:00:38.780Z
+        updatedAt: 2019-08-13T18:00:38.780Z
+        active: true
+        code: 10
+        name: José da Silva
+        username: jose.silva@wssim.com.br
+        profile:
+          id: 6eddfbd2-2350-4218-90ca-781a1b7325b5
+        companyIds:
+          - 08cf8616-cd40-4134-ad1e-f28bd9ff756d
+        administrator: false
+        country: Brazil
+        countryId: 9a792485-bfb9-4e87-97d6-b797a994ca2b
+        state: Paraná
+        stateId: c242bcf5-c317-4bed-b395-f56a85b47c3f
+        stateAcronym: PR
+        city: Cascavel
+        cityId: dabd4fce-27c1-4059-a9f8-a10be66583db
+        timeZoneDescription: Brasil - Brasília, São Paulo (-03:00)
+        timeZoneId: 9f596395-2f8f-43ec-b7ab-9345d173ca13
+        address: Presidente Bernardes
+        complement: 3° Andar
+        postalCode: "1845678789"
+        imageId: 21614cd6-af7d-47df-aa6d-31907cf56608
+        languageId: 3b77a3b4-516c-4aea-846f-76720e5f8482
+        userEmail:
+          - email: jose.silva@gmail.com
+            emailTypeId: 0694a50f-d25b-4b10-ae05-619b30731ba7
+        userPhoneNumber:
+          - phoneNumber: "5545887976465"
+            phoneTypeId: 67cd545a-cf05-441e-a0ec-635c44e60d41
+        userIdentificationDocument:
+          - identificationDocumentId: 81d16d3a-f374-4238-b0f1-5d3602a0db76
+            numberDocument: "28692693588"
+        userHierarchies:
+          - upperUser:
+              id: 9927a30d-19d2-45e7-bf42-09d4e8ec4d22
+        userGroup:
+          id: 349b245e-223b-4267-b8f7-c0dea36f33bf
+        roleId: 0968a7a9-f85f-4c29-917c-f017155b66c1
+    UsersIntegration_V1_BodyUpsert:
+      type: object
+      properties:
+        active:
+          type: boolean
+        name:
+          type: string
+        username:
+          type: string
+        code:
+          type: string
+        profile:
+          type: string
+          properties:
+            id:
+              format: UUID
+              type: string
+        companyIds:
+          type: array
+          items:
+            format: UUID
+            type: string
+        country:
+          type: string
+        countryId:
+          format: UUID
+          type: string
+        state:
+          type: string
+        stateId:
+          format: UUID
+          type: string
+        stateAcronym:
+          type: string
+        city:
+          type: string
+        cityId:
+          format: UUID
+          type: string
+        timeZoneDescription:
+          type: string
+        timeZoneId:
+          format: UUID
+          type: string
+        address:
+          type: string
+        complement:
+          type: string
+        postalCode:
+          type: string
+        languageId:
+          format: UUID
+          type: string
+        userEmail:
+          type: array
+          items:
+            $ref: '#/components/schemas/UserEmailPost'
+        userPhoneNumber:
+          type: array
+          items:
+            $ref: '#/components/schemas/UserPhoneNumberPost'
+        userIdentificationDocument:
+          type: array
+          items:
+            $ref: '#/components/schemas/UserIdentificationDocumentPost'
+        userHierarchies:
+          type: array
+          items:
+            $ref: '#/components/schemas/UpperUserId'
+        userGroup:
+          type: string
+          properties:
+            id:
+              format: UUID
+              type: string
+        roleId:
+          format: UUID
+          type: string
+      example:
+        active: true
+        name: José da Silva
+        username: jose.silva@wssim.com.br
+        code: "10"
+        profile:
+          id: 6eddfbd2-2350-4218-90ca-781a1b7325b5
+        companyIds:
+          - 08cf8616-cd40-4134-ad1e-f28bd9ff756d
+        administrator: false
+        country: Brazil
+        countryId: 9a792485-bfb9-4e87-97d6-b797a994ca2b
+        state: Paraná
+        stateId: c242bcf5-c317-4bed-b395-f56a85b47c3f
+        stateAcronym: PR
+        city: Cascavel
+        cityId: dabd4fce-27c1-4059-a9f8-a10be66583db
+        timeZoneDescription: Brasil - Brasília, São Paulo (-03:00)
+        timeZoneId: 9f596395-2f8f-43ec-b7ab-9345d173ca13
+        address: Presidente Bernardes
+        complement: 3° Andar
+        postalCode: "1845678789"
+        imageId: 21614cd6-af7d-47df-aa6d-31907cf56608
+        languageId: 3b77a3b4-516c-4aea-846f-76720e5f8482
+        userEmail:
+          - email: jose.silva@gmail.com
+            emailTypeId: 0694a50f-d25b-4b10-ae05-619b30731ba7
+        userPhoneNumber:
+          - phoneNumber: "5545887976465"
+            phoneTypeId: 67cd545a-cf05-441e-a0ec-635c44e60d41
+        userIdentificationDocument:
+          - identificationDocumentId: 81d16d3a-f374-4238-b0f1-5d3602a0db76
+            numberDocument: "28692693588"
+        userHierarchies:
+          - upperUser:
+              id: 9927a30d-19d2-45e7-bf42-09d4e8ec4d22
+        userGroup:
+          id: 349b245e-223b-4267-b8f7-c0dea36f33bf
+        roleId: 0968a7a9-f85f-4c29-917c-f017155b66c1
+    UserEmailGet:
+      title: Root Type for UserEmail
+      description: '    '
+      type: object
+      properties:
+        id:
+          format: UUID
+          description: Identificador do registro de email
+          type: string
+        email:
+          description: Endereço de e-mail
+          type: string
+        emailTypeId:
+          format: UUID
+          description: Tipo de e-mail
+          type: string
+      example:
+        id: 181f6e97-56fe-4f01-9042-efeb19271b0f
+        email: user@cpf.com
+        emailTypeId: 3735642b-b975-4402-ae11-144ce71e965a
+    UserEmailPost:
+      title: Root Type for UserEmail
+      description: '    '
+      type: object
+      properties:
+        email:
+          description: Endereço de e-mail
+          type: string
+        emailTypeId:
+          format: UUID
+          description: Tipo de e-mail
+          type: string
+      example:
+        email: user@cpf.com
+        emailTypeId: 3735642b-b975-4402-ae11-144ce71e965a
+    UserIdentificationDocumentGet:
+      title: Root Type for UserIdentificationDocument
+      description: ""
+      type: object
+      properties:
+        id:
+          format: UUID
+          type: string
+        identificationDocumentId:
+          format: UUID
+          type: string
+        numberDocument:
+          type: string
+      example:
+        id: 0963133b-c3d8-4deb-bd51-befcb25f9fba
+        identificationDocumentId: 81d16d3a-f374-4238-b0f1-5d3602a0db76
+        numberDocument: "28692693588"
+    UserIdentificationDocumentPost:
+      title: Root Type for UserIdentificationDocument
+      description: ""
+      type: object
+      properties:
+        identificationDocumentId:
+          format: UUID
+          description: Id do documento de identificação
+          type: string
+        numberDocument:
+          description: Número do documento de identificação
+          type: string
+      example:
+        identificationDocumentId: 81d16d3a-f374-4238-b0f1-5d3602a0db76
+        numberDocument: "28692693588"
+    UserPhoneNumberGet:
+      title: Root Type for UserPhoneNumber
+      description: ""
+      type: object
+      properties:
+        id:
+          format: UUID
+          type: string
+        phoneNumber:
+          type: string
+        phoneTypeId:
+          format: UUID
+          type: string
+      example:
+        id: 3e5ddd35-2ddd-4bc5-88da-7c9d35d76efa
+        phoneNumber: 551332571011
+        phoneTypeId: 5b45276b-e85d-45c8-8254-f50e6bf654a5
+    UserPhoneNumberPost:
+      title: Root Type for UserPhoneNumber
+      description: ""
+      type: object
+      properties:
+        phoneNumber:
+          description: Número de telefone do usuário
+          type: string
+        phoneTypeId:
+          format: UUID
+          description: Tipo do telefone
+          type: string
+      example:
+        phoneNumber: 551332571011
+        phoneTypeId: 5b45276b-e85d-45c8-8254-f50e6bf654a5
 tags:
-  - name: APP2
-    description: Ambiente APP2
+  - name: TotvsCRMApp
+    description: A API de integração é válida para o ambiente Totvs CRM APP
   - name: integration
-    description: ""
+    description: API de integração
