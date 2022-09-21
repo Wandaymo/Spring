@@ -1,19 +1,19 @@
 ---
 openapi: 3.0.2
 info:
-  title: sales-orders-integrationV2
-  version: 2.0.0
+  title: companies-integrationV1
+  version: 1.0.0
   description: |
-    API de integração de ordens (Sales Orders) V2
+    API de integração de empresas/filiais (Companies) V1
 
-    Compatível com a versão V13 do serviço de negócio Sales
+    Compatível com a versão de negócio Administration V9
   contact: {}
 servers:
   - url: https://{url}/api/{version}/integration
     description: Integration Router Server
     variables:
       url:
-        default: totvscrm.app
+        default: app2.mastercrm.ws
         description: URL de acesso ao Integration-Router
       version:
         default: v1
@@ -22,7 +22,7 @@ paths:
   /record:
     get:
       tags:
-        - Sales-Orders
+        - Companies
       parameters:
         - name: Integration-Filter
           description: |
@@ -42,21 +42,21 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/OrdersIntegration_V2_FullResponse'
-          description: Returns a list of orders
+                $ref: '#/components/schemas/CompaniesIntegration_V1_FullResponse'
+          description: Returns a list of companies
         401:
           description: Unauthorized
-      summary: Listar ordens
-      description: Retorna uma lista de ordens cadastradas ou determinadas ordens
-        com base nos filtros no header Integration-Filter
+      summary: Listar Companies
+      description: Retorna uma lista de empresas/filiais cadastrados ou determinadas
+        empresas/filiais com base nos filtros no header Integration-Filter
     post:
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/OrdersIntegration_V2_BodyCreate'
+              $ref: '#/components/schemas/CompaniesIntegration_V1_BodyCreate'
       tags:
-        - Sales-Orders
+        - Companies
       parameters:
         - name: Integration-Filter
           description: |
@@ -78,7 +78,6 @@ paths:
             Se o header não for informado, por padrão o retorno será equivalente ao nível
             **minimum**
           schema:
-            default: minimum
             enum:
               - full
               - minimum
@@ -90,7 +89,15 @@ paths:
             Ação a ser realizada na API de integração. Selecione uma das opções para carregar o
             body da requisição.
           schema:
-            $ref: '#/components/schemas/OrdersIntegration_V2_BodyCreate'
+            anyOf:
+              - $ref: '#/components/schemas/CompaniesIntegration_V1_BodyCreate'
+              - $ref: '#/components/schemas/CompaniesIntegration_V1_BodyUpdate'
+              - $ref: '#/components/schemas/CompaniesIntegration_V1_BodyUpsert'
+            discriminator:
+              mapping:
+                create: '#/components/schemas/CompaniesIntegration_V1_BodyCreate'
+                update: '#/components/schemas/CompaniesIntegration_V1_BodyUpdate'
+                upsert: '#/components/schemas/CompaniesIntegration_V1_BodyUpsert'
           in: header
           required: true
       responses:
@@ -98,11 +105,15 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/OrdersIntegration_V2_FullResponse'
-          description: Returns a order register
+                $ref: '#/components/schemas/CompaniesIntegration_V1_FullResponse'
+                discriminator:
+                  mapping:
+                    full: '#/components/schemas/CompaniesIntegration_V1_FullResponse'
+                    minimum: '#/components/schemas/CompaniesIntegration_V1_MinimumResponse'
+          description: Returns a company register
         401:
           description: Unauthorized
-      summary: Criar e atualizar orders
+      summary: Criar, atualizar e deletar companies
       description: |
         A ação a ser realizada no cadastro depende do valor preenchido no header
         **Integration-Action**:
@@ -120,32 +131,32 @@ paths:
         enviado o ID do registro no header **Integration-Filter**;
     parameters:
       - name: Integration-Service
-        description: 'Serviço responsável pela entidade. Exemplo: sales'
+        description: 'Serviço responsável pela entidade. Exemplo: administration'
         schema:
-          default: sales
+          default: administration
           type: string
         in: header
         required: true
       - name: Integration-Resource
-        description: 'Recurso para requisição. Exemplo: orders-integration'
+        description: 'Recurso para requisição. Exemplo: companies-integration'
         schema:
-          default: orders-integration
+          default: companies-integration
           type: string
         in: header
         required: true
       - name: Integration-Version
-        description: 'Versão da API de integração. Exemplo: v2'
+        description: 'Versão da API de integração. Exemplo: v1'
         schema:
-          default: v2
+          default: v1
           type: string
         in: header
         required: true
 components:
   schemas:
-    OrdersIntegration_V2_BodyEmpty:
+    CompaniesIntegration_V1_BodyEmpty:
       description: No body
       type: object
-    OrdersIntegration_V2_MinimumResponse:
+    CompaniesIntegration_V1_MinimumResponse:
       type: object
       properties:
         id:
@@ -158,1314 +169,456 @@ components:
         id: 19de1e5b-37c8-42c6-a62f-3d7bdd11e994
         createAt: 2019-08-13T18:00:38.780Z
         updatedAt: 2019-08-13T18:00:38.780Z
-    ProductPost:
-      description: ""
-      type: object
-      properties:
-        productId:
-          type: string
-        productDescription:
-          type: string
-        opportunityId:
-          type: string
-        opportunityDescription:
-          type: string
-        productCode:
-          type: string
-        productPackagingId:
-          type: string
-        productPackagingDescription:
-          type: string
-        externalId:
-          type: string
-        originalPrice:
-          type: string
-        discountValue:
-          type: number
-        discountPercentage:
-          type: number
-        salesPrice:
-          type: number
-        costPrice:
-          type: number
-        quantity:
-          type: number
-        totalValue:
-          type: number
-        finalValue:
-          type: number
-        totalValueWithTaxes:
-          type: number
-        icmsValue:
-          type: number
-        icmsPercentage:
-          type: number
-        ipiValue:
-          type: number
-        ipiPercentage:
-          type: number
-        stValue:
-          type: number
-        stPercentage:
-          type: number
-        issValue:
-          type: number
-        issPercentage:
-          type: number
-        pisValue:
-          type: number
-        pisPercentage:
-          type: number
-        cofinsValue:
-          type: number
-        cofinsPercentage:
-          type: number
-        taxesCalculationRequestedAt:
-          type: string
-        taxesCalculationResponse:
-          type: string
-        taxesCalculationReceivedAt:
-          type: string
-        taxesCalculatedAt:
-          type: string
-        contributionMargin:
-          type: number
-        performanceRangeColor:
-          type: string
-        performanceRangeDescription:
-          type: string
-        performanceRangeMaximumPercentage:
-          type: number
-      example:
-        externalId: 11#2306001
-        productId: 8a8da9eb-f985-4997-8063-3a28bb524e6c
-        productDescription: PRODUTO TESTE RODRIGO - TST
-        opportunityId: 6583f5db-f985-4997-8063-3a28bb524e63
-        opportunityDescription: Oportunidade
-        productCode: "2306001"
-        productPackagingId: 468da9eb-f985-4997-8063-3a28bb524e6d
-        productPackagingDescription: embalagem
-        originalPrice: 10
-        discountValue: 0
-        discountPercentage: 0
-        salesPrice: 10
-        quantity: 1
-        totalValue: 10
-        finalValue: 10
-        totalValueWithTaxes: 12
-        icmsValue: 0.5
-        icmsPercentage: 1
-        ipiValue: 0.5
-        ipiPercentage: 1
-        stValue: 0.5
-        stPercentage: 1
-        issValue: 0.1
-        issPercentage: 1
-        pisValue: 0.1
-        pisPercentage: 0.01
-        cofinsValue: 0.01
-        cofinsPercentage: 0.001
-        taxesCalculationRequestedAt: 2020-07-01T21:49:29.348Z
-        taxesCalculationResponse: ok
-        taxesCalculationReceivedAt: 2020-07-01T21:49:29.348Z
-        taxesCalculatedAt: 2020-07-01T21:49:29.348Z
-        contributionMargin: 10
-        performanceRangeColor: '#2196F3'
-        performanceRangeDescription: ok
-        performanceRangeMaximumPercentage: 20
-    ServicePost:
+    CompaniesIntegration_V1_BodyCreate:
       required:
-        - service
-        - quantity
-        - repetitions
-        - salesPrice
-      type: object
-      properties:
-        externalId:
-          type: string
-        serviceId:
-          type: string
-        serviceDescription:
-          type: string
-        serviceCode:
-          type: string
-        opportunityId:
-          type: string
-        opportunityDescription:
-          type: string
-        recurrenceType:
-          type: string
-        originalPrice:
-          type: number
-        costPrice:
-          type: number
-        salesPrice:
-          type: number
-        quantity:
-          type: number
-        repetitions:
-          type: number
-        totalQuantity:
-          type: number
-        totalValue:
-          type: number
-        finalValue:
-          type: number
-        discount:
-          type: number
-        discountPercentage:
-          type: number
-        totalValueWithTaxes:
-          type: number
-        icmsValue:
-          type: number
-        icmsPercentage:
-          type: number
-        ipiValue:
-          type: number
-        ipiPercentage:
-          type: number
-        stValue:
-          type: number
-        stPercentage:
-          type: number
-        issValue:
-          type: number
-        issPercentage:
-          type: number
-        pisValue:
-          type: number
-        pisPercentage:
-          type: number
-        cofinsValue:
-          type: number
-        cofinsPercentage:
-          type: number
-        taxesCalculationRequestedAt:
-          type: string
-        taxesCalculationResponse:
-          type: string
-        taxesCalculationReceivedAt:
-          type: string
-        taxesCalculatedAt:
-          type: string
-        contributionMargin:
-          type: number
-        performanceRangeColor:
-          type: string
-        performanceRangeDescription:
-          type: string
-        performanceRangeMaximumPercentage:
-          type: number
-      example:
-        id: b6422f96-0b65-4a6f-a361-c577bfbfcce7
-        createdAt: 2020-07-01T21:52:16.228Z
-        updatedAt: 2020-07-01T21:52:16.228Z
-        serviceId: 69cd641a-0241-4e57-a07a-1128dbda38c8
-        serviceDescription: Serviço de embalagem especial
-        serviceCode: "01"
-        originalPrice: 3
-        costPrice: 2
-        salesPrice: 3
-        quantity: 1
-        repetitions: 1
-        totalQuantity: 1
-        totalValue: 3
-        finalValue: 3
-        discount: 0
-        discountPercentage: 0
-        totalValueWithTaxes: 12
-        icmsValue: 0.5
-        icmsPercentage: 1
-        ipiValue: 0.5
-        ipiPercentage: 1
-        stValue: 0.5
-        stPercentage: 1
-        issValue: 0.1
-        issPercentage: 1
-        pisValue: 0.1
-        pisPercentage: 0.01
-        cofinsValue: 0.01
-        cofinsPercentage: 0.001
-        taxesCalculationRequestedAt: 2020-07-01T21:49:29.348Z
-        taxesCalculationResponse: ok
-        taxesCalculationReceivedAt: 2020-07-01T21:49:29.348Z
-        taxesCalculatedAt: 2020-07-01T21:49:29.348Z
-        contributionMargin: 10
-        performanceRangeColor: '#2196F3'
-        performanceRangeDescription: ok
-        performanceRangeMaximumPercentage: 20
-    OrdersIntegration_V2_BodyUpsert:
-      type: object
-      properties:
-        userId:
-          type: string
-        userName:
-          type: string
-        userProfessionalId:
-          type: string
-        userProfessionalName:
-          type: string
-        customerId:
-          type: string
-        customerName:
-          type: string
-        customerNumber:
-          type: string
-        customerCode:
-          type: string
-        customerImageId:
-          type: string
-        companyId:
-          type: string
-        companyCode:
-          type: string
-        companyName:
-          type: object
-        orderType:
-          type: object
-          properties:
-            id:
-              type: string
-        priceListId:
-          type: string
-        priceListDescription:
-          type: string
-        paymentTermId:
-          type: string
-        paymentTermDescription:
-          type: string
-        paymentMethodId:
-          type: string
-        paymentMethodDescription:
-          type: string
-        orderCurrency:
-          type: string
-        externalNumber:
-          type: string
-        externalId:
-          type: string
-        status:
-          type: object
-          properties:
-            id:
-              type: string
-        origin:
-          format: character
-          default: EXT
-          maxLength: 20
-          minLength: 1
-          enum:
-            - WEB
-            - AND
-            - IOS
-            - EXT
-          type: string
-        exportedAt:
-          format: date
-          pattern: YYYY-MM-DDTHH24:MI:SS
-          type: string
-        createDate:
-          format: date
-          pattern: YYYY-MM-DD
-          type: string
-        addressId:
-          type: string
-        addressDescription:
-          type: string
-        addressCode:
-          type: string
-        draft:
-          type: boolean
-        sequentialNumber:
-          type: number
-        invoicedAt:
-          type: string
-        invoiceNotes:
-          type: string
-        invoicedValue:
-          type: number
-        invoicedQuantity:
-          type: number
-        orderNotes:
-          type: string
-        sourceId:
-          type: string
-        sourceDescription:
-          type: string
-        sourceType:
-          type: string
-        orderedAt:
-          format: date
-          pattern: YYYY-MM-DDTHH24:MI:SS
-          type: string
-        grossValue:
-          type: number
-        totalValue:
-          type: number
-        productTotalValue:
-          type: number
-        serviceTotalValue:
-          type: number
-        quantity:
-          type: number
-        totalValueWithTaxes:
-          type: number
-        productTotalValueWithTaxes:
-          type: number
-        serviceTotalValueWithTaxes:
-          type: number
-        totalIcmsValue:
-          type: number
-        totalIpiValue:
-          type: number
-        totalStValue:
-          type: number
-        totalIssValue:
-          type: number
-        totalPisValue:
-          type: number
-        totalCofinsValue:
-          type: number
-        taxesCalculationRequestedAt:
-          type: string
-        taxesCalculationResponse:
-          type: number
-        taxesCalculationReceivedAt:
-          type: string
-        discount:
-          type: number
-        discountType:
-          type: string
-        discountAppliedTo:
-          type: string
-        contributionMargin:
-          type: number
-        performanceRangeColor:
-          type: string
-        performanceRangeDescription:
-          type: string
-        performanceRangeMaximumPercentage:
-          type: number
-        signatureId:
-          type: string
-        initialCreditLimit:
-          type: number
-        opportunityId:
-          type: string
-        activityId:
-          type: string
-        incotermsId:
-          type: string
-        incotermsAcronym:
-          type: string
-        serviceId:
-          type: string
-        insertedAt:
-          format: date
-          pattern: YYYY-MM-DDTHH24:MI:SS
-          type: string
-        deliveryOrders:
-          type: array
-          items:
-            properties:
-              externalId:
-                type: string
-              shipmentDate:
-                type: string
-              deliveryDate:
-                type: string
-              addressId:
-                type: string
-              addressDescription:
-                type: string
-              observation:
-                type: string
-              freightType:
-                type: object
-                properties:
-                  id:
-                    type: string
-              carrier:
-                type: object
-                properties:
-                  id:
-                    type: string
-              freightValue:
-                type: string
-        dueDate:
-          type: string
-        complement:
-          type: string
-        finalValue:
-          type: number
-        itemsQuantity:
-          type: number
-        salesOrderStatusHistories:
-          type: array
-          items:
-            properties:
-              externalId:
-                type: string
-              deleted:
-                type: boolean
-              statusId:
-                type: string
-              startedAt:
-                type: string
-              endedAt:
-                type: string
-        products:
-          type: array
-          items:
-            $ref: '#/components/schemas/ProductPost'
-        services:
-          description: ""
-          type: array
-          items:
-            $ref: '#/components/schemas/ServicePost'
-      example:
-        externalId: 0103#113
-        deleted: false
-        priceListId: a851c438-2932-49af-a0db-78e981c30730
-        priceListDescription: TABELA RODRIGO 102
-        paymentTermId: a1286f2f-9cc6-42f3-ac36-640ac0cd814a
-        paymentTermDescription: A Vista
-        orderType:
-          id: c71c1a24-2300-4d0f-9343-544483df6616
-        paymentMethodId: 052a7dab-d82d-42a1-810f-d53d628fdc6c
-        paymentMethodDescription: BOLETO
-        userId: 7636f630-2358-4cf4-a290-2ec0b13ea47c
-        userName: Administrador
-        companyId: c2cd77ef-af47-4e80-a380-859c835807ec
-        companyName: MATRIZ T3 HUB05JUNHO
-        customerId: f101c590-5ad6-4c8e-88de-b0060ea49295
-        customerName: AAAAADRIANA CARVALHO LTDA - filial 0103
-        addressId: 059ad8aa-651a-48d4-985d-1c728100876d
-        addressDescription: Endereço
-        draft: false
-        sequentialNumber: 113
-        orderCurrency:
-          id: 9cde4e54-79b5-400b-805d-de0045286d68
-        orderExchange:
-          id: efee9c46-a0c1-4122-98ce-d7b129bcd4d7
-        orderedAt: 2020-07-01T21:53:15.176Z
-        totalValue: 13
-        productTotalValue: 10
-        serviceTotalValue: 3
-        customerCode: 69b656
-        companyCode: D MG 01
-        products:
-          - productId: 8a8da9eb-f985-4997-8063-3a28bb524e6c
-            productDescription: PRODUTO - TST
-            externalId: 0103#113#2306001
-            productCode: "2306001"
-            originalPrice: 10
-            discountValue: 0
-            discountPercentage: 0
-            salesPrice: 10
-            quantity: 1
-            totalValue: 10
-            finalValue: 10
-        services:
-          - serviceId: 69cd641a-0241-4e57-a07a-1128dbda38c8
-            serviceDescription: Serviço
-            serviceCode: "01"
-            originalPrice: 3
-            costPrice: 2
-            salesPrice: 3
-            quantity: 1
-            repetitions: 1
-            totalQuantity: 1
-            totalValue: 3
-            finalValue: 3
-            discount: 0
-            discountPercentage: 0
-        salesOrderStatusHistories:
-          - deleted: false
-            statusId: 5cafe9bb-9259-4ddb-b347-354f5f786864
-            startedAt: 2020-07-01T21:53:15.175Z
-        finalValue: 23
-        status:
-          id: 5cafe9bb-9259-4ddb-b347-354f5f786864
-        deliveryOrders:
-          - shipmentDate: 2020-07-01
-            deliveryDate: 2020-07-16
-            addressId: 059ad8aa-651a-48d4-985d-1c728100876d
-            addressDescription: Endereço
-            observation: "."
-            freightType:
-              id: fd17b2fe-d425-4880-aedd-0c29fdc04731
-            carrier:
-              id: 25777953-956b-40d5-9243-b5a8448182af
-            freightValue: 10
-        origin: WEB
-        userProfessionalId: 7636f630-2358-4cf4-a290-2ec0b13ea47c
-        userProfessionalName: Administrador
-        insertedAt: 2020-07-01T21:49:23.988Z
-    OrdersIntegration_V2_BodyCreate:
-      required:
-        - userId
-        - userProfessionalId
-        - userProfessionalName
+        - active
+        - name
+        - tradingName
+        - redistributor
+        - headOffice
         - externalId
-        - customerId
-        - orderType
-        - origin
-        - addressId
-        - companyId
-        - companyName
-        - priceListId
-        - priceListDescription
-        - paymentTermId
-        - paymentTermDescription
-        - orderType
-        - draft
       type: object
       properties:
-        userId:
-          description: Identificador do usuário que criou a ordem de venda
-          type: string
-        userName:
-          description: Nome do usuário que criou o pedido
-          type: string
-        userProfessionalId:
-          description: Identificador do usuário responsável pela ordem de venda
-        userProfessionalName:
-          description: Nome do usuário responsável pela ordem de venda
-          type: string
-        customerId:
-          description: Identificador do cliente
-          type: string
-        customerName:
-          description: Nome do cliente
-          type: string
-        customerNumber:
-          description: Número do cliente (depreciado)
-          type: string
-        customerCode:
-          description: Código do cliente
-          type: string
-        customerImageId:
-          description: Identificador da imagem do cliente
-          type: string
-        companyId:
-          description: Identificador da empresa/filial
-          type: string
-        companyCode:
-          description: Código da empresa/filial
-          type: string
-        companyName:
+        active:
+          description: Define se o registro está ativo
+          type: boolean
+        name:
           description: Nome da empresa/filial
           type: string
-        orderType:
-          description: Tipo de ordem
-          type: object
-          properties:
-            id:
-              description: Identificador do tipo da ordem
-              type: string
-        priceListId:
-          description: Identificador da tabela de preço usada na ordem
-          type: string
-        priceListDescription:
-          description: Nome da tabela de preço usada na ordem
-          type: string
-        paymentTermId:
-          description: Identificador da condição de pagamento da ordem
-          type: string
-        paymentTermDescription:
-          description: Nome da condição de pagamento
-          type: string
-        paymentMethodId:
-          description: Identificador do tipo de cobrança
-          type: string
-        paymentMethodDescription:
-          description: Nome do tipo de cobrança
-          type: string
-        orderCurrency:
-          description: Moeda utilizada na ordem
-          type: string
-        externalNumber:
-          description: Númeração externa da ordem
-          type: string
         externalId:
-          description: Código externo único para o registro da ordem
+          description: Código do sistema externo para identificação única do registro
           type: string
-        status:
-          description: Status da ordem
-          type: object
-          properties:
-            id:
-              description: Identificador do status
-              type: string
-        origin:
-          format: character
-          description: Origem da ordem
-          default: EXT
-          maxLength: 20
-          minLength: 1
-          enum:
-            - WEB
-            - AND
-            - IOS
-            - EXT
+        tradingName:
+          description: Nome comercial da empresa/filial
           type: string
-        exportedAt:
-          format: date
-          description: Data de exportação da ordem
-          pattern: YYYY-MM-DDTHH24:MI:SS
+        country:
+          description: Nome do País
           type: string
-        createDate:
-          format: date
-          description: Data de criação da ordem
-          pattern: YYYY-MM-DD
+        countryId:
+          description: Identificador do País
           type: string
-        addressId:
-          description: Identificador do endereço do cliente
+        code:
+          description: Código da filial/empresa
           type: string
-        addressDescription:
-          description: Descrição do endereço do cliente
+        state:
+          description: Descrição da unidade federativa
           type: string
-        addressCode:
-          description: Código do endereço do cliente
+        stateId:
+          description: Identificador da unidade federativa/estado
           type: string
-        draft:
-          description: Indica se a ordem está no status de rascunho
-          type: boolean
-        sequentialNumber:
-          description: Número sequencial da ordem
-          type: number
-        invoicedAt:
-          description: Data de faturamento da ordem
+        stateAcronym:
+          description: Sigla da unidade federativa
           type: string
-        invoiceNotes:
-          description: Observação da nota fiscal de faturamento
+        city:
+          description: Descrição da cidade
           type: string
-        invoicedValue:
-          description: Valor total faturado desta ordem
-          type: number
-        invoicedQuantity:
-          description: Quantidade total de itens faturados desta ordem
-          type: number
-        orderNotes:
-          description: Observação da ordem (depreciado)
+        cityId:
+          description: Identificador da cidade
           type: string
-        sourceId:
-          description: Identificador da origem da ordem
+        timeZoneDescription:
+          description: Descrição do fuso horário
           type: string
-        sourceDescription:
-          description: Descrição da origem da ordem
+        timeZoneId:
+          description: Identificador do fuso horário
           type: string
-        sourceType:
-          description: Tipo da origem da ordem
-          type: string
-        orderedAt:
-          format: date
-          description: Data de solicitação da ordem
-          pattern: YYYY-MM-DDTHH24:MI:SS
-          type: string
-        grossValue:
-          description: Valor bruto da ordem
-          type: number
-        totalValue:
-          description: Valor total da ordem
-          type: number
-        productTotalValue:
-          description: Valor total dos produtos adicionados na ordem, sem taxas
-          type: number
-        serviceTotalValue:
-          description: Valor total de itens de serviço da ordem
-          type: number
-        quantity:
-          description: Quantidade de itens da ordem
-          type: number
-        totalValueWithTaxes:
-          description: Valor total da ordem com taxas
-          type: number
-        productTotalValueWithTaxes:
-          description: Valor total dos produtos adicionados na ordem, com as taxas
-            calculadas
-          type: number
-        serviceTotalValueWithTaxes:
-          description: Valor total de itens de serviço da ordem com as taxas
-          type: number
-        totalIcmsValue:
-          description: Valor total do imposto de ICMS
-          type: number
-        totalIpiValue:
-          description: Valor total do imposto de IPI
-          type: number
-        totalStValue:
-          description: Valor total de imposto de Substituição tributária (ST)
-          type: number
-        totalIssValue:
-          description: Valor total do imposto de ISS
-          type: number
-        totalPisValue:
-          description: Valor total do imposto de PIS
-          type: number
-        totalCofinsValue:
-          description: Valor total do imposto COFINS
-          type: number
-        taxesCalculationRequestedAt:
-          description: Data e horário da requisição de cálculo de taxas
-          type: string
-        taxesCalculationResponse:
-          description: Retorno da requisição do cálculo de taxas
-          type: number
-        taxesCalculationReceivedAt:
-          description: Data e horário de recebimento do retorno do cálculo de taxas
-          type: string
-        discount:
-          description: Desconto da ordem
-          type: number
-        discountType:
-          description: Tipo do desconto
-          type: string
-        discountAppliedTo:
-          description: Objeto de aplicação do desconto
-          type: string
-        contributionMargin:
-          description: Margem de contribuição da ordem
-          type: number
-        performanceRangeColor:
-          description: Cor da faixa de desempenho para a ordem
-          type: string
-        performanceRangeDescription:
-          description: Nome da faixa de desempenho para a ordem
-          type: string
-        performanceRangeMaximumPercentage:
-          description: Percentual máximo para a faixa de desempenho
-          type: number
-        signatureId:
-          description: Identificador do registro de assinatura da ordem
-          type: string
-        initialCreditLimit:
-          description: Limite de crédito inicial
-          type: number
-        opportunityId:
-          description: Identificador da oportunidade originadora desta ordem
-          type: string
-        activityId:
-          description: Identificador da atividade
-          type: string
-        incotermsId:
-          type: string
-        incotermsAcronym:
-          type: string
-        serviceId:
-          type: string
-        insertedAt:
-          format: date
-          description: Data de inserção do registro da ordem
-          pattern: YYYY-MM-DDTHH24:MI:SS
-          type: string
-        deliveryOrders:
-          description: Entrega da ordem
-          type: array
-          items:
-            properties:
-              externalId:
-                type: string
-              shipmentDate:
-                type: string
-              deliveryDate:
-                type: string
-              addressId:
-                type: string
-              addressDescription:
-                type: string
-              observation:
-                type: string
-              freightType:
-                type: object
-                properties:
-                  id:
-                    type: string
-              carrier:
-                type: object
-                properties:
-                  id:
-                    type: string
-              freightValue:
-                type: string
-        dueDate:
-          description: Data de vencimento da ordem
+        address:
+          description: Endereço da empresa/filial
           type: string
         complement:
-          description: Complemento da ordem
+          description: Complemento de descrição da empresa
           type: string
-        finalValue:
-          description: Valor final da ordem
-          type: number
-        itemsQuantity:
-          description: Quantidade de itens da ordem
-          type: number
-        salesOrderStatusHistories:
-          description: Histórico de alterações de status da ordem
-          type: array
-          items:
-            properties:
-              externalId:
-                type: string
-              deleted:
-                type: boolean
-              statusId:
-                type: string
-              startedAt:
-                type: string
-              endedAt:
-                type: string
-        products:
-          description: Itens de produto adicionados à ordem
-          type: array
-          items:
-            $ref: '#/components/schemas/ProductPost'
-        services:
-          description: Itens de serviço da ordem
-          type: array
-          items:
-            $ref: '#/components/schemas/ServicePost'
-        pipeline:
-          description: Pipeline da ordem
+        postalCode:
+          description: Código postal da empresa/filial
+          type: string
+        redistributor:
+          description: Indica se a empresa/filial é distribuidora
+          type: string
+        companyType:
+          description: Identificador de tipo da empresa
           type: object
           properties:
             id:
-              description: Identificador da pipeline da ordem
               type: string
+        headOffice:
+          description: Indica se a empresa é a mãe/matriz de todas as outras filiais
+          type: boolean
+        companyHeadOffice:
+          description: Identificador da empresa mãe
+          type: string
+          properties:
+            id:
+              type: string
+        slogan:
+          description: Texto de slogan da empresa
+          type: string
+        imageId:
+          description: Identificador da imagem da empresa/filial
+          type: string
+        companyEmails:
+          description: E-mails da empresa/filial
+          type: array
+          items:
+            properties:
+              email:
+                type: string
+              emailTypeId:
+                type: string
+              emailTypeIdField:
+                type: string
+        companyPhones:
+          description: Telefone(s) da empresa/filial
+          type: array
+          items:
+            properties:
+              phoneNumber:
+                type: string
+              phoneTypeId:
+                type: string
+              phoneTypeIdField:
+                type: string
+        companyIdentificationDocuments:
+          description: Documento(s) de identificação da empresa/filial
+          type: array
+          items:
+            properties:
+              identificationDocumentAcronym:
+                description: Sigla do tipo de documento
+                type: string
+              identificationDocumentId:
+                description: Identificador do tipo de documento
+                type: string
+              identificationDocumentDescription:
+                description: Nome do tipo de documento
+                type: string
+              documentNumber:
+                description: Número do documento
+                type: string
+              identificationDocumentMask:
+                description: Máscara do documento
+                type: string
+              externalId:
+                description: Código do sistema externo para identificação única do
+                  registro
+                type: string
       example:
-        externalId: 0103#113
-        deleted: false
-        priceListId: a851c438-2932-49af-a0db-78e981c30730
-        priceListDescription: TABELA RODRIGO 102
-        paymentTermId: a1286f2f-9cc6-42f3-ac36-640ac0cd814a
-        paymentTermDescription: A Vista
-        orderType:
-          id: c71c1a24-2300-4d0f-9343-544483df6616
-        paymentMethodId: 052a7dab-d82d-42a1-810f-d53d628fdc6c
-        paymentMethodDescription: BOLETO
-        userId: 7636f630-2358-4cf4-a290-2ec0b13ea47c
-        userName: Administrador
-        companyId: c2cd77ef-af47-4e80-a380-859c835807ec
-        companyName: MATRIZ T3 HUB05JUNHO
-        customerId: f101c590-5ad6-4c8e-88de-b0060ea49295
-        customerName: AAAAADRIANA CARVALHO LTDA - filial 0103
-        addressId: 059ad8aa-651a-48d4-985d-1c728100876d
-        addressDescription: Endereço
-        draft: false
-        sequentialNumber: 113
-        orderCurrency:
-          id: 9cde4e54-79b5-400b-805d-de0045286d68
-        orderExchange:
-          id: efee9c46-a0c1-4122-98ce-d7b129bcd4d7
-        orderedAt: 2020-07-01T21:53:15.176Z
-        totalValue: 13
-        productTotalValue: 10
-        serviceTotalValue: 3
-        customerCode: 69b656
-        companyCode: D MG 01
-        products:
-          - productId: 8a8da9eb-f985-4997-8063-3a28bb524e6c
-            productDescription: PRODUTO - TST
-            productCode: "2306001"
-            originalPrice: 10
-            discountValue: 0
-            discountPercentage: 0
-            salesPrice: 10
-            quantity: 1
-            totalValue: 10
-            finalValue: 10
-        services:
-          - serviceId: 69cd641a-0241-4e57-a07a-1128dbda38c8
-            serviceDescription: Serviço
-            serviceCode: "01"
-            originalPrice: 3
-            costPrice: 2
-            salesPrice: 3
-            quantity: 1
-            repetitions: 1
-            totalQuantity: 1
-            totalValue: 3
-            finalValue: 3
-            discount: 0
-            discountPercentage: 0
-        salesOrderStatusHistories:
-          - deleted: false
-            statusId: 5cafe9bb-9259-4ddb-b347-354f5f786864
-            startedAt: 2020-07-01T21:53:15.175Z
-        finalValue: 23
-        status:
-          id: 5cafe9bb-9259-4ddb-b347-354f5f786864
-        deliveryOrders:
-          - shipmentDate: 2020-07-01
-            deliveryDate: 2020-07-16
-            addressId: 059ad8aa-651a-48d4-985d-1c728100876d
-            addressDescription: Endereço
-            observation: "."
-            freightType:
-              id: fd17b2fe-d425-4880-aedd-0c29fdc04731
-              createdAt: 2020-04-18T12:38:50.994229Z
-              updatedAt: 2020-04-18T12:38:50.994229Z
-              description: Free On Board
-              code: FOB
-              acronym: FOB
-              active: true
-              defaultRecord: false
-            carrier:
-              id: 25777953-956b-40d5-9243-b5a8448182af
-              createdAt: 2020-06-22T12:50:55.296Z
-              updatedAt: 2020-06-22T12:50:55.296Z
-              externalId: "09"
-              name: TRANSPORTE
-              code: "09"
-              note: "."
-              availableToAllCustomers: true
-              active: true
-            freightValue: 10
-        origin: EXT
-        userProfessionalId: 7636f630-2358-4cf4-a290-2ec0b13ea47c
-        userProfessionalName: Administrador
-        insertedAt: 2020-07-01T21:49:23.988Z
-        pipeline:
-          id: 3b3ad4c0-9534-4911-89fc-7c3e127b04c6
-    OrdersIntegration_V2_BodyUpdate:
+        active: true
+        name: WSSIM Informática
+        tradingName: Wealth Systemas Informática LTDA
+        country: Brazil
+        countryId: 9a792485-bfb9-4e87-97d6-b797a994ca2b
+        state: Paraná
+        stateId: c242bcf5-c317-4bed-b395-f56a85b47c3f
+        stateAcronym: PR
+        externalId: WSSIM Informática
+        city: Cascavel
+        cityId: dabd4fce-27c1-4059-a9f8-a10be66583db
+        timeZoneDescription: Brasil - Brasília, São Paulo (-03:00)
+        timeZoneId: 9f596395-2f8f-43ec-b7ab-9345d173ca13
+        address: João Leite de Moura, 515
+        complement: Bairro Industrial
+        postalCode: 1810-295
+        redistributor: true
+        code: D MG 001
+        companyType:
+          id: 03159f36-42fc-4ff8-98b6-f419f58bc967
+        headOffice: false
+        companyHeadOffice:
+          id: cb610f22-f6ca-4088-9bef-35461b021705
+        slogan: Vem pra WS
+        imageId: 62610111-8e92-4019-9b51-9b74d5287bfd
+        companyEmails:
+          - email: felippesr@wssim.com.br
+            emailTypeId: 301f0e6e-4270-472b-aa96-45ab017bcbb1
+            emailTypeIdField: dpd_new_email_abe80850-2e08-4cae-8b48-4a82e859aa25
+        companyPhones:
+          - phoneNumber: 551533253689
+            phoneTypeId: d870427c-bbad-4eb8-9af5-5183b47f648f
+            phoneTypeIdField: dpd_new_phoneNumber_90917b87-2ed9-46d6-ac44-d96c0c180cc5
+        companyIdentificationDocuments:
+          - identificationDocumentAcronym: CPF
+            identificationDocumentId: 3735642b-b975-4402-ae11-144ce71e965a
+            identificationDocumentDescription: CPF
+            documentNumber: "827182827134"
+            externalId: 21015174e079f1d8d7355#827182827134
+    CompaniesIntegration_V1_BodyUpdate:
       type: object
       properties:
-        userId:
-          description: Identificador do usuário que criou a orderm de venda
+        active:
+          type: boolean
+        name:
           type: string
-        userName:
-          description: Nome do usuário que criou o pedido
-          type: string
-        userProfessionalId:
-          description: Identificador do usuário responsável pela ordem de venda
-        userProfessionalName:
-          description: Nome do usuário responsável pela ordem de venda
-          type: string
-        customerId:
-          description: Identificador do cliente
-          type: string
-        customerName:
-          description: Nome do cliente
-          type: string
-        customerNumber:
-          type: string
-        customerCode:
-          type: string
-        customerImageId:
-          type: string
-        companyId:
-          description: company or branch
-          type: string
-        companyCode:
-          type: string
-        companyName:
-          type: object
-        orderType:
-          description: Tipo de ordem
-          type: object
-          properties:
-            id:
-              type: string
-        priceListId:
-          type: string
-        priceListDescription:
-          type: string
-        paymentTermId:
-          type: string
-        paymentTermDescription:
-          description: payment term
-          type: string
-        paymentMethodId:
-          type: string
-        paymentMethodDescription:
-          type: string
-        orderCurrency:
-          type: string
-        externalNumber:
+        tradingName:
           type: string
         externalId:
           type: string
-        status:
-          description: order status
-          type: object
-          properties:
-            id:
-              type: string
-        origin:
-          format: character
-          description: order origin
-          default: EXT
-          maxLength: 20
-          minLength: 1
-          enum:
-            - WEB
-            - AND
-            - IOS
-            - EXT
+        country:
           type: string
-        exportedAt:
-          format: date
-          description: due date
-          pattern: YYYY-MM-DDTHH24:MI:SS
+        countryId:
           type: string
-        createDate:
-          format: date
-          description: order create date
-          pattern: YYYY-MM-DD
+        code:
           type: string
-        addressId:
+        state:
           type: string
-        addressDescription:
-          description: Descrição do endereço do cliente
+        stateId:
           type: string
-        addressCode:
-          description: Código do endereço do cliente
+        stateAcronym:
           type: string
-        draft:
-          type: boolean
-        sequentialNumber:
-          type: number
-        invoicedAt:
+        city:
           type: string
-        invoiceNotes:
+        cityId:
           type: string
-        invoicedValue:
-          type: number
-        invoicedQuantity:
-          type: number
-        orderNotes:
+        timeZoneDescription:
           type: string
-        sourceId:
+        timeZoneId:
           type: string
-        sourceDescription:
-          type: string
-        sourceType:
-          type: string
-        orderedAt:
-          format: date
-          pattern: YYYY-MM-DDTHH24:MI:SS
-          type: string
-        grossValue:
-          type: number
-        totalValue:
-          type: number
-        productTotalValue:
-          type: number
-        serviceTotalValue:
-          type: number
-        quantity:
-          type: number
-        totalValueWithTaxes:
-          type: number
-        productTotalValueWithTaxes:
-          type: number
-        serviceTotalValueWithTaxes:
-          type: number
-        totalIcmsValue:
-          type: number
-        totalIpiValue:
-          type: number
-        totalStValue:
-          type: number
-        totalIssValue:
-          type: number
-        totalPisValue:
-          type: number
-        totalCofinsValue:
-          type: number
-        taxesCalculationRequestedAt:
-          type: string
-        taxesCalculationResponse:
-          type: number
-        taxesCalculationReceivedAt:
-          type: string
-        discount:
-          type: number
-        discountType:
-          type: string
-        discountAppliedTo:
-          type: string
-        contributionMargin:
-          type: number
-        performanceRangeColor:
-          type: string
-        performanceRangeDescription:
-          type: string
-        performanceRangeMaximumPercentage:
-          type: number
-        signatureId:
-          type: string
-        initialCreditLimit:
-          type: number
-        opportunityId:
-          type: string
-        activityId:
-          description: Identificador da atividade
-          type: string
-        incotermsId:
-          type: string
-        incotermsAcronym:
-          type: string
-        serviceId:
-          type: string
-        insertedAt:
-          format: date
-          pattern: YYYY-MM-DDTHH24:MI:SS
-          type: string
-        deliveryOrders:
-          type: array
-          items:
-            properties:
-              id:
-                type: string
-              externalId:
-                type: string
-              shipmentDate:
-                type: string
-              deliveryDate:
-                type: string
-              addressId:
-                type: string
-              addressDescription:
-                type: string
-              observation:
-                type: string
-              freightType:
-                type: object
-                properties:
-                  id:
-                    type: string
-              carrier:
-                type: object
-                properties:
-                  id:
-                    type: string
-              freightValue:
-                type: string
-        dueDate:
+        address:
           type: string
         complement:
           type: string
-        finalValue:
-          type: number
-        itemsQuantity:
-          type: number
-        salesOrderStatusHistories:
+        postalCode:
+          type: string
+        redistributor:
+          type: string
+        companyType:
+          type: object
+          properties:
+            id:
+              type: string
+        headOffice:
+          type: boolean
+        companyHeadOffice:
+          type: string
+          properties:
+            id:
+              type: string
+        slogan:
+          type: string
+        imageId:
+          type: string
+        companyEmails:
           type: array
           items:
             properties:
               id:
                 type: string
+              email:
+                type: string
+              emailTypeId:
+                type: string
+              emailTypeIdField:
+                type: string
+        companyPhones:
+          type: array
+          items:
+            properties:
+              id:
+                type: string
+              phoneNumber:
+                type: string
+              phoneTypeId:
+                type: string
+              phoneTypeIdField:
+                type: string
+        companyIdentificationDocuments:
+          type: array
+          items:
+            properties:
+              id:
+                type: string
+              identificationDocumentAcronym:
+                type: string
+              identificationDocumentId:
+                type: string
+              identificationDocumentDescription:
+                type: string
+              documentNumber:
+                type: string
+              identificationDocumentMask:
+                type: string
               externalId:
                 type: string
-              deleted:
-                type: boolean
-              statusId:
-                type: string
-              startedAt:
-                type: string
-              endedAt:
-                type: string
-        products:
-          type: array
-          items:
-            $ref: '#/components/schemas/ProductPost'
-        services:
-          description: ""
-          type: array
-          items:
-            $ref: '#/components/schemas/ServicePost'
-        pipeline:
+      example:
+        active: true
+        name: WSSIM Informática
+        externalId: WSSIM Informática
+        tradingName: Wealth Systemas Informática LTDA
+        country: Brazil
+        countryId: 9a792485-bfb9-4e87-97d6-b797a994ca2b
+        state: Paraná
+        stateId: c242bcf5-c317-4bed-b395-f56a85b47c3f
+        stateAcronym: PR
+        city: Cascavel
+        cityId: dabd4fce-27c1-4059-a9f8-a10be66583db
+        timeZoneDescription: Brasil - Brasília, São Paulo (-03:00)
+        timeZoneId: 9f596395-2f8f-43ec-b7ab-9345d173ca13
+        address: João Leite de Moura, 515
+        complement: Bairro Industrial
+        postalCode: 1810-295
+        redistributor: true
+        code: D MG 001
+        companyType:
+          id: 03159f36-42fc-4ff8-98b6-f419f58bc967
+        headOffice: false
+        companyHeadOffice:
+          id: cb610f22-f6ca-4088-9bef-35461b021705
+        slogan: Vem pra WS
+        imageId: 62610111-8e92-4019-9b51-9b74d5287bfd
+        companyEmails:
+          - id: cabd4fce-27c1-4059-a9f8-a10be66583db
+            email: felippesr@wssim.com.br
+            emailTypeId: 301f0e6e-4270-472b-aa96-45ab017bcbb1
+            emailTypeIdField: dpd_new_email_abe80850-2e08-4cae-8b48-4a82e859aa25
+        companyPhones:
+          - id: eabd4fce-27c1-4059-a9f8-a10be66583db
+            phoneNumber: 551533253689
+            phoneTypeId: d870427c-bbad-4eb8-9af5-5183b47f648f
+            phoneTypeIdField: dpd_new_phoneNumber_90917b87-2ed9-46d6-ac44-d96c0c180cc5
+        companyIdentificationDocuments:
+          - id: fabd4fce-27c1-4059-a9f8-a10be66583db
+            identificationDocumentAcronym: CPF
+            identificationDocumentId: 3735642b-b975-4402-ae11-144ce71e965a
+            identificationDocumentDescription: CPF
+            documentNumber: "827182827134"
+            externalId: 21015174e079f1d8d7355#827182827134
+    CompaniesIntegration_V1_BodyUpsert:
+      type: object
+      properties:
+        active:
+          type: boolean
+        name:
+          type: string
+        externalId:
+          type: string
+        tradingName:
+          type: string
+        country:
+          type: string
+        countryId:
+          type: string
+        code:
+          type: string
+        state:
+          type: string
+        stateId:
+          type: string
+        stateAcronym:
+          type: string
+        city:
+          type: string
+        cityId:
+          type: string
+        timeZoneDescription:
+          type: string
+        timeZoneId:
+          type: string
+        address:
+          type: string
+        complement:
+          type: string
+        postalCode:
+          type: string
+        redistributor:
+          type: string
+        companyType:
           type: object
           properties:
             id:
               type: string
+        headOffice:
+          type: boolean
+        companyHeadOffice:
+          type: string
+          properties:
+            id:
+              type: string
+        slogan:
+          type: string
+        imageId:
+          type: string
+        companyEmails:
+          type: array
+          items:
+            properties:
+              email:
+                type: string
+              emailTypeId:
+                type: string
+              emailTypeIdField:
+                type: string
+        companyPhones:
+          type: array
+          items:
+            properties:
+              phoneNumber:
+                type: string
+              phoneTypeId:
+                type: string
+              phoneTypeIdField:
+                type: string
+        companyIdentificationDocuments:
+          type: array
+          items:
+            properties:
+              identificationDocumentAcronym:
+                description: Sigla do tipo de documento
+                type: string
+              identificationDocumentId:
+                description: Identificador do tipo de documento
+                type: string
+              identificationDocumentDescription:
+                description: Nome do tipo de documento
+                type: string
+              documentNumber:
+                description: Número do documento
+                type: string
+              identificationDocumentMask:
+                description: Máscara do documento
+                type: string
+              externalId:
+                description: Código do sistema externo para identificação única do
+                  registro
+                type: string
       example:
-        externalId: 0103#113
-        deleted: false
-        priceListId: a851c438-2932-49af-a0db-78e981c30730
-        priceListDescription: TABELA RODRIGO 102
-        paymentTermId: a1286f2f-9cc6-42f3-ac36-640ac0cd814a
-        paymentTermDescription: A Vista
-        orderType:
-          id: c71c1a24-2300-4d0f-9343-544483df6616
-        paymentMethodId: 052a7dab-d82d-42a1-810f-d53d628fdc6c
-        paymentMethodDescription: BOLETO
-        userId: 7636f630-2358-4cf4-a290-2ec0b13ea47c
-        userName: Administrador
-        companyId: c2cd77ef-af47-4e80-a380-859c835807ec
-        companyName: MATRIZ T3 HUB05JUNHO
-        customerId: f101c590-5ad6-4c8e-88de-b0060ea49295
-        customerName: AAAAADRIANA CARVALHO LTDA - filial 0103
-        addressId: 059ad8aa-651a-48d4-985d-1c728100876d
-        addressDescription: Endereço
-        draft: false
-        sequentialNumber: 113
-        orderCurrency:
-          id: 9cde4e54-79b5-400b-805d-de0045286d68
-        orderExchange:
-          id: efee9c46-a0c1-4122-98ce-d7b129bcd4d7
-        orderedAt: 2020-07-01T21:53:15.176Z
-        totalValue: 13
-        productTotalValue: 10
-        serviceTotalValue: 3
-        customerCode: 69b656
-        companyCode: D MG 01
-        products:
-          - id: d172fe95-843a-43e0-9a04-fbe4d06102d5
-            productId: 8a8da9eb-f985-4997-8063-3a28bb524e6c
-            productDescription: PRODUTO - TST
-            externalId: 0103#113#2306001
-            productCode: "2306001"
-            originalPrice: 10
-            discountValue: 0
-            discountPercentage: 0
-            salesPrice: 10
-            quantity: 1
-            totalValue: 10
-            finalValue: 10
-        services:
-          - id: 70e0188a-301a-4274-bcf3-1d3fc196ed66
-            serviceId: 69cd641a-0241-4e57-a07a-1128dbda38c8
-            serviceDescription: Serviço
-            serviceCode: "01"
-            originalPrice: 3
-            costPrice: 2
-            salesPrice: 3
-            quantity: 1
-            repetitions: 1
-            totalQuantity: 1
-            totalValue: 3
-            finalValue: 3
-            discount: 0
-            discountPercentage: 0
-        salesOrderStatusHistories:
-          - id: 93e5344b-f75b-4ed5-8409-960bdf1136a6
-            deleted: false
-            statusId: 5cafe9bb-9259-4ddb-b347-354f5f786864
-            startedAt: 2020-07-01T21:53:15.175Z
-        finalValue: 23
-        status:
-          id: 5cafe9bb-9259-4ddb-b347-354f5f786864
-        deliveryOrders:
-          - id: fd92fbbb-3777-4104-b1ef-142386441291
-            shipmentDate: 2020-07-01
-            deliveryDate: 2020-07-16
-            addressId: 059ad8aa-651a-48d4-985d-1c728100876d
-            addressDescription: Endereço
-            observation: "."
-            freightType:
-              id: fd17b2fe-d425-4880-aedd-0c29fdc04731
-            carrier:
-              id: 25777953-956b-40d5-9243-b5a8448182af
-            freightValue: 10
-        origin: WEB
-        userProfessionalId: 7636f630-2358-4cf4-a290-2ec0b13ea47c
-        userProfessionalName: Administrador
-        insertedAt: 2020-07-01T21:49:23.988Z
-    OrdersIntegration_V2_FullResponse:
+        active: true
+        name: WSSIM Informática
+        externalId: WSSIM Informática
+        tradingName: Wealth Systemas Informática LTDA
+        country: Brazil
+        countryId: 9a792485-bfb9-4e87-97d6-b797a994ca2b
+        state: Paraná
+        stateId: c242bcf5-c317-4bed-b395-f56a85b47c3f
+        stateAcronym: PR
+        city: Cascavel
+        cityId: dabd4fce-27c1-4059-a9f8-a10be66583db
+        timeZoneDescription: Brasil - Brasília, São Paulo (-03:00)
+        timeZoneId: 9f596395-2f8f-43ec-b7ab-9345d173ca13
+        address: João Leite de Moura, 515
+        complement: Bairro Industrial
+        postalCode: 1810-295
+        redistributor: true
+        code: D MG 001
+        companyType:
+          id: 03159f36-42fc-4ff8-98b6-f419f58bc967
+        headOffice: false
+        companyHeadOffice:
+          id: cb610f22-f6ca-4088-9bef-35461b021705
+        slogan: Vem pra WS
+        imageId: 62610111-8e92-4019-9b51-9b74d5287bfd
+        companyEmails:
+          - email: felippesr@wssim.com.br
+            emailTypeId: 301f0e6e-4270-472b-aa96-45ab017bcbb1
+            emailTypeIdField: dpd_new_email_abe80850-2e08-4cae-8b48-4a82e859aa25
+        companyPhones:
+          - phoneNumber: 551533253689
+            phoneTypeId: d870427c-bbad-4eb8-9af5-5183b47f648f
+            phoneTypeIdField: dpd_new_phoneNumber_90917b87-2ed9-46d6-ac44-d96c0c180cc5
+        companyIdentificationDocuments:
+          - identificationDocumentAcronym: CPF
+            identificationDocumentId: 3735642b-b975-4402-ae11-144ce71e965a
+            identificationDocumentDescription: CPF
+            documentNumber: "827182827134"
+            externalId: 21015174e079f1d8d7355#827182827134
+    CompaniesIntegration_V1_FullResponse:
       type: object
       properties:
         id:
@@ -1474,408 +627,153 @@ components:
           type: string
         updatedAt:
           type: string
-        userId:
-          type: string
-        userName:
-          type: string
-        userProfessionalId:
-          type: string
-        userProfessionalName:
-          type: string
-        customerId:
-          type: string
-        customerName:
-          type: string
-        customerNumber:
-          type: string
-        customerCode:
-          type: string
-        customerImageId:
-          type: string
-        companyId:
-          type: string
-        companyCode:
-          type: string
-        companyName:
-          type: object
-        orderType:
-          type: object
-          properties:
-            id:
-              type: string
-        priceListId:
-          type: string
-        priceListDescription:
-          type: string
-        paymentTermId:
-          type: string
-        paymentTermDescription:
-          type: string
-        paymentMethodId:
-          type: string
-        paymentMethodDescription:
-          type: string
-        orderCurrency:
-          type: string
-        externalNumber:
-          type: string
-        externalId:
-          type: string
-        status:
-          type: object
-          properties:
-            id:
-              type: string
-        origin:
-          format: character
-          default: EXT
-          maxLength: 20
-          minLength: 1
-          enum:
-            - WEB
-            - AND
-            - IOS
-            - EXT
-          type: string
-        exportedAt:
-          format: date
-          pattern: YYYY-MM-DDTHH24:MI:SS
-          type: string
-        createDate:
-          format: date
-          pattern: YYYY-MM-DD
-          type: string
-        addressId:
-          type: string
-        addressDescription:
-          type: string
-        addressCode:
-          type: string
-        draft:
+        active:
           type: boolean
-        sequentialNumber:
-          type: number
-        invoicedAt:
+        name:
           type: string
-        invoiceNotes:
+        tradingName:
           type: string
-        invoicedValue:
-          type: number
-        invoicedQuantity:
-          type: number
-        orderNotes:
+        country:
           type: string
-        sourceId:
+        countryId:
           type: string
-        sourceDescription:
+        code:
           type: string
-        sourceType:
+        state:
           type: string
-        orderedAt:
-          format: date
-          pattern: YYYY-MM-DDTHH24:MI:SS
+        stateId:
           type: string
-        grossValue:
-          type: number
-        totalValue:
-          type: number
-        productTotalValue:
-          type: number
-        serviceTotalValue:
-          type: number
-        quantity:
-          type: number
-        totalValueWithTaxes:
-          type: number
-        productTotalValueWithTaxes:
-          type: number
-        serviceTotalValueWithTaxes:
-          type: number
-        totalIcmsValue:
-          type: number
-        totalIpiValue:
-          type: number
-        totalStValue:
-          type: number
-        totalIssValue:
-          type: number
-        totalPisValue:
-          type: number
-        totalCofinsValue:
-          type: number
-        taxesCalculationRequestedAt:
+        stateAcronym:
           type: string
-        taxesCalculationResponse:
-          type: number
-        taxesCalculationReceivedAt:
+        city:
           type: string
-        discount:
-          type: number
-        discountType:
+        cityId:
           type: string
-        discountAppliedTo:
+        timeZoneDescription:
           type: string
-        contributionMargin:
-          type: number
-        performanceRangeColor:
+        timeZoneId:
           type: string
-        performanceRangeDescription:
-          type: string
-        performanceRangeMaximumPercentage:
-          type: number
-        signatureId:
-          type: string
-        initialCreditLimit:
-          type: number
-        opportunityId:
-          type: string
-        activityId:
-          type: string
-        incotermsId:
-          type: string
-        incotermsAcronym:
-          type: string
-        serviceId:
-          type: string
-        insertedAt:
-          format: date
-          pattern: YYYY-MM-DDTHH24:MI:SS
-          type: string
-        deliveryOrders:
-          type: array
-          items:
-            properties:
-              id:
-                type: string
-              externalId:
-                type: string
-              shipmentDate:
-                type: string
-              deliveryDate:
-                type: string
-              addressId:
-                type: string
-              addressDescription:
-                type: string
-              observation:
-                type: string
-              freightType:
-                type: object
-                properties:
-                  id:
-                    type: string
-              carrier:
-                type: object
-                properties:
-                  id:
-                    type: string
-              freightValue:
-                type: string
-        dueDate:
+        address:
           type: string
         complement:
           type: string
-        finalValue:
-          type: number
-        itemsQuantity:
-          type: number
-        salesOrderStatusHistories:
+        postalCode:
+          type: string
+        redistributor:
+          type: string
+        companyType:
+          type: object
+          properties:
+            id:
+              type: string
+        headOffice:
+          type: boolean
+        companyHeadOffice:
+          type: string
+          properties:
+            id:
+              type: string
+        slogan:
+          type: string
+        imageId:
+          type: string
+        companyEmails:
           type: array
           items:
             properties:
               id:
                 type: string
+              email:
+                type: string
+              emailTypeId:
+                type: string
+              emailTypeIdField:
+                type: string
+        companyPhones:
+          type: array
+          items:
+            properties:
+              id:
+                type: string
+              phoneNumber:
+                type: string
+              phoneTypeId:
+                type: string
+              phoneTypeIdField:
+                type: string
+        companyIdentificationDocuments:
+          type: array
+          items:
+            properties:
+              identificationDocumentAcronym:
+                description: Sigla do tipo de documento
+                type: string
+              identificationDocumentId:
+                description: Identificador do tipo de documento
+                type: string
+              identificationDocumentDescription:
+                description: Nome do tipo de documento
+                type: string
+              documentNumber:
+                description: Número do documento
+                type: string
+              identificationDocumentMask:
+                description: Máscara do documento
+                type: string
               externalId:
+                description: Código do sistema externo para identificação única do
+                  registro
                 type: string
-              deleted:
-                type: boolean
-              statusId:
-                type: string
-              startedAt:
-                type: string
-              endedAt:
-                type: string
-        products:
-          type: array
-          items:
-            $ref: '#/components/schemas/ProductPost'
-        services:
-          description: ""
-          type: array
-          items:
-            $ref: '#/components/schemas/ServicePost'
-        pipeline:
-          type: object
-          properties:
-            id:
-              format: UUID
-              type: string
-            externalId:
-              type: string
-            createdAt:
-              type: string
-            updatedAt:
-              type: string
-            description:
-              type: string
-            active:
-              type: boolean
-            standard:
-              type: boolean
-            stages:
-              type: array
-              items:
-                properties:
-                  id:
-                    format: UUID
-                    type: string
-                  externalId:
-                    type: string
-                  createdAt:
-                    type: string
-                  updatedAt:
-                    type: string
-                  rank:
-                    type: number
-                  stage:
-                    type: object
-                    properties:
-                      id:
-                        type: string
-                      externalId:
-                        type: string
-                      createdAt:
-                        type: string
-                      updatedAt:
-                        type: string
-                      color:
-                        type: string
-                      description:
-                        type: string
-                      active:
-                        type: string
       example:
-        id: c49a686f-c857-4a00-9bc7-0cad0df9f770
-        createdAt: 2020-07-01T21:49:23.989Z
-        updatedAt: 2020-07-01T21:53:15.201Z
-        externalId: 0103#113
-        deleted: false
-        priceListId: a851c438-2932-49af-a0db-78e981c30730
-        priceListDescription: TABELA RODRIGO 102
-        paymentTermId: a1286f2f-9cc6-42f3-ac36-640ac0cd814a
-        paymentTermDescription: A Vista
-        orderType:
-          id: c71c1a24-2300-4d0f-9343-544483df6616
-        paymentMethodId: 052a7dab-d82d-42a1-810f-d53d628fdc6c
-        paymentMethodDescription: BOLETO
-        userId: 7636f630-2358-4cf4-a290-2ec0b13ea47c
-        userName: Administrador
-        companyId: c2cd77ef-af47-4e80-a380-859c835807ec
-        companyName: MATRIZ T3 HUB05JUNHO
-        customerId: f101c590-5ad6-4c8e-88de-b0060ea49295
-        customerName: AAAAADRIANA CARVALHO LTDA - filial 0103
-        addressId: 059ad8aa-651a-48d4-985d-1c728100876d
-        addressDescription: Endereço
-        draft: false
-        sequentialNumber: 113
-        orderCurrency:
-          id: 9cde4e54-79b5-400b-805d-de0045286d68
-        orderExchange:
-          id: efee9c46-a0c1-4122-98ce-d7b129bcd4d7
-        orderedAt: 2020-07-01T21:53:15.176Z
-        totalValue: 13
-        productTotalValue: 10
-        serviceTotalValue: 3
-        customerCode: 69b656
-        companyCode: D MG 01
-        products:
-          - id: d172fe95-843a-43e0-9a04-fbe4d06102d5
-            productId: 8a8da9eb-f985-4997-8063-3a28bb524e6c
-            productDescription: PRODUTO - TST
-            externalId: 0103#113#2306001
-            productCode: "2306001"
-            originalPrice: 10
-            discountValue: 0
-            discountPercentage: 0
-            salesPrice: 10
-            quantity: 1
-            totalValue: 10
-            finalValue: 10
-        services:
-          - id: 70e0188a-301a-4274-bcf3-1d3fc196ed66
-            serviceId: 69cd641a-0241-4e57-a07a-1128dbda38c8
-            serviceDescription: Serviço
-            serviceCode: "01"
-            originalPrice: 3
-            costPrice: 2
-            salesPrice: 3
-            quantity: 1
-            repetitions: 1
-            totalQuantity: 1
-            totalValue: 3
-            finalValue: 3
-            discount: 0
-            discountPercentage: 0
-        salesOrderStatusHistories:
-          - id: 93e5344b-f75b-4ed5-8409-960bdf1136a6
-            deleted: false
-            statusId: 5cafe9bb-9259-4ddb-b347-354f5f786864
-            startedAt: 2020-07-01T21:53:15.175Z
-        finalValue: 23
-        status:
-          id: 5cafe9bb-9259-4ddb-b347-354f5f786864
-        deliveryOrders:
-          - id: fd92fbbb-3777-4104-b1ef-142386441291
-            shipmentDate: 2020-07-01
-            deliveryDate: 2020-07-16
-            addressId: 059ad8aa-651a-48d4-985d-1c728100876d
-            addressDescription: Endereço
-            observation: "."
-            freightType:
-              id: fd17b2fe-d425-4880-aedd-0c29fdc04731
-            carrier:
-              id: 25777953-956b-40d5-9243-b5a8448182af
-            freightValue: 10
-        origin: WEB
-        userProfessionalId: 7636f630-2358-4cf4-a290-2ec0b13ea47c
-        userProfessionalName: Administrador
-        insertedAt: 2020-07-01T21:49:23.988Z
-        pipeline:
-          id: 3b3ad4c0-9534-4911-89fc-7c3e127b04c6
-          externalId: PIPE#1
-          createdAt: 2021-07-30T21:12:06.212982Z
-          updatedAt: 2021-08-20T17:13:15.536Z
-          description: Pipeline padrão
+        id: 19de1e5b-37c8-42c6-a62f-3d7bdd11e994
+        active: true
+        name: WSSIM Informática
+        createAt: 2019-08-13T18:00:38.780Z
+        updatedAt: 2019-08-13T18:00:38.780Z
+        tradingName: Wealth Systemas Informática LTDA
+        country: Brazil
+        countryId: 9a792485-bfb9-4e87-97d6-b797a994ca2b
+        state: Paraná
+        stateId: c242bcf5-c317-4bed-b395-f56a85b47c3f
+        stateAcronym: PR
+        city: Cascavel
+        cityId: dabd4fce-27c1-4059-a9f8-a10be66583db
+        timeZoneDescription: Brasil - Brasília, São Paulo (-03:00)
+        timeZoneId: 9f596395-2f8f-43ec-b7ab-9345d173ca13
+        address: João Leite de Moura, 515
+        complement: Bairro Industrial
+        postalCode: 1810-295
+        redistributor: true
+        code: D MG 001
+        companyType:
+          id: 03159f36-42fc-4ff8-98b6-f419f58bc967
+          description: Privada
           active: true
-          standard: false
-          stages:
-            - id: af6a964d-c150-419c-a792-bf743a505851
-              externalId: PIPE#1||STAGE#1
-              createdAt: 2021-08-20T17:13:15.526Z
-              updatedAt: 2021-08-20T17:13:15.526Z
-              rank: 1
-              stage:
-                id: 7f338f2d-b2b5-4bd8-9299-4c2f150f0048
-                externalId: STAGE#1
-                createdAt: 2021-08-20T17:12:47.735Z
-                updatedAt: 2021-08-20T17:12:47.735Z
-                color: '#FFEB3B'
-                description: Orçamento
-                active: true
-            - id: baf890af-3748-44f1-ae54-0e94e95a665c
-              externalId: PIPE#1||STAGE#2
-              createdAt: 2021-08-20T17:13:15.532Z
-              updatedAt: 2021-08-20T17:13:15.532Z
-              rank: 2
-              stage:
-                id: 309b88db-a6b4-4e5f-b567-dd4f82cde316
-                externalId: STAGE#2
-                createdAt: 2021-08-20T17:13:03.564Z
-                updatedAt: 2021-08-20T17:13:03.564Z
-                color: '#CDDC39'
-                description: Negociação
-                active: true
-    OrdersIntegration_V2_GetResponse:
+        headOffice: false
+        companyHeadOffice:
+          id: cb610f22-f6ca-4088-9bef-35461b021705
+          active: true
+          name: WS
+        slogan: Vem pra WS
+        imageId: 62610111-8e92-4019-9b51-9b74d5287bfd
+        companyEmails:
+          - id: 901f0e6e-4270-472b-aa96-45ab017bcbb1
+            email: felippesr@wssim.com.br
+            emailTypeId: 301f0e6e-4270-472b-aa96-45ab017bcbb1
+            emailTypeIdField: dpd_new_email_abe80850-2e08-4cae-8b48-4a82e859aa25
+        companyPhones:
+          - id: 801f0e6e-4270-472b-aa96-45ab017bcbb1
+            phoneNumber: 551533253689
+            phoneTypeId: d870427c-bbad-4eb8-9af5-5183b47f648f
+            phoneTypeIdField: dpd_new_phoneNumber_90917b87-2ed9-46d6-ac44-d96c0c180cc5
+        companyIdentificationDocuments:
+          - id: 401f0e6e-4270-472b-aa96-45ab017bcbb1
+            identificationDocumentAcronym: CPF
+            identificationDocumentId: 3735642b-b975-4402-ae11-144ce71e965a
+            identificationDocumentDescription: CPF
+            documentNumber: "827182827134"
+            externalId: 21015174e079f1d8d7355#827182827134
+    CompaniesIntegration_V1_GetResponse:
       type: object
       properties:
         id:
@@ -1884,409 +782,154 @@ components:
           type: string
         updatedAt:
           type: string
-        userId:
-          type: string
-        userName:
-          type: string
-        userProfessionalId:
-          type: string
-        userProfessionalName:
-          type: string
-        customerId:
-          type: string
-        customerName:
-          type: string
-        customerNumber:
-          type: string
-        customerCode:
-          type: string
-        customerImageId:
-          type: string
-        companyId:
-          type: string
-        companyCode:
-          type: string
-        companyName:
-          type: object
-        orderType:
-          type: object
-          properties:
-            id:
-              type: string
-        priceListId:
-          type: string
-        priceListDescription:
-          type: string
-        paymentTermId:
-          type: string
-        paymentTermDescription:
-          type: string
-        paymentMethodId:
-          type: string
-        paymentMethodDescription:
-          type: string
-        orderCurrency:
-          type: string
-        externalNumber:
-          type: string
-        externalId:
-          type: string
-        status:
-          type: object
-          properties:
-            id:
-              type: string
-        origin:
-          format: character
-          default: EXT
-          maxLength: 20
-          minLength: 1
-          enum:
-            - WEB
-            - AND
-            - IOS
-            - EXT
-          type: string
-        exportedAt:
-          format: date
-          pattern: YYYY-MM-DDTHH24:MI:SS
-          type: string
-        createDate:
-          format: date
-          pattern: YYYY-MM-DD
-          type: string
-        addressId:
-          type: string
-        addressDescription:
-          type: string
-        addressCode:
-          type: string
-        draft:
+        active:
           type: boolean
-        sequentialNumber:
-          type: number
-        invoicedAt:
+        name:
           type: string
-        invoiceNotes:
+        tradingName:
           type: string
-        invoicedValue:
-          type: number
-        invoicedQuantity:
-          type: number
-        orderNotes:
+        country:
           type: string
-        sourceId:
+        countryId:
           type: string
-        sourceDescription:
+        code:
           type: string
-        sourceType:
+        state:
           type: string
-        orderedAt:
-          format: date
-          pattern: YYYY-MM-DDTHH24:MI:SS
+        stateId:
           type: string
-        grossValue:
-          type: number
-        totalValue:
-          type: number
-        productTotalValue:
-          type: number
-        serviceTotalValue:
-          type: number
-        quantity:
-          type: number
-        totalValueWithTaxes:
-          type: number
-        productTotalValueWithTaxes:
-          type: number
-        serviceTotalValueWithTaxes:
-          type: number
-        totalIcmsValue:
-          type: number
-        totalIpiValue:
-          type: number
-        totalStValue:
-          type: number
-        totalIssValue:
-          type: number
-        totalPisValue:
-          type: number
-        totalCofinsValue:
-          type: number
-        taxesCalculationRequestedAt:
+        stateAcronym:
           type: string
-        taxesCalculationResponse:
-          type: number
-        taxesCalculationReceivedAt:
+        city:
           type: string
-        discount:
-          type: number
-        discountType:
+        cityId:
           type: string
-        discountAppliedTo:
+        timeZoneDescription:
           type: string
-        contributionMargin:
-          type: number
-        performanceRangeColor:
+        timeZoneId:
           type: string
-        performanceRangeDescription:
-          type: string
-        performanceRangeMaximumPercentage:
-          type: number
-        signatureId:
-          type: string
-        initialCreditLimit:
-          type: number
-        opportunityId:
-          type: string
-        activityId:
-          type: string
-        incotermsId:
-          type: string
-        incotermsAcronym:
-          type: string
-        serviceId:
-          type: string
-        insertedAt:
-          format: date
-          pattern: YYYY-MM-DDTHH24:MI:SS
-          type: string
-        deliveryOrders:
-          type: array
-          items:
-            properties:
-              id:
-                type: string
-              externalId:
-                type: string
-              shipmentDate:
-                type: string
-              deliveryDate:
-                type: string
-              addressId:
-                type: string
-              addressDescription:
-                type: string
-              observation:
-                type: string
-              freightType:
-                type: object
-                properties:
-                  id:
-                    type: string
-              carrier:
-                type: object
-                properties:
-                  id:
-                    type: string
-              freightValue:
-                type: string
-        dueDate:
+        address:
           type: string
         complement:
           type: string
-        finalValue:
-          type: number
-        itemsQuantity:
-          type: number
-        salesOrderStatusHistories:
+        postalCode:
+          type: string
+        redistributor:
+          type: string
+        companyType:
+          type: object
+          properties:
+            id:
+              type: string
+        headOffice:
+          type: boolean
+        companyHeadOffice:
+          type: string
+          properties:
+            id:
+              type: string
+        slogan:
+          type: string
+        imageId:
+          type: string
+        companyEmails:
           type: array
           items:
             properties:
               id:
                 type: string
+              email:
+                type: string
+              emailTypeId:
+                type: string
+              emailTypeIdField:
+                type: string
+        companyPhones:
+          type: array
+          items:
+            properties:
+              id:
+                type: string
+              phoneNumber:
+                type: string
+              phoneTypeId:
+                type: string
+              phoneTypeIdField:
+                type: string
+        companyIdentificationDocuments:
+          type: array
+          items:
+            properties:
+              identificationDocumentAcronym:
+                description: Sigla do tipo de documento
+                type: string
+              identificationDocumentId:
+                description: Identificador do tipo de documento
+                type: string
+              identificationDocumentDescription:
+                description: Nome do tipo de documento
+                type: string
+              documentNumber:
+                description: Número do documento
+                type: string
+              identificationDocumentMask:
+                description: Máscara do documento
+                type: string
               externalId:
+                description: Código do sistema externo para identificação única do
+                  registro
                 type: string
-              deleted:
-                type: boolean
-              statusId:
-                type: string
-              startedAt:
-                type: string
-              endedAt:
-                type: string
-        products:
-          type: array
-          items:
-            $ref: '#/components/schemas/ProductPost'
-        services:
-          description: ""
-          type: array
-          items:
-            $ref: '#/components/schemas/ServicePost'
-        pipeline:
-          type: object
-          properties:
-            id:
-              format: UUID
-              type: string
-            externalId:
-              type: string
-            createdAt:
-              type: string
-            updatedAt:
-              type: string
-            description:
-              type: string
-            active:
-              type: boolean
-            standard:
-              type: boolean
-            stages:
-              type: array
-              items:
-                properties:
-                  id:
-                    format: UUID
-                    type: string
-                  externalId:
-                    type: string
-                  createdAt:
-                    type: string
-                  updatedAt:
-                    type: string
-                  rank:
-                    type: number
-                  stage:
-                    type: object
-                    properties:
-                      id:
-                        type: string
-                      externalId:
-                        type: string
-                      createdAt:
-                        type: string
-                      updatedAt:
-                        type: string
-                      color:
-                        type: string
-                      description:
-                        type: string
-                      active:
-                        type: string
       example:
-        id: c49a686f-c857-4a00-9bc7-0cad0df9f770
-        createdAt: 2020-07-01T21:49:23.989Z
-        updatedAt: 2020-07-01T21:53:15.201Z
-        externalId: 0103#113
-        deleted: false
-        priceListId: a851c438-2932-49af-a0db-78e981c30730
-        priceListDescription: TABELA RODRIGO 102
-        paymentTermId: a1286f2f-9cc6-42f3-ac36-640ac0cd814a
-        paymentTermDescription: A Vista
-        orderType:
-          id: c71c1a24-2300-4d0f-9343-544483df6616
-        paymentMethodId: 052a7dab-d82d-42a1-810f-d53d628fdc6c
-        paymentMethodDescription: BOLETO
-        userId: 7636f630-2358-4cf4-a290-2ec0b13ea47c
-        userName: Administrador
-        companyId: c2cd77ef-af47-4e80-a380-859c835807ec
-        companyName: MATRIZ T3 HUB05JUNHO
-        customerId: f101c590-5ad6-4c8e-88de-b0060ea49295
-        customerName: AAAAADRIANA CARVALHO LTDA - filial 0103
-        addressId: 059ad8aa-651a-48d4-985d-1c728100876d
-        addressDescription: Endereço
-        draft: false
-        sequentialNumber: 113
-        orderCurrency:
-          id: 9cde4e54-79b5-400b-805d-de0045286d68
-        orderExchange:
-          id: efee9c46-a0c1-4122-98ce-d7b129bcd4d7
-        orderedAt: 2020-07-01T21:53:15.176Z
-        totalValue: 13
-        productTotalValue: 10
-        serviceTotalValue: 3
-        customerCode: 69b656
-        companyCode: D MG 01
-        products:
-          - id: d172fe95-843a-43e0-9a04-fbe4d06102d5
-            productId: 8a8da9eb-f985-4997-8063-3a28bb524e6c
-            productDescription: PRODUTO - TST
-            externalId: 0103#113#2306001
-            productCode: "2306001"
-            originalPrice: 10
-            discountValue: 0
-            discountPercentage: 0
-            salesPrice: 10
-            quantity: 1
-            totalValue: 10
-            finalValue: 10
-        services:
-          - id: 70e0188a-301a-4274-bcf3-1d3fc196ed66
-            serviceId: 69cd641a-0241-4e57-a07a-1128dbda38c8
-            serviceDescription: Serviço
-            serviceCode: "01"
-            originalPrice: 3
-            costPrice: 2
-            salesPrice: 3
-            quantity: 1
-            repetitions: 1
-            totalQuantity: 1
-            totalValue: 3
-            finalValue: 3
-            discount: 0
-            discountPercentage: 0
-        salesOrderStatusHistories:
-          - id: 93e5344b-f75b-4ed5-8409-960bdf1136a6
-            deleted: false
-            statusId: 5cafe9bb-9259-4ddb-b347-354f5f786864
-            startedAt: 2020-07-01T21:53:15.175Z
-        finalValue: 23
-        status:
-          id: 5cafe9bb-9259-4ddb-b347-354f5f786864
-        deliveryOrders:
-          - id: fd92fbbb-3777-4104-b1ef-142386441291
-            shipmentDate: 2020-07-01
-            deliveryDate: 2020-07-16
-            addressId: 059ad8aa-651a-48d4-985d-1c728100876d
-            addressDescription: Endereço
-            observation: "."
-            freightType:
-              id: fd17b2fe-d425-4880-aedd-0c29fdc04731
-            carrier:
-              id: 25777953-956b-40d5-9243-b5a8448182af
-            freightValue: 10
-        origin: WEB
-        userProfessionalId: 7636f630-2358-4cf4-a290-2ec0b13ea47c
-        userProfessionalName: Administrador
-        insertedAt: 2020-07-01T21:49:23.988Z
-        pipeline:
-          id: 3b3ad4c0-9534-4911-89fc-7c3e127b04c6
-          externalId: PIPE#1
-          createdAt: 2021-07-30T21:12:06.212982Z
-          updatedAt: 2021-08-20T17:13:15.536Z
-          description: Pipeline padrão
+        id: 19de1e5b-37c8-42c6-a62f-3d7bdd11e994
+        active: true
+        name: WSSIM Informática
+        createAt: 2019-08-13T18:00:38.780Z
+        updatedAt: 2019-08-13T18:00:38.780Z
+        tradingName: Wealth Systemas Informática LTDA
+        country: Brazil
+        countryId: 9a792485-bfb9-4e87-97d6-b797a994ca2b
+        state: Paraná
+        stateId: c242bcf5-c317-4bed-b395-f56a85b47c3f
+        stateAcronym: PR
+        city: Cascavel
+        cityId: dabd4fce-27c1-4059-a9f8-a10be66583db
+        timeZoneDescription: Brasil - Brasília, São Paulo (-03:00)
+        timeZoneId: 9f596395-2f8f-43ec-b7ab-9345d173ca13
+        address: João Leite de Moura, 515
+        complement: Bairro Industrial
+        postalCode: 1810-295
+        redistributor: true
+        code: D MG 001
+        companyType:
+          id: 03159f36-42fc-4ff8-98b6-f419f58bc967
+          description: Privada
           active: true
-          standard: false
-          stages:
-            - id: af6a964d-c150-419c-a792-bf743a505851
-              externalId: PIPE#1||STAGE#1
-              createdAt: 2021-08-20T17:13:15.526Z
-              updatedAt: 2021-08-20T17:13:15.526Z
-              rank: 1
-              stage:
-                id: 7f338f2d-b2b5-4bd8-9299-4c2f150f0048
-                externalId: STAGE#1
-                createdAt: 2021-08-20T17:12:47.735Z
-                updatedAt: 2021-08-20T17:12:47.735Z
-                color: '#FFEB3B'
-                description: Orçamento
-                active: true
-            - id: baf890af-3748-44f1-ae54-0e94e95a665c
-              externalId: PIPE#1||STAGE#2
-              createdAt: 2021-08-20T17:13:15.532Z
-              updatedAt: 2021-08-20T17:13:15.532Z
-              rank: 2
-              stage:
-                id: 309b88db-a6b4-4e5f-b567-dd4f82cde316
-                externalId: STAGE#2
-                createdAt: 2021-08-20T17:13:03.564Z
-                updatedAt: 2021-08-20T17:13:03.564Z
-                color: '#CDDC39'
-                description: Negociação
-                active: true
+        headOffice: false
+        companyHeadOffice:
+          id: cb610f22-f6ca-4088-9bef-35461b021705
+          active: true
+          name: WS
+        slogan: Vem pra WS
+        imageId: 62610111-8e92-4019-9b51-9b74d5287bfd
+        companyEmails:
+          - id: 901f0e6e-4270-472b-aa96-45ab017bcbb1
+            email: felippesr@wssim.com.br
+            emailTypeId: 301f0e6e-4270-472b-aa96-45ab017bcbb1
+            emailTypeIdField: dpd_new_email_abe80850-2e08-4cae-8b48-4a82e859aa25
+        companyPhones:
+          - id: 801f0e6e-4270-472b-aa96-45ab017bcbb1
+            phoneNumber: 551533253689
+            phoneTypeId: d870427c-bbad-4eb8-9af5-5183b47f648f
+            phoneTypeIdField: dpd_new_phoneNumber_90917b87-2ed9-46d6-ac44-d96c0c180cc5
+        companyIdentificationDocuments:
+          - id: 401f0e6e-4270-472b-aa96-45ab017bcbb1
+            identificationDocumentAcronym: CPF
+            identificationDocumentId: 3735642b-b975-4402-ae11-144ce71e965a
+            identificationDocumentDescription: CPF
+            documentNumber: "827182827134"
+            externalId: 21015174e079f1d8d7355#827182827134
 tags:
-  - name: TotvsCRMApp
-    description: A API de integração é válida para o ambiente Totvs CRM APP
+  - name: APP2
+    description: Ambiente APP2
   - name: integration
-    description: API de integração
+    description: ""
