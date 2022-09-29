@@ -1,28 +1,29 @@
 ---
 openapi: 3.0.2
 info:
-  title: users-integrationV1
+  title: product-Groups-integrationV1
   version: 1.0.0
   description: |
-    API de integração de usuário (User) V1
+    API de integração de grupos de produto (Product Groups) V1
 
-    Compatível com a versão V12 do serviço de negócio User
+    Compatível com a versão de negócio Product V7
   contact: {}
 servers:
   - url: https://{url}/api/{version}/integration
     description: Integration Router Server
     variables:
       url:
-        default: totvscrm.app
+        default: app2.mastercrm.ws
         description: URL de acesso ao Integration-Router
       version:
         default: v1
         description: Versão do Integration-Router
 paths:
   /record:
+    summary: API de integração groups
     get:
       tags:
-        - Users
+        - Product-Groups
       parameters:
         - name: Integration-Filter
           description: |
@@ -42,21 +43,21 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/UsersIntegration_V1_FullResponse'
-          description: Returns a list of users
+                $ref: '#/components/schemas/GroupsIntegration_V1_FullResponse'
+          description: Returns a list of product groups
         401:
           description: Unauthorized
-      summary: Listar Users
-      description: Retorna uma lista de usuários cadastrados ou determinados usuários
-        com base nos filtros no header Integration-Filter
+      summary: Listar grupo de produtos
+      description: Retorna uma lista de grupos de produto cadastrados ou determinados
+        grupos com base nos filtros do header Integration-Filter
     post:
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UsersIntegration_V1_BodyCreate'
+              $ref: '#/components/schemas/GroupsIntegration_V1_BodyCreate'
       tags:
-        - Users
+        - Product-groups
       parameters:
         - name: Integration-Filter
           description: |
@@ -78,7 +79,6 @@ paths:
             Se o header não for informado, por padrão o retorno será equivalente ao nível
             **minimum**
           schema:
-            default: minimum
             enum:
               - full
               - minimum
@@ -90,15 +90,15 @@ paths:
             Ação a ser realizada na API de integração. Selecione uma das opções para carregar o
             body da requisição.
           schema:
-            oneOf:
-              - $ref: '#/components/schemas/UsersIntegration_V1_BodyCreate'
-              - $ref: '#/components/schemas/UsersIntegration_V1_BodyUpdate'
-              - $ref: '#/components/schemas/UsersIntegration_V1_BodyUpsert'
+            anyOf:
+              - $ref: '#/components/schemas/GroupsIntegration_V1_BodyCreate'
+              - $ref: '#/components/schemas/GroupsIntegration_V1_BodyUpdate'
+              - $ref: '#/components/schemas/GroupsIntegration_V1_BodyUpsert'
             discriminator:
               mapping:
-                create: '#/components/schemas/UsersIntegration_V1_BodyCreate'
-                update: '#/components/schemas/UsersIntegration_V1_BodyUpdate'
-                upsert: '#/components/schemas/UsersIntegration_V1_BodyUpsert'
+                create: '#/components/schemas/GroupsIntegration_V1_BodyCreate'
+                update: '#/components/schemas/GroupsIntegration_V1_BodyUpdate'
+                upsert: '#/components/schemas/GroupsIntegration_V1_BodyUpsert'
           in: header
           required: true
       responses:
@@ -106,11 +106,11 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/UsersIntegration_V1_FullResponse'
-          description: Returns a user register
+                $ref: '#/components/schemas/GroupsIntegration_V1_FullResponse'
+          description: Returns a product group register
         401:
           description: Unauthorized
-      summary: Criar, atualizar e deletar Users
+      summary: Criar, atualizar e deletar grupos de produto
       description: |
         A ação a ser realizada no cadastro depende do valor preenchido no header
         **Integration-Action**:
@@ -128,16 +128,16 @@ paths:
         enviado o ID do registro no header **Integration-Filter**;
     parameters:
       - name: Integration-Service
-        description: 'Serviço responsável pela entidade. Exemplo: user'
+        description: 'Serviço responsável pela entidade. Exemplo: product'
         schema:
-          default: user
+          default: product
           type: string
         in: header
         required: true
       - name: Integration-Resource
-        description: 'Recurso para requisição. Exemplo: Users-integration'
+        description: 'Recurso para requisição. Exemplo: groups-integration'
         schema:
-          default: users-integration
+          default: groups-integration
           type: string
         in: header
         required: true
@@ -150,170 +150,10 @@ paths:
         required: true
 components:
   schemas:
-    UsersIntegration_V1_BodyEmpty:
+    GroupsIntegration_V1_BodyEmpty:
       description: No body
       type: object
-    UpperUserId:
-      title: Root Type for UpperUserId
-      description: ""
-      type: object
-      properties:
-        upperUser:
-          type: object
-          properties:
-            id:
-              type: string
-      example:
-        upperUser:
-          id: 32cf57d9-699e-471a-ab26-ba25f666616c
-    UsersIntegration_V1_BodyCreate:
-      required:
-        - active
-        - name
-        - username
-        - externalId
-        - profile
-        - companyIds
-      type: object
-      properties:
-        active:
-          description: Define se o registro está ativo
-          type: boolean
-        name:
-          description: Nome do usuário
-          type: string
-        username:
-          description: Credencial de acesso do usuário, formato de email
-          type: string
-        profile:
-          description: Identificador do perfil do usuário
-          type: string
-          properties:
-            id:
-              type: string
-        companyIds:
-          description: Lista de empresas/filiais que este usuário tem acesso
-          type: array
-          items:
-            type: string
-        country:
-          description: Descrição do País do usuário
-          type: string
-        countryId:
-          format: UUID
-          description: Identificador do País
-          type: string
-        state:
-          description: Descrição da unidade federativa/estado
-          type: string
-        stateId:
-          format: UUID
-          description: Identificador da unidade federativa/estado
-          type: string
-        stateAcronym:
-          description: Sigla da unidade federativa/estado
-          type: string
-        city:
-          format: UUID
-          description: Descrição da cidade do usuário
-          type: string
-        cityId:
-          description: Identificador da cidade
-          type: string
-        timeZoneDescription:
-          description: Descrição do fuso horário
-          type: string
-        timeZoneId:
-          format: UUID
-          description: Identificador do fuso horário
-          type: string
-        address:
-          description: Endereço do usuário
-          type: string
-        complement:
-          description: Complemento de descrição do cadastro de usuário
-          type: string
-        postalCode:
-          description: Código postal do usuário
-          type: string
-        languageId:
-          description: Identificador da língua
-          type: string
-        userEmail:
-          description: Email do usuário
-          type: array
-          items:
-            $ref: '#/components/schemas/UserEmailPost'
-        userPhoneNumber:
-          description: Telefone(s) do usuário
-          type: array
-          items:
-            $ref: '#/components/schemas/UserPhoneNumberPost'
-        userIdentificationDocument:
-          description: Documento(s) de identificação do usuário
-          type: array
-          items:
-            $ref: '#/components/schemas/UserIdentificationDocumentPost'
-        userHierarchies:
-          description: 'Usuário(s) superiore(s) à este usuário '
-          type: array
-          items:
-            $ref: '#/components/schemas/UpperUserId'
-        userGroup:
-          description: Grupo de usuário
-          type: string
-          properties:
-            id:
-              format: UUID
-              type: string
-        code:
-          description: Código do usuário
-          type: string
-        roleId:
-          format: UUID
-          description: Identificador do papel do profissional
-          type: string
-      example:
-        active: true
-        name: José da Silva
-        username: jose.silva@wssim.com.br
-        code: "10"
-        profile:
-          id: 6eddfbd2-2350-4218-90ca-781a1b7325b5
-        companyIds:
-          - 08cf8616-cd40-4134-ad1e-f28bd9ff756d
-          - 08cf8616-cd40-4134-ad1e-f28bd9ff7563
-        administrator: false
-        country: Brazil
-        countryId: 9a792485-bfb9-4e87-97d6-b797a994ca2b
-        state: Paraná
-        stateId: c242bcf5-c317-4bed-b395-f56a85b47c3f
-        stateAcronym: PR
-        city: Cascavel
-        cityId: dabd4fce-27c1-4059-a9f8-a10be66583db
-        timeZoneDescription: Brasil - Brasília, São Paulo (-03:00)
-        timeZoneId: 9f596395-2f8f-43ec-b7ab-9345d173ca13
-        address: Presidente Bernardes
-        complement: 3° Andar
-        postalCode: "1845678789"
-        imageId: 21614cd6-af7d-47df-aa6d-31907cf56608
-        languageId: 3b77a3b4-516c-4aea-846f-76720e5f8482
-        userEmail:
-          - email: jose.silva@gmail.com
-            emailTypeId: 0694a50f-d25b-4b10-ae05-619b30731ba7
-        userPhoneNumber:
-          - phoneNumber: "5545887976465"
-            phoneTypeId: 67cd545a-cf05-441e-a0ec-635c44e60d41
-        userIdentificationDocument:
-          - identificationDocumentId: 81d16d3a-f374-4238-b0f1-5d3602a0db76
-            numberDocument: "28692693588"
-        userHierarchies:
-          - upperUser:
-              id: 9927a30d-19d2-45e7-bf42-09d4e8ec4d22
-        userGroup:
-          id: 349b245e-223b-4267-b8f7-c0dea36f33bf
-        roleId: 0968a7a9-f85f-4c29-917c-f017155b66c1
-    UsersIntegration_V1_MinimumResponse:
+    GroupsIntegration_V1_MinimumResponse:
       type: object
       properties:
         id:
@@ -324,600 +164,185 @@ components:
           type: string
       example:
         id: 19de1e5b-37c8-42c6-a62f-3d7bdd11e994
-        createdAt: 2019-08-13T18:00:38.780Z
+        createAt: 2019-08-13T18:00:38.780Z
         updatedAt: 2019-08-13T18:00:38.780Z
-    UsersIntegration_V1_BodyUpdate:
+    GroupsIntegration_V1_BodyCreate:
+      required:
+        - active
+        - description
+        - saleAvailable
+        - externalId
+      type: object
+      properties:
+        active:
+          description: Define se o registro está ativo
+          type: boolean
+        code:
+          description: Código do grupo de produto
+          type: string
+        description:
+          description: Descrição do grupo de produto
+          type: string
+        externalId:
+          description: Código do sistema externo para identificação única do registro
+          type: string
+        productGroupUpper:
+          description: Grupo de produto superior
+          type: object
+          properties:
+            id:
+              type: string
+            description:
+              type: string
+        saleAvailable:
+          description: Indica se o grupo de produto deve estar disponível na ordem
+            de venda
+          type: boolean
+      example:
+        active: true
+        code: "2020"
+        description: Eletrônicos
+        externalId: ELETRONICOS
+        productGroupUpper:
+          id: 69f4a626-6510-4159-941c-4ea5fa7bb432
+          description: Tecnologia
+        saleAvailable: true
+    GroupsIntegration_V1_BodyUpdate:
       type: object
       properties:
         active:
           type: boolean
-        name:
-          type: string
-        username:
-          type: string
         code:
           type: string
-        profile:
+        description:
           type: string
+        externalId:
+          type: string
+        productGroupUpper:
+          type: object
           properties:
             id:
-              format: UUID
               type: string
-        companyIds:
-          type: array
-          items:
-            format: UUID
-            type: string
-        country:
-          type: string
-        countryId:
-          format: UUID
-          type: string
-        state:
-          type: string
-        stateId:
-          format: UUID
-          type: string
-        stateAcronym:
-          type: string
-        city:
-          type: string
-        cityId:
-          format: UUID
-          type: string
-        timeZoneDescription:
-          type: string
-        timeZoneId:
-          format: UUID
-          type: string
-        address:
-          type: string
-        complement:
-          type: string
-        postalCode:
-          type: string
-        languageId:
-          format: UUID
-          type: string
-        userEmail:
-          type: array
-          items:
-            $ref: '#/components/schemas/UserEmailPost'
-        userPhoneNumber:
-          type: array
-          items:
-            $ref: '#/components/schemas/UserPhoneNumberPost'
-        userIdentificationDocument:
-          type: array
-          items:
-            $ref: '#/components/schemas/UserIdentificationDocumentPost'
-        userHierarchies:
-          type: array
-          items:
-            $ref: '#/components/schemas/UpperUserId'
-        userGroup:
-          type: string
-          properties:
-            id:
-              format: UUID
+            description:
               type: string
-        roleId:
-          format: UUID
-          type: string
+        saleAvailable:
+          type: boolean
       example:
         active: true
-        name: José da Silva
-        username: jose.silva@wssim.com.br
-        code: "10"
-        profile:
-          id: 6eddfbd2-2350-4218-90ca-781a1b7325b5
-        companyIds:
-          - 08cf8616-cd40-4134-ad1e-f28bd9ff756d
-        administrator: false
-        country: Brazil
-        countryId: 9a792485-bfb9-4e87-97d6-b797a994ca2b
-        state: Paraná
-        stateId: c242bcf5-c317-4bed-b395-f56a85b47c3f
-        stateAcronym: PR
-        city: Cascavel
-        cityId: dabd4fce-27c1-4059-a9f8-a10be66583db
-        timeZoneDescription: Brasil - Brasília, São Paulo (-03:00)
-        timeZoneId: 9f596395-2f8f-43ec-b7ab-9345d173ca13
-        address: Presidente Bernardes
-        complement: 3° Andar
-        postalCode: "1845678789"
-        imageId: 21614cd6-af7d-47df-aa6d-31907cf56608
-        languageId: 3b77a3b4-516c-4aea-846f-76720e5f8482
-        userEmail:
-          - id: 41614cd6-af7d-47df-aa6d-31907cf56608
-            email: jose.silva@gmail.com
-            emailTypeId: 0694a50f-d25b-4b10-ae05-619b30731ba7
-        userPhoneNumber:
-          - id: 31614cd6-af7d-47df-aa6d-31907cf56608
-            phoneNumber: "5545887976465"
-            phoneTypeId: 67cd545a-cf05-441e-a0ec-635c44e60d41
-        userIdentificationDocument:
-          - id: 51614cd6-af7d-47df-aa6d-31907cf56608
-            identificationDocumentId: 81d16d3a-f374-4238-b0f1-5d3602a0db76
-            numberDocument: "28692693588"
-        userHierarchies:
-          - upperUser:
-              id: 9927a30d-19d2-45e7-bf42-09d4e8ec4d22
-        userGroup:
-          id: 349b245e-223b-4267-b8f7-c0dea36f33bf
-        roleId: 0968a7a9-f85f-4c29-917c-f017155b66c1
-    UsersIntegration_V1_FullResponse:
+        code: "2020"
+        description: Eletrônicos
+        externalId: ELETRONICOS
+        productGroupUpper:
+          id: 69f4a626-6510-4159-941c-4ea5fa7bb432
+          description: Tecnologia
+        saleAvailable: true
+    GroupsIntegration_V1_BodyUpsert:
+      type: object
+      properties:
+        active:
+          type: boolean
+        code:
+          type: string
+        description:
+          type: string
+        externalId:
+          type: string
+        productGroupUpper:
+          type: object
+          properties:
+            id:
+              type: string
+            description:
+              type: string
+        saleAvailable:
+          type: boolean
+      example:
+        active: true
+        code: "2020"
+        description: Eletrônicos
+        externalId: ELETRONICOS
+        productGroupUpper:
+          id: 69f4a626-6510-4159-941c-4ea5fa7bb432
+          description: Tecnologia
+        saleAvailable: true
+    GroupsIntegration_V1_FullResponse:
       type: object
       properties:
         id:
-          format: UUID
           type: string
         createdAt:
           type: string
         updatedAt:
           type: string
-        code:
-          type: string
         active:
           type: boolean
-        name:
+        code:
           type: string
-        username:
+        description:
           type: string
-        profile:
+        externalId:
           type: string
+        productGroupUpper:
+          $ref: '#/components/schemas/GroupsIntegration_V1_FullResponse'
           properties:
             id:
-              format: UUID
               type: string
-        companyIds:
-          type: array
-          items:
-            format: UUID
-            type: string
-        country:
-          type: string
-        countryId:
-          format: UUID
-          type: string
-        state:
-          type: string
-        stateId:
-          format: UUID
-          type: string
-        stateAcronym:
-          type: string
-        city:
-          type: string
-        cityId:
-          format: UUID
-          type: string
-        timeZoneDescription:
-          type: string
-        timeZoneId:
-          format: UUID
-          type: string
-        address:
-          type: string
-        complement:
-          type: string
-        postalCode:
-          type: string
-        languageId:
-          format: UUID
-          type: string
-        userEmail:
-          type: array
-          items:
-            $ref: '#/components/schemas/UserEmailPost'
-        userPhoneNumber:
-          type: array
-          items:
-            $ref: '#/components/schemas/UserPhoneNumberPost'
-        userIdentificationDocument:
-          type: array
-          items:
-            $ref: '#/components/schemas/UserIdentificationDocumentPost'
-        userHierarchies:
-          type: array
-          items:
-            $ref: '#/components/schemas/UpperUserId'
-        userGroup:
-          type: string
-          properties:
-            id:
-              format: UUID
+            description:
               type: string
-        roleId:
-          format: UUID
-          type: string
+        saleAvailable:
+          type: boolean
       example:
-        id: 59507946-db16-4087-8bd6-7c118c4672d6
-        createAt: 2019-08-13T18:00:38.780Z
-        updatedAt: 2019-08-13T18:00:38.780Z
+        id: 02285a7b-de5e-460b-a19f-29ae81e1e3cb,
+        createdAt: 2020-05-22T12:13:21.571Z,
+        updatedAt: 2020-05-22T20:40:32.815Z,
         active: true
-        code: 10
-        name: José da Silva
-        username: jose.silva@wssim.com.br
-        profile:
-          id: 6eddfbd2-2350-4218-90ca-781a1b7325b5
-        companyIds:
-          - 08cf8616-cd40-4134-ad1e-f28bd9ff756d
-        administrator: false
-        country: Brazil
-        countryId: 9a792485-bfb9-4e87-97d6-b797a994ca2b
-        state: Paraná
-        stateId: c242bcf5-c317-4bed-b395-f56a85b47c3f
-        stateAcronym: PR
-        city: Cascavel
-        cityId: dabd4fce-27c1-4059-a9f8-a10be66583db
-        timeZoneDescription: Brasil - Brasília, São Paulo (-03:00)
-        timeZoneId: 9f596395-2f8f-43ec-b7ab-9345d173ca13
-        address: Presidente Bernardes
-        complement: 3° Andar
-        postalCode: "1845678789"
-        imageId: 21614cd6-af7d-47df-aa6d-31907cf56608
-        languageId: 3b77a3b4-516c-4aea-846f-76720e5f8482
-        userEmail:
-          - email: jose.silva@gmail.com
-            emailTypeId: 0694a50f-d25b-4b10-ae05-619b30731ba7
-        userPhoneNumber:
-          - phoneNumber: "5545887976465"
-            phoneTypeId: 67cd545a-cf05-441e-a0ec-635c44e60d41
-        userIdentificationDocument:
-          - identificationDocumentId: 81d16d3a-f374-4238-b0f1-5d3602a0db76
-            numberDocument: "28692693588"
-        userHierarchies:
-          - upperUser:
-              id: 9927a30d-19d2-45e7-bf42-09d4e8ec4d22
-        userGroup:
-          id: 349b245e-223b-4267-b8f7-c0dea36f33bf
-        roleId: 0968a7a9-f85f-4c29-917c-f017155b66c1
-    UsersIntegration_V1_GetResponse:
+        code: "2020"
+        description: Eletrônicos
+        externalId: ELETRONICOS
+        productGroupUpper:
+          id: 69f4a626-6510-4159-941c-4ea5fa7bb432
+          description: Tecnologia
+        saleAvailable: true
+    GroupsIntegration_V1_GetResponse:
       type: object
       properties:
         id:
-          format: UUID
           type: string
         createdAt:
           type: string
         updatedAt:
           type: string
-        code:
-          type: string
         active:
           type: boolean
-        name:
-          type: string
-        username:
-          type: string
-        profile:
-          type: string
-          properties:
-            id:
-              format: UUID
-              type: string
-        companyIds:
-          type: array
-          items:
-            format: UUID
-            type: string
-        country:
-          type: string
-        countryId:
-          format: UUID
-          type: string
-        state:
-          type: string
-        stateId:
-          format: UUID
-          type: string
-        stateAcronym:
-          type: string
-        city:
-          type: string
-        cityId:
-          format: UUID
-          type: string
-        timeZoneDescription:
-          type: string
-        timeZoneId:
-          format: UUID
-          type: string
-        address:
-          type: string
-        complement:
-          type: string
-        postalCode:
-          type: string
-        languageId:
-          format: UUID
-          type: string
-        userEmail:
-          type: array
-          items:
-            $ref: '#/components/schemas/UserEmailPost'
-        userPhoneNumber:
-          type: array
-          items:
-            $ref: '#/components/schemas/UserPhoneNumberPost'
-        userIdentificationDocument:
-          type: array
-          items:
-            $ref: '#/components/schemas/UserIdentificationDocumentPost'
-        userHierarchies:
-          type: array
-          items:
-            $ref: '#/components/schemas/UpperUserId'
-        userGroup:
-          type: string
-          properties:
-            id:
-              format: UUID
-              type: string
-        roleId:
-          format: UUID
-          type: string
-      example:
-        id: 59507946-db16-4087-8bd6-7c118c4672d6
-        createAt: 2019-08-13T18:00:38.780Z
-        updatedAt: 2019-08-13T18:00:38.780Z
-        active: true
-        code: 10
-        name: José da Silva
-        username: jose.silva@wssim.com.br
-        profile:
-          id: 6eddfbd2-2350-4218-90ca-781a1b7325b5
-        companyIds:
-          - 08cf8616-cd40-4134-ad1e-f28bd9ff756d
-        administrator: false
-        country: Brazil
-        countryId: 9a792485-bfb9-4e87-97d6-b797a994ca2b
-        state: Paraná
-        stateId: c242bcf5-c317-4bed-b395-f56a85b47c3f
-        stateAcronym: PR
-        city: Cascavel
-        cityId: dabd4fce-27c1-4059-a9f8-a10be66583db
-        timeZoneDescription: Brasil - Brasília, São Paulo (-03:00)
-        timeZoneId: 9f596395-2f8f-43ec-b7ab-9345d173ca13
-        address: Presidente Bernardes
-        complement: 3° Andar
-        postalCode: "1845678789"
-        imageId: 21614cd6-af7d-47df-aa6d-31907cf56608
-        languageId: 3b77a3b4-516c-4aea-846f-76720e5f8482
-        userEmail:
-          - email: jose.silva@gmail.com
-            emailTypeId: 0694a50f-d25b-4b10-ae05-619b30731ba7
-        userPhoneNumber:
-          - phoneNumber: "5545887976465"
-            phoneTypeId: 67cd545a-cf05-441e-a0ec-635c44e60d41
-        userIdentificationDocument:
-          - identificationDocumentId: 81d16d3a-f374-4238-b0f1-5d3602a0db76
-            numberDocument: "28692693588"
-        userHierarchies:
-          - upperUser:
-              id: 9927a30d-19d2-45e7-bf42-09d4e8ec4d22
-        userGroup:
-          id: 349b245e-223b-4267-b8f7-c0dea36f33bf
-        roleId: 0968a7a9-f85f-4c29-917c-f017155b66c1
-    UsersIntegration_V1_BodyUpsert:
-      type: object
-      properties:
-        active:
-          type: boolean
-        name:
-          type: string
-        username:
-          type: string
         code:
           type: string
-        profile:
+        description:
           type: string
+        externalId:
+          type: string
+        productGroupUpper:
+          $ref: '#/components/schemas/GroupsIntegration_V1_FullResponse'
           properties:
             id:
-              format: UUID
               type: string
-        companyIds:
-          type: array
-          items:
-            format: UUID
-            type: string
-        country:
-          type: string
-        countryId:
-          format: UUID
-          type: string
-        state:
-          type: string
-        stateId:
-          format: UUID
-          type: string
-        stateAcronym:
-          type: string
-        city:
-          type: string
-        cityId:
-          format: UUID
-          type: string
-        timeZoneDescription:
-          type: string
-        timeZoneId:
-          format: UUID
-          type: string
-        address:
-          type: string
-        complement:
-          type: string
-        postalCode:
-          type: string
-        languageId:
-          format: UUID
-          type: string
-        userEmail:
-          type: array
-          items:
-            $ref: '#/components/schemas/UserEmailPost'
-        userPhoneNumber:
-          type: array
-          items:
-            $ref: '#/components/schemas/UserPhoneNumberPost'
-        userIdentificationDocument:
-          type: array
-          items:
-            $ref: '#/components/schemas/UserIdentificationDocumentPost'
-        userHierarchies:
-          type: array
-          items:
-            $ref: '#/components/schemas/UpperUserId'
-        userGroup:
-          type: string
-          properties:
-            id:
-              format: UUID
+            description:
               type: string
-        roleId:
-          format: UUID
-          type: string
+        saleAvailable:
+          type: boolean
       example:
+        id: 02285a7b-de5e-460b-a19f-29ae81e1e3cb,
+        createdAt: 2020-05-22T12:13:21.571Z,
+        updatedAt: 2020-05-22T20:40:32.815Z,
         active: true
-        name: José da Silva
-        username: jose.silva@wssim.com.br
-        code: "10"
-        profile:
-          id: 6eddfbd2-2350-4218-90ca-781a1b7325b5
-        companyIds:
-          - 08cf8616-cd40-4134-ad1e-f28bd9ff756d
-        administrator: false
-        country: Brazil
-        countryId: 9a792485-bfb9-4e87-97d6-b797a994ca2b
-        state: Paraná
-        stateId: c242bcf5-c317-4bed-b395-f56a85b47c3f
-        stateAcronym: PR
-        city: Cascavel
-        cityId: dabd4fce-27c1-4059-a9f8-a10be66583db
-        timeZoneDescription: Brasil - Brasília, São Paulo (-03:00)
-        timeZoneId: 9f596395-2f8f-43ec-b7ab-9345d173ca13
-        address: Presidente Bernardes
-        complement: 3° Andar
-        postalCode: "1845678789"
-        imageId: 21614cd6-af7d-47df-aa6d-31907cf56608
-        languageId: 3b77a3b4-516c-4aea-846f-76720e5f8482
-        userEmail:
-          - email: jose.silva@gmail.com
-            emailTypeId: 0694a50f-d25b-4b10-ae05-619b30731ba7
-        userPhoneNumber:
-          - phoneNumber: "5545887976465"
-            phoneTypeId: 67cd545a-cf05-441e-a0ec-635c44e60d41
-        userIdentificationDocument:
-          - identificationDocumentId: 81d16d3a-f374-4238-b0f1-5d3602a0db76
-            numberDocument: "28692693588"
-        userHierarchies:
-          - upperUser:
-              id: 9927a30d-19d2-45e7-bf42-09d4e8ec4d22
-        userGroup:
-          id: 349b245e-223b-4267-b8f7-c0dea36f33bf
-        roleId: 0968a7a9-f85f-4c29-917c-f017155b66c1
-    UserEmailGet:
-      title: Root Type for UserEmail
-      description: '    '
-      type: object
-      properties:
-        id:
-          format: UUID
-          description: Identificador do registro de email
-          type: string
-        email:
-          description: Endereço de e-mail
-          type: string
-        emailTypeId:
-          format: UUID
-          description: Tipo de e-mail
-          type: string
-      example:
-        id: 181f6e97-56fe-4f01-9042-efeb19271b0f
-        email: user@cpf.com
-        emailTypeId: 3735642b-b975-4402-ae11-144ce71e965a
-    UserEmailPost:
-      title: Root Type for UserEmail
-      description: '    '
-      type: object
-      properties:
-        email:
-          description: Endereço de e-mail
-          type: string
-        emailTypeId:
-          format: UUID
-          description: Tipo de e-mail
-          type: string
-      example:
-        email: user@cpf.com
-        emailTypeId: 3735642b-b975-4402-ae11-144ce71e965a
-    UserIdentificationDocumentGet:
-      title: Root Type for UserIdentificationDocument
-      description: ""
-      type: object
-      properties:
-        id:
-          format: UUID
-          type: string
-        identificationDocumentId:
-          format: UUID
-          type: string
-        numberDocument:
-          type: string
-      example:
-        id: 0963133b-c3d8-4deb-bd51-befcb25f9fba
-        identificationDocumentId: 81d16d3a-f374-4238-b0f1-5d3602a0db76
-        numberDocument: "28692693588"
-    UserIdentificationDocumentPost:
-      title: Root Type for UserIdentificationDocument
-      description: ""
-      type: object
-      properties:
-        identificationDocumentId:
-          format: UUID
-          description: Id do documento de identificação
-          type: string
-        numberDocument:
-          description: Número do documento de identificação
-          type: string
-      example:
-        identificationDocumentId: 81d16d3a-f374-4238-b0f1-5d3602a0db76
-        numberDocument: "28692693588"
-    UserPhoneNumberGet:
-      title: Root Type for UserPhoneNumber
-      description: ""
-      type: object
-      properties:
-        id:
-          format: UUID
-          type: string
-        phoneNumber:
-          type: string
-        phoneTypeId:
-          format: UUID
-          type: string
-      example:
-        id: 3e5ddd35-2ddd-4bc5-88da-7c9d35d76efa
-        phoneNumber: 551332571011
-        phoneTypeId: 5b45276b-e85d-45c8-8254-f50e6bf654a5
-    UserPhoneNumberPost:
-      title: Root Type for UserPhoneNumber
-      description: ""
-      type: object
-      properties:
-        phoneNumber:
-          description: Número de telefone do usuário
-          type: string
-        phoneTypeId:
-          format: UUID
-          description: Tipo do telefone
-          type: string
-      example:
-        phoneNumber: 551332571011
-        phoneTypeId: 5b45276b-e85d-45c8-8254-f50e6bf654a5
+        code: "2020"
+        description: Eletrônicos
+        externalId: ELETRONICOS
+        productGroupUpper:
+          id: 69f4a626-6510-4159-941c-4ea5fa7bb432
+          description: Tecnologia
+        saleAvailable: true
 tags:
-  - name: TotvsCRMApp
-    description: A API de integração é válida para o ambiente Totvs CRM APP
+  - name: APP2
+    description: Ambiente APP2
   - name: integration
-    description: API de integração
+    description: ""
