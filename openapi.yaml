@@ -1,28 +1,29 @@
 ---
 openapi: 3.0.2
 info:
-  title: products-integrationV2
-  version: 2.0.0
+  title: product-Groups-integrationV1
+  version: 1.0.0
   description: |
-    API de integração de produto (Product) V2
+    API de integração de grupos de produto (Product Groups) V1
 
-    Compatível com a versão de negócio Product V8
+    Compatível com a versão de negócio Product V7
   contact: {}
 servers:
   - url: https://{url}/api/{version}/integration
     description: Integration Router Server
     variables:
       url:
-        default: totvscrm.app
+        default: app2.mastercrm.ws
         description: URL de acesso ao Integration-Router
       version:
-        default: v2
+        default: v1
         description: Versão do Integration-Router
 paths:
   /record:
+    summary: API de integração groups
     get:
       tags:
-        - Products
+        - Product-Groups
       parameters:
         - name: Integration-Filter
           description: |
@@ -42,21 +43,21 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ProductsIntegration_V2_FullResponse'
-          description: Returns a list of products
+                $ref: '#/components/schemas/GroupsIntegration_V1_FullResponse'
+          description: Returns a list of product groups
         401:
           description: Unauthorized
-      summary: Listar produtos
-      description: Retorna uma lista de produtos cadastrados ou determinados produtos
-        com base nos filtros no header Integration-Filter
+      summary: Listar grupo de produtos
+      description: Retorna uma lista de grupos de produto cadastrados ou determinados
+        grupos com base nos filtros do header Integration-Filter
     post:
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ProductsIntegration_V2_BodyCreate'
+              $ref: '#/components/schemas/GroupsIntegration_V1_BodyCreate'
       tags:
-        - Products
+        - Product-groups
       parameters:
         - name: Integration-Filter
           description: |
@@ -90,16 +91,14 @@ paths:
             body da requisição.
           schema:
             anyOf:
-              - $ref: '#/components/schemas/ProductsIntegration_V2_BodyCreate'
-              - $ref: '#/components/schemas/ProductsIntegration_V2_BodyUpdate'
-              - $ref: '#/components/schemas/ProductsIntegration_V2_BodyUpsert'
-              - $ref: '#/components/schemas/ProductsIntegration_V2_BodyDelete'
+              - $ref: '#/components/schemas/GroupsIntegration_V1_BodyCreate'
+              - $ref: '#/components/schemas/GroupsIntegration_V1_BodyUpdate'
+              - $ref: '#/components/schemas/GroupsIntegration_V1_BodyUpsert'
             discriminator:
               mapping:
-                create: '#/components/schemas/ProductsIntegration_V2_BodyCreate'
-                update: '#/components/schemas/ProductsIntegration_V2_BodyUpdate'
-                upsert: '#/components/schemas/ProductsIntegration_V2_BodyUpsert'
-                delete: '#/components/schemas/ProductsIntegration_V2_BodyDelete'
+                create: '#/components/schemas/GroupsIntegration_V1_BodyCreate'
+                update: '#/components/schemas/GroupsIntegration_V1_BodyUpdate'
+                upsert: '#/components/schemas/GroupsIntegration_V1_BodyUpsert'
           in: header
           required: true
       responses:
@@ -107,11 +106,11 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ProductsIntegration_V2_FullResponse'
-          description: Returns a product register
+                $ref: '#/components/schemas/GroupsIntegration_V1_FullResponse'
+          description: Returns a product group register
         401:
           description: Unauthorized
-      summary: Criar, atualizar e deletar produtos
+      summary: Criar, atualizar e deletar grupos de produto
       description: |
         A ação a ser realizada no cadastro depende do valor preenchido no header
         **Integration-Action**:
@@ -127,10 +126,6 @@ paths:
         **upsert** - Realiza a operação de POST do cadastro enviado se não for enviado ID do registro
         no header **Integration-Filter** **OU** realiza a operação de PUT do cadastro enviado se for
         enviado o ID do registro no header **Integration-Filter**;
-
-
-        **delete** - Realiza a operação de DELETE do cadastro enviado. Obrigatório informar o ID do
-        registro no header **Integration-Filter** e não deve-se enviar nenhum Body;
     parameters:
       - name: Integration-Service
         description: 'Serviço responsável pela entidade. Exemplo: product'
@@ -140,28 +135,25 @@ paths:
         in: header
         required: true
       - name: Integration-Resource
-        description: 'Recurso para requisição. Exemplo: products-integration'
+        description: 'Recurso para requisição. Exemplo: groups-integration'
         schema:
-          default: products-integration
+          default: groups-integration
           type: string
         in: header
         required: true
       - name: Integration-Version
-        description: 'Versão da API de integração. Exemplo: v2'
+        description: 'Versão da API de integração. Exemplo: v1'
         schema:
-          default: v2
+          default: v1
           type: string
         in: header
         required: true
 components:
   schemas:
-    ProductsIntegration_V2_BodyDelete:
+    GroupsIntegration_V1_BodyEmpty:
       description: No body
       type: object
-    ProductsIntegration_V2_BodyEmpty:
-      description: No body
-      type: object
-    ProductsIntegration_V2_MinimumResponse:
+    GroupsIntegration_V1_MinimumResponse:
       type: object
       properties:
         id:
@@ -174,837 +166,183 @@ components:
         id: 19de1e5b-37c8-42c6-a62f-3d7bdd11e994
         createAt: 2019-08-13T18:00:38.780Z
         updatedAt: 2019-08-13T18:00:38.780Z
-    ProductsIntegration_V2_GetResponse:
-      type: object
-      properties:
-        id:
-          type: string
-        productGroup:
-          type: object
-          properties:
-            id:
-              type: string
-            active:
-              type: boolean
-            description:
-              type: string
-            code:
-              type: string
-            saleAvailable:
-              type: boolean
-        manufacturer:
-          type: object
-          properties:
-            id:
-              type: string
-            active:
-              type: boolean
-            description:
-              type: string
-        suppliers:
-          type: array
-          items:
-            properties:
-              id:
-                type: string
-              active:
-                type: string
-              description:
-                type: string
-        measurementUnit:
-          type: object
-          properties:
-            id:
-              type: string
-            active:
-              type: boolean
-            description:
-              type: string
-        active:
-          type: boolean
-        description:
-          type: string
-        code:
-          type: string
-        note:
-          type: string
-        saleAvailable:
-          type: boolean
-        weight:
-          type: number
-        newSince:
-          type: string
-        newUntil:
-          type: string
-        saleFractioned:
-          type: boolean
-        manufacturerNote:
-          type: string
-        costPrice:
-          type: number
-        inventories:
-          type: array
-          items:
-            properties:
-              id:
-                type: string
-              quantity:
-                type: number
-              company:
-                type: object
-                properties:
-                  id:
-                    type: string
-                  name:
-                    type: string
-                  tradingName:
-                    type: string
-        packagings:
-          type: array
-          items:
-            properties:
-              id:
-                type: string
-              description:
-                type: string
-              conversionFactor:
-                type: number
-              standard:
-                type: boolean
-        images:
-          type: array
-          items:
-            properties:
-              id:
-                type: string
-              imageId:
-                type: string
-              imageDefault:
-                type: string
-              imageOrder:
-                type: string
-              description:
-                type: string
-        permissions:
-          type: array
-          items:
-            type: object
-        priceListItems:
-          type: array
-          items:
-            type: object
-        opportunitySalePrice:
-          type: number
-      example:
-        id: 6006e84c-4c2b-4288-8ab3-100f89cf4a0b
-        createdAt: 2020-05-05T21:35:49.670Z
-        updatedAt: 2020-05-05T21:36:40.789Z
-        externalId: 10
-        code: 10
-        productGroup:
-          id: 7a13dc76-4d04-49af-979a-94dd3c9b02c7
-          createdAt: 2020-04-16T19:57:31.866Z
-          updatedAt: 2020-04-22T13:26:48.888Z
-          externalId: T3|D MG 01|0007
-          active: true
-          description: Produto de Venda
-          code: 7
-          saleAvailable: true
-        description: Caderno 10 matérias
-        costPrice: 7.5
-        suppliers:
-          - id: 9a0c23a7-c94a-4565-a66d-e26b96369b29
-            createdAt: 2020-03-27T11:48:00.184Z
-            updatedAt: 2020-03-27T11:48:00.184Z
-            externalId: externalId
-            active: true
-            description: BRF S.A
-        additionalCode: 102030
-        measurementUnitId: 8eab597b-fb6a-4642-b53a-f0c3d64bf7f6
-        measurementUnitAcronym: UN
-        measurementUnitDescription: UNIDADE
-        active: true
-        note: Observação do produto
-        saleAvailable: true
-        weight: 0.5
-        newSince: 2020-05-04T00:00:00.000Z
-        newUntil: 2020-05-05T00:00:00.000Z
-        saleFractioned: false
-        manufacturerNote: Observação do fabricante
-        manufacturer:
-          id: 56fb02a7-aa35-42e8-911a-168bf0ea7157
-          createdAt: 2020-05-05T21:36:40.775Z
-          updatedAt: 2020-05-05T21:36:40.775Z
-          externalId: external
-          active: false
-          description: BAYER
-        packagings:
-          - id: c2fce939-2fc4-437a-a451-e13891b086ee
-            createdAt: 2020-05-05T21:36:40.775Z
-            updatedAt: 2020-05-05T21:36:40.775Z
-            packagingDescription: Embalagem
-            conversionFactor: 1
-            standard: true
-        images:
-          - id: ec8ec77e-197a-449e-942e-6f92afbddaf4
-            createdAt: 2020-05-05T21:36:40.783Z
-            updatedAt: 2020-05-05T21:36:40.783Z
-            imageId: f7af4b59-4b3d-4337-9f11-774e487e4bf5
-            imageDefault: true
-            imageOrder: 1
-            description: IMG_1
-        productUsers: []
-        companies: []
-        productSeed: 56fb02a7-aa35-42e8-911a-168bf0ea7154
-        permissions: []
-        discountLimitType: 56fb02a7-aa35-42e8-911a-168bf0ea7154
-        currencyId: 56fb02a7-aa35-42e8-911a-168bf0ea7154
-        currencyDescription: Reais
-        currencySymbol: R$
-        currencyCode: 10
-        opportunitySalePrice: 14
-        availableForOpportunity: false
-    ProductsIntegration_V2_FullResponse:
-      type: object
-      properties:
-        id:
-          type: string
-        productGroup:
-          type: object
-          properties:
-            id:
-              type: string
-            active:
-              type: boolean
-            description:
-              type: string
-            code:
-              type: string
-            saleAvailable:
-              type: boolean
-        manufacturer:
-          type: object
-          properties:
-            id:
-              type: string
-            active:
-              type: boolean
-            description:
-              type: string
-        suppliers:
-          type: array
-          items:
-            properties:
-              id:
-                type: string
-              active:
-                type: string
-              description:
-                type: string
-        measurementUnit:
-          type: object
-          properties:
-            id:
-              type: string
-            active:
-              type: boolean
-            description:
-              type: string
-        active:
-          type: boolean
-        description:
-          type: string
-        code:
-          type: string
-        note:
-          type: string
-        saleAvailable:
-          type: boolean
-        weight:
-          type: number
-        newSince:
-          type: string
-        newUntil:
-          type: string
-        saleFractioned:
-          type: boolean
-        manufacturerNote:
-          type: string
-        costPrice:
-          type: number
-        inventories:
-          type: array
-          items:
-            properties:
-              id:
-                type: string
-              quantity:
-                type: number
-              company:
-                type: object
-                properties:
-                  id:
-                    type: string
-                  name:
-                    type: string
-                  tradingName:
-                    type: string
-        packagings:
-          type: array
-          items:
-            properties:
-              id:
-                type: string
-              description:
-                type: string
-              conversionFactor:
-                type: number
-              standard:
-                type: boolean
-        images:
-          type: array
-          items:
-            properties:
-              id:
-                type: string
-              imageId:
-                type: string
-              imageDefault:
-                type: string
-              imageOrder:
-                type: string
-              description:
-                type: string
-        permissions:
-          type: array
-          items:
-            type: object
-        priceListItems:
-          type: array
-          items:
-            type: object
-        opportunitySalePrice:
-          type: number
-      example:
-        id: 6006e84c-4c2b-4288-8ab3-100f89cf4a0b
-        createdAt: 2020-05-05T21:35:49.670Z
-        updatedAt: 2020-05-05T21:36:40.789Z
-        externalId: 10
-        code: 10
-        productGroup:
-          id: 7a13dc76-4d04-49af-979a-94dd3c9b02c7
-          createdAt: 2020-04-16T19:57:31.866Z
-          updatedAt: 2020-04-22T13:26:48.888Z
-          externalId: T3|D MG 01|0007
-          active: true
-          description: Produto de Venda
-          code: 7
-          saleAvailable: true
-        description: Caderno 10 matérias
-        costPrice: 7.5
-        suppliers:
-          - id: 9a0c23a7-c94a-4565-a66d-e26b96369b29
-            createdAt: 2020-03-27T11:48:00.184Z
-            updatedAt: 2020-03-27T11:48:00.184Z
-            externalId: externalId
-            active: true
-            description: BRF S.A
-        additionalCode: 102030
-        measurementUnitId: 8eab597b-fb6a-4642-b53a-f0c3d64bf7f6
-        measurementUnitAcronym: UN
-        measurementUnitDescription: UNIDADE
-        active: true
-        note: Observação do produto
-        saleAvailable: true
-        weight: 0.5
-        newSince: 2020-05-04T00:00:00.000Z
-        newUntil: 2020-05-05T00:00:00.000Z
-        saleFractioned: false
-        manufacturerNote: Observação do fabricante
-        manufacturer:
-          id: 56fb02a7-aa35-42e8-911a-168bf0ea7157
-          createdAt: 2020-05-05T21:36:40.775Z
-          updatedAt: 2020-05-05T21:36:40.775Z
-          externalId: external
-          active: false
-          description: BAYER
-        packagings:
-          - id: c2fce939-2fc4-437a-a451-e13891b086ee
-            createdAt: 2020-05-05T21:36:40.775Z
-            updatedAt: 2020-05-05T21:36:40.775Z
-            packagingDescription: Embalagem
-            conversionFactor: 1
-            standard: true
-        images:
-          - id: ec8ec77e-197a-449e-942e-6f92afbddaf4
-            createdAt: 2020-05-05T21:36:40.783Z
-            updatedAt: 2020-05-05T21:36:40.783Z
-            imageId: f7af4b59-4b3d-4337-9f11-774e487e4bf5
-            imageDefault: true
-            imageOrder: 1
-            description: IMG_1
-        productUsers: []
-        companies: []
-        productSeed: 56fb02a7-aa35-42e8-911a-168bf0ea7154
-        permissions: []
-        discountLimitType: 56fb02a7-aa35-42e8-911a-168bf0ea7154
-        currencyId: 56fb02a7-aa35-42e8-911a-168bf0ea7154
-        currencyDescription: Reais
-        currencySymbol: R$
-        currencyCode: 10
-        opportunitySalePrice: 14
-        availableForOpportunity: false
-    ProductsIntegration_V2_BodyCreate:
+    GroupsIntegration_V1_BodyCreate:
       required:
-        - measurementUnitAcronym
-        - measurementUnitDescription
-        - measurementUnitId
-        - saleFractioned
         - active
         - description
+        - saleAvailable
         - externalId
       type: object
       properties:
         active:
-          description: Define se o registro está ativo. true = ativo, false = inativo
-          type: boolean
-        additionalCode:
-          description: Código adicional no produto
-          type: string
-        availableForOpportunity:
-          description: Disponível para oportunidade. true = disponível, false = indisponível
+          description: Define se o registro está ativo
           type: boolean
         code:
-          description: Código do produto
-          type: string
-        companies:
-          description: Lista de empresas
-          type: array
-          items:
-            description: Identificador da empresa
-            type: string
-        costPrice:
-          description: Preço de custo
-          type: number
-        currencyCode:
-          description: Código da moeda
-          type: string
-        currencyDescription:
-          description: Descrição da moeda
-          type: string
-        currencyId:
-          description: Identificador da moeda
-          type: string
-        currencySymbol:
-          description: Símbolo da moeda
+          description: Código do grupo de produto
           type: string
         description:
-          description: Nome do produto
-          type: string
-        discountLimitType:
-          description: Tipo do limite de desconto
+          description: Descrição do grupo de produto
           type: string
         externalId:
-          description: Código do sistema externo para identificar este registro como
-            único.
+          description: Código do sistema externo para identificação única do registro
           type: string
-        images:
-          description: Lista de imagens do produto
-          type: array
-          items:
-            properties:
-              id:
-                description: Identificador da imagem
-                type: string
-        manufacturer:
-          description: Fabricante
+        productGroupUpper:
+          description: Grupo de produto superior
           type: object
           properties:
             id:
-              description: Identificador do fabricante
               type: string
-        manufacturerNote:
-          description: Observação do fabricante
-          type: string
-        measurementUnitAcronym:
-          description: Sigla da unidade de medida
-          type: boolean
-        measurementUnitId:
-          description: Id da unidade de medida
-          type: string
-        newSince:
-          format: date
-          description: |-
-            Para marcar um produto como Novo este parâmetro de data é usado em conjunto com o campo newUntil.
-            O newSince marca o início da caracterização de produto novo.
-          type: string
-        newUntil:
-          format: date
-          description: |-
-            Para marcar um produto como Novo este parâmetro de data é usado em conjunto com o campo newSince.
-            O newUntil marca o fim da caracterização de produto novo.
-          type: string
-        note:
-          description: Observação do produto
-          type: string
-        opportunitySalePrice:
-          description: Preço de venda na oportunidade
-          type: number
-        packagings:
-          description: Lista de embalagens
-          type: array
-          items:
-            type: object
-        permissions:
-          description: Lista de permissões
-          type: array
-          items:
-            type: object
-        productGroup:
-          description: Grupo de produto
-          type: object
-          properties:
-            id:
-              description: Identificador do grupo de produto
+            description:
               type: string
-        productSeed:
-          type: string
-        productUsers:
-          description: Lista de usuários com acesso a este produto
-          type: array
-          items:
-            properties:
-              id:
-                description: Identificador dos usuários
-                type: string
-        saleFractioned:
-          description: Permite venda fracionada? true = sim, false = não permite
-          type: boolean
         saleAvailable:
-          description: Disponível para venda. true = disponível, false = indisponível
+          description: Indica se o grupo de produto deve estar disponível na ordem
+            de venda
           type: boolean
-        suppliers:
-          description: Lista de fornecedores
-          type: array
-          items:
-            properties:
-              id:
-                description: Identificador do fornecedor
-                type: string
-        weight:
-          description: Peso médio do produto
-          type: number
-        measurementUnitDescription:
-          description: Descrição da unidade de medida
-          type: string
       example:
-        externalId: 10
-        code: 10
-        productGroup:
-          id: 7a13dc76-4d04-49af-979a-94dd3c9b02c7
-        description: Caderno 10 matérias
-        costPrice: 7.5
-        suppliers:
-          - id: 9a0c23a7-c94a-4565-a66d-e26b96369b29
-        additionalCode: 102030
-        measurementUnitId: 8eab597b-fb6a-4642-b53a-f0c3d64bf7f6
-        measurementUnitAcronym: UN
-        measurementUnitDescription: UNIDADE
         active: true
-        note: Observação do produto
+        code: "2020"
+        description: Eletrônicos
+        externalId: ELETRONICOS
+        productGroupUpper:
+          id: 69f4a626-6510-4159-941c-4ea5fa7bb432
+          description: Tecnologia
         saleAvailable: true
-        weight: 0.5
-        newSince: 2020-05-04T00:00:00.000Z
-        newUntil: 2020-05-05T00:00:00.000Z
-        saleFractioned: false
-        manufacturerNote: Observação do fabricante
-        manufacturer:
-          id: 56fb02a7-aa35-42e8-911a-168bf0ea7157
-        packagings:
-          - packagingDescription: Embalagem
-            conversionFactor: 1
-            standard: true
-        images:
-          - id: ec8ec77e-197a-449e-942e-6f92afbddaf4
-        productUsers: []
-        discountLimitType: 56fb02a7-aa35-42e8-911a-168bf0ea7154
-        currencyId: 56fb02a7-aa35-42e8-911a-168bf0ea7154
-        currencyDescription: Reais
-        currencySymbol: R$
-        currencyCode: 10
-        opportunitySalePrice: 14
-        availableForOpportunity: false
-        companies:
-          - 08cf8616-cd40-4134-ad1e-f28bd9ff756d
-          - 08cf8616-cd40-4134-ad1e-f28bd9ff7563
-    ProductsIntegration_V2_BodyUpdate:
+    GroupsIntegration_V1_BodyUpdate:
       type: object
       properties:
         active:
           type: boolean
-        additionalCode:
-          type: string
-        availableForOpportunity:
-          type: boolean
         code:
-          type: string
-        companies:
-          type: array
-          items:
-            type: string
-        costPrice:
-          type: number
-        currencyCode:
-          type: string
-        currencyDescription:
-          type: string
-        currencyId:
-          type: string
-        currencySymbol:
           type: string
         description:
           type: string
-        discountLimitType:
-          type: string
         externalId:
           type: string
-        images:
-          type: array
-          items:
-            properties:
-              id:
-                type: string
-        manufacturer:
+        productGroupUpper:
           type: object
           properties:
             id:
               type: string
-        manufacturerNote:
-          type: string
-        measurementUnitAcronym:
-          type: boolean
-        measurementDescription:
-          type: string
-        measurementUnitId:
-          type: string
-        newSince:
-          type: string
-        newUntil:
-          type: string
-        note:
-          type: string
-        opportunitySalePrice:
-          type: number
-        packagings:
-          type: string
-        permissions:
-          type: array
-          items:
-            type: object
-        productGroup:
-          type: object
-          properties:
-            id:
+            description:
               type: string
-        productSeed:
-          type: string
-        productUsers:
-          type: array
-          items:
-            properties:
-              id:
-                type: string
-        saleFractioned:
-          type: boolean
         saleAvailable:
           type: boolean
-        suppliers:
-          type: array
-          items:
-            properties:
-              id:
-                type: string
-        weight:
-          type: number
       example:
-        externalId: 10
-        code: 10
-        productGroup:
-          id: 7a13dc76-4d04-49af-979a-94dd3c9b02c7
-        description: Caderno 10 matérias
-        costPrice: 7.5
-        suppliers:
-          - id: 9a0c23a7-c94a-4565-a66d-e26b96369b29
-        additionalCode: 102030
-        measurementUnitId: 8eab597b-fb6a-4642-b53a-f0c3d64bf7f6
-        measurementUnitAcronym: UN
-        measurementUnitDescription: UNIDADE
         active: true
-        note: Observação do produto
+        code: "2020"
+        description: Eletrônicos
+        externalId: ELETRONICOS
+        productGroupUpper:
+          id: 69f4a626-6510-4159-941c-4ea5fa7bb432
+          description: Tecnologia
         saleAvailable: true
-        weight: 0.5
-        newSince: 2020-05-04T00:00:00.000Z
-        newUntil: 2020-05-05T00:00:00.000Z
-        saleFractioned: false
-        manufacturerNote: Observação do fabricante
-        manufacturer:
-          id: 56fb02a7-aa35-42e8-911a-168bf0ea7157
-        packagings:
-          - packagingDescription: Embalagem
-            conversionFactor: 1
-            standard: true
-        images:
-          - id: ec8ec77e-197a-449e-942e-6f92afbddaf4
-        productUsers: []
-        companies: []
-        productSeed: 56fb02a7-aa35-42e8-911a-168bf0ea7154
-        permissions: []
-        discountLimitType: 56fb02a7-aa35-42e8-911a-168bf0ea7154
-        currencyId: 56fb02a7-aa35-42e8-911a-168bf0ea7154
-        currencyDescription: Reais
-        currencySymbol: R$
-        currencyCode: 10
-        opportunitySalePrice: 14
-        availableForOpportunity: false
-    ProductsIntegration_V2_BodyUpsert:
-      required:
-        - measurementUnitAcronym
-        - measurementUnitDescription
-        - measurementUnitId
-        - saleFractioned
-        - active
-        - description
-        - externalId
+    GroupsIntegration_V1_BodyUpsert:
       type: object
       properties:
         active:
           type: boolean
-        additionalCode:
-          type: string
-        availableForOpportunity:
-          type: boolean
         code:
-          type: string
-        companies:
-          type: array
-          items:
-            type: string
-        costPrice:
-          type: number
-        currencyCode:
-          type: string
-        currencyDescription:
-          type: string
-        currencyId:
-          type: string
-        currencySymbol:
           type: string
         description:
           type: string
-        discountLimitType:
+        externalId:
+          type: string
+        productGroupUpper:
+          type: object
+          properties:
+            id:
+              type: string
+            description:
+              type: string
+        saleAvailable:
+          type: boolean
+      example:
+        active: true
+        code: "2020"
+        description: Eletrônicos
+        externalId: ELETRONICOS
+        productGroupUpper:
+          id: 69f4a626-6510-4159-941c-4ea5fa7bb432
+          description: Tecnologia
+        saleAvailable: true
+    GroupsIntegration_V1_FullResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        createdAt:
+          type: string
+        updatedAt:
+          type: string
+        active:
+          type: boolean
+        code:
+          type: string
+        description:
           type: string
         externalId:
           type: string
-        images:
-          type: array
-          items:
-            properties:
-              id:
-                type: string
-        manufacturer:
+        productGroupUpper:
           type: object
           properties:
             id:
               type: string
-        manufacturerNote:
-          type: string
-        measurementUnitAcronym:
-          type: boolean
-        measurementDescription:
-          type: string
-        measurementUnitId:
-          type: string
-        newSince:
-          type: string
-        newUntil:
-          type: string
-        note:
-          type: string
-        opportunitySalePrice:
-          type: number
-        packagings:
-          type: string
-        permissions:
-          type: array
-          items:
-            type: object
-        productGroup:
-          type: object
-          properties:
-            id:
+            description:
               type: string
-        productSeed:
-          type: string
-        productUsers:
-          type: array
-          items:
-            properties:
-              id:
-                type: string
-        saleFractioned:
-          type: boolean
         saleAvailable:
           type: boolean
-        suppliers:
-          type: array
-          items:
-            properties:
-              id:
-                type: string
-        weight:
-          type: number
       example:
-        externalId: 10
-        code: 10
-        productGroup:
-          id: 7a13dc76-4d04-49af-979a-94dd3c9b02c7
-        description: Caderno 10 matérias
-        costPrice: 7.5
-        suppliers:
-          - id: 9a0c23a7-c94a-4565-a66d-e26b96369b29
-        additionalCode: 102030
-        measurementUnitId: 8eab597b-fb6a-4642-b53a-f0c3d64bf7f6
-        measurementUnitAcronym: UN
-        measurementUnitDescription: UNIDADE
+        id: 02285a7b-de5e-460b-a19f-29ae81e1e3cb,
+        createdAt: 2020-05-22T12:13:21.571Z,
+        updatedAt: 2020-05-22T20:40:32.815Z,
         active: true
-        note: Observação do produto
+        code: "2020"
+        description: Eletrônicos
+        externalId: ELETRONICOS
+        productGroupUpper:
+          id: 69f4a626-6510-4159-941c-4ea5fa7bb432
+          description: Tecnologia
         saleAvailable: true
-        weight: 0.5
-        newSince: 2020-05-04T00:00:00.000Z
-        newUntil: 2020-05-05T00:00:00.000Z
-        saleFractioned: false
-        manufacturerNote: Observação do fabricante
-        manufacturer:
-          id: 56fb02a7-aa35-42e8-911a-168bf0ea7157
-        packagings:
-          - packagingDescription: Embalagem
-            conversionFactor: 1
-            standard: true
-        images:
-          - id: ec8ec77e-197a-449e-942e-6f92afbddaf4
-        productUsers: []
-        companies: []
-        productSeed: 56fb02a7-aa35-42e8-911a-168bf0ea7154
-        permissions: []
-        discountLimitType: 56fb02a7-aa35-42e8-911a-168bf0ea7154
-        currencyId: 56fb02a7-aa35-42e8-911a-168bf0ea7154
-        currencyDescription: Reais
-        currencySymbol: R$
-        currencyCode: 10
-        opportunitySalePrice: 14
-        availableForOpportunity: false
+    GroupsIntegration_V1_GetResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        createdAt:
+          type: string
+        updatedAt:
+          type: string
+        active:
+          type: boolean
+        code:
+          type: string
+        description:
+          type: string
+        externalId:
+          type: string
+        productGroupUpper:
+          $ref: '#/components/schemas/GroupsIntegration_V1_FullResponse'
+          properties:
+            id:
+              type: string
+            description:
+              type: string
+        saleAvailable:
+          type: boolean
+      example:
+        id: 02285a7b-de5e-460b-a19f-29ae81e1e3cb,
+        createdAt: 2020-05-22T12:13:21.571Z,
+        updatedAt: 2020-05-22T20:40:32.815Z,
+        active: true
+        code: "2020"
+        description: Eletrônicos
+        externalId: ELETRONICOS
+        productGroupUpper:
+          id: 69f4a626-6510-4159-941c-4ea5fa7bb432
+          description: Tecnologia
+        saleAvailable: true
 tags:
-  - name: TotvsCRMApp
-    description: A API de integração é válida para o ambiente Totvs CRM APP
+  - name: APP2
+    description: Ambiente APP2
   - name: integration
-    description: API de integração
+    description: ""
