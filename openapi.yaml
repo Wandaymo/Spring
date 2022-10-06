@@ -1,12 +1,12 @@
 ---
 openapi: 3.0.2
 info:
-  title: price-lists-integrationV1
+  title: payment-terms-integrationV1
   version: 1.0.0
   description: |
-    API de integração de tabela de preço (Price-list) V1
+    API de integração de condição de pagamento (Payment-Terms) V1
 
-    Compatível com a versão de negócio Product V7
+    Compatível com a versão V11 do serviço de negócio Sales
   contact: {}
 servers:
   - url: https://{url}/api/{version}/integration
@@ -22,7 +22,7 @@ paths:
   /record:
     get:
       tags:
-        - Price-Lists
+        - Payment-Terms
       parameters:
         - name: Integration-Filter
           description: |
@@ -42,21 +42,21 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Price-ListsIntegration_V1_FullResponse'
-          description: Returns a list of price lists
+                $ref: '#/components/schemas/Payment-TermsIntegration_V1_FullResponse'
+          description: Returns a list of Payment-Terms
         401:
           description: Unauthorized
-      summary: Listar tabela de preço
-      description: Retorna uma lista de tabelas de preço cadastrados ou determinadas
-        tabelas de preço com base nos filtros no header Integration-Filter
+      summary: Listar condições de pagamento
+      description: Retorna uma lista de condições de pagamento cadastradas ou determinadas
+        condições com base nos filtros no header Integration-Filter
     post:
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Price-ListsIntegration_V1_BodyCreate'
+              $ref: '#/components/schemas/Payment-TermsIntegration_V1_BodyCreate'
       tags:
-        - Price-Lists
+        - Payment-Terms
       parameters:
         - name: Integration-Filter
           description: |
@@ -78,6 +78,7 @@ paths:
             Se o header não for informado, por padrão o retorno será equivalente ao nível
             **minimum**
           schema:
+            default: minimum
             enum:
               - full
               - minimum
@@ -89,15 +90,15 @@ paths:
             Ação a ser realizada na API de integração. Selecione uma das opções para carregar o
             body da requisição.
           schema:
-            anyOf:
-              - $ref: '#/components/schemas/Price-ListsIntegration_V1_BodyCreate'
-              - $ref: '#/components/schemas/Price-ListsIntegration_V1_BodyUpdate'
-              - $ref: '#/components/schemas/Price-ListsIntegration_V1_BodyUpsert'
+            oneOf:
+              - $ref: '#/components/schemas/Payment-TermsIntegration_V1_BodyCreate'
+              - $ref: '#/components/schemas/Payment-TermsIntegration_V1_BodyUpdate'
+              - $ref: '#/components/schemas/Payment-TermsIntegration_V1_BodyUpsert'
             discriminator:
               mapping:
-                create: '#/components/schemas/Price-ListsIntegration_V1_BodyCreate'
-                update: '#/components/schemas/Price-ListsIntegration_V1_BodyUpdate'
-                upsert: '#/components/schemas/Price-ListsIntegration_V1_BodyUpsert'
+                create: '#/components/schemas/Payment-TermsIntegration_V1_BodyCreate'
+                update: '#/components/schemas/Payment-TermsIntegration_V1_BodyUpdate'
+                upsert: '#/components/schemas/Payment-TermsIntegration_V1_BodyUpsert'
           in: header
           required: true
       responses:
@@ -105,11 +106,11 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Price-ListsIntegration_V1_FullResponse'
-          description: Returns a price list register
+                $ref: '#/components/schemas/Payment-TermsIntegration_V1_FullResponse'
+          description: Returns a payment term register
         401:
           description: Unauthorized
-      summary: Criar, atualizar e deletar tabelas de preço
+      summary: Criar, atualizar e deletar Payment-Terms
       description: |
         A ação a ser realizada no cadastro depende do valor preenchido no header
         **Integration-Action**:
@@ -127,16 +128,16 @@ paths:
         enviado o ID do registro no header **Integration-Filter**;
     parameters:
       - name: Integration-Service
-        description: 'Serviço responsável pela entidade. Exemplo: product'
+        description: 'Serviço responsável pela entidade. Exemplo: sales'
         schema:
-          default: product
+          default: sales
           type: string
         in: header
         required: true
       - name: Integration-Resource
-        description: 'Recurso para requisição. Exemplo: price-lists-integration'
+        description: 'Recurso para requisição. Exemplo: payment-terms-integration'
         schema:
-          default: price-lists-integration
+          default: payment-terms-integration
           type: string
         in: header
         required: true
@@ -149,10 +150,10 @@ paths:
         required: true
 components:
   schemas:
-    Price-ListsIntegration_V1_BodyEmpty:
+    Payment-TermsIntegration_V1_BodyEmpty:
       description: No body
       type: object
-    Price-ListsIntegration_V1_MinimumResponse:
+    Payment-TermsIntegration_V1_MinimumResponse:
       type: object
       properties:
         id:
@@ -165,249 +166,23 @@ components:
         id: 19de1e5b-37c8-42c6-a62f-3d7bdd11e994
         createAt: 2019-08-13T18:00:38.780Z
         updatedAt: 2019-08-13T18:00:38.780Z
-    ProductsIntegrationV1GetResponse:
-      type: object
-      properties:
-        id:
-          type: string
-        productGroup:
-          type: object
-          properties:
-            id:
-              type: string
-            active:
-              type: boolean
-            description:
-              type: string
-            code:
-              type: string
-            saleAvailable:
-              type: boolean
-        manufacturer:
-          type: object
-          properties:
-            id:
-              type: string
-            active:
-              type: boolean
-            description:
-              type: string
-        suppliers:
-          type: array
-          items:
-            properties:
-              id:
-                type: string
-              active:
-                type: string
-              description:
-                type: string
-        measurementUnit:
-          type: object
-          properties:
-            id:
-              type: string
-            active:
-              type: boolean
-            description:
-              type: string
-        active:
-          type: boolean
-        description:
-          type: string
-        code:
-          type: string
-        note:
-          type: string
-        saleAvailable:
-          type: boolean
-        weight:
-          type: number
-        newSince:
-          type: string
-        newUntil:
-          type: string
-        saleFractioned:
-          type: boolean
-        manufacturerNote:
-          type: string
-        costPrice:
-          type: number
-        inventories:
-          type: array
-          items:
-            properties:
-              id:
-                type: string
-              quantity:
-                type: number
-              company:
-                type: object
-                properties:
-                  id:
-                    type: string
-                  name:
-                    type: string
-                  tradingName:
-                    type: string
-        packagings:
-          type: array
-          items:
-            properties:
-              id:
-                type: string
-              description:
-                type: string
-              externalId:
-                type: string
-              conversionFactor:
-                type: number
-              standard:
-                type: boolean
-        images:
-          type: array
-          items:
-            properties:
-              id:
-                type: string
-              imageId:
-                type: string
-              imageDefault:
-                type: string
-              externalId:
-                type: string
-              imageOrder:
-                type: string
-              description:
-                type: string
-        permissions:
-          type: array
-          items:
-            type: object
-        priceListItems:
-          type: array
-          items:
-            type: object
-        opportunitySalePrice:
-          type: number
-      example:
-        id: 6006e84c-4c2b-4288-8ab3-100f89cf4a0b
-        createdAt: 2020-05-05T21:35:49.670Z
-        updatedAt: 2020-05-05T21:36:40.789Z
-        externalId: 10
-        code: 10
-        productGroup:
-          id: 7a13dc76-4d04-49af-979a-94dd3c9b02c7
-          createdAt: 2020-04-16T19:57:31.866Z
-          updatedAt: 2020-04-22T13:26:48.888Z
-          externalId: T3|D MG 01|0007
-          active: true
-          description: Produto de Venda
-          code: 7
-          saleAvailable: true
-        description: Caderno 10 matérias
-        costPrice: 7.5
-        suppliers:
-          - id: 9a0c23a7-c94a-4565-a66d-e26b96369b29
-            createdAt: 2020-03-27T11:48:00.184Z
-            updatedAt: 2020-03-27T11:48:00.184Z
-            externalId: externalId
-            active: true
-            description: BRF S.A
-        additionalCode: 102030
-        measurementUnitId: 8eab597b-fb6a-4642-b53a-f0c3d64bf7f6
-        measurementUnitAcronym: UN
-        measurementUnitDescription: UNIDADE
-        active: true
-        note: Observação do produto
-        saleAvailable: true
-        weight: 0.5
-        newSince: 2020-05-04T00:00:00.000Z
-        newUntil: 2020-05-05T00:00:00.000Z
-        saleFractioned: false
-        manufacturerNote: Observação do fabricante
-        manufacturer:
-          id: 56fb02a7-aa35-42e8-911a-168bf0ea7157
-          createdAt: 2020-05-05T21:36:40.775Z
-          updatedAt: 2020-05-05T21:36:40.775Z
-          externalId: external
-          active: false
-          description: BAYER
-        packagings:
-          - id: c2fce939-2fc4-437a-a451-e13891b086ee
-            createdAt: 2020-05-05T21:36:40.775Z
-            updatedAt: 2020-05-05T21:36:40.775Z
-            packagingDescription: Embalagem
-            externalId: external
-            conversionFactor: 1
-            standard: true
-        images:
-          - id: ec8ec77e-197a-449e-942e-6f92afbddaf4
-            createdAt: 2020-05-05T21:36:40.783Z
-            updatedAt: 2020-05-05T21:36:40.783Z
-            imageId: f7af4b59-4b3d-4337-9f11-774e487e4bf5
-            externalId: external
-            imageDefault: true
-            imageOrder: 1
-            description: IMG_1
-        productUsers: []
-        companies: []
-        productSeed: 56fb02a7-aa35-42e8-911a-168bf0ea7154
-        permissions: []
-        discountLimitType: 56fb02a7-aa35-42e8-911a-168bf0ea7154
-        currencyId: 56fb02a7-aa35-42e8-911a-168bf0ea7154
-        currencyDescription: Reais
-        currencySymbol: R$
-        currencyCode: 10
-        opportunitySalePrice: 14
-        availableForOpportunity: false
-    Price-ListsIntegration_V1_BodyUpdate:
+    Payment-TermsIntegration_V1_BodyUpdate:
       type: object
       properties:
         externalId:
           type: string
+        active:
+          type: boolean
         code:
           type: string
+        availableFirstOrder:
+          type: boolean
+        standard:
+          type: boolean
         description:
           type: string
         acronym:
           type: string
-        active:
-          type: boolean
-        startOn:
-          type: string
-        endOn:
-          type: string
-        currencyId:
-          type: string
-        currencyAcronym:
-          type: string
-        currencyDescription:
-          type: string
-        currencySymbol:
-          type: string
-        paymentTerms:
-          type: object
-          properties:
-            paymentTermId:
-              type: string
-        paymentMethods:
-          type: object
-          properties:
-            paymentMethodId:
-              type: string
-        customerPermissions:
-          type: array
-          items:
-            properties:
-              id:
-                type: string
-              externalId:
-                type: string
-              customerId:
-                type: string
-              customerName:
-                type: string
         companyPermissions:
           type: array
           items:
@@ -419,6 +194,18 @@ components:
               companyId:
                 type: string
               companyName:
+                type: string
+        customerPermission:
+          type: array
+          items:
+            properties:
+              id:
+                type: string
+              externalId:
+                type: string
+              customerId:
+                type: string
+              customerName:
                 type: string
         userPermissions:
           type: array
@@ -432,470 +219,148 @@ components:
                 type: string
               userName:
                 type: string
-        items:
-          type: array
-          items:
-            properties:
-              id:
-                type: string
-              costPrice:
-                type: number
-              fixedPrice:
-                type: number
-              externalId:
-                type: string
-              product:
-                type: object
-                properties:
-                  id:
-                    type: string
-              pricesRange:
-                type: array
-                items:
-                  properties:
-                    externalId:
-                      type: string
-                    quantityPrice:
-                      type: string
-                    minimumQuantity:
-                      type: string
-                    maximumQuantity:
-                      type: string
-              salesPrice:
-                type: number
-              minimumPrice:
-                type: number
-              maximumPrice:
-                type: number
-        services:
-          type: array
-          items:
-            properties:
-              id:
-                type: string
-              externalId:
-                type: string
-              active:
-                type: boolean
-              code:
-                type: string
-              description:
-                type: string
-              costPrice:
-                type: number
-              salesPrice:
-                type: number
-              minimumPrice:
-                type: number
-              maximumPrice:
-                type: number
-              prices:
-                type: array
-                items:
-                  properties:
-                    id:
-                      type: string
-                    externalId:
-                      type: string
-                    salesPrice:
-                      type: number
-                    minimumQuantity:
-                      type: number
-                    maximumQuantity:
-                      type: number
-        enableMinimumSalesPriceValidation:
+        daysBetweenInstalment:
+          type: integer
+        instalmentNumber:
+          type: integer
+        middleTerm:
+          type: integer
+        allowChangeDueDate:
           type: boolean
-        enableMaximumSalesPriceValidation:
+        maxNumberInstalment:
+          type: integer
+        deleted:
           type: boolean
-        basisDateDays:
-          type: number
-        basisDateRule:
-          type: string
-        basisDate:
-          type: string
-        interestType:
-          type: string
-        increasePercentageDue:
-          type: number
-        decreasePercentageDue:
-          type: number
       example:
-        externalId: T3|D MG|238
+        externalId: "30"
+        deleted: false
         active: true
-        description: "09590804"
-        code: "10"
-        startOn: 2019-04-08
-        endOn: 2019-04-30
-        acronym: PR
-        enableMaximumSalesPriceValidation: false
-        enableMinimumSalesPriceValidation: false
-        items:
-          - id: der930ff-675c-4dee-823b-46d3a8ac145b
-            externalId: T3||MARCOS02
-            product:
-              id: eab930ff-675c-4dee-823b-46d3a8ac145b
-            salesPrice: 202.202
-            minimumPrice: 200
-            maximumPrice: 220
-            costPrice: 150
-            fixedPrice: 200
-            pricesRange:
-              - id: 58dh65ff-675c-4dee-823b-46d3a8ac145b
-                externalId: RANGE10-20
-                minimumQuantity: 10
-                maximumQuantity: 20
-                quantityPrice: 202
-        services:
-          - id: 973f30ff-675c-4dee-823b-46d3a8ac145b
-            externalId: S_69cd641a-0241-4e57-a07a-1128dbda38c8
-            minimumPrice: 12
-            maximumPrice: 20
-            costPrice: 10
-            salesPrice: 15
-            service:
-              id: 69cd641a-0241-4e57-a07a-1128dbda38c8
-            prices:
-              - id: dh9230ff-675c-4dee-823b-46d3a8ac145b
-                externalId: RANGE10-20
-                minimumQuantity: 10
-                maximumQuantity: 20
-                quantityPrice: 202
-        paymentMethods:
-          - id: d622cf6d-831b-4aed-b200-088ae094c34a
-            externalId: PM
-            paymentMethodId: e46a4b11-d505-450f-8a7c-bb26a52cca14
-            paymentMethodDescription: 132 - Payment Method empower
-        paymentTerms:
-          - id: 76f1d0f1-56cd-480e-842a-78478e7c9e5c
-            externalId: PT
-            paymentTermId: 5650a262-964d-432e-b6f9-4a876cc2bf9d
-            paymentTermDescription: 30/60/90
+        standard: false
+        availableFirstOrder: false
+        description: 30 dias
+        acronym: "30"
+        code: "002"
         companyPermissions:
-          - id: n2ks30ff-675c-4dee-823b-46d3a8ac145b
-            externalId: df7a7f4b-b1d7-4bd6-940f-e36cd67a5ef2
-            companyId: df7a7f4b-b1d7-4bd6-940f-e36cd67a5ef2
-            companyName: EMPRESA FILIAL T3 HUB05JUNHO
-          - id: 589d30ff-675c-4dee-823b-46d3a8ac145b
-            externalId: ecd65978-7c08-4cf2-84c3-69a311d6b57f
-            companyId: ecd65978-7c08-4cf2-84c3-69a311d6b57f
-            companyName: TESTE DE CARGA INICIAL 2 HUB05JUNHO
-        customerPermissions:
-          - id: 9nd2j5ff-675c-4dee-823b-46d3a8ac145b
-            externalId: f101c590-5ad6-4c8e-88de-b0060ea49295
-            customerId: f101c590-5ad6-4c8e-88de-b0060ea49295
-            customerName: AAAAADRIANA ROSA JÉSSICA CARVALHO LTDA
-        userPermissions:
-          - id: jn23j5ff-675c-4dee-823b-46d3a8ac145b
-            externalId: 7636f630-2358-4cf4-a290-2ec0b13ea47c
-            userId: 7636f630-2358-4cf4-a290-2ec0b13ea47c
-            userName: Administrador
-        currencyId: 5ebcc87b-af5d-42ad-85ad-df620844055f
-        currencyDescription: Real Brasileiro
-        currencyAcronym: BRL
-        currencySymbol: R$
-        basisDateDays: 10
-        basisDateRule: regra
-        basisDate: 2020-06-01T00:00:00.000Z
-        interestType: "."
-        increasePercentageDue: 10
-        decreasePercentageDue: 0
-    Price-ListsIntegration_V1_BodyUpsert:
+          - id: 58ccc6fd-4f79-4790-a45d-31d6a0b9d16b
+            externalId: P#FILIAL HUB05JUNHO
+            companyId: 22eea680-d700-499c-abe7-0da056ede03f
+            companyName: FILIAL HUB05JUNHO
+        customerPermissions: []
+        userPermissions: []
+        maxNumberInstalment: 1
+        daysBetweenInstalment: 0
+        instalmentNumber: 1
+        middleTerm: 30
+        allowChangeDueDate: false
+    Payment-TermsIntegration_V1_BodyUpsert:
       type: object
       properties:
         externalId:
           type: string
+        active:
+          type: boolean
         code:
           type: string
+        availableFirstOrder:
+          type: boolean
+        standard:
+          type: boolean
         description:
           type: string
         acronym:
           type: string
-        active:
-          type: boolean
-        startOn:
-          type: string
-        endOn:
-          type: string
-        currencyId:
-          type: string
-        currencyAcronym:
-          type: string
-        currencyDescription:
-          type: string
-        currencySymbol:
-          type: string
-        paymentTerms:
-          type: object
-          properties:
-            paymentTermId:
-              type: string
-        paymentMethods:
-          type: object
-          properties:
-            paymentMethodId:
-              type: string
-        customerPermissions:
-          type: array
-          items:
-            properties:
-              externalId:
-                type: string
-              customerId:
-                type: string
-              customerName:
-                type: string
         companyPermissions:
           type: array
           items:
             properties:
+              id:
+                type: string
               externalId:
                 type: string
               companyId:
                 type: string
               companyName:
                 type: string
+        customerPermission:
+          type: array
+          items:
+            properties:
+              id:
+                type: string
+              externalId:
+                type: string
+              customerId:
+                type: string
+              customerName:
+                type: string
         userPermissions:
           type: array
           items:
             properties:
+              id:
+                type: string
               externalId:
                 type: string
               userId:
                 type: string
               userName:
                 type: string
-        items:
-          type: array
-          items:
-            properties:
-              costPrice:
-                type: number
-              fixedPrice:
-                type: number
-              externalId:
-                type: string
-              product:
-                type: object
-                properties:
-                  id:
-                    type: string
-              pricesRange:
-                type: array
-                items:
-                  properties:
-                    externalId:
-                      type: string
-                    quantityPrice:
-                      type: string
-                    minimumQuantity:
-                      type: string
-                    maximumQuantity:
-                      type: string
-              salesPrice:
-                type: number
-              minimumPrice:
-                type: number
-              maximumPrice:
-                type: number
-              prices:
-                type: array
-                items:
-                  properties:
-                    externalId:
-                      type: string
-                    salesPrice:
-                      type: number
-                    minimumQuantity:
-                      type: number
-                    maximumQuantity:
-                      type: number
-        services:
-          type: array
-          items:
-            properties:
-              externalId:
-                type: string
-              active:
-                type: boolean
-              code:
-                type: string
-              description:
-                type: string
-              costPrice:
-                type: number
-              salesPrice:
-                type: number
-              minimumPrice:
-                type: number
-              maximumPrice:
-                type: number
-        enableMinimumSalesPriceValidation:
+        daysBetweenInstalment:
+          type: integer
+        instalmentNumber:
+          type: integer
+        middleTerm:
+          type: integer
+        allowChangeDueDate:
           type: boolean
-        enableMaximumSalesPriceValidation:
+        maxNumberInstalment:
+          type: integer
+        deleted:
           type: boolean
-        basisDateDays:
-          type: number
-        basisDateRule:
-          type: string
-        basisDate:
-          type: string
-        interestType:
-          type: string
-        increasePercentageDue:
-          type: number
-        decreasePercentageDue:
-          type: number
       example:
-        createdAt: 2020-04-14T16:06:11.551Z
-        updatedAt: 2020-06-29T17:08:45.809Z
-        externalId: T3|D MG|238
+        externalId: "30"
+        deleted: false
         active: true
-        description: "09590804"
-        code: "10"
-        startOn: 2019-04-08
-        endOn: 2019-04-30
-        acronym: PR
-        enableMaximumSalesPriceValidation: false
-        enableMinimumSalesPriceValidation: false
-        items:
-          - externalId: T3||MARCOS02
-            product:
-              id: eab930ff-675c-4dee-823b-46d3a8ac145b
-            salesPrice: 202.202
-            minimumPrice: 200
-            maximumPrice: 220
-            costPrice: 150
-            fixedPrice: 200
-            pricesRange:
-              - externalId: RANGE10-20
-                minimumQuantity: 10
-                maximumQuantity: 20
-                quantityPrice: 202
-        services:
-          - externalId: S_69cd641a-0241-4e57-a07a-1128dbda38c8
-            minimumPrice: 12
-            maximumPrice: 20
-            costPrice: 10
-            salesPrice: 15
-            service:
-              id: 69cd641a-0241-4e57-a07a-1128dbda38c8
-            prices:
-              - externalId: RANGE10-20
-                minimumQuantity: 10
-                maximumQuantity: 20
-                quantityPrice: 202
-        paymentMethods:
-          - externalId: PM
-            paymentMethodId: d622cf6d-831b-4aed-b200-088ae094c34a
-            paymentMethodDescription: "521606507818"
-        paymentTerms:
-          - externalId: PT
-            paymentTermId: cb1c15f3-16b3-4ce6-a359-fa00d6d7cce9
-            paymentTermDescription: "1801606507819"
+        standard: false
+        availableFirstOrder: false
+        description: 30 dias
+        acronym: "30"
+        code: "002"
         companyPermissions:
-          - externalId: df7a7f4b-b1d7-4bd6-940f-e36cd67a5ef2
-            companyId: df7a7f4b-b1d7-4bd6-940f-e36cd67a5ef2
-            companyName: EMPRESA FILIAL T3 HUB05JUNHO
-          - externalId: ecd65978-7c08-4cf2-84c3-69a311d6b57f
-            companyId: ecd65978-7c08-4cf2-84c3-69a311d6b57f
-            companyName: TESTE DE CARGA INICIAL 2 HUB05JUNHO
-        customerPermissions:
-          - externalId: f101c590-5ad6-4c8e-88de-b0060ea49295
-            customerId: f101c590-5ad6-4c8e-88de-b0060ea49295
-            customerName: AAAAADRIANA ROSA JÉSSICA CARVALHO LTDA
-        userPermissions:
-          - externalId: 7636f630-2358-4cf4-a290-2ec0b13ea47c
-            userId: 7636f630-2358-4cf4-a290-2ec0b13ea47c
-            userName: Administrador
-        currencyId: 5ebcc87b-af5d-42ad-85ad-df620844055f
-        currencyDescription: Real Brasileiro
-        currencyAcronym: BRL
-        currencySymbol: R$
-        basisDateDays: 10
-        basisDateRule: regra
-        basisDate: 2020-06-01T00:00:00.000Z
-        interestType: "."
-        increasePercentageDue: 10
-        decreasePercentageDue: 0
-    Price-ListsIntegration_V1_FullResponse:
+          - id: 58ccc6fd-4f79-4790-a45d-31d6a0b9d16b
+            externalId: P#FILIAL HUB05JUNHO
+            companyId: 22eea680-d700-499c-abe7-0da056ede03f
+            companyName: FILIAL HUB05JUNHO
+        customerPermissions: []
+        userPermissions: []
+        maxNumberInstalment: 1
+        daysBetweenInstalment: 0
+        instalmentNumber: 1
+        middleTerm: 30
+        allowChangeDueDate: false
+    Payment-TermsIntegration_V1_FullResponse:
       type: object
       properties:
         id:
-          type: string
-        externalId:
           type: string
         createdAt:
           type: string
         updatedAt:
           type: string
+        externalId:
+          type: string
+        active:
+          type: boolean
         code:
           type: string
+        availableFirstOrder:
+          type: boolean
+        standard:
+          type: boolean
         description:
           type: string
         acronym:
           type: string
-        active:
-          type: boolean
-        startOn:
-          type: string
-        endOn:
-          type: string
-        currencyId:
-          type: string
-        currencyAcronym:
-          type: string
-        currencyDescription:
-          type: string
-        currencySymbol:
-          type: string
-        paymentTerms:
-          type: array
-          items:
-            properties:
-              id:
-                type: string
-              externalId:
-                type: string
-              createdAt:
-                type: string
-              updatedAt:
-                type: string
-              paymentTermId:
-                type: string
-              paymentTermDescription:
-                type: string
-        paymentMethods:
-          type: array
-          items:
-            properties:
-              id:
-                type: string
-              externalId:
-                type: string
-              createdAt:
-                type: string
-              updatedAt:
-                type: string
-              paymentMethodId:
-                type: string
-              paymentMethodDescription:
-                type: string
-        customerPermissions:
-          type: array
-          items:
-            properties:
-              id:
-                type: string
-              externalId:
-                type: string
-              createdAt:
-                type: string
-              updatedAt:
-                type: string
-              customerId:
-                type: string
-              customerName:
-                type: string
         companyPermissions:
           type: array
           items:
@@ -903,16 +368,12 @@ components:
               id:
                 type: string
               externalId:
-                type: string
-              createdAt:
-                type: string
-              updatedAt:
                 type: string
               companyId:
                 type: string
               companyName:
                 type: string
-        userPermissions:
+        customerPermission:
           type: array
           items:
             properties:
@@ -920,361 +381,81 @@ components:
                 type: string
               externalId:
                 type: string
-              createdAt:
+              customerId:
                 type: string
-              updatedAt:
+              customerName:
+                type: string
+        userPermissions:
+          type: array
+          items:
+            properties:
+              id:
+                type: string
+              externalId:
                 type: string
               userId:
                 type: string
               userName:
                 type: string
-        items:
-          type: array
-          items:
-            properties:
-              id:
-                type: string
-              createdAt:
-                type: string
-              updatedAt:
-                type: string
-              costPrice:
-                type: number
-              fixedPrice:
-                type: number
-              externalId:
-                type: string
-              product:
-                $ref: '#/components/schemas/ProductsIntegrationV1GetResponse'
-              pricesRange:
-                type: array
-                items:
-                  properties:
-                    externalId:
-                      type: string
-                    quantityPrice:
-                      type: string
-                    minimumQuantity:
-                      type: string
-                    maximumQuantity:
-                      type: string
-              salesPrice:
-                type: number
-              minimumPrice:
-                type: number
-              maximumPrice:
-                type: number
-        services:
-          type: array
-          items:
-            properties:
-              id:
-                type: string
-              createdAt:
-                type: string
-              updatedAt:
-                type: string
-              externalId:
-                type: string
-              active:
-                type: boolean
-              code:
-                type: string
-              description:
-                type: string
-              costPrice:
-                type: number
-              salesPrice:
-                type: number
-              minimumPrice:
-                type: number
-              maximumPrice:
-                type: number
-              prices:
-                type: array
-                items:
-                  properties:
-                    id:
-                      type: string
-                    createdAt:
-                      type: string
-                    updatedAt:
-                      type: string
-                    externalId:
-                      type: string
-                    salesPrice:
-                      type: number
-                    minimumQuantity:
-                      type: number
-                    maximumQuantity:
-                      type: number
-        enableMinimumSalesPriceValidation:
+        daysBetweenInstalment:
+          type: integer
+        instalmentNumber:
+          type: integer
+        middleTerm:
+          type: integer
+        allowChangeDueDate:
           type: boolean
-        enableMaximumSalesPriceValidation:
+        maxNumberInstalment:
+          type: integer
+        deleted:
           type: boolean
-        basisDateDays:
-          type: number
-        basisDateRule:
-          type: string
-        basisDate:
-          type: string
-        interestType:
-          type: string
-        increasePercentageDue:
-          type: number
-        decreasePercentageDue:
-          type: number
       example:
-        id: 2006e84c-4c2b-4288-8ab3-100f89cf4a0b
-        createdAt: 2020-04-16T19:57:31.866Z
-        updatedAt: 2020-04-22T13:26:48.888Z
-        externalId: T3|D MG|238
+        id: 60ccc6fd-4f79-4790-a45d-31d6a0b9d16b
+        createdAt: 2020-05-12T19:26:15.217Z
+        updatedAt: 2020-05-13T16:55:09.516Z
+        externalId: "30"
+        deleted: false
         active: true
-        description: "09590804"
-        code: "10"
-        startOn: 2019-04-08
-        endOn: 2019-04-30
-        acronym: PR
-        enableMaximumSalesPriceValidation: false
-        enableMinimumSalesPriceValidation: false
-        items:
-          - id: der930ff-675c-4dee-823b-46d3a8ac145b
-            product:
-              id: 6006e84c-4c2b-4288-8ab3-100f89cf4a0b
-              createdAt: 2020-05-05T21:35:49.670Z
-              updatedAt: 2020-05-05T21:36:40.789Z
-              externalId: 10
-              code: 10
-              productGroup:
-                id: 7a13dc76-4d04-49af-979a-94dd3c9b02c7
-                createdAt: 2020-04-16T19:57:31.866Z
-                updatedAt: 2020-04-22T13:26:48.888Z
-                externalId: T3|D MG 01|0007
-                active: true
-                description: Produto de Venda
-                code: 7
-                saleAvailable: true
-              description: Caderno 10 matérias
-              costPrice: 7.5
-              suppliers:
-                - id: 9a0c23a7-c94a-4565-a66d-e26b96369b29
-                  createdAt: 2020-03-27T11:48:00.184Z
-                  updatedAt: 2020-03-27T11:48:00.184Z
-                  externalId: BRF
-                  active: true
-                  description: BRF S.A
-              additionalCode: 102030
-              measurementUnitId: 8eab597b-fb6a-4642-b53a-f0c3d64bf7f6
-              measurementUnitAcronym: UN
-              measurementUnitDescription: UNIDADE
-              active: true
-              note: Observação do produto
-              saleAvailable: true
-              weight: 0.5
-              newSince: 2020-05-04T00:00:00.000Z
-              newUntil: 2020-05-05T00:00:00.000Z
-              saleFractioned: false
-              manufacturerNote: Observação do fabricante
-              manufacturer:
-                id: 56fb02a7-aa35-42e8-911a-168bf0ea7157
-                createdAt: 2020-05-05T21:36:40.775Z
-                updatedAt: 2020-05-05T21:36:40.775Z
-                externalId: BAYER
-                active: false
-                description: BAYER
-              packagings:
-                - id: c2fce939-2fc4-437a-a451-e13891b086ee
-                  createdAt: 2020-05-05T21:36:40.775Z
-                  updatedAt: 2020-05-05T21:36:40.775Z
-                  externalId: EMB
-                  packagingDescription: Embalagem
-                  conversionFactor: 1
-                  standard: true
-              images:
-                - id: ec8ec77e-197a-449e-942e-6f92afbddaf4
-                  createdAt: 2020-05-05T21:36:40.783Z
-                  updatedAt: 2020-05-05T21:36:40.783Z
-                  externalId: IMG_1
-                  imageId: f7af4b59-4b3d-4337-9f11-774e487e4bf5
-                  imageDefault: true
-                  imageOrder: 1
-                  description: IMG_1
-              productUsers: []
-              companies: []
-              productSeed: 56fb02a7-aa35-42e8-911a-168bf0ea7154
-              permissions: []
-              discountLimitType: 56fb02a7-aa35-42e8-911a-168bf0ea7154
-              currencyId: 56fb02a7-aa35-42e8-911a-168bf0ea7154
-              currencyDescription: Reais
-              currencySymbol: R$
-              currencyCode: 10
-              opportunitySalePrice: 14
-              availableForOpportunity: false
-            externalId: T3||MARCOS02
-            salesPrice: 202.202
-            minimumPrice: 200
-            maximumPrice: 220
-            costPrice: 150
-            fixedPrice: 200
-            pricesRange:
-              - id: 58dh65ff-675c-4dee-823b-46d3a8ac145b
-                externalId: RANGE10-20
-                createdAt: 2020-10-01T13:20:43.004Z
-                updatedAt: 2020-10-01T13:20:43.004Z
-                minimumQuantity: 10
-                maximumQuantity: 20
-                quantityPrice: 202
-        services:
-          - id: 973f30ff-675c-4dee-823b-46d3a8ac145b
-            createdAt: 2020-10-01T13:20:43.004Z
-            updatedAt: 2020-10-01T13:20:43.004Z
-            externalId: S_69cd641a-0241-4e57-a07a-1128dbda38c8
-            minimumPrice: 12
-            maximumPrice: 20
-            costPrice: 10
-            salesPrice: 15
-            service:
-              id: 69cd641a-0241-4e57-a07a-1128dbda38c8
-            prices:
-              - id: dh9230ff-675c-4dee-823b-46d3a8ac145b
-                createdAt: 2020-10-01T13:20:43.004Z
-                updatedAt: 2020-10-01T13:20:43.004Z
-                externalId: RANGE10-20
-                minimumQuantity: 10
-                maximumQuantity: 20
-                quantityPrice: 202
-        paymentMethods:
-          - id: 483c71ce-9751-4be4-8b90-eabb75532dbb
-            externalId: PM
-            createdAt: 2020-10-01T13:20:42.981Z
-            updatedAt: 2020-10-01T13:20:42.981Z
-            priceListId: 4e89e854-5156-43bd-aac1-6a31bd3cc6b3
-            paymentMethodId: e46a4b11-d505-450f-8a7c-bb26a52cca14
-            paymentMethodDescription: 132 - Payment Method empower
-        paymentTerms:
-          - id: fde42ecd-9c6a-4ea5-8666-28d2d46ad230
-            externalId: PT
-            createdAt: 2020-10-01T13:20:43.004Z
-            updatedAt: 2020-10-01T13:20:43.004Z
-            priceListId: 4e89e854-5156-43bd-aac1-6a31bd3cc6b3
-            paymentTermId: 5650a262-964d-432e-b6f9-4a876cc2bf9d
-            paymentTermDescription: 30/60/90
+        standard: false
+        availableFirstOrder: false
+        description: 30 dias
+        acronym: "30"
+        code: "002"
         companyPermissions:
-          - id: n2ks30ff-675c-4dee-823b-46d3a8ac145b
-            createdAt: 2020-10-01T13:20:43.004Z
-            updatedAt: 2020-10-01T13:20:43.004Z
-            externalId: df7a7f4b-b1d7-4bd6-940f-e36cd67a5ef2
-            companyId: df7a7f4b-b1d7-4bd6-940f-e36cd67a5ef2
-            companyName: EMPRESA FILIAL T3 HUB05JUNHO
-          - id: 589d30ff-675c-4dee-823b-46d3a8ac145b
-            createdAt: 2020-10-01T13:20:43.004Z
-            updatedAt: 2020-10-01T13:20:43.004Z
-            externalId: ecd65978-7c08-4cf2-84c3-69a311d6b57f
-            companyId: ecd65978-7c08-4cf2-84c3-69a311d6b57f
-            companyName: TESTE DE CARGA INICIAL 2 HUB05JUNHO
-        customerPermissions:
-          - id: 9nd2j5ff-675c-4dee-823b-46d3a8ac145b
-            createdAt: 2020-10-01T13:20:43.004Z
-            updatedAt: 2020-10-01T13:20:43.004Z
-            externalId: f101c590-5ad6-4c8e-88de-b0060ea49295
-            customerId: f101c590-5ad6-4c8e-88de-b0060ea49295
-            customerName: AAAAADRIANA ROSA JÉSSICA CARVALHO LTDA
-        userPermissions:
-          - id: jn23j5ff-675c-4dee-823b-46d3a8ac145b
-            createdAt: 2020-10-01T13:20:43.004Z
-            updatedAt: 2020-10-01T13:20:43.004Z
-            externalId: 7636f630-2358-4cf4-a290-2ec0b13ea47c
-            userId: 7636f630-2358-4cf4-a290-2ec0b13ea47c
-            userName: Administrador
-        currencyId: 5ebcc87b-af5d-42ad-85ad-df620844055f
-        currencyDescription: Real Brasileiro
-        currencyAcronym: BRL
-        currencySymbol: R$
-        basisDateDays: 10
-        basisDateRule: regra
-        basisDate: 2020-06-01T00:00:00.000Z
-        interestType: "."
-        increasePercentageDue: 10
-        decreasePercentageDue: 0
-    Price-ListsIntegration_V1_GetResponse:
+          - id: 58ccc6fd-4f79-4790-a45d-31d6a0b9d16b
+            externalId: P#FILIAL HUB05JUNHO
+            companyId: 22eea680-d700-499c-abe7-0da056ede03f
+            companyName: FILIAL HUB05JUNHO
+        customerPermissions: []
+        userPermissions: []
+        maxNumberInstalment: 1
+        daysBetweenInstalment: 0
+        instalmentNumber: 1
+        middleTerm: 30
+        allowChangeDueDate: false
+    Payment-TermsIntegration_V1_GetResponse:
       type: object
       properties:
         id:
-          type: string
-        externalId:
           type: string
         createdAt:
           type: string
         updatedAt:
           type: string
+        externalId:
+          type: string
+        active:
+          type: boolean
         code:
           type: string
+        availableFirstOrder:
+          type: boolean
+        standard:
+          type: boolean
         description:
           type: string
         acronym:
           type: string
-        active:
-          type: boolean
-        startOn:
-          type: string
-        endOn:
-          type: string
-        currencyId:
-          type: string
-        currencyAcronym:
-          type: string
-        currencyDescription:
-          type: string
-        currencySymbol:
-          type: string
-        paymentTerms:
-          type: array
-          items:
-            properties:
-              id:
-                type: string
-              externalId:
-                type: string
-              createdAt:
-                type: string
-              updatedAt:
-                type: string
-              paymentTermId:
-                type: string
-              paymentTermDescription:
-                type: string
-        paymentMethods:
-          type: array
-          items:
-            properties:
-              id:
-                type: string
-              externalId:
-                type: string
-              createdAt:
-                type: string
-              updatedAt:
-                type: string
-              paymentMethodId:
-                type: string
-              paymentMethodDescription:
-                type: string
-        customerPermissions:
-          type: array
-          items:
-            properties:
-              id:
-                type: string
-              externalId:
-                type: string
-              createdAt:
-                type: string
-              updatedAt:
-                type: string
-              customerId:
-                type: string
-              customerName:
-                type: string
         companyPermissions:
           type: array
           items:
@@ -1282,16 +463,12 @@ components:
               id:
                 type: string
               externalId:
-                type: string
-              createdAt:
-                type: string
-              updatedAt:
                 type: string
               companyId:
                 type: string
               companyName:
                 type: string
-        userPermissions:
+        customerPermission:
           type: array
           items:
             properties:
@@ -1299,581 +476,176 @@ components:
                 type: string
               externalId:
                 type: string
-              createdAt:
+              customerId:
                 type: string
-              updatedAt:
+              customerName:
+                type: string
+        userPermissions:
+          type: array
+          items:
+            properties:
+              id:
+                type: string
+              externalId:
                 type: string
               userId:
                 type: string
               userName:
                 type: string
-        items:
-          type: array
-          items:
-            properties:
-              id:
-                type: string
-              createdAt:
-                type: string
-              updatedAt:
-                type: string
-              costPrice:
-                type: number
-              fixedPrice:
-                type: number
-              externalId:
-                type: string
-              product:
-                $ref: '#/components/schemas/ProductsIntegrationV1GetResponse'
-              pricesRange:
-                type: array
-                items:
-                  properties:
-                    externalId:
-                      type: string
-                    quantityPrice:
-                      type: string
-                    minimumQuantity:
-                      type: string
-                    maximumQuantity:
-                      type: string
-              salesPrice:
-                type: number
-              minimumPrice:
-                type: number
-              maximumPrice:
-                type: number
-        services:
-          type: array
-          items:
-            properties:
-              id:
-                type: string
-              createdAt:
-                type: string
-              updatedAt:
-                type: string
-              externalId:
-                type: string
-              active:
-                type: boolean
-              code:
-                type: string
-              description:
-                type: string
-              costPrice:
-                type: number
-              salesPrice:
-                type: number
-              minimumPrice:
-                type: number
-              maximumPrice:
-                type: number
-              prices:
-                type: array
-                items:
-                  properties:
-                    id:
-                      type: string
-                    createdAt:
-                      type: string
-                    updatedAt:
-                      type: string
-                    externalId:
-                      type: string
-                    salesPrice:
-                      type: number
-                    minimumQuantity:
-                      type: number
-                    maximumQuantity:
-                      type: number
-        enableMinimumSalesPriceValidation:
+        daysBetweenInstalment:
+          type: integer
+        instalmentNumber:
+          type: integer
+        middleTerm:
+          type: integer
+        allowChangeDueDate:
           type: boolean
-        enableMaximumSalesPriceValidation:
+        maxNumberInstalment:
+          type: integer
+        deleted:
           type: boolean
-        basisDateDays:
-          type: number
-        basisDateRule:
-          type: string
-        basisDate:
-          type: string
-        interestType:
-          type: string
-        increasePercentageDue:
-          type: number
-        decreasePercentageDue:
-          type: number
       example:
-        id: 2006e84c-4c2b-4288-8ab3-100f89cf4a0b
-        createdAt: 2020-04-16T19:57:31.866Z
-        updatedAt: 2020-04-22T13:26:48.888Z
-        externalId: T3|D MG|238
+        id: 60ccc6fd-4f79-4790-a45d-31d6a0b9d16b
+        createdAt: 2020-05-12T19:26:15.217Z
+        updatedAt: 2020-05-13T16:55:09.516Z
+        externalId: "30"
+        deleted: false
         active: true
-        description: "09590804"
-        code: "10"
-        startOn: 2019-04-08
-        endOn: 2019-04-30
-        acronym: PR
-        enableMaximumSalesPriceValidation: false
-        enableMinimumSalesPriceValidation: false
-        items:
-          - id: der930ff-675c-4dee-823b-46d3a8ac145b
-            product:
-              id: 6006e84c-4c2b-4288-8ab3-100f89cf4a0b
-              createdAt: 2020-05-05T21:35:49.670Z
-              updatedAt: 2020-05-05T21:36:40.789Z
-              externalId: 10
-              code: 10
-              productGroup:
-                id: 7a13dc76-4d04-49af-979a-94dd3c9b02c7
-                createdAt: 2020-04-16T19:57:31.866Z
-                updatedAt: 2020-04-22T13:26:48.888Z
-                externalId: T3|D MG 01|0007
-                active: true
-                description: Produto de Venda
-                code: 7
-                saleAvailable: true
-              description: Caderno 10 matérias
-              costPrice: 7.5
-              suppliers:
-                - id: 9a0c23a7-c94a-4565-a66d-e26b96369b29
-                  createdAt: 2020-03-27T11:48:00.184Z
-                  updatedAt: 2020-03-27T11:48:00.184Z
-                  externalId: BRF
-                  active: true
-                  description: BRF S.A
-              additionalCode: 102030
-              measurementUnitId: 8eab597b-fb6a-4642-b53a-f0c3d64bf7f6
-              measurementUnitAcronym: UN
-              measurementUnitDescription: UNIDADE
-              active: true
-              note: Observação do produto
-              saleAvailable: true
-              weight: 0.5
-              newSince: 2020-05-04T00:00:00.000Z
-              newUntil: 2020-05-05T00:00:00.000Z
-              saleFractioned: false
-              manufacturerNote: Observação do fabricante
-              manufacturer:
-                id: 56fb02a7-aa35-42e8-911a-168bf0ea7157
-                createdAt: 2020-05-05T21:36:40.775Z
-                updatedAt: 2020-05-05T21:36:40.775Z
-                externalId: BAYER
-                active: false
-                description: BAYER
-              packagings:
-                - id: c2fce939-2fc4-437a-a451-e13891b086ee
-                  createdAt: 2020-05-05T21:36:40.775Z
-                  updatedAt: 2020-05-05T21:36:40.775Z
-                  externalId: EMB
-                  packagingDescription: Embalagem
-                  conversionFactor: 1
-                  standard: true
-              images:
-                - id: ec8ec77e-197a-449e-942e-6f92afbddaf4
-                  createdAt: 2020-05-05T21:36:40.783Z
-                  updatedAt: 2020-05-05T21:36:40.783Z
-                  externalId: IMG_1
-                  imageId: f7af4b59-4b3d-4337-9f11-774e487e4bf5
-                  imageDefault: true
-                  imageOrder: 1
-                  description: IMG_1
-              productUsers: []
-              companies: []
-              productSeed: 56fb02a7-aa35-42e8-911a-168bf0ea7154
-              permissions: []
-              discountLimitType: 56fb02a7-aa35-42e8-911a-168bf0ea7154
-              currencyId: 56fb02a7-aa35-42e8-911a-168bf0ea7154
-              currencyDescription: Reais
-              currencySymbol: R$
-              currencyCode: 10
-              opportunitySalePrice: 14
-              availableForOpportunity: false
-            externalId: T3||MARCOS02
-            salesPrice: 202.202
-            minimumPrice: 200
-            maximumPrice: 220
-            costPrice: 150
-            fixedPrice: 200
-            pricesRange:
-              - id: 58dh65ff-675c-4dee-823b-46d3a8ac145b
-                externalId: RANGE10-20
-                createdAt: 2020-10-01T13:20:43.004Z
-                updatedAt: 2020-10-01T13:20:43.004Z
-                minimumQuantity: 10
-                maximumQuantity: 20
-                quantityPrice: 202
-        services:
-          - id: 973f30ff-675c-4dee-823b-46d3a8ac145b
-            createdAt: 2020-10-01T13:20:43.004Z
-            updatedAt: 2020-10-01T13:20:43.004Z
-            externalId: S_69cd641a-0241-4e57-a07a-1128dbda38c8
-            minimumPrice: 12
-            maximumPrice: 20
-            costPrice: 10
-            salesPrice: 15
-            service:
-              id: 69cd641a-0241-4e57-a07a-1128dbda38c8
-            prices:
-              - id: dh9230ff-675c-4dee-823b-46d3a8ac145b
-                createdAt: 2020-10-01T13:20:43.004Z
-                updatedAt: 2020-10-01T13:20:43.004Z
-                externalId: RANGE10-20
-                minimumQuantity: 10
-                maximumQuantity: 20
-                quantityPrice: 202
-        paymentMethods:
-          - id: 483c71ce-9751-4be4-8b90-eabb75532dbb
-            externalId: PM
-            createdAt: 2020-10-01T13:20:42.981Z
-            updatedAt: 2020-10-01T13:20:42.981Z
-            priceListId: 4e89e854-5156-43bd-aac1-6a31bd3cc6b3
-            paymentMethodId: e46a4b11-d505-450f-8a7c-bb26a52cca14
-            paymentMethodDescription: 132 - Payment Method empower
-        paymentTerms:
-          - id: fde42ecd-9c6a-4ea5-8666-28d2d46ad230
-            externalId: PT
-            createdAt: 2020-10-01T13:20:43.004Z
-            updatedAt: 2020-10-01T13:20:43.004Z
-            priceListId: 4e89e854-5156-43bd-aac1-6a31bd3cc6b3
-            paymentTermId: 5650a262-964d-432e-b6f9-4a876cc2bf9d
-            paymentTermDescription: 30/60/90
+        standard: false
+        availableFirstOrder: false
+        description: 30 dias
+        acronym: "30"
+        code: "002"
         companyPermissions:
-          - id: n2ks30ff-675c-4dee-823b-46d3a8ac145b
-            createdAt: 2020-10-01T13:20:43.004Z
-            updatedAt: 2020-10-01T13:20:43.004Z
-            externalId: df7a7f4b-b1d7-4bd6-940f-e36cd67a5ef2
-            companyId: df7a7f4b-b1d7-4bd6-940f-e36cd67a5ef2
-            companyName: EMPRESA FILIAL T3 HUB05JUNHO
-          - id: 589d30ff-675c-4dee-823b-46d3a8ac145b
-            createdAt: 2020-10-01T13:20:43.004Z
-            updatedAt: 2020-10-01T13:20:43.004Z
-            externalId: ecd65978-7c08-4cf2-84c3-69a311d6b57f
-            companyId: ecd65978-7c08-4cf2-84c3-69a311d6b57f
-            companyName: TESTE DE CARGA INICIAL 2 HUB05JUNHO
-        customerPermissions:
-          - id: 9nd2j5ff-675c-4dee-823b-46d3a8ac145b
-            createdAt: 2020-10-01T13:20:43.004Z
-            updatedAt: 2020-10-01T13:20:43.004Z
-            externalId: f101c590-5ad6-4c8e-88de-b0060ea49295
-            customerId: f101c590-5ad6-4c8e-88de-b0060ea49295
-            customerName: AAAAADRIANA ROSA JÉSSICA CARVALHO LTDA
-        userPermissions:
-          - id: jn23j5ff-675c-4dee-823b-46d3a8ac145b
-            createdAt: 2020-10-01T13:20:43.004Z
-            updatedAt: 2020-10-01T13:20:43.004Z
-            externalId: 7636f630-2358-4cf4-a290-2ec0b13ea47c
-            userId: 7636f630-2358-4cf4-a290-2ec0b13ea47c
-            userName: Administrador
-        currencyId: 5ebcc87b-af5d-42ad-85ad-df620844055f
-        currencyDescription: Real Brasileiro
-        currencyAcronym: BRL
-        currencySymbol: R$
-        basisDateDays: 10
-        basisDateRule: regra
-        basisDate: 2020-06-01T00:00:00.000Z
-        interestType: "."
-        increasePercentageDue: 10
-        decreasePercentageDue: 0
-    Price-ListsIntegration_V1_BodyCreate:
+          - id: 58ccc6fd-4f79-4790-a45d-31d6a0b9d16b
+            externalId: P#FILIAL HUB05JUNHO
+            companyId: 22eea680-d700-499c-abe7-0da056ede03f
+            companyName: FILIAL HUB05JUNHO
+        customerPermissions: []
+        userPermissions: []
+        maxNumberInstalment: 1
+        daysBetweenInstalment: 0
+        instalmentNumber: 1
+        middleTerm: 30
+        allowChangeDueDate: false
+    Payment-TermsIntegration_V1_BodyCreate:
       required:
-        - currencyDescription
-        - currencySymbol
-        - currencyAcronym
-        - currencyId
-        - active
-        - description
         - externalId
+        - description
+        - active
+        - standard
+        - availableFirstOrder
       type: object
       properties:
         externalId:
-          description: Código identificador único do registro em sistemas externos
-          type: string
-        code:
-          description: Código da tabela de preço
-          type: string
-        description:
-          description: Descrição da tabela de preço
-          type: string
-        acronym:
-          description: Sigla da tabela de preço
+          description: Código único do sistema externo que identifica este registro
           type: string
         active:
-          description: Indica se a tabela está ativa no CRM
+          description: Indica se a condição de pagamento está ativa ou não
           type: boolean
-        startOn:
-          description: Data de início da vigência da tabela de preço
+        code:
+          description: Código da condição de pagamento
           type: string
-        endOn:
-          description: Término da validade da tabela de preço
+        availableFirstOrder:
+          description: Indica se a condição de pagamento estará disponível na primeira
+            ordem
+          type: boolean
+        standard:
+          description: Indica se o registro de condição de pagamento é padrão do sistema
+          type: boolean
+        description:
+          description: Descrição da condição de pagamento
           type: string
-        currencyId:
-          description: Identificador da moeda
+        acronym:
+          description: Sigla da condição de pagamento
           type: string
-        currencyAcronym:
-          description: Sigla da moeda
-          type: string
-        currencyDescription:
-          description: Descrição da moeda
-          type: string
-        currencySymbol:
-          description: Símbolo da moeda
-          type: string
-        paymentTerms:
-          description: Condição de pagamento
-          type: array
-          items:
-            properties:
-              externalId:
-                description: Código externo único para o registro
-                type: string
-              paymentTermId:
-                description: Identificador da condição de pagamento
-                type: string
-              paymentTermDescription:
-                description: Identificador da condição de pagamento
-                type: string
-        paymentMethods:
-          description: tipo de cobrança
-          type: array
-          items:
-            properties:
-              externalId:
-                description: Código externo único para o registro
-                type: string
-              paymentMethodId:
-                description: Identificador do tipo de cobrança
-                type: string
-              paymentMethodDescription:
-                description: Descrição do tipo de cobrança
-                type: string
-        customerPermissions:
-          description: Permissões para clientes
-          type: array
-          items:
-            properties:
-              externalId:
-                description: Código externo único para o registro
-                type: string
-              customerId:
-                description: Identificador do cliente
-                type: string
-              customerName:
-                description: Nome do cliente
-                type: string
         companyPermissions:
-          description: Permissões para empresa/filial
+          description: Permissões para a empresa/filial. Não informar valores neste
+            atributo fará com que todos os registros estejam disponíveis para todas
+            as empresas/filiais
           type: array
           items:
             properties:
               externalId:
-                description: Código externo único para o registro
+                description: Código único do registro de empresa/filial no sistema
+                  externo
                 type: string
               companyId:
-                description: Identificador da empresa/filial
+                description: Identificador do registro da empresa/filial
                 type: string
               companyName:
                 description: Nome da empresa/filial
                 type: string
-        userPermissions:
-          description: Permissões específicas de acesso para usuários
+        customerPermission:
+          description: Permissões de uso da condição de pagamento para o cliente.
+            Não informar valores neste atributo fará com que todos os registros estejam
+            disponíveis para todos os clientes
           type: array
           items:
             properties:
               externalId:
-                description: Código externo único para o registro
+                description: Código único do registro de cliente no sistema externo
+                type: string
+              customerId:
+                description: Identificador do registro da ciente no CRM
+                type: string
+              customerName:
+                description: Nome do cliente
+                type: string
+        userPermissions:
+          description: Permissão específica para usuários do sistema. Não informar
+            valores neste atributo fará com que todos os registros estejam disponíveis
+            para todos os usuários
+          type: array
+          items:
+            properties:
+              externalId:
+                description: Código único do registro do usuário no sistema externo
                 type: string
               userId:
-                description: Identificador do usuário no MasterCRM
+                description: Identificador do usuário no CRM
                 type: string
               userName:
-                description: Nome do usuário
+                description: nome do usuário
                 type: string
-        items:
-          description: Itens de produtos da tabela de preço
-          type: array
-          items:
-            properties:
-              costPrice:
-                description: Preço de custo
-                type: number
-              fixedPrice:
-                description: Preço fixo
-                type: number
-              externalId:
-                description: Código externo único para o registro
-                type: string
-              product:
-                description: Produto da lista de preço
-                type: object
-                properties:
-                  id:
-                    description: Identificador do produto
-                    type: string
-              pricesRange:
-                description: Preço por faixa de produto vendida
-                type: array
-                items:
-                  properties:
-                    externalId:
-                      description: Código externo único do registro
-                      type: string
-                    quantityPrice:
-                      description: Preço para a faixa
-                      type: string
-                    minimumQuantity:
-                      description: Quantidade mínima do produto
-                      type: string
-                    maximumQuantity:
-                      description: Quantidade máxima do produto
-                      type: string
-              salesPrice:
-                description: Preço de venda
-                type: number
-              minimumPrice:
-                description: Preço mínimo para a venda
-                type: number
-              maximumPrice:
-                description: Preço máximo para a venda
-                type: number
-        services:
-          description: Itens de serviço da tabela de preço
-          type: array
-          items:
-            properties:
-              externalId:
-                description: Código único para o registro o sistema externo
-                type: string
-              description:
-                type: string
-              costPrice:
-                type: number
-              service:
-                description: Serviço
-                type: object
-                properties:
-                  id:
-                    description: Identificador do registro de Serviço no MasterCRM
-                    type: string
-              salesPrice:
-                description: Preço de venda do serviço
-                type: number
-              minimumPrice:
-                description: Preço mínimo de venda do serviço
-                type: number
-              maximumPrice:
-                description: Preço máximo de venda do serviço
-                type: number
-              prices:
-                description: Faixa de preço por quantidade
-                type: array
-                items:
-                  properties:
-                    externalId:
-                      description: chave externa do registro
-                      type: string
-                    salesPrice:
-                      description: Preço de venda para a faixa de quantidade
-                      type: number
-                    minimumQuantity:
-                      description: Quantidade mínima de serviços da faixa
-                      type: number
-                    maximumQuantity:
-                      description: Quantidade máxima de serviços da faixa
-                      type: number
-        enableMinimumSalesPriceValidation:
-          description: Habilita validação de preço mínimo
+        daysBetweenInstalment:
+          description: Quantidade de dias entre as parcelas
+          type: integer
+        instalmentNumber:
+          description: Número da parcela
+          type: integer
+        middleTerm:
+          description: Tempo médio de condição de pagamento em dias
+          type: integer
+        allowChangeDueDate:
+          description: Indica se será permitido alterar a data de vencimento
           type: boolean
-        enableMaximumSalesPriceValidation:
-          description: Habilita validação de preço máximo
+        maxNumberInstalment:
+          description: Número máximo de parcelas
+          type: integer
+        deleted:
+          description: Indica se o registro está marcado como removido do sistema
           type: boolean
-        basisDateDays:
-          description: ""
-          type: number
-        basisDateRule:
-          type: string
-        basisDate:
-          description: Data base da tabela
-          type: string
-        interestType:
-          description: Tipo de interesse
-          type: string
-        increasePercentageDue:
-          description: Percentual de acréscimo
-          type: number
-        decreasePercentageDue:
-          description: Percentual de descréscimo
-          type: number
       example:
-        externalId: T3|D MG|238
+        externalId: "30"
+        deleted: false
         active: true
-        description: "09590804"
-        code: "10"
-        startOn: 2019-04-08
-        endOn: 2019-04-30
-        acronym: PR
-        enableMaximumSalesPriceValidation: false
-        enableMinimumSalesPriceValidation: false
-        items:
-          - externalId: T3||MARCOS02
-            product:
-              id: eab930ff-675c-4dee-823b-46d3a8ac145b
-            salesPrice: 202.202
-            minimumPrice: 200
-            maximumPrice: 220
-            costPrice: 150
-            fixedPrice: 200
-            pricesRange:
-              - externalId: RANGE10-20
-                minimumQuantity: 10
-                maximumQuantity: 20
-                quantityPrice: 202
-        services:
-          - externalId: S_69cd641a-0241-4e57-a07a-1128dbda38c8
-            minimumPrice: 12
-            maximumPrice: 20
-            costPrice: 10
-            salesPrice: 15
-            service:
-              id: 69cd641a-0241-4e57-a07a-1128dbda38c8
-            prices:
-              - externalId: RANGE10-20
-                minimumQuantity: 10
-                maximumQuantity: 20
-                salesPrice: 202
-        paymentMethods:
-          - externalId: PM
-            paymentMethodId: d622cf6d-831b-4aed-b200-088ae094c34a
-            paymentMethodDescription: "521606507818"
-        paymentTerms:
-          - externalId: PT
-            paymentTermId: cb1c15f3-16b3-4ce6-a359-fa00d6d7cce9
-            paymentTermDescription: "1801606507819"
+        standard: false
+        availableFirstOrder: false
+        description: 30 dias
+        acronym: "30"
+        code: "002"
         companyPermissions:
-          - externalId: df7a7f4b-b1d7-4bd6-940f-e36cd67a5ef2
-            companyId: df7a7f4b-b1d7-4bd6-940f-e36cd67a5ef2
-            companyName: EMPRESA FILIAL T3 HUB05JUNHO
-          - externalId: ecd65978-7c08-4cf2-84c3-69a311d6b57f
-            companyId: ecd65978-7c08-4cf2-84c3-69a311d6b57f
-            companyName: TESTE DE CARGA INICIAL 2 HUB05JUNHO
-        customerPermissions:
-          - externalId: f101c590-5ad6-4c8e-88de-b0060ea49295
-            customerId: f101c590-5ad6-4c8e-88de-b0060ea49295
-            customerName: AAAAADRIANA ROSA JÉSSICA CARVALHO LTDA
-        userPermissions:
-          - externalId: 7636f630-2358-4cf4-a290-2ec0b13ea47c
-            userId: 7636f630-2358-4cf4-a290-2ec0b13ea47c
-            userName: Administrador
-        currencyId: 5ebcc87b-af5d-42ad-85ad-df620844055f
-        currencyDescription: Real Brasileiro
-        currencyAcronym: BRL
-        currencySymbol: R$
-        basisDateDays: 10
-        basisDateRule: regra
-        basisDate: 2020-06-01T00:00:00.000Z
-        interestType: "."
-        increasePercentageDue: 10
-        decreasePercentageDue: 0
+          - externalId: P#FILIAL HUB05JUNHO
+            companyId: 22eea680-d700-499c-abe7-0da056ede03f
+            companyName: FILIAL HUB05JUNHO
+        customerPermissions: []
+        userPermissions: []
+        maxNumberInstalment: 1
+        daysBetweenInstalment: 0
+        instalmentNumber: 1
+        middleTerm: 30
+        allowChangeDueDate: false
 tags:
   - name: APP2
     description: Ambiente APP2
