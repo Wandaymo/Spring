@@ -1,10 +1,10 @@
 ---
 openapi: 3.0.2
 info:
-  title: product-inventories-integrationV1
+  title: price-lists-items-integrationV1
   version: 1.0.0
   description: |
-    API de integração de estoque de produto (Product-inventories) V1
+    API de integração de itens de tabela de preço (Price-list-items) V1
 
     Compatível com a versão de negócio Product V7
   contact: {}
@@ -22,7 +22,7 @@ paths:
   /record:
     get:
       tags:
-        - Product-inventories
+        - Price-List-Items
       parameters:
         - name: Integration-Filter
           description: |
@@ -42,21 +42,21 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Product-inventories-Integration_V1_FullResponse'
-          description: Returns a list of product inventories
+                $ref: '#/components/schemas/Price-List-Items-Integration_V1_FullResponse'
+          description: Returns a list of price list items
         401:
           description: Unauthorized
-      summary: Listar estoque de produtos
-      description: Retorna uma lista de estoque de produtos cadastrados ou determinados
-        estoques de produtos com base nos filtros no header Integration-Filter
+      summary: Listar itens de tabela de preço
+      description: Retorna uma lista de itens de preço cadastrados ou determinados
+        itens com base nos filtros no header Integration-Filter
     post:
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Product-inventories-Integration_V1_BodyCreate'
+              $ref: '#/components/schemas/Price-List-Items-Integration_V1_BodyCreate'
       tags:
-        - Product-inventories
+        - Price-List-Items
       parameters:
         - name: Integration-Filter
           description: |
@@ -90,16 +90,16 @@ paths:
             body da requisição.
           schema:
             anyOf:
-              - $ref: '#/components/schemas/Product-inventories-Integration_V1_BodyCreate'
-              - $ref: '#/components/schemas/Product-inventories-Integration_V1_BodyUpdate'
-              - $ref: '#/components/schemas/Product-inventories-Integration_V1_BodyUpsert'
-              - $ref: '#/components/schemas/Product-inventories-Integration_V1_BodyDelete'
+              - $ref: '#/components/schemas/Price-List-Items-Integration_V1_BodyCreate'
+              - $ref: '#/components/schemas/Price-List-Items-Integration_V1_BodyUpdate'
+              - $ref: '#/components/schemas/Price-List-Items-Integration_V1_BodyUpsert'
+              - $ref: '#/components/schemas/Price-List-Items-Integration_V1_BodyEmpty'
             discriminator:
               mapping:
-                create: '#/components/schemas/Product-inventories-Integration_V1_BodyCreate'
-                update: '#/components/schemas/Product-inventories-Integration_V1_BodyUpdate'
-                upsert: '#/components/schemas/Product-inventories-Integration_V1_BodyUpsert'
-                delete: '#/components/schemas/Product-inventories-Integration_V1_BodyDelete'
+                create: '#/components/schemas/Price-List-Items-Integration_V1_BodyCreate'
+                update: '#/components/schemas/Price-List-Items-Integration_V1_BodyUpdate'
+                upsert: '#/components/schemas/Price-List-Items-Integration_V1_BodyUpsert'
+                delete: '#/components/schemas/Price-List-Items-Integration_V1_BodyEmpty'
           in: header
           required: true
       responses:
@@ -107,11 +107,11 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Product-inventories-Integration_V1_FullResponse'
-          description: Returns a product inventories register
+                $ref: '#/components/schemas/Price-List-Items-Integration_V1_FullResponse'
+          description: Returns a price list register
         401:
           description: Unauthorized
-      summary: Criar, atualizar e deletar estoque de produtos
+      summary: Criar, atualizar e deletar itens de tabelas de preço
       description: |
         A ação a ser realizada no cadastro depende do valor preenchido no header
         **Integration-Action**:
@@ -128,9 +128,7 @@ paths:
         no header **Integration-Filter** **OU** realiza a operação de PUT do cadastro enviado se for
         enviado o ID do registro no header **Integration-Filter**;
 
-
-        **delete** - Realiza a operação de DELETE do cadastro enviado. Obrigatório informar o ID do
-        registro no header **Integration-Filter** e não deve-se enviar nenhum Body;
+        **delete** - Realiza a operação de DELETE do registro especificado no header **Integration-Filter**
     parameters:
       - name: Integration-Service
         description: 'Serviço responsável pela entidade. Exemplo: product'
@@ -140,9 +138,9 @@ paths:
         in: header
         required: true
       - name: Integration-Resource
-        description: 'Recurso para requisição. Exemplo: product-inventories-integration'
+        description: 'Recurso para requisição. Exemplo: price-list-items-integration'
         schema:
-          default: product-inventories-integration
+          default: price-list-items-integration
           type: string
         in: header
         required: true
@@ -155,39 +153,10 @@ paths:
         required: true
 components:
   schemas:
-    Product-inventories-Integration_V1_BodyDelete:
+    Price-List-Items-Integration_V1_BodyEmpty:
       description: No body
       type: object
-    Product-inventories-Integration_V1_BodyEmpty:
-      description: No body
-      type: object
-    Product-inventories-Integration_V1_BodyUpsert:
-      type: object
-      properties:
-        externalId:
-          type: string
-          example: PRODUTO#1#ESTOQUE
-        productId:
-          format: UUID
-          type: string
-          example: 9a0c23a7-c94a-4565-a66d-e26b96369b29
-        quantity:
-          type: number
-          example: 10
-        companyId:
-          format: UUID
-          type: string
-          example: 206f58df-5442-40f1-bae7-1a2b984164c5
-        companyTradingName:
-          type: string
-          example: D MG 001 - T3
-      example:
-        externalId: PRODUTO#1#ESTOQUE
-        productId: 9a0c23a7-c94a-4565-a66d-e26b96369b29eles
-        quantity: 10
-        companyId: 206f58df-5442-40f1-bae7-1a2b984164c5
-        companyTradingName: D MG 001 - T3
-    Product-inventories-Integration_V1_MinimumResponse:
+    Price-List-Items-Integration_V1_MinimumResponse:
       type: object
       properties:
         id:
@@ -198,166 +167,317 @@ components:
           type: string
       example:
         id: 19de1e5b-37c8-42c6-a62f-3d7bdd11e994
-        createdAt: 2019-08-13T18:00:38.780Z
+        createAt: 2019-08-13T18:00:38.780Z
         updatedAt: 2019-08-13T18:00:38.780Z
-    Product-inventories-Integration_V1_BodyCreate:
+    Price-List-Items-Integration_V1_BodyCreate:
       required:
-        - productId
-        - companyId
+        - active
+        - description
+        - salesPrice
+        - priceList
+        - product
         - externalId
-        - companyName
       type: object
       properties:
-        externalId:
-          description: Código do sistema externo para identificar este registro como
-            único.
-          type: string
-          example: PRODUTO#1#ESTOQUE
-        productId:
-          format: UUID
-          description: Identificador do produto no CRM
-          type: string
-          example: 9a0c23a7-c94a-4565-a66d-e26b96369b29
-        quantity:
-          description: Quantidade em estoque do produto
+        costPrice:
+          description: Preço de custo
           type: number
-          example: 10
-        companyId:
-          format: UUID
-          description: Identificador da empresa/filial
-          type: string
-          example: 206f58df-5442-40f1-bae7-1a2b984164c5
-        companyName:
-          description: Nome da empresa/filial
-          type: string
-          example: D MG 001 - T3
-        companyTradingName:
-          description: Nome fantasia da empresa/filial
-          type: string
-          example: CD Minas 001
-      example:
-        externalId: PRODUTO#1#ESTOQUE
-        productId: 9a0c23a7-c94a-4565-a66d-e26b96369b29eles
-        quantity: 10
-        companyId: 206f58df-5442-40f1-bae7-1a2b984164c5
-        companyName: D MG 001 - T3
-        companyTradingName: CD Minas 001
-    Product-inventories-Integration_V1_BodyUpdate:
-      type: object
-      properties:
-        externalId:
-          type: string
-          example: PRODUTO#1#ESTOQUE
-        productId:
-          format: UUID
-          type: string
-          example: 9a0c23a7-c94a-4565-a66d-e26b96369b29
-        quantity:
+        fixedPrice:
+          description: Preço fixo
           type: number
-          example: 10
-        companyId:
-          format: UUID
-          type: string
-          example: 206f58df-5442-40f1-bae7-1a2b984164c5
-        companyName:
-          type: string
-          example: D MG 001 - T3
-        companyTradingName:
-          type: string
-          example: CD Minas 001
-      example:
-        externalId: PRODUTO#1#ESTOQUE
-        productId: 9a0c23a7-c94a-4565-a66d-e26b96369b29eles
-        quantity: 10
-        companyId: 206f58df-5442-40f1-bae7-1a2b984164c5
-        companyTradingName: CD Minas 001
-        companyName: D MG 001 - T3
-    Product-inventories-Integration_V1_FullResponse:
-      type: object
-      properties:
-        id:
-          type: string
-          example: 5cb9b2fc-6004-4f30-a45b-451ca49321ed
-        createdAt:
-          type: string
-          example: 2020-07-13T22:54:11.73Z
-        updatedAt:
-          type: string
-          example: 2020-07-13T22:54:11.73Z
         externalId:
+          description: Código externo único para o registro
           type: string
-          example: PRODUTO#1#ESTOQUE
-        productId:
-          format: UUID
+        product:
+          description: Produto da lista de preço
           type: string
-          example: 9a0c23a7-c94a-4565-a66d-e26b96369b29
-        quantity:
+          properties:
+            id:
+              description: Identificador do produto
+              type: string
+        priceList:
+          description: Lista de preço
+          type: string
+          properties:
+            id:
+              description: Identificador da lista de preço
+              type: string
+        pricesRange:
+          description: Preço por faixa de produto vendida
+          type: array
+          items:
+            properties:
+              externalId:
+                description: Código externo único do registro
+                type: string
+              quantityPrice:
+                description: Preço para a faixa
+                type: string
+              minimumQuantity:
+                description: Quantidade mínima do produto
+                type: string
+              maximumQuantity:
+                description: Quantidade máxima do produto
+                type: string
+        salesPrice:
+          description: Preço de venda
           type: number
-          example: 10
-        companyId:
-          format: UUID
-          type: string
-          example: 206f58df-5442-40f1-bae7-1a2b984164c5
-        companyName:
-          description: Nome da empresa/filial
-          type: string
-          example: D MG 001 - T3
-        companyTradingName:
-          type: string
-          example: CD Minas 001
+        minimumPrice:
+          description: Preço mínimo para a venda
+          type: number
+        maximumPrice:
+          description: Preço máximo para a venda
+          type: number
       example:
-        id: 5cb9b2fc-6004-4f30-a45b-451ca49321ed
-        createdAt: 2020-07-13T22:54:11.73Z
-        updatedAt: 2020-07-13T22:54:11.73Z
-        externalId: PRODUTO#1#ESTOQUE
-        productId: 9a0c23a7-c94a-4565-a66d-e26b96369b29eles
-        quantity: 10
-        companyId: 206f58df-5442-40f1-bae7-1a2b984164c5
-        companyName: D MG 001 - T3
-        companyTradingName: CD Minas 001
-    Product-inventories-Integration_V1_GetResponse:
+        externalId: T3||MARCOS02||PRODUTO01
+        product:
+          id: eab930ff-675c-4dee-823b-46d3a8ac145b
+        priceList:
+          id: c496a838-4fd7-464b-bf9d-253cfcd4b3f7
+        salesPrice: 202.202
+        minimumPrice: 200
+        maximumPrice: 220
+        costPrice: 150
+        fixedPrice: 200
+        pricesRange:
+          - id: bdeb3712-eabc-4799-b557-84fc98d18222
+            externalId: RANGE10-20
+            minimumQuantity: 10
+            maximumQuantity: 20
+            quantityPrice: 202
+    Price-List-Items-Integration_V1_FullResponse:
       type: object
       properties:
         id:
           type: string
-          example: 5cb9b2fc-6004-4f30-a45b-451ca49321ed
         createdAt:
           type: string
-          example: 2020-07-13T22:54:11.73Z
         updatedAt:
           type: string
-          example: 2020-07-13T22:54:11.73Z
+        costPrice:
+          type: number
+        fixedPrice:
+          type: number
         externalId:
           type: string
-          example: PRODUTO#1#ESTOQUE
-        productId:
-          format: UUID
+        product:
           type: string
-          example: 9a0c23a7-c94a-4565-a66d-e26b96369b29
-        quantity:
+          properties:
+            id:
+              type: string
+        priceList:
+          type: string
+          properties:
+            id:
+              type: string
+        pricesRange:
+          type: array
+          items:
+            properties:
+              externalId:
+                type: string
+              quantityPrice:
+                type: string
+              minimumQuantity:
+                type: string
+              maximumQuantity:
+                type: string
+        salesPrice:
           type: number
-          example: 10
-        companyId:
-          format: UUID
-          type: string
-          example: 206f58df-5442-40f1-bae7-1a2b984164c5
-        companyName:
-          description: Nome da empresa/filial
-          type: string
-          example: D MG 001 - T3
-        companyTradingName:
-          type: string
-          example: CD Minas 001
+        minimumPrice:
+          type: number
+        maximumPrice:
+          type: number
       example:
-        id: 5cb9b2fc-6004-4f30-a45b-451ca49321ed
-        createdAt: 2020-07-13T22:54:11.73Z
-        updatedAt: 2020-07-13T22:54:11.73Z
-        externalId: PRODUTO#1#ESTOQUE
-        productId: 9a0c23a7-c94a-4565-a66d-e26b96369b29eles
-        quantity: 10
-        companyId: 206f58df-5442-40f1-bae7-1a2b984164c5
-        companyName: D MG 001 - T3
-        companyTradingName: CD Minas 001
+        id: 3a542bd0-a066-476f-81b9-b017b289b6ac
+        createdAt: 2020-04-30T19:49:52.731Z
+        updatedAt: 2020-06-29T17:08:45.448Z
+        externalId: T3||MARCOS02
+        product:
+          id: eab930ff-675c-4dee-823b-46d3a8ac145b
+        priceList:
+          id: c496a838-4fd7-464b-bf9d-253cfcd4b3f7
+        salesPrice: 202.202
+        minimumPrice: 200
+        maximumPrice: 220
+        costPrice: 150
+        fixedPrice: 200
+        pricesRange:
+          - id: 58dh65ff-675c-4dee-823b-46d3a8ac145b
+            externalId: RANGE10-20
+            minimumQuantity: 10
+            maximumQuantity: 20
+            quantityPrice: 202
+    Price-List-Items-Integration_V1_GetResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        createdAt:
+          type: string
+        updatedAt:
+          type: string
+        costPrice:
+          type: number
+        fixedPrice:
+          type: number
+        externalId:
+          type: string
+        product:
+          type: string
+          properties:
+            id:
+              type: string
+        priceList:
+          type: string
+          properties:
+            id:
+              type: string
+        pricesRange:
+          type: array
+          items:
+            properties:
+              externalId:
+                type: string
+              quantityPrice:
+                type: string
+              minimumQuantity:
+                type: string
+              maximumQuantity:
+                type: string
+        salesPrice:
+          type: number
+        minimumPrice:
+          type: number
+        maximumPrice:
+          type: number
+      example:
+        id: 3a542bd0-a066-476f-81b9-b017b289b6ac
+        createdAt: 2020-04-30T19:49:52.731Z
+        updatedAt: 2020-06-29T17:08:45.448Z
+        externalId: T3||MARCOS02
+        product:
+          id: eab930ff-675c-4dee-823b-46d3a8ac145b
+        priceList:
+          id: c496a838-4fd7-464b-bf9d-253cfcd4b3f7
+        salesPrice: 202.202
+        minimumPrice: 200
+        maximumPrice: 220
+        costPrice: 150
+        fixedPrice: 200
+        pricesRange:
+          - id: 58dh65ff-675c-4dee-823b-46d3a8ac145b
+            externalId: RANGE10-20
+            minimumQuantity: 10
+            maximumQuantity: 20
+            quantityPrice: 202
+    Price-List-Items-Integration_V1_BodyUpdate:
+      type: object
+      properties:
+        costPrice:
+          type: number
+        fixedPrice:
+          type: number
+        externalId:
+          type: string
+        product:
+          type: object
+          properties:
+            id:
+              type: string
+        priceList:
+          type: string
+          properties:
+            id:
+              type: string
+        pricesRange:
+          type: array
+          items:
+            properties:
+              externalId:
+                type: string
+              quantityPrice:
+                type: string
+              minimumQuantity:
+                type: string
+              maximumQuantity:
+                type: string
+        salesPrice:
+          type: number
+        minimumPrice:
+          type: number
+        maximumPrice:
+          type: number
+      example:
+        externalId: T3||MARCOS02
+        product:
+          id: eab930ff-675c-4dee-823b-46d3a8ac145b
+        priceList:
+          id: c496a838-4fd7-464b-bf9d-253cfcd4b3f7
+        salesPrice: 202.202
+        minimumPrice: 200
+        maximumPrice: 220
+        costPrice: 150
+        fixedPrice: 200
+        pricesRange:
+          - id: 58dh65ff-675c-4dee-823b-46d3a8ac145b
+            externalId: RANGE10-20
+            minimumQuantity: 10
+            maximumQuantity: 20
+            quantityPrice: 202
+    Price-List-Items-Integration_V1_BodyUpsert:
+      type: object
+      properties:
+        costPrice:
+          type: number
+        fixedPrice:
+          type: number
+        externalId:
+          type: string
+        product:
+          type: object
+          properties:
+            id:
+              type: string
+        priceList:
+          type: string
+          properties:
+            id:
+              type: string
+        pricesRange:
+          type: array
+          items:
+            properties:
+              externalId:
+                type: string
+              quantityPrice:
+                type: string
+              minimumQuantity:
+                type: string
+              maximumQuantity:
+                type: string
+        salesPrice:
+          type: number
+        minimumPrice:
+          type: number
+        maximumPrice:
+          type: number
+      example:
+        externalId: T3||MARCOS02
+        product:
+          id: eab930ff-675c-4dee-823b-46d3a8ac145b
+        priceList:
+          id: c496a838-4fd7-464b-bf9d-253cfcd4b3f7
+        salesPrice: 202.202
+        minimumPrice: 200
+        maximumPrice: 220
+        costPrice: 150
+        fixedPrice: 200
+        pricesRange:
+          - externalId: RANGE10-20
+            minimumQuantity: 10
+            maximumQuantity: 20
+            quantityPrice: 202
 tags:
   - name: APP2
     description: Ambiente APP2
