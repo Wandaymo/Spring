@@ -1,12 +1,12 @@
 ---
 openapi: 3.0.2
 info:
-  title: freight-types-integrationV1
+  title: region-companies-integrationV1
   version: 1.0.0
   description: |
-    API de integração de tipos de frete (Freight-Types) V1
+    API de integração do vínculo de times e vendedores para definir os responsáveis pela carteira. (Region-Companies) V1
 
-    Compatível com a versão V11 do serviço de negócio Sales
+    Compatível com a versão de negócio Accounts V4
   contact: {}
 servers:
   - url: https://{url}/api/{version}/integration
@@ -22,7 +22,7 @@ paths:
   /record:
     get:
       tags:
-        - Freight-Types
+        - Region-companies
       parameters:
         - name: Integration-Filter
           description: |
@@ -42,21 +42,21 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Freight-Types-Integration_V1_FullResponse'
-          description: Returns a list of Freight-Types
+                $ref: '#/components/schemas/Region-CompaniesIntegration_V1_FullResponse'
+          description: Returns a list of regions companies
         401:
           description: Unauthorized
-      summary: Listar tipos de frete
-      description: Retorna uma lista de tipos de frete cadastradas ou determinadas
-        formas com base nos filtros no header Integration-Filter
+      summary: Listar Region-Companies
+      description: Retorna uma lista de vinculos entre times e empresas/filiais ou
+        determinados vínculos com base nos filtros no header Integration-Filter
     post:
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Freight-Types-Integration_V1_BodyCreate'
+              $ref: '#/components/schemas/Region-CompaniesIntegration_V1_BodyEmpty'
       tags:
-        - Freight-Types
+        - Region-companies
       parameters:
         - name: Integration-Filter
           description: |
@@ -78,7 +78,6 @@ paths:
             Se o header não for informado, por padrão o retorno será equivalente ao nível
             **minimum**
           schema:
-            default: minimum
             enum:
               - full
               - minimum
@@ -90,15 +89,17 @@ paths:
             Ação a ser realizada na API de integração. Selecione uma das opções para carregar o
             body da requisição.
           schema:
-            oneOf:
-              - $ref: '#/components/schemas/Freight-Types-Integration_V1_BodyCreate'
-              - $ref: '#/components/schemas/Freight-Types-Integration_V1_BodyUpdate'
-              - $ref: '#/components/schemas/Freight-Types-Integration_V1_BodyUpsert'
+            anyOf:
+              - $ref: '#/components/schemas/Region-CompaniesIntegration_V1_BodyCreate'
+              - $ref: '#/components/schemas/Region-CompaniesIntegration_V1_BodyUpdate'
+              - $ref: '#/components/schemas/Region-CompaniesIntegration_V1_BodyUpsert'
+              - $ref: '#/components/schemas/Region-CompaniesIntegration_V1_BodyDelete'
             discriminator:
               mapping:
-                create: '#/components/schemas/Freight-Types-Integration_V1_BodyCreate'
-                update: '#/components/schemas/Freight-Types-Integration_V1_BodyUpdate'
-                upsert: '#/components/schemas/Freight-Types-Integration_V1_BodyUpsert'
+                create: '#/components/schemas/Region-CompaniesIntegration_V1_BodyCreate'
+                update: '#/components/schemas/Region-CompaniesIntegration_V1_BodyUpdate'
+                upsert: '#/components/schemas/Region-CompaniesIntegration_V1_BodyUpsert'
+                delete: '#/components/schemas/Region-CompaniesIntegration_V1_BodyDelete'
           in: header
           required: true
       responses:
@@ -106,12 +107,15 @@ paths:
           content:
             application/json:
               schema:
-                schema:
-                  $ref: '#/components/schemas/Freight-Types-Integration_V1_FullResponse'
-          description: Returns a freight type register
+                $ref: '#/components/schemas/Region-CompaniesIntegration_V1_FullResponse'
+                discriminator:
+                  mapping:
+                    full: '#/components/schemas/Region-CompaniesIntegration_V1_FullResponse'
+                    minimum: '#/components/schemas/Region-CompaniesIntegration_V1_MinimumResponse'
+          description: Returns a Region Company register
         401:
           description: Unauthorized
-      summary: Criar e atualizar tipos de frete
+      summary: Criar, atualizar e deletar region companies
       description: |
         A ação a ser realizada no cadastro depende do valor preenchido no header
         **Integration-Action**:
@@ -127,18 +131,21 @@ paths:
         **upsert** - Realiza a operação de POST do cadastro enviado se não for enviado ID do registro
         no header **Integration-Filter** **OU** realiza a operação de PUT do cadastro enviado se for
         enviado o ID do registro no header **Integration-Filter**;
+
+        **delete** - Realiza a operação de DELETE do cadastro enviado. Deve ser enviado ID do registro
+        no header **Integration-Filter** para que o registro seja deletado;
     parameters:
       - name: Integration-Service
-        description: 'Serviço responsável pela entidade. Exemplo: sales'
+        description: 'Serviço responsável pela entidade. Exemplo: accounts'
         schema:
-          default: sales
+          default: accounts
           type: string
         in: header
         required: true
       - name: Integration-Resource
-        description: 'Recurso para requisição. Exemplo: freight-types-integration'
+        description: 'Recurso para requisição. Exemplo: region-companies-integration'
         schema:
-          default: freight-types-integration
+          default: region-companies-integration
           type: string
         in: header
         required: true
@@ -151,10 +158,10 @@ paths:
         required: true
 components:
   schemas:
-    Freight-Types-Integration_V1_BodyEmpty:
+    Region-CompaniesIntegration_V1_BodyEmpty:
       description: No body
       type: object
-    Freight-Types-Integration_V1_MinimumResponse:
+    Region-CompaniesIntegration_V1_MinimumResponse:
       type: object
       properties:
         id:
@@ -167,176 +174,118 @@ components:
         id: 19de1e5b-37c8-42c6-a62f-3d7bdd11e994
         createAt: 2019-08-13T18:00:38.780Z
         updatedAt: 2019-08-13T18:00:38.780Z
-    Freight-Types-Integration_V1_BodyUpdate:
+    Region-CompaniesIntegration_V1_BodyDelete:
       type: object
-      properties:
-        externalId:
-          type: string
-          example: C
-        description:
-          type: string
-          example: CIF
-        code:
-          type: string
-          example: C
-        acronym:
-          type: string
-          example: C
-        active:
-          type: boolean
-          example: true
-        defaultRecord:
-          type: boolean
-          example: false
-      example:
-        externalId: C
-        description: CIF
-        code: C
-        acronym: C
-        active: true
-        defaultRecord: false
-    Freight-Types-Integration_V1_BodyUpsert:
-      type: object
-      properties:
-        externalId:
-          type: string
-          example: C
-        description:
-          type: string
-          example: CIF
-        code:
-          type: string
-          example: C
-        acronym:
-          type: string
-          example: C
-        active:
-          type: boolean
-          example: true
-        defaultRecord:
-          type: boolean
-          example: false
-      example:
-        externalId: C
-        description: CIF
-        code: C
-        acronym: C
-        active: true
-        defaultRecord: false
-    Freight-Types-Integration_V1_FullResponse:
-      type: object
-      properties:
-        id:
-          type: string
-        createdAt:
-          type: string
-        updatedAt:
-          type: string
-        externalId:
-          type: string
-          example: C
-        description:
-          type: string
-          example: CIF
-        code:
-          type: string
-          example: C
-        acronym:
-          type: string
-          example: C
-        active:
-          type: boolean
-          example: true
-        defaultRecord:
-          type: boolean
-          example: false
-      example:
-        id: 0d61f837-0cad-3d41-af80-b84d143e1257
-        createdAt: 2020-08-20T22:02:37.906Z
-        updatedAt: 2020-08-20T22:02:37.906Z
-        externalId: C
-        description: CIF
-        code: C
-        acronym: C
-        active: true
-        defaultRecord: false
-    Freight-Types-Integration_V1_GetResponse:
-      type: object
-      properties:
-        id:
-          type: string
-        createdAt:
-          type: string
-        updatedAt:
-          type: string
-        externalId:
-          type: string
-          example: C
-        description:
-          type: string
-          example: CIF
-        code:
-          type: string
-          example: C
-        acronym:
-          type: string
-          example: C
-        active:
-          type: boolean
-          example: true
-        defaultRecord:
-          type: boolean
-          example: false
-      example:
-        id: 0d61f837-0cad-3d41-af80-b84d143e1257
-        createdAt: 2020-08-20T22:02:37.906Z
-        updatedAt: 2020-08-20T22:02:37.906Z
-        externalId: C
-        description: CIF
-        code: C
-        acronym: C
-        active: true
-        defaultRecord: false
-    Freight-Types-Integration_V1_BodyCreate:
+    Region-CompaniesIntegration_V1_BodyCreate:
       required:
+        - companyId
+        - region
         - externalId
-        - active
-        - defaultRecord
-        - description
-        - code
       type: object
       properties:
+        companyId:
+          description: Identificador da empresa/filial da carteira
+          type: boolean
+        region:
+          description: Identificador do time (carteira)
+          type: object
+          properties:
+            id:
+              type: string
         externalId:
-          description: Código único para o registro no sistema externo para referência
+          description: Código do sistema externo para identificação única do registro
           type: string
-          example: C
-        description:
-          description: Descrição do tipo de frete
-          type: string
-          example: CIF
-        code:
-          description: Código do tipo de frete
-          type: string
-          example: C
-        acronym:
-          description: Sigla do tipo de frete
-          type: string
-          example: C
-        active:
-          description: Indica se o tipo de frete está ativo para uso
-          type: boolean
-          example: true
-        defaultRecord:
-          description: Indica se o registro de tipo de frete é padrão
-          type: boolean
-          example: false
       example:
-        externalId: C
-        description: CIF
-        code: C
-        acronym: C
-        active: true
-        defaultRecord: false
+        companyId: 407d9c36-f792-4811-9e59-2d3c2fd392af
+        region:
+          id: 54ca77f1-3f47-48de-8137-522bfee02252
+        externalId: T3|D MG|196100|1|C
+    Region-CompaniesIntegration_V1_BodyUpdate:
+      type: object
+      properties:
+        companyId:
+          type: boolean
+        region:
+          type: object
+          properties:
+            id:
+              type: string
+        externalId:
+          type: string
+      example:
+        companyId: 407d9c36-f792-4811-9e59-2d3c2fd392af
+        region:
+          id: 54ca77f1-3f47-48de-8137-522bfee02252
+        externalId: T3|D MG|196100|1|C
+    Region-CompaniesIntegration_V1_BodyUpsert:
+      type: object
+      properties:
+        companyId:
+          type: boolean
+        region:
+          type: object
+          properties:
+            id:
+              type: string
+        externalId:
+          type: string
+      example:
+        companyId: 407d9c36-f792-4811-9e59-2d3c2fd392af
+        region:
+          id: 54ca77f1-3f47-48de-8137-522bfee02252
+        externalId: T3|D MG|196100|1|C
+    Region-CompaniesIntegration_V1_FullResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        createdAt:
+          type: string
+        updatedAt:
+          type: string
+        companyId:
+          type: boolean
+        region:
+          type: object
+          properties:
+            id:
+              type: string
+        externalId:
+          type: string
+      example:
+        id: 19de1e5b-37c8-42c6-a62f-3d7bdd11e994
+        createAt: 2019-08-13T18:00:38.780Z
+        updatedAt: 2019-08-13T18:00:38.780Z
+        companyId: 407d9c36-f792-4811-9e59-2d3c2fd392af
+        region:
+          id: 54ca77f1-3f47-48de-8137-522bfee02252
+        externalId: T3|D MG|196100|1|C
+    Region-CompaniesIntegration_V1_GetResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        createdAt:
+          type: string
+        updatedAt:
+          type: string
+        companyId:
+          type: boolean
+        region:
+          type: object
+          properties:
+            id:
+              type: string
+        externalId:
+          type: string
+      example:
+        id: 19de1e5b-37c8-42c6-a62f-3d7bdd11e994
+        createAt: 2019-08-13T18:00:38.780Z
+        updatedAt: 2019-08-13T18:00:38.780Z
+        companyId: 407d9c36-f792-4811-9e59-2d3c2fd392af
+        region:
+          id: 54ca77f1-3f47-48de-8137-522bfee02252
+        externalId: T3|D MG|196100|1|C
 tags:
   - name: APP2
     description: Ambiente APP2
